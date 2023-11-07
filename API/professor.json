@@ -1,0 +1,41 @@
+{
+    "$id": "",
+    "title": "Professor Schema",
+    "definitions": {
+        "professor": {
+            "type": "object",
+            "properties": {
+                "professorId": {
+                    "type": "string",
+                    "pattern": "[p|P][0-9]{6}"
+                },
+                "name": {
+                    "type": "string",
+                    "pattern": "[A-Z][a-z ]*",
+                    "minLength": 1
+                },
+                "surname": {
+                    "type": "string",
+                    "pattern": "[A-Z][a-z ]*",
+                    "minLength": 1
+                },
+                "professorEmail": {
+                    "type": "string",
+                    "format": "email",
+                    "pattern" : "^[a-z]+.[a-z]+@polito.it$"
+                },
+                "codGroup": {
+                    "type": "string",
+                    "pattern": "[A-Z]{3}[0-9]{6}"
+                },
+                "codDepartment": {
+                    "type": "string",
+                    "pattern": "[A-Z]{3}[0-9]{6}"
+                }
+            },
+            "minProperties": 6,
+            "maxProperties": 6,
+            "required" : ["professorId", "name", "surname", "email", "codGroup", "codDepartment"]
+        }
+    }
+}

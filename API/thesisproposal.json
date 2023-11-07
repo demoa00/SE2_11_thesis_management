@@ -1,0 +1,84 @@
+{
+    "$id": "",
+    "title": "Thesis Proposal Schema",
+    "definitions": {
+        "thesisproposal": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "supervisor": {
+                    "type": "string",
+                    "pattern": "[p|P][0-9]{6}"
+                },
+                "coSupervisor": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "keywords": {
+                    "type": "array",
+                    "items": {
+                        "type": "string" 
+                        },
+                    "minItems": 1,
+                    "uniqueness": true
+                },
+                "thesisType": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "groups": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueness": true
+                },
+                "description": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "requirements": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "notes": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "expirationDate": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "level": {
+                    "enum": ["First Level", "Second Level", "PhD"]
+                },
+                "CdS": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "string" 
+                        },
+                    "uniqueness": true
+                },
+                "internal": {
+                    "type": "boolean"
+                }
+            },
+            "if": {
+                "properties": {
+                    "internal": false
+                }
+            },
+            "then": {
+                "required": ["coSupervisor"]
+            },
+            "minProperties": 12,
+            "maxProperties": 14,
+            "required": ["id", "title", "supervisor", "keywords", "thesisType", "groups", "description", "requirements", "expirationDate", "level", "CdS", "internal"]
+        }
+    }
+}

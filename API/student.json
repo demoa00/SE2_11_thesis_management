@@ -1,0 +1,42 @@
+{
+    "$id": "",
+    "title": "Student Schema",
+    "definitions": {
+        "student": {
+            "type": "object",
+            "properties": {
+                "studentId": {
+                    "type": "string",
+                    "pattern": "^[s|S][0-9]{6}$"
+                },
+                "name": {
+                    "type": "string",
+                    "pattern": "([A-Z][a-z]*)( [a-z] )?([A-Z][a-z]*)*",
+                    "minLength": 1
+                },
+                "surname": {
+                    "type": "string",
+                    "pattern": "([A-Z][a-z]* ?)+",
+                    "minLength": 1
+                },
+                "gender":{
+                    "enum": ["male", "female", "other"]
+                },
+                "studentEmail": {
+                    "type": "string",
+                    "format": "email",
+                    "pattern" : "^[s|S][0-9]{6}@studenti.polito.it$"
+                },
+                "codDegree":{
+                    "type": "string",
+                    "pattern": "^LM?-([1-9]|[1-9][0-9])$"
+                },
+                "nationality": {"type": "string"},
+                "enrollmentYear": {"type": "integer"}
+            },
+            "minProperties": 8,
+            "maxProperties": 8,
+            "required" : ["studentId", "name", "surname", "gender", "nationality", "email", "codDegree", "enrollmentYear"]
+        }
+    }
+}
