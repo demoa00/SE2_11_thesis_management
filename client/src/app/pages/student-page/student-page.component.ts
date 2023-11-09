@@ -52,15 +52,35 @@ export class StudentPageComponent {
 
   keywordsHover = false;
   professorsHover = false;
+  menuItems = [
+    { id: 1, hover: false, selected: true  },
+    { id: 2, hover: false, selected: false },
+    { id: 3, hover: false, selected: false }
+  ];
+  professorsSearchValue = "";
+  keywordsSearchValue = "";
 
   updateSearchValue(value: string) {
     this.searchValue = value.trim().toLowerCase();
-    console.log(this.searchValue)
   }
 
   deleteFilters() {
     this.selectedKeywords.clear();
     this.selectedNames.clear();
     this.updateProjectsToShow();
+  }
+
+  selectMenuItem(id: number) {
+    this.menuItems.forEach(item => {
+      item.selected = item.id === id;
+    });
+  }
+
+  updateProfessorsSearchValue(name: string) {
+    this.professorsSearchValue = name.trim().toLowerCase();
+  }
+
+  updateKeywordsSearchValue(keyword: string) {
+    this.keywordsSearchValue = keyword.trim().toLowerCase();
   }
 }

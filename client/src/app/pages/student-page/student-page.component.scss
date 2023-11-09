@@ -1,5 +1,6 @@
 $lightgrey: #e5e7eb;
 $politoblue: #04264c;
+$politolightblue: #03577A;
 
 * {
   color: $politoblue
@@ -34,6 +35,9 @@ $politoblue: #04264c;
   @media (max-width: 768px) {
     width: 100%;
   }
+  @media (max-width: 1024px) {
+    width: 80%;
+  }
   .searchbar {
     width: 100%;
     height: fit-content;
@@ -54,7 +58,7 @@ $politoblue: #04264c;
     width: fit-content;
     font-size: 12px;
     .dropdownButton {
-      background-color: $politoblue;
+      background-color: $politolightblue;
       color: white;
       line-height: 16px;
       padding: 8px;
@@ -68,7 +72,7 @@ $politoblue: #04264c;
       text-transform: capitalize;
       width: max-content;
       border-radius: 8px;
-      padding: 8px;
+      padding: 16px;
       box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
       z-index: 1;
       text-align: right;
@@ -123,4 +127,19 @@ $politoblue: #04264c;
       text-decoration: underline;
     }
   }
+}
+
+.leftMenuItem {
+  border-radius: 8px;
+  padding: 4px 16px;
+  text-align: center;
+  margin-bottom: 8px;
+  &.selected {
+    background-color: $politolightblue;
+    * {color: white;}
+  }
+  &.hovered {
+    background-color: $lightgrey;
+  }
+
 }
