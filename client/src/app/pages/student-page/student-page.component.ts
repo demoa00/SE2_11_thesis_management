@@ -6,5 +6,55 @@ import { Component } from '@angular/core';
   styleUrls: ['./student-page.component.css']
 })
 export class StudentPageComponent {
+  searchValue: string = "";
+  projects =  [
+    { title: 'Analysis of climate data', name: 'Charlie Smith', keywords: ['climate'] },
+    { title: 'Development of a web application', name: 'Alice Johnson', keywords: ['web', 'application'] },
+    { title: 'Renewable energy research', name: 'Eva Brown', keywords: ['renewable', 'energy'] },
+    { title: 'Study on modern medicine', name: 'David Wilson', keywords: ['medicine'] },
+    { title: 'Global economic analysis', name: 'Bob Lee', keywords: ['economy'] },
+    { title: 'Intelligent systems design', name: 'Eva Smith', keywords: ['systems'] },
+    { title: 'Development of new green technologies', name: 'Alice Johnson', keywords: ['green', 'development'] },
+    { title: 'Study of neural networks', name: 'David Lee', keywords: ['neural', 'networks'] },
+    { title: 'Nanotechnology research', name: 'Alice Johnson', keywords: ['nanotechnology'] },
+    { title: 'Analysis of public policies', name: 'David Wilson', keywords: ['policies'] }
+  ];
 
+  projectsToShow = this.projects;
+
+  professorNames = new Set(this.projects.map(project => project.name));
+  keywords = new Set(this.projects.map(project => project.keywords).flat());
+  selectedKeywords = new Set<string>();
+  selectedNames = new Set<string>();
+
+  toggleKeyword(keyword: string) {
+    this.selectedKeywords.has(keyword) ? this.selectedKeywords.delete(keyword) : this.selectedKeywords.add(keyword);
+    this.updateProjectsToShow()
+  }
+
+  toggleName(keyword: string) {
+    this.selectedNames.has(keyword) ? this.selectedNames.delete(keyword) : this.selectedNames.add(keyword);
+    this.updateProjectsToShow()
+  }
+
+  updateProjectsToShow() {
+    if (this.selectedKeywords.size === 0 && this.selectedNames.size === 0) {
+      this.projectsToShow = this.projects;
+    }
+    else {
+      this.projectsToShow = this.projects.filter(
+        project =>
+          project.keywords.some(keyword =>
+            this.selectedKeywords.has(keyword)) ||
+            this.selectedNames.has(project.name));
+    }
+  }
+
+  keywordsHover = false;
+  professorsHover = false;
+
+  updateSearchValue(value: string) {
+    this.searchValue = value.trim().toLowerCase();
+    console.log(this.searchValue)
+  }
 }
