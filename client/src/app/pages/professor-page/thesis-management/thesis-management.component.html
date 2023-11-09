@@ -1,0 +1,58 @@
+<div class="h-full w-full flex gap-2">
+  <div class="h-full w-4/5">
+    <div class="h-full p-5 w-1/5 flex flex-col">
+      <button class="dropdownButton text-2xl" (click)="OpenCreatePopup()"> Crea Nuova Tesi</button>
+      <div class="h-full w-full flex flex-col">
+
+      </div>
+    </div>
+    <div class="h-full p-5 w-4/5"></div>
+  </div>
+  <div class="h-full p-5 w-1/5">
+
+  </div>
+
+</div>
+
+<app-popup
+  *ngIf="createPopup"
+  (requestAccepted)="requestAccepted = $event"
+  (close)="OpenCreatePopup()"
+  [closeClickOutside]="false"
+  (send)="insertThesis()"
+  [response]="response"  >
+  <div class="flex flex-col h-full w-full ">
+    <div class="p-4 w-full flex flex-col gap-2 items-center ">
+      <div style="width: 90%; height: 1px" class="bg-orange-500"></div>
+      <div class="text-3xl font-bold">Compila i seguenti campi</div>
+
+    </div>
+
+    <div class="info">
+      <div class="flex w-full h-full justify-center gap-4">
+        <div class="flex flex-col w-full h-full">
+          <input type="text" [(ngModel)]="title" placeholder="Title">
+          <input type="text" [(ngModel)]="supervisor" placeholder="Supervisor">
+          <input type="text" [(ngModel)]="coSupervisor" placeholder="Co-supervisor">
+        </div>
+        <div class="flex flex-col">
+          <input type="text" [(ngModel)]="level" placeholder="Level">
+          <input type="text" [(ngModel)]="type" placeholder="Type">
+          <input type="text" [(ngModel)]="groups" placeholder="Groups">
+        </div>
+      </div>
+      <input type="text" [(ngModel)]="description" placeholder="Description">
+      <input type="text" [(ngModel)]="requiredKnoledge" placeholder="Required-knoledge">
+      <input type="text" [(ngModel)]="notes" placeholder="Notes">
+      <input type="text" [(ngModel)]="keywords" placeholder="Keywords">
+      <select>
+        <option value="Cds/programmes" selected>Course type*</option>
+      </select>
+      <div class="flex w-full h-full items-center gap-4 p-1 justify-center">
+        <div class="text-gray-400"> Expiration data</div>
+        <input type="date" [(ngModel)]="data" placeholder="Expiratiom" class="data">
+      </div>
+    </div>
+  </div>
+
+</app-popup>

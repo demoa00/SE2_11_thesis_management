@@ -1,0 +1,136 @@
+//$colors: ('amber', 'yellow', 'purple', 'blue', 'violet', 'pink', 'orange');
+//
+//:host{
+//  @each $color in $colors {
+//    &.slider-#{$color} {
+//      .slider{
+//        @apply bg-#{$color}-100 text-#{$color}-300;
+//      }
+//      .slider-icon{
+//        @apply text-#{$color}-200;
+//      }
+//      .slider:active{
+//        @apply bg-#{$color}-100;
+//      }
+//      .cursor{
+//        @apply bg-#{$color}-500
+//      }
+//    }
+//  }
+//}
+.slider{
+  position: relative;
+  width: 180px;
+  height: 40px;
+  background: rgb(219,234,254);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(96,165,250);
+  text-decoration: none;
+  letter-spacing: 2px;
+  border-top: 0.5px solid #ffffff;
+  border-left: 0.5px solid #ffffff;
+  padding-left: 40px;
+  transition: 0.5s;
+}
+
+.slider_box{
+  position: absolute;
+  width: 170px;
+  height: 30px;
+  left: 5px;
+  display: flex;
+}
+
+.slider_sent {
+  padding-left: 20px;
+  padding-right: 40px;
+  background: #d0fad7;
+}
+.cursor{
+  position: absolute;
+  width: 45px;
+  height: 30px;
+  background: rgb(96,165,250);
+  border-radius: 15%;
+}
+.slider-icon{
+  color: rgb(191,219,254);
+}
+.cursor_sent{
+  position: absolute;
+  width: 45px;
+  height: 30px;
+  background: rgb(121, 239, 117);
+  border-radius: 15%;
+}/*
+.cursor_round:active {
+  box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.1),
+  0 1px 1px 1px rgba(0, 0, 0, 0.20),
+  0 1px 1px 2px rgba(0, 0, 0, 0.15);
+  color: rgb(200, 224, 253);
+}*/
+.slider:active {
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.2),
+  0 1px 1px 1px rgba(0, 0, 0, 0.14),
+  0 1px 1px 2px rgba(0, 0, 0, 0.12);
+  color: rgb(200, 224, 253);
+}
+.loading{
+  position: relative;
+  width: 180px;
+  height: 40px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  border-top: 0.5px solid #ffffff;
+  border-left: 0.5px solid #ffffff;
+  transition: 0.5s;
+  padding-left: 40px;
+  color: #6b7280;
+  letter-spacing: 2px;
+}
+.loading_spinner{
+  @apply absolute right-2 w-6 h-6 mr-2 text-gray-500 animate-spin dark:text-gray-600 fill-gray-300
+}
+.loadingBox{
+  position: absolute;
+  width: 45px;
+  height: 30px;
+  background: #a6a6a6;
+  border-radius: 15%;
+  right: 5px;
+}
+.checkSent{
+  position: relative;
+  width: 180px;
+  height: 40px;
+  background: #bbf7d0;
+  border-radius: 10px;
+  display: flex;
+  color: #22c55e;
+  align-items: center;
+  border-top: 0.5px solid #ffffff;
+  border-left: 0.5px solid #ffffff;
+  transition: 0.5s;
+  justify-content: center;
+  letter-spacing: 2px;
+}
+.checkNotSent{
+  position: relative;
+  width: 180px;
+  height: 40px;
+  background: #fecaca;
+  border-radius: 10px;
+  display: flex;
+  color: #ef4444;
+  align-items: center;
+  border-top: 0.5px solid #ffffff;
+  border-left: 0.5px solid #ffffff;
+  transition: 0.5s;
+  justify-content: center;
+  letter-spacing: 2px;
+}

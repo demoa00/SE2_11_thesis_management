@@ -1,0 +1,26 @@
+<div class="bo-popup" (click)="closeClickOutside ? close.emit() : ''">
+  <div class="flex flex-col bo-popup-content p-2 justify-between" (click)="$event.stopPropagation()">
+    <div class="flex items-center justify-around gap-2 w-160">
+      <img alt="logo" src="../../../assets/images/LogoPoli.svg" class="h-1/2 w-1/2">
+      <div class="text-3xl">{{ title }}</div>
+      <app-icon
+        *ngIf="showCloseButton"
+        name="cross"
+        title="Chiudi Finestra"
+        class="bo-popup-close-1 h-8 w-8"
+        (click)="close.emit()"></app-icon>
+      <!--<div *ngIf="showCloseButton" class="bo-popup-close-1" (click)="close.emit()"></div>-->
+    </div>
+    <div class="flex flex-col items-center gap-4 mb-4">
+      <ng-content></ng-content>
+      <app-button-slider
+        *ngIf="showSlider && showButton"
+        class="place-content-center"
+        (buttonSliderSubmit)="send.emit()"
+        (requestAccepted)="requestAccepted.emit($event); toggleButton()"
+        [responseFromServer]="response">
+        {{ title == 'Annulla Operazione' ? 'Annulla' : 'Inserisci' }}
+      </app-button-slider>
+    </div>
+  </div>
+</div>
