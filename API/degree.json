@@ -1,5 +1,5 @@
 {
-    "$id": "",
+    "$schema": "http://json-schema.org/draft-07/schema",
     "title": "Degree Schema",
     "definitions": {
         "degree": {
@@ -16,7 +16,16 @@
             },
             "minProperties": 2,
             "maxProperties": 2,
-            "required": ["degreeId", "titleDegree"]
+            "required": [
+                "degreeId",
+                "titleDegree"
+            ]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "degree": {
+            "$ref": "#/definitions/degree"
         }
     }
 }

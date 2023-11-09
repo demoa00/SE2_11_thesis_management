@@ -1,0 +1,13 @@
+{
+    "$schema": "../student.json",
+    "student": {
+        "studentId": "s123456",
+        "name": "Mario",
+        "surname": "Rossi",
+        "gender": "male",
+        "nationality": "Italy",
+        "email": "s123456@studenti.polito.it",
+        "codDegree": "LM-32",
+        "enrollmentYear": 2019
+    }
+}

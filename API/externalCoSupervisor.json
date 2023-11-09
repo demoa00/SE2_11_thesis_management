@@ -1,13 +1,13 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "title": "Professor Schema",
+    "title": "External CoSupervisor Schema",
     "definitions": {
-        "professor": {
+        "externalCoSupervisor": {
             "type": "object",
             "properties": {
-                "professorId": {
+                "externalCoSupervisorId": {
                     "type": "string",
-                    "pattern": "^(p|P)[0-9]{6}$"
+                    "pattern": "^(e|E)[0-9]{6}$"
                 },
                 "name": {
                     "type": "string",
@@ -21,32 +21,26 @@
                 },
                 "email": {
                     "type": "string",
-                    "format": "email",
-                    "pattern": "^[a-z]+\\.[a-z]+@polito\\.it$"
+                    "format": "email"
                 },
-                "codGroup": {
-                    "type": "string"
-                },
-                "codDepartment": {
-                    "type": "string"
+                "company": {
+                    "type": "string",
+                    "minLength": 1
                 }
             },
-            "minProperties": 6,
-            "maxProperties": 6,
             "required": [
-                "professorId",
+                "externalCoSupervisorId",
                 "name",
                 "surname",
                 "email",
-                "codGroup",
-                "codDepartment"
+                "company"
             ]
         }
     },
     "type": "object",
     "properties": {
-        "professor": {
-            "$ref": "#/definitions/professor"
+        "externalCoSupervisor": {
+            "$ref": "#/definitions/externalCoSupervisor"
         }
     }
 }

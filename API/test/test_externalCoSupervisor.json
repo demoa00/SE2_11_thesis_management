@@ -1,0 +1,10 @@
+{
+    "$schema": "../externalCoSupervisor.json",
+    "externalCoSupervisor": {
+        "externalCoSupervisorId": "e123456",
+        "name": "Mario",
+        "surname": "Rossi",
+        "email": "user@email.it",
+        "company": "Kinder"
+    }
+}

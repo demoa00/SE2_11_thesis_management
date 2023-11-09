@@ -1,0 +1,44 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "Thesis Application Schema",
+    "definitions": {
+        "application": {
+            "type": "object",
+            "properties": {
+                "studentId": {
+                    "type": "string",
+                    "pattern": "^(s|S)[0-9]{6}$"
+                },
+                "thesisProposalId": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string",
+                    "maxLength": 1000
+                },
+                "cv": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "isReaded": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "isAccepted": {
+                    "type": "boolean"
+                }
+            },
+            "minProperties": 2,
+            "required": [
+                "studentId",
+                "thesisProposalId"
+            ]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "application": {
+            "$ref": "#/definitions/application"
+        }
+    }
+}

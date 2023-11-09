@@ -1,5 +1,5 @@
 {
-    "$id": "",
+    "$schema": "http://json-schema.org/draft-07/schema",
     "title": "Career Schema",
     "definitions": {
         "career": {
@@ -7,11 +7,11 @@
             "properties": {
                 "careerId": {
                     "type": "string",
-                    "pattern": "^[s|S][0-9]{6}$"
+                    "pattern": "^(s|S)[0-9]{6}$"
                 },
                 "codCourse": {
                     "type": "string",
-                    "pattern": "[0-9]{2}[A-Z]{5}"
+                    "pattern": "^[0-9]{2}[A-Z]{5}$"
                 },
                 "titleCourse": {
                     "type": "string",
@@ -19,12 +19,12 @@
                 },
                 "cfu": {
                     "type": "integer",
-                    "minimun": 0,
+                    "minimun": 3,
                     "maximum": 30
                 },
                 "grade": {
                     "type": "integer",
-                    "minimun": 0,
+                    "minimun": 18,
                     "maximum": 31
                 },
                 "date": {
@@ -34,7 +34,20 @@
             },
             "minProperties": 6,
             "maxProperties": 6,
-            "required": ["careerId", "codCourse", "titleCourse", "cfu", "grade", "date"]
+            "required": [
+                "careerId",
+                "codCourse",
+                "titleCourse",
+                "cfu",
+                "grade",
+                "date"
+            ]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "career": {
+            "$ref": "#/definitions/career"
         }
     }
 }

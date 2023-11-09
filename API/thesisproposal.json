@@ -1,12 +1,13 @@
 {
-    "$id": "",
+    "$schema": "http://json-schema.org/draft-07/schema",
     "title": "Thesis Proposal Schema",
     "definitions": {
-        "thesisproposal": {
+        "thesisProposal": {
             "type": "object",
             "properties": {
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "minimum": 1
                 },
                 "title": {
                     "type": "string",
@@ -14,17 +15,17 @@
                 },
                 "supervisor": {
                     "type": "string",
-                    "pattern": "[p|P][0-9]{6}"
+                    "pattern": "^(p|P)[0-9]{6}$"
                 },
                 "coSupervisor": {
                     "type": "string",
-                    "minLength": 1
+                    "pattern": "^((e|E)|(p|P))[0-9]{6}$"
                 },
                 "keywords": {
                     "type": "array",
                     "items": {
-                        "type": "string" 
-                        },
+                        "type": "string"
+                    },
                     "minItems": 1,
                     "uniqueness": true
                 },
@@ -33,52 +34,63 @@
                     "minLength": 1
                 },
                 "groups": {
-                    "type": "array",
-                    "minItems": 1,
-                    "uniqueness": true
+                    "type": "string",
+                    "minLength": 1
                 },
                 "description": {
                     "type": "string",
-                    "minLength": 1
+                    "minLength": 1,
+                    "maxLength": 1000
                 },
                 "requirements": {
                     "type": "string",
-                    "minLength": 1
+                    "minLength": 1,
+                    "maxLength": 1000
                 },
                 "notes": {
                     "type": "string",
-                    "minLength": 1
+                    "minLength": 1,
+                    "maxLength": 1000
                 },
                 "expirationDate": {
                     "type": "string",
                     "format": "date"
                 },
                 "level": {
-                    "enum": ["First Level", "Second Level", "PhD"]
+                    "enum": [
+                        "BSc",
+                        "MSc"
+                    ]
                 },
                 "CdS": {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                        "type": "string" 
-                        },
-                    "uniqueness": true
+                    "type": "string",
+                    "minLength": 1
                 },
-                "internal": {
+                "isCosupervisorExternal": {
                     "type": "boolean"
                 }
             },
-            "if": {
-                "properties": {
-                    "internal": false
-                }
-            },
-            "then": {
-                "required": ["coSupervisor"]
-            },
-            "minProperties": 12,
+            "minProperties": 11,
             "maxProperties": 14,
-            "required": ["id", "title", "supervisor", "keywords", "thesisType", "groups", "description", "requirements", "expirationDate", "level", "CdS", "internal"]
+            "required": [
+                "id",
+                "title",
+                "supervisor",
+                "keywords",
+                "thesisType",
+                "groups",
+                "description",
+                "requirements",
+                "expirationDate",
+                "level",
+                "CdS"
+            ]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "thesisProposal": {
+            "$ref": "#/definitions/thesisProposal"
         }
     }
 }

@@ -1,0 +1,25 @@
+{
+    "$schema": "../thesisproposal.json",
+    "thesisProposal": {
+        "id": 1,
+        "title": "Research",
+        "supervisor": "p123456",
+        "coSupervisor": {
+            "name": "Mario",
+            "surname": "Rossi",
+            "email": "user@email.com",
+            "company": "Kinder"
+        },
+        "keywords": [
+            "company"
+        ],
+        "notes": "derfww",
+        "thesisType": "experimental",
+        "groups": "AI-group",
+        "description": "Beautiful thesis",
+        "requirements": "C",
+        "expirationDate": "2025-12-01",
+        "level": "MSc",
+        "CdS": "Computer science"
+    }
+}

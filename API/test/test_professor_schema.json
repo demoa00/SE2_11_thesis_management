@@ -1,0 +1,11 @@
+{
+    "$schema": "../professor.json",
+    "professor": {
+        "professorId": "p123456",
+        "name": "Mario",
+        "surname": "Rossi",
+        "email": "mario.rossi@polito.it",
+        "codGroup": "123",
+        "codDepartment": "DAUIN"
+    }
+}
