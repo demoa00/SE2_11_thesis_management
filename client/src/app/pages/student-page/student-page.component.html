@@ -1,8 +1,8 @@
 <div class="columns-2 min-h-screen flex">
-  <div class="w-1/6 p-4 border-r-2">
+  <div class="md:w-1/6 md:p-4 border-r-2">
     <img alt="logo" src="../../../assets/images/LogoPoli.svg">
   </div>
-  <div class="w-5/6">
+  <div class="w-full md:w-5/6">
     <div class="h-1/8 p-4 flex items-center justify-between border-b-2 border-orange-600">
       <h2 class="uppercase text-3xl font-bold">thesis proposals</h2>
       <div class="flex items-center">
@@ -11,30 +11,35 @@
       </div>
     </div>
     <div class="h-7/8 columns-2 flex">
-      <div class="w-4/5 p-6">
-        <div class="searchToolsContainer">
-          <div class="searchbar">
-            <input type="text" placeholder="Search..." [ngModel]="searchValue" (ngModelChange)="updateSearchValue($event)"/>
-          </div>
-          <div class="dropdownContainer" (mouseenter)="keywordsHover = true" (mouseleave)="keywordsHover=false">
-            <button type="button" class="dropdownButton">Keyword</button>
-            <div class="dropdownContent" *ngIf="keywordsHover">
-              <div class="keywordContainer" *ngFor="let k of keywords" (click)="toggleKeyword(k)">
-                <div class="checkbox" [ngClass]="selectedKeywords.has(k) ? 'checked' : ''"></div>
-                <p class="dropdownKeyword" >{{k}}</p>
+      <div class="md:w-4/5 w-full p-6">
+        <div class="flex justify-between items-center mb-8 gap-4 max-md:flex-col max-md:items-start">
+          <div class="searchToolsContainer">
+            <div class="searchbar">
+              <input type="text" placeholder="Search..." [ngModel]="searchValue" (ngModelChange)="updateSearchValue($event)"/>
+            </div>
+            <div class="dropdownContainer" (mouseenter)="keywordsHover = true" (mouseleave)="keywordsHover=false">
+              <button type="button" class="dropdownButton">Keyword</button>
+              <div class="dropdownContent" *ngIf="keywordsHover">
+                <div class="keywordContainer" *ngFor="let k of keywords" (click)="toggleKeyword(k)">
+                  <div class="checkbox" [ngClass]="selectedKeywords.has(k) ? 'checked' : ''"></div>
+                  <p class="dropdownKeyword" >{{k}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="dropdownContainer" (mouseenter)="professorsHover = true" (mouseleave)="professorsHover=false">
+              <button type="button" class="dropdownButton">Professor</button>
+              <div class="dropdownContent" *ngIf="professorsHover">
+                <div class="keywordContainer" *ngFor="let name of professorNames" (click)="toggleName(name)">
+                  <div class="checkbox" [ngClass]="selectedNames.has(name) ? 'checked' : ''"></div>
+                  <p class="dropdownKeyword" >{{name}}</p>
+                </div>
               </div>
             </div>
           </div>
-          <div class="dropdownContainer" (mouseenter)="professorsHover = true" (mouseleave)="professorsHover=false">
-            <button type="button" class="dropdownButton">Professor</button>
-            <div class="dropdownContent" *ngIf="professorsHover">
-              <div class="keywordContainer" *ngFor="let name of professorNames" (click)="toggleName(name)">
-                <div class="checkbox" [ngClass]="selectedNames.has(name) ? 'checked' : ''"></div>
-                <p class="dropdownKeyword" >{{name}}</p>
-              </div>
-            </div>
+          <div class="deleteFilters" (click)="deleteFilters()" *ngIf="selectedNames.size !== 0 || selectedKeywords.size !== 0">
+            <img alt="close" src="assets/images/close.svg" width="16" height="16">
+            <p class="underline">Elimina filtri</p>
           </div>
-
         </div>
         <div *ngFor="let project of projectsToShow">
           <div class="projectLine" *ngIf="project.title.toLocaleLowerCase().includes(searchValue)">
@@ -43,7 +48,7 @@
           </div>
         </div>
       </div>
-      <div class="w-1/5 border-l-2"></div>
+      <div class="md:w-1/5 md:p-4 border-l-2"></div>
     </div>
   </div>
 </div>

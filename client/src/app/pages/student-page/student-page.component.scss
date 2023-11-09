@@ -19,12 +19,21 @@ $politoblue: #04264c;
   object-fit: contain;
 }
 
+.deleteFilters {
+  font-size: 12px;
+  display: flex;
+  cursor: pointer;
+}
+
 .searchToolsContainer {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  margin-bottom: 32px;
   gap: 16px;
+  width: 60%;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
   .searchbar {
     width: 100%;
     height: fit-content;

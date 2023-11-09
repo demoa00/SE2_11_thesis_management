@@ -57,4 +57,10 @@ export class StudentPageComponent {
     this.searchValue = value.trim().toLowerCase();
     console.log(this.searchValue)
   }
+
+  deleteFilters() {
+    this.selectedKeywords.clear();
+    this.selectedNames.clear();
+    this.updateProjectsToShow();
+  }
 }
