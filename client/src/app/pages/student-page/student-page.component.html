@@ -20,9 +20,7 @@
             <button type="button" class="dropdownButton">Keyword</button>
             <div class="dropdownContent" *ngIf="keywordsHover">
               <div class="keywordContainer" *ngFor="let k of keywords" (click)="toggleKeyword(k)">
-                <div class="checkbox">
-                  <div class="checkboxContent" [ngClass]="selectedKeywords.has(k) ? 'checked' : ''"></div>
-                </div>
+                <div class="checkbox" [ngClass]="selectedKeywords.has(k) ? 'checked' : ''"></div>
                 <p class="dropdownKeyword" >{{k}}</p>
               </div>
             </div>
@@ -31,9 +29,7 @@
             <button type="button" class="dropdownButton">Professor</button>
             <div class="dropdownContent" *ngIf="professorsHover">
               <div class="keywordContainer" *ngFor="let name of professorNames" (click)="toggleName(name)">
-                <div class="checkbox">
-                  <div class="checkboxContent" [ngClass]="selectedNames.has(name) ? 'checked' : ''"></div>
-                </div>
+                <div class="checkbox" [ngClass]="selectedNames.has(name) ? 'checked' : ''"></div>
                 <p class="dropdownKeyword" >{{name}}</p>
               </div>
             </div>

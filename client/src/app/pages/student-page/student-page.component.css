@@ -80,11 +80,7 @@
   margin-right: 16px;
   border: 1px solid #04264c;
 }
-.searchToolsContainer .dropdownContainer .dropdownContent .keywordContainer .checkbox .checkboxContent {
-  width: 100%;
-  height: 100%;
-}
-.searchToolsContainer .dropdownContainer .dropdownContent .keywordContainer .checkbox .checkboxContent.checked {
+.searchToolsContainer .dropdownContainer .dropdownContent .keywordContainer .checkbox.checked {
   background-color: #04264c;
 }
 
