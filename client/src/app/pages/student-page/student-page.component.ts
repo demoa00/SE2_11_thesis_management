@@ -20,6 +20,12 @@ export class StudentPageComponent {
     { title: 'Analysis of public policies', name: 'David Wilson', keywords: ['policies'] }
   ];
 
+  notifications = [
+    { title: 'Analysis of climate data', name: 'Charlie Smith', state: 'accepted' },
+    { title: 'Development of a web application', name: 'Alice Johnson', state: 'rejected' },
+    { title: 'Renewable energy research', name: 'Eva Brown', state: 'accepted' },
+  ];
+
   projectsToShow = this.projects;
 
   professorNames = new Set(this.projects.map(project => project.name));
@@ -83,4 +89,6 @@ export class StudentPageComponent {
   updateKeywordsSearchValue(keyword: string) {
     this.keywordsSearchValue = keyword.trim().toLowerCase();
   }
+
+  protected readonly JSON = JSON;
 }
