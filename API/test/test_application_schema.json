@@ -1,7 +1,7 @@
 {
     "$schema": "../application.json",
     "application": {
-        "studentId": "s123456",
-        "thesisProposalId": 1
+        "thesisProposalId": 1,
+        "studentId": "s123456"
     }
 }

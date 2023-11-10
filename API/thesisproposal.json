@@ -18,8 +18,12 @@
                     "pattern": "^(p|P)[0-9]{6}$"
                 },
                 "coSupervisor": {
-                    "type": "string",
-                    "pattern": "^((e|E)|(p|P))[0-9]{6}$"
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^((p|P)|(e|E))[0-9]{6}$"
+                    },
+                    "uniqueness": true
                 },
                 "keywords": {
                     "type": "array",
@@ -34,8 +38,13 @@
                     "minLength": 1
                 },
                 "groups": {
-                    "type": "string",
-                    "minLength": 1
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
                 },
                 "description": {
                     "type": "string",
@@ -63,15 +72,16 @@
                     ]
                 },
                 "CdS": {
-                    "type": "string",
-                    "minLength": 1
-                },
-                "isCosupervisorExternal": {
-                    "type": "boolean"
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "minItems": 1
                 }
             },
             "minProperties": 11,
-            "maxProperties": 14,
+            "maxProperties": 13,
             "required": [
                 "id",
                 "title",

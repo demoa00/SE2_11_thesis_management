@@ -5,12 +5,12 @@
         "application": {
             "type": "object",
             "properties": {
+                "thesisProposalId": {
+                    "type": "integer"
+                },
                 "studentId": {
                     "type": "string",
                     "pattern": "^(s|S)[0-9]{6}$"
-                },
-                "thesisProposalId": {
-                    "type": "integer"
                 },
                 "message": {
                     "type": "string",
@@ -30,8 +30,8 @@
             },
             "minProperties": 2,
             "required": [
-                "studentId",
-                "thesisProposalId"
+                "thesisProposalId",
+                "studentId"
             ]
         }
     },

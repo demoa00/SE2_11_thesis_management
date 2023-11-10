@@ -1,9 +1,0 @@
-{
-    "$schema": "../authenticatedUser.json",
-    "authenticatedUser": {
-        "email": "s123456@studenti.polito.it",
-        "salt": "jcnqrbfio2bgfoi4gbviwbvoti",
-        "password": "ncpeifuvniuvboiewubvwuuwobuiw4bvwuaisbvousbov",
-        "isProfessor": false
-    }
-}

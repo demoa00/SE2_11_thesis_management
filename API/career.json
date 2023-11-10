@@ -5,7 +5,7 @@
         "career": {
             "type": "object",
             "properties": {
-                "careerId": {
+                "studentId": {
                     "type": "string",
                     "pattern": "^(s|S)[0-9]{6}$"
                 },
@@ -35,7 +35,7 @@
             "minProperties": 6,
             "maxProperties": 6,
             "required": [
-                "careerId",
+                "studentId",
                 "codCourse",
                 "titleCourse",
                 "cfu",

@@ -5,7 +5,9 @@
         "name": "Mario",
         "surname": "Rossi",
         "email": "mario.rossi@polito.it",
-        "codGroup": "123",
-        "codDepartment": "DAUIN"
+        "codGroup": "CG_12",
+        "codDepartment": "CD_34",
+        "password": "erkjbvibvciqabvqiavbqa",
+        "salt": "dnei13ur83fhqnpvub28024b"
     }
 }

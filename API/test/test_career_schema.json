@@ -1,7 +1,7 @@
 {
     "$schema":"../career.json",
     "career": {
-        "careerId": "s123456",
+        "studentId": "s123456",
         "codCourse": "01ABCDE",
         "titleCourse": "PDS",
         "cfu": 10,

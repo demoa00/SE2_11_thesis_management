@@ -42,10 +42,16 @@
                 },
                 "enrollmentYear": {
                     "type": "integer"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "salt": {
+                    "type": "string"
                 }
             },
-            "minProperties": 8,
-            "maxProperties": 8,
+            "minProperties": 10,
+            "maxProperties": 10,
             "required": [
                 "studentId",
                 "name",
@@ -54,7 +60,9 @@
                 "nationality",
                 "email",
                 "codDegree",
-                "enrollmentYear"
+                "enrollmentYear",
+                "password",
+                "salt"
             ]
         }
     },
