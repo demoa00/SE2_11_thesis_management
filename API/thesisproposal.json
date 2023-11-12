@@ -34,8 +34,15 @@
                     "uniqueness": true
                 },
                 "thesisType": {
-                    "type": "string",
-                    "minLength": 1
+                    "type": "object",
+                    "properties": {
+                        "inCompany": {
+                            "type": "boolean"
+                        },
+                        "abroad":{
+                            "type": "boolean"
+                        }
+                    }
                 },
                 "groups": {
                     "type": "array",

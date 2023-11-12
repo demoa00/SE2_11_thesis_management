@@ -16,6 +16,10 @@
                     "type": "string",
                     "maxLength": 1000
                 },
+                "date":{
+                    "type":"string",
+                    "format": "date"
+                },
                 "cv": {
                     "type": "string",
                     "format": "uri"
