@@ -46,7 +46,6 @@
                 "minProperties": 8,
                 "maxProperties": 8,
                 "required": [
-                    "professorId",
                     "name",
                     "surname",
                     "email",
@@ -105,7 +104,6 @@
                 "minProperties": 10,
                 "maxProperties": 10,
                 "required": [
-                    "studentId",
                     "name",
                     "surname",
                     "gender",
@@ -129,8 +127,8 @@
                         "type": "string",
                         "maxLength": 1000
                     },
-                    "date":{
-                        "type":"string",
+                    "date": {
+                        "type": "string",
                         "format": "date"
                     },
                     "cv": {
@@ -150,6 +148,356 @@
                     "thesisProposalId",
                     "studentId"
                 ]
+            },
+            "thesisProposal": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "supervisor": {
+                        "type": "string",
+                        "pattern": "^(p|P)[0-9]{6}$"
+                    },
+                    "coSupervisor": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "pattern": "^((p|P)|(e|E))[0-9]{6}$"
+                        }
+                    },
+                    "keywords": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "minItems": 1
+                    },
+                    "thesisType": {
+                        "type": "object",
+                        "properties": {
+                            "inCompany": {
+                                "type": "boolean"
+                            },
+                            "abroad": {
+                                "type": "boolean"
+                            }
+                        }
+                    },
+                    "groups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "minLength": 1
+                        },
+                        "minItems": 1,
+                        "uniqueItems": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000
+                    },
+                    "requirements": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000
+                    },
+                    "notes": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000
+                    },
+                    "expirationDate": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "level": {
+                        "enum": [
+                            "BSc",
+                            "MSc"
+                        ]
+                    },
+                    "CdS": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "minLength": 1
+                        },
+                        "minItems": 1
+                    },
+                    "isArchieved": {
+                        "type": "boolean",
+                        "default": false
+                    }
+                },
+                "minProperties": 11,
+                "maxProperties": 14,
+                "required": [
+                    "title",
+                    "keywords",
+                    "thesisType",
+                    "description",
+                    "requirements",
+                    "expirationDate",
+                    "level",
+                    "CdS"
+                ]
+            }
+        }
+    },
+    "paths": {
+        "/professors/{professorId}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "professorId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/professor"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/professors/{professorId}/thesisProposal": {
+            "post": {
+                "parameters": [
+                    {
+                        "name": "professorId",
+                        "in": "cookie",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/thesisProposal"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/thesisProposal"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/student/{studentId}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "studentId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/student"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/student/{studentId}/applications": {
+            "post": {
+                "parameters": [
+                    {
+                        "name": "studentId",
+                        "in": "cookie",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/application"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/application"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/thesisProposal": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "codDegree",
+                        "in": "cookie",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "keywords",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "name": "supervisor",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "inCompany",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "abroad",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "expirationDate",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/thesisProposal"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
             }
         }
     }

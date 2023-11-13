@@ -85,10 +85,14 @@
                         "minLength": 1
                     },
                     "minItems": 1
+                },
+                "isArchieved": {
+                    "type": "boolean",
+                    "default": false
                 }
             },
             "minProperties": 11,
-            "maxProperties": 13,
+            "maxProperties": 14,
             "required": [
                 "id",
                 "title",
@@ -100,7 +104,8 @@
                 "requirements",
                 "expirationDate",
                 "level",
-                "CdS"
+                "CdS",
+                "isArchieved"
             ]
         }
     },
