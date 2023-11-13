@@ -1,0 +1,66 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "Student Schema",
+    "definitions": {
+        "student": {
+            "type": "object",
+            "properties": {
+                "studentId": {
+                    "type": "string",
+                    "pattern": "^(s|S)[0-9]{6}$"
+                },
+                "name": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z ]+$",
+                    "minLength": 1
+                },
+                "surname": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z ]+$",
+                    "minLength": 1
+                },
+                "gender": {
+                    "enum": [
+                        "male",
+                        "female",
+                        "other"
+                    ]
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "pattern": "^(s|S)[0-9]{6}@studenti\\.polito\\.it$"
+                },
+                "codDegree": {
+                    "type": "string",
+                    "pattern": "^LM?-([1-9]|[1-9][0-9])$"
+                },
+                "nationality": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z ]+$",
+                    "minLength": 1
+                },
+                "enrollmentYear": {
+                    "type": "integer"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "salt": {
+                    "type": "string"
+                }
+            },
+            "minProperties": 10,
+            "maxProperties": 10,
+            "required": [
+                "email"
+            ]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "student": {
+            "$ref": "#/definitions/student"
+        }
+    }
+}
