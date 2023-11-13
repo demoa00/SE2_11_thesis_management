@@ -1,8 +1,18 @@
 <div class="h-full w-full flex gap-2">
-  <div class=" w-4/5 flex gap-4">
-    <div class=" p-5 w-1/5 flex flex-col gap-4 bg-white card">
-      <button class="dropdownButton text-2xl" (click)="OpenCreatePopup()"> Crea Nuova Tesi</button>
-      <div class="w-full flex flex-col p-5 gap-6 rounded-md border-2 border-orange-300">
+  <div class="w-full flex gap-4">
+    <div class=" w-1/6 flex flex-col gap-4 bg-white card">
+      <div class="button-tesi" (click)="OpenCreatePopup()">
+        <div class="text-2xl flex flex-col">
+          <p>Crea nuova</p>
+          <div class="flex justify-between">
+            <p>tesi</p>
+            <app-icon name="add" class="w-8 h-8"></app-icon>
+          </div>
+        </div>
+      </div>
+      <div class="separator"></div>
+      <!--<button class="dropdownButton text-2xl" (click)="OpenCreatePopup()"> Crea Nuova Tesi</button>-->
+      <div class="w-full flex flex-col gap-6">
         <div class="h-full w-full flex flex-col gap-2">
           <h2 class="text-2xl"> Lists of theses </h2>
           <button class="dropdownButton text-2xl" (click)="showActiveThesesTable()"> Active </button>
@@ -14,16 +24,13 @@
         </div>
       </div>
     </div>
-    <div class="h-full p-5 w-4/5 ">
+    <div class="card h-full p-5 w-5/6 ">
       <app-thesis-table [rows]="applicantsRow" *ngIf="showApplicants"></app-thesis-table>
       <!--
       <app-thesis-table [rows]="activeThesesRow" *ngIf="showActiveTheses"></app-thesis-table>
       <app-thesis-table [rows]="archivedThesesRow" *ngIf="showArchivedTheses"></app-thesis-table>
       -->
     </div>
-  </div>
-  <div class="h-full p-5 w-1/5">
-
   </div>
 
 </div>

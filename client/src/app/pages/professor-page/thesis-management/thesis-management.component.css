@@ -18,3 +18,7 @@ input, select {
 .info{
   @apply flex flex-col p-3;
 }
+.button-tesi{
+
+  @apply dropdownButton w-2/3 flex gap-1 items-center justify-between hover:cursor-pointer hover:drop-shadow-lg;
+}
