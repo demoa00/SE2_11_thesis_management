@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+:host {
+  background-color: #03577A;
+  padding: 8px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  height: fit-content;
+}
+
+/*# sourceMappingURL=button.component.css.map */

@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="h-7/8 columns-2 flex">
-      <div class="md:w-4/5 w-full p-6">
+      <div class="md:w-4/5 w-full p-6" *ngIf="selectedProject===null">
         <div class="flex items-center mb-8 gap-4 max-md:flex-col max-md:items-start">
           <div class="searchToolsContainer">
             <div class="searchbar">
@@ -66,19 +66,37 @@
             <p class="underline">Elimina filtri</p>
           </div>
         </div>
-        <div *ngFor="let project of projectsToShow">
-          <div class="projectLine" *ngIf="project.title.toLocaleLowerCase().includes(searchValue)">
-            <p class="projectTitle">{{project.title}}</p>
-            <p class="profName">{{project.name}}</p>
+        <div >
+          <div *ngFor="let project of projectsToShow" (click)="selectProject(project)">
+            <div class="projectLine" *ngIf="project.title.toLocaleLowerCase().includes(searchValue)">
+              <p class="projectTitle">{{project.title}}</p>
+              <p class="profName">{{project.name}}</p>
+            </div>
           </div>
         </div>
+    </div>
+    <div class="md:w-4/5 w-full p-6" *ngIf="selectedProject!==null">
+      <div class="projectDetails">
+        <div class="projectHeader">
+          <h2 class="projectTitle">{{selectedProject.title}}</h2>
+          <h3>Professor: <span class="profName">{{selectedProject.name}}</span></h3>
+        </div>
+        <div class="projectDescription">
+<!--              <p>{{selectedProject.description}}</p>-->
+          <p>Nunc sed turpis. Sed in libero ut nibh placerat accumsan. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce pharetra convallis urna. Phasellus accumsan cursus velit. Ut id nisl quis enim dignissim sagittis. Nam at tortor in tellus interdum sagittis. Suspendisse feugiat. Quisque rutrum. Sed libero. Morbi mattis ullamcorper velit. Aenean ut eros et nisl sagittis vestibulum. Curabitur suscipit suscipit tellus. Nullam cursus lacinia erat. Nam adipiscing.</p>
+        </div>
+        <div class="projectButtons">
+          <app-button (click)="selectProject(null)">Indietro</app-button>
+          <app-button (click)="selectProject(null)">Candidati</app-button>
+        </div>
       </div>
+    </div>
       <div class="md:w-1/5 md:p-4 border-l-2">
-        <app-notification *ngFor="let n of notifications">
-          {{n.name}}
-          {{n.title}}
-          {{n.state}}
-        </app-notification>
+  <!--        <app-notification *ngFor="let n of notifications">-->
+  <!--          {{n.name}}-->
+  <!--          {{n.title}}-->
+  <!--          {{n.state}}-->
+  <!--        </app-notification>-->
       </div>
     </div>
   </div>

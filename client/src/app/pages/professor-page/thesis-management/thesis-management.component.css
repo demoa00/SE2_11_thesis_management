@@ -20,5 +20,5 @@ input, select {
 }
 .button-tesi{
 
-  @apply dropdownButton w-2/3 flex gap-1 items-center justify-between hover:cursor-pointer hover:drop-shadow-lg;
+  @apply dropdownButton flex gap-1 items-center justify-between hover:cursor-pointer hover:drop-shadow-lg;
 }
