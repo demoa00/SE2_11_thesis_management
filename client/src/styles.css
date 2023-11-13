@@ -3,6 +3,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/*# sourceMappingURL=styles.css.map */
+
 
 .card{
   @apply shadow-sm rounded-md shadow-gray-400 p-4 bg-white;

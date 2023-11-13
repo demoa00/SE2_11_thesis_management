@@ -12,6 +12,7 @@ import {PopupComponent} from "./shared/components/popup-conferma/popup.component
 import {ButtonSliderComponent} from "./shared/components/button-slider/button-slider.component";
 import {IconComponent} from "./shared/components/icon/icon.component";
 import {CdkDrag} from "@angular/cdk/drag-drop";
+import { NotificationComponent } from './shared/notification/notification.component';
 
 const routes: Routes = [{path: 'student', component: StudentPageComponent}, {path: 'professor', component: ProfessorPageComponent}]
 
@@ -24,7 +25,8 @@ const routes: Routes = [{path: 'student', component: StudentPageComponent}, {pat
     ThesisTableComponent,
     PopupComponent,
     ButtonSliderComponent,
-    IconComponent
+    IconComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule, RouterModule.forRoot(routes), FormsModule, CdkDrag
