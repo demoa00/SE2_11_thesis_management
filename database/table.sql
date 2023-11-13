@@ -6,9 +6,9 @@ CREATE TABLE professors(
     surname TEXT(20) NOT NULL,
     codGroup TEXT(20) NOT NULL,
     codDepartment TEXT(20) NOT NULL,
-    email TEXT(50) NOT NULL
-    /* password TEXT NOT NULL,
-    salt TEXT NOT NULL */
+    email TEXT(50) NOT NULL,
+    password TEXT NOT NULL,
+    salt TEXT NOT NULL
 );
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
@@ -23,9 +23,9 @@ CREATE TABLE students(
     nationality TEXT(20) NOT NULL,
     codDegree TEXT(20) NOT NULL,
     enrollmentYear INTEGER NOT NULL,
-    email TEXT(50) NOT NULL
-    /* password TEXT NOT NULL,
-    salt TEXT NOT NULL */
+    email TEXT(50) NOT NULL,
+    password TEXT NOT NULL,
+    salt TEXT NOT NULL
 );
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
@@ -66,21 +66,13 @@ CREATE TABLE careers(
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-/* TABLE FOR MANAGE THESIS PROPOSAL KEYWORDS */
-DROP TABLE keywords;
-CREATE TABLE keywords(
-    keywordId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    value TEXT(20) NOT NULL
-);
-
-/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
-
 /* TABLE FOR MANAGE THESIS PROPOSALS */
 DROP TABLE thesisProposals;
 CREATE TABLE thesisProposals(
     thesisProposalId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     title TEXT(20) NOT NULL,
     supervisor TEXT(7) NOT NULL,
+    keywords TEXT(100) NOT NULL,
     description TEXT(1000) NOT NULL,
     requirements TEXT(1000) NOT NULL,
     inCompany BOLEAN NOT NULL,
@@ -88,6 +80,7 @@ CREATE TABLE thesisProposals(
     notes TEXT(500),
     expirationDate DATE NOT NULL,
     level TEXT(20) NOT NULL,
+    isArchived BOLEAN DEFAULT TRUE NOT NULL,
     
     FOREIGN KEY(supervisor) REFERENCES professors(professorId) ON DELETE CASCADE
 );
@@ -104,7 +97,7 @@ CREATE TABLE applications(
     isAccepted BOLEAN,
     
     PRIMARY KEY(thesisProposalId, studentId),
-    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId), /* ON DELETE (PERFORM AUTOMATIC REJECT) ? */
+    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON DELETE CASCADE, /* ON DELETE (PERFORM AUTOMATIC REJECT) ? */
     FOREIGN KEY(studentId) REFERENCES students(studentId)
 );
 
@@ -117,7 +110,7 @@ CREATE TABLE thesisProposal_internalCoSupervisor_bridge(
     internalCoSupervisorId TEXT(7) NOT NULL,
     
     PRIMARY KEY(thesisProposalId, internalCoSupervisorId),
-    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId), /* WHEN ARCHIVED ? */
+    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON DELETE CASCADE,
     FOREIGN KEY(internalCoSupervisorId) REFERENCES professors(professorId)
 );
 
@@ -130,21 +123,8 @@ CREATE TABLE thesisProposal_externalCoSupervisor_bridge(
     externalCoSupervisorId TEXT(7) NOT NULL,
     
     PRIMARY KEY(thesisProposalId, externalCoSupervisorId),
-    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId), /* WHEN ARCHIVED ? */
+    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON DELETE CASCADE,
     FOREIGN KEY(externalCoSupervisorId) REFERENCES externalCoSupervisors(externalCoSupervisorId)
-);
-
-/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
-
-/* TABLE FOR MANAGE THE LIST OF KEYWORDS FOR A THESIS PROPOSAL */
-DROP TABLE thesisProposal_keyword_bridge;
-CREATE TABLE thesisProposal_keyword_bridge(
-    thesisProposalId INTEGER NOT NULL,
-    keywordId INTEGER NOT NULL,
-    
-    PRIMARY KEY(thesisProposalId, keywordId),
-    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId), /* WHEN ARCHIVED ? */
-    FOREIGN KEY(keywordId) REFERENCES keywords(keywordId)
 );
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
@@ -156,6 +136,6 @@ CREATE TABLE thesisProposal_cds_bridge(
     cdsId INTEGER NOT NULL,
     
     PRIMARY KEY(thesisProposalId, cdsId),
-    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId), /* WHEN ARCHIVED ? */
+    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON DELETE CASCADE,
     FOREIGN KEY(cdsId) REFERENCES degrees(degreeId)
 );
