@@ -1,0 +1,156 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Thesis Proposal",
+        "version": "1.0.11"
+    },
+    "components": {
+        "schemas": {
+            "professor": {
+                "type": "object",
+                "properties": {
+                    "professorId": {
+                        "type": "string",
+                        "pattern": "^(p|P)[0-9]{6}$"
+                    },
+                    "name": {
+                        "type": "string",
+                        "pattern": "^[a-zA-Z ]+$",
+                        "minLength": 1
+                    },
+                    "surname": {
+                        "type": "string",
+                        "pattern": "^[a-zA-Z ]+$",
+                        "minLength": 1
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "pattern": "^[a-z]+\\.[a-z]+@polito\\.it$"
+                    },
+                    "codGroup": {
+                        "type": "string",
+                        "pattern": "^CG_[0-9]{2}$"
+                    },
+                    "codDepartment": {
+                        "type": "string",
+                        "pattern": "^CD_[0-9]{2}$"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "salt": {
+                        "type": "string"
+                    }
+                },
+                "minProperties": 8,
+                "maxProperties": 8,
+                "required": [
+                    "professorId",
+                    "name",
+                    "surname",
+                    "email",
+                    "codGroup",
+                    "codDepartment"
+                ]
+            },
+            "student": {
+                "type": "object",
+                "properties": {
+                    "studentId": {
+                        "type": "string",
+                        "pattern": "^(s|S)[0-9]{6}$"
+                    },
+                    "name": {
+                        "type": "string",
+                        "pattern": "^[a-zA-Z ]+$",
+                        "minLength": 1
+                    },
+                    "surname": {
+                        "type": "string",
+                        "pattern": "^[a-zA-Z ]+$",
+                        "minLength": 1
+                    },
+                    "gender": {
+                        "enum": [
+                            "male",
+                            "female",
+                            "other"
+                        ]
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "pattern": "^(s|S)[0-9]{6}@studenti\\.polito\\.it$"
+                    },
+                    "codDegree": {
+                        "type": "string",
+                        "pattern": "^LM?-([1-9]|[1-9][0-9])$"
+                    },
+                    "nationality": {
+                        "type": "string",
+                        "pattern": "^[a-zA-Z ]+$",
+                        "minLength": 1
+                    },
+                    "enrollmentYear": {
+                        "type": "integer"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "salt": {
+                        "type": "string"
+                    }
+                },
+                "minProperties": 10,
+                "maxProperties": 10,
+                "required": [
+                    "studentId",
+                    "name",
+                    "surname",
+                    "gender",
+                    "nationality",
+                    "email",
+                    "codDegree",
+                    "enrollmentYear"
+                ]
+            },
+            "application": {
+                "type": "object",
+                "properties": {
+                    "thesisProposalId": {
+                        "type": "integer"
+                    },
+                    "studentId": {
+                        "type": "string",
+                        "pattern": "^(s|S)[0-9]{6}$"
+                    },
+                    "message": {
+                        "type": "string",
+                        "maxLength": 1000
+                    },
+                    "date":{
+                        "type":"string",
+                        "format": "date"
+                    },
+                    "cv": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "isReaded": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "isAccepted": {
+                        "type": "boolean"
+                    }
+                },
+                "minProperties": 2,
+                "required": [
+                    "thesisProposalId",
+                    "studentId"
+                ]
+            }
+        }
+    }
+}
