@@ -2,3 +2,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.card{
+  @apply shadow-sm rounded-md shadow-gray-400 p-4 bg-white;
+}
+.separator{
+  height: 1px;
+  width: 90%;
+  @apply bg-orange-500
+}

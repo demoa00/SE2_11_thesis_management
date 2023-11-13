@@ -22,6 +22,13 @@ export class ThesisManagementComponent {
   courseType: string = "";
   data : Date = new Date;
 
+  showApplicants: boolean = false;
+  showActiveTheses: boolean = false;
+  showArchivedTheses: boolean = false;
+  applicantsRow:{}[] = [{nome:'carlo', matricola:314251, titoloTesi:'AI'},{nome:'massimo', matricola:314251, titoloTesi:'Machine Learning'}];
+  activeThesesRow:{}[] = []
+  archivedTheses:{}[] = []
+
   OpenCreatePopup() {
     this.createPopup = !this.createPopup;
     this.requestAccepted = false;
@@ -44,5 +51,21 @@ export class ThesisManagementComponent {
       data: this.data
     }
     console.log(thesis)
+  }
+
+  showApplicantsTable() {
+    this.showApplicants = true;
+    this.showActiveTheses = false;
+    this.showArchivedTheses = false
+  }
+  showActiveThesesTable() {
+    this.showApplicants = false;
+    this.showActiveTheses = true;
+    this.showArchivedTheses = false
+  }
+  showArchivedThesesTable() {
+    this.showApplicants = false;
+    this.showActiveTheses = false;
+    this.showArchivedTheses = true
   }
 }
