@@ -1,4 +1,12 @@
+
 <app-page-skeleton>
+
+
+</app-page-skeleton>
+
+<app-popup
+  [showSlider]="false">
+  <div class="separator"></div>
   <form main-col class="login-container">
     <h2>Login</h2>
     <input name="email" type="text" placeholder="Email" class="{{loginFailed ? 'failed' : '' }}" [ngModel]="email" (ngModelChange)="updateEmail($event)">
@@ -8,4 +16,4 @@
       <p>Invalid email or password</p>
     </app-alert>
   </form>
-</app-page-skeleton>
+</app-popup>
