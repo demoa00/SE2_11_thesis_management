@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { StudentPageComponent } from './student-page.component';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { PageSkeletonComponent } from 'src/app/shared/components/page-skeleton/page-skeleton.component';
 
 describe('StudentPageComponent', () => {
   let component: StudentPageComponent;
@@ -11,7 +12,7 @@ describe('StudentPageComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule],
-      declarations: [StudentPageComponent]
+      declarations: [StudentPageComponent, PageSkeletonComponent]
     });
     fixture = TestBed.createComponent(StudentPageComponent);
     component = fixture.componentInstance;

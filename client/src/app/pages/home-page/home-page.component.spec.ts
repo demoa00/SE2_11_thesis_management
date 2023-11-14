@@ -4,6 +4,7 @@ import { HomePageComponent } from './home-page.component';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { PageSkeletonComponent } from 'src/app/shared/components/page-skeleton/page-skeleton.component';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
@@ -12,7 +13,7 @@ describe('HomePageComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule],
-      declarations: [HomePageComponent, ButtonComponent ]
+      declarations: [HomePageComponent, ButtonComponent, PageSkeletonComponent]
     });
     fixture = TestBed.createComponent(HomePageComponent);
     component = fixture.componentInstance;
