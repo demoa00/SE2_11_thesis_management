@@ -19,8 +19,8 @@ input, select {
   @apply flex flex-col p-3;
 }
 .button-tesi{
-  @apply dropdownButton flex gap-1 items-center justify-between hover:cursor-pointer hover:drop-shadow-lg;
+  @apply dropdownButton flex gap-1 items-center justify-around hover:cursor-pointer hover:drop-shadow-lg;
   &.orange {
-    @apply bg-orange-600;
+    @apply bg-orange-500;
   }
 }
