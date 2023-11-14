@@ -54,15 +54,14 @@ export class StudentPageComponent {
 
   toggleName(keyword: string) {
     this.selectedNames.has(keyword) ? this.selectedNames.delete(keyword) : this.selectedNames.add(keyword);
-    console.log(this.notFilteredProjects)
     if(this.selectedNames.size === 0){
       this.projectsToShow = new Set(this.notFilteredProjects);
     }
     else {
       this.projectsToShow = new Set(this.notFilteredProjects);
-      this.projects.forEach(project => {
-        if (this.selectedNames.has(project.name)) {
-          this.projectsToShow.add(project);
+      this.projectsToShow.forEach(project => {
+        if (!this.selectedNames.has(project.name)) {
+          this.projectsToShow.delete(project);
         }
       })
     }
