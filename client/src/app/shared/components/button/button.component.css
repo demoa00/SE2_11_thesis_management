@@ -10,5 +10,8 @@
   cursor: pointer;
   height: fit-content;
 }
+:host.orange {
+  @apply bg-orange-600;
+}
 
 /*# sourceMappingURL=button.component.css.map */

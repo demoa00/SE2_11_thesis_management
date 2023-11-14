@@ -1,0 +1,45 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  color: #04264c;
+}
+
+.title {
+  height: 12.5%;
+}
+
+.main {
+  height: 87.5%;
+}
+
+.propic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.login-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.login-container h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.login-container input {
+  background-color: transparent;
+  outline: none;
+  border-bottom: 2px solid #e5e7eb;
+  margin-bottom: 16px;
+}
+.login-container input:focus {
+  @apply border-orange-600;
+}
+
+/*# sourceMappingURL=home-page.component.css.map */

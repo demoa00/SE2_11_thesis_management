@@ -7,4 +7,7 @@
   color: white;
   cursor: pointer;
   height: fit-content;
+  &.orange {
+    @apply bg-orange-600;
+  }
 }
