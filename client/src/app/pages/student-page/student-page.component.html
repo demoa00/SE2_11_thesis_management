@@ -59,9 +59,15 @@
          </div>
          <div class="projectButtons">
            <app-button (click)="selectProject(null)">Indietro</app-button>
-           <app-button (click)="selectProject(null)">Candidati</app-button>
+           <app-button (click)="showAlert('success')">Candidati</app-button>
          </div>
        </div>
+       <app-alert class="success {{showSuccessAlert ? 'show' : ''}}">
+         <p>You candidated succesfully</p>
+       </app-alert>
+       <app-alert class="danger {{showDangerAlert ? 'show' : ''}}">
+         <p>Something went wrong</p>
+       </app-alert>
      </div>
 
 </app-page-skeleton>

@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+:host {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 32px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  background-color: #fedd6a;
+  transition: all 0.2s ease-in-out;
+  opacity: 0;
+  border-radius: 8px;
+}
+:host.show {
+  opacity: 1;
+}
+:host.success {
+  background-color: #75ce8f;
+}
+:host.success * {
+  color: white !important;
+}
+:host.danger {
+  background-color: #f56565;
+}
+:host.danger * {
+  color: white !important;
+}
+
+/*# sourceMappingURL=alert.component.css.map */
