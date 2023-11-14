@@ -100,23 +100,18 @@ app.use(passport.authenticate('session'));
 //Route methods
 ////////////////
 
+app.post('/api/professors/:professorId/thesisProposals', validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal);
 app.post('/api/authenticatedSession', userController.createNewAuthenticatedSession);
 app.delete('/api/authenticatedSession/:userId', isLoggedIn, userController.deleteAuthenticatedSession);
 
-//////////////////////////////////////////////////////////
-// Error handlers for validation and authentication errors
-//////////////////////////////////////////////////////////
+
+////////////////////////////////
+// Error handlers for validation
+////////////////////////////////
 
 app.use(function (err, req, res, next) {
     if (err instanceof ValidationError) {
         res.status(400).send(err);
-    } else next(err);
-});
-
-app.use(function (err, req, res, next) {
-    if (err.name === 'UnauthorizedError') {
-        const authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error' }] };
-        res.status(401).json(authErrorObj);
     } else next(err);
 });
 

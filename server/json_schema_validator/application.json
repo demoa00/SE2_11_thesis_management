@@ -2,47 +2,40 @@
     "$schema": "http://json-schema.org/draft-07/schema",
     "$id": "application_schema",
     "title": "Thesis Application Schema",
-    "definitions": {
-        "application": {
-            "type": "object",
-            "properties": {
-                "thesisProposalId": {
-                    "type": "integer"
-                },
-                "studentId": {
-                    "type": "string",
-                    "pattern": "^(s|S)[0-9]{6}$"
-                },
-                "message": {
-                    "type": "string",
-                    "maxLength": 1000
-                },
-                "date":{
-                    "type":"string",
-                    "format": "date"
-                },
-                "cv": {
-                    "type": "string",
-                    "format": "uri"
-                },
-                "isReaded": {
-                    "type": "boolean",
-                    "default": false
-                },
-                "isAccepted": {
-                    "type": "boolean"
-                }
-            },
-            "minProperties": 1,
-            "required": [
-                "thesisProposalId"
-            ]
-        }
-    },
     "type": "object",
     "properties": {
-        "application": {
-            "$ref": "#/definitions/application"
+        "$schema": {
+            "type": "string"
+        },
+        "thesisProposalId": {
+            "type": "integer"
+        },
+        "studentId": {
+            "type": "string",
+            "pattern": "^(s|S)[0-9]{6}$"
+        },
+        "message": {
+            "type": "string",
+            "maxLength": 1000
+        },
+        "date": {
+            "type": "string",
+            "format": "date"
+        },
+        "cv": {
+            "type": "string",
+            "format": "uri"
+        },
+        "isReaded": {
+            "type": "boolean",
+            "default": false
+        },
+        "isAccepted": {
+            "type": "boolean"
         }
-    }
+    },
+    "additionalProperties": false,
+    "required": [
+        "thesisProposalId"
+    ]
 }
