@@ -58,12 +58,12 @@
            <p>Nunc sed turpis. Sed in libero ut nibh placerat accumsan. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce pharetra convallis urna. Phasellus accumsan cursus velit. Ut id nisl quis enim dignissim sagittis. Nam at tortor in tellus interdum sagittis. Suspendisse feugiat. Quisque rutrum. Sed libero. Morbi mattis ullamcorper velit. Aenean ut eros et nisl sagittis vestibulum. Curabitur suscipit suscipit tellus. Nullam cursus lacinia erat. Nam adipiscing.</p>
          </div>
          <div class="projectButtons">
-           <app-button (click)="selectProject(null)">Indietro</app-button>
-           <app-button (click)="showAlert('success')">Candidati</app-button>
+           <app-button (click)="selectProject(null)">Back</app-button>
+           <app-button (click)="showAlert('success')">Apply</app-button>
          </div>
        </div>
        <app-alert class="success {{showSuccessAlert ? 'show' : ''}}">
-         <p>You candidated succesfully</p>
+         <p>You applied succesfully!</p>
        </app-alert>
        <app-alert class="danger {{showDangerAlert ? 'show' : ''}}">
          <p>Something went wrong</p>
