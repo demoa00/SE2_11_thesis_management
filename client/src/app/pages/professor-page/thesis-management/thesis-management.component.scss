@@ -4,6 +4,7 @@
   line-height: 16px;
   padding: 8px;
   border-radius: 8px;
+  @apply hover:drop-shadow-lg;
 }
 input, select {
   padding: 5px;
