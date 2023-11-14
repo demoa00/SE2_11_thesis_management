@@ -19,7 +19,7 @@
         (buttonSliderSubmit)="send.emit()"
         (requestAccepted)="requestAccepted.emit($event); toggleButton()"
         [responseFromServer]="response">
-        {{ title == 'Annulla Operazione' ? 'Annulla' : 'Inserisci' }}
+        {{ title == 'Annulla Operazione' ? 'Cancel' : 'Insert' }}
       </app-button-slider>
     </div>
   </div>
