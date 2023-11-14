@@ -1,103 +1,83 @@
-<div class="columns-2 min-h-screen flex bg-grey-50">
-  <div class="md:w-1/6 border-r-2 max-md:hidden">
-    <div class="md:p-4 border-b-2">
-      <img alt="logo" src="../../../assets/images/LogoPoli.svg">
-    </div>
-    <div class="md:p-4">
-      <div class="leftMenuItem"
-           [class.selected]="n.selected"
-           [class.hovered]="n.hover && !n.selected"
-           (mouseenter)="n.hover=true"
-           (mouseleave)="n.hover=false"
-           (click)="selectMenuItem(n.id)"
-           *ngFor="let n of menuItems">
-        <p>Lorem Ipsum</p>
-      </div>
+<app-page-skeleton>
+  <div class="md:p-4" left-col>
+    <div class="leftMenuItem"
+        [class.selected]="n.selected"
+        [class.hovered]="n.hover && !n.selected"
+        (mouseenter)="n.hover=true"
+        (mouseleave)="n.hover=false"
+        (click)="selectMenuItem(n.id)"
+        *ngFor="let n of menuItems">
+      <p>Lorem Ipsum</p>
     </div>
   </div>
-  <div class="w-full md:w-5/6">
-    <div class="h-1/8 p-4 flex items-center justify-between border-b-2 border-orange-600">
-      <h2 class="uppercase text-3xl font-bold">thesis proposals</h2>
-      <div class="flex items-center">
-        <img alt="propic" src="https://picsum.photos/512/512" class="propic mr-4">
-        <p class="text-sm uppercase">first last, S123456</p>
-      </div>
-    </div>
-    <div class="h-7/8 columns-2 flex">
-      <div class="md:w-4/5 w-full p-6" *ngIf="selectedProject===null">
-        <div class="flex items-center mb-8 gap-4 max-md:flex-col max-md:items-start">
-          <div class="searchToolsContainer">
-            <div class="searchbar">
-              <input type="text" placeholder="Search..." [ngModel]="searchValue" (ngModelChange)="updateSearchValue($event)"/>
+
+  <div *ngIf="selectedProject===null" main-col>
+    <div class="flex items-center mb-8 gap-4 max-md:flex-col max-md:items-start">
+      <div class="searchToolsContainer">
+        <div class="searchbar">
+          <input type="text" placeholder="Search..." [ngModel]="searchValue" (ngModelChange)="updateSearchValue($event)"/>
+        </div>
+        <div class="dropdownContainer" (mouseenter)="keywordsHover = true" (mouseleave)="keywordsHover=false">
+          <button type="button" class="dropdownButton">Keyword</button>
+          <div class="dropdownContent" *ngIf="keywordsHover">
+            <div class="border-b-2 mb-2 flex justify-between">
+              <input class="outline-0 w-24" type="text" placeholder="Search..." [ngModel]="keywordsSearchValue" (ngModelChange)="updateKeywordsSearchValue($event)"/>
+              <img class="cursor-pointer" alt="delete" style="color: red" src="assets/images/close_grey.svg" width="12" height="12" (click)="updateKeywordsSearchValue('')"/>
             </div>
-            <div class="dropdownContainer" (mouseenter)="keywordsHover = true" (mouseleave)="keywordsHover=false">
-              <button type="button" class="dropdownButton">Keyword</button>
-              <div class="dropdownContent" *ngIf="keywordsHover">
-                <div class="border-b-2 mb-2 flex justify-between">
-                  <input class="outline-0 w-24" type="text" placeholder="Search..." [ngModel]="keywordsSearchValue" (ngModelChange)="updateKeywordsSearchValue($event)"/>
-                  <img class="cursor-pointer" alt="delete" style="color: red" src="assets/images/close_grey.svg" width="12" height="12" (click)="updateKeywordsSearchValue('')"/>
-                </div>
-                <div *ngFor="let k of keywords" (click)="toggleKeyword(k)">
-                  <div class="keywordContainer" *ngIf="k.toLocaleLowerCase().includes(keywordsSearchValue)">
-                    <div class="checkbox" [ngClass]="selectedKeywords.has(k) ? 'checked' : ''"></div>
-                    <p class="dropdownKeyword" >{{k}}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="dropdownContainer" (mouseenter)="professorsHover = true" (mouseleave)="professorsHover=false">
-              <button type="button" class="dropdownButton">Professor</button>
-              <div class="dropdownContent" *ngIf="professorsHover">
-                <div class="border-b-2 mb-2 flex justify-between">
-                  <input class="outline-0 w-24" type="text" placeholder="Search..." [ngModel]="professorsSearchValue" (ngModelChange)="updateProfessorsSearchValue($event)"/>
-                  <img class="cursor-pointer" alt="delete" style="color: red" src="assets/images/close_grey.svg" width="12" height="12" (click)="updateProfessorsSearchValue('')"/>
-                </div>
-                <div *ngFor="let name of professorNames" (click)="toggleName(name)">
-                  <div class="keywordContainer" *ngIf="name.toLocaleLowerCase().includes(professorsSearchValue)">
-                    <div class="checkbox" [ngClass]="selectedNames.has(name) ? 'checked' : ''"></div>
-                    <p class="dropdownKeyword" >{{name}}</p>
-                  </div>
-                </div>
+            <div *ngFor="let k of keywords" (click)="toggleKeyword(k)">
+              <div class="keywordContainer" *ngIf="k.toLocaleLowerCase().includes(keywordsSearchValue)">
+                <div class="checkbox" [ngClass]="selectedKeywords.has(k) ? 'checked' : ''"></div>
+                <p class="dropdownKeyword" >{{k}}</p>
               </div>
             </div>
           </div>
-          <div class="deleteFilters" (click)="deleteFilters()" *ngIf="selectedNames.size !== 0 || selectedKeywords.size !== 0">
-            <img alt="close" src="assets/images/close_blue.svg" width="16" height="16">
-            <p class="underline">Elimina filtri</p>
-          </div>
         </div>
-        <div >
-          <div *ngFor="let project of projectsToShow" (click)="selectProject(project)">
-            <div class="projectLine" *ngIf="project.title.toLocaleLowerCase().includes(searchValue)">
-              <p class="projectTitle">{{project.title}}</p>
-              <p class="profName">{{project.name}}</p>
+        <div class="dropdownContainer" (mouseenter)="professorsHover = true" (mouseleave)="professorsHover=false">
+          <button type="button" class="dropdownButton">Professor</button>
+          <div class="dropdownContent" *ngIf="professorsHover">
+            <div class="border-b-2 mb-2 flex justify-between">
+              <input class="outline-0 w-24" type="text" placeholder="Search..." [ngModel]="professorsSearchValue" (ngModelChange)="updateProfessorsSearchValue($event)"/>
+              <img class="cursor-pointer" alt="delete" style="color: red" src="assets/images/close_grey.svg" width="12" height="12" (click)="updateProfessorsSearchValue('')"/>
+            </div>
+            <div *ngFor="let name of professorNames" (click)="toggleName(name)">
+              <div class="keywordContainer" *ngIf="name.toLocaleLowerCase().includes(professorsSearchValue)">
+                <div class="checkbox" [ngClass]="selectedNames.has(name) ? 'checked' : ''"></div>
+                <p class="dropdownKeyword" >{{name}}</p>
+              </div>
             </div>
           </div>
         </div>
-    </div>
-    <div class="md:w-4/5 w-full p-6" *ngIf="selectedProject!==null">
-      <div class="projectDetails">
-        <div class="projectHeader">
-          <h2 class="projectTitle">{{selectedProject.title}}</h2>
-          <h3>Professor: <span class="profName">{{selectedProject.name}}</span></h3>
-        </div>
-        <div class="projectDescription">
-<!--              <p>{{selectedProject.description}}</p>-->
-          <p>Nunc sed turpis. Sed in libero ut nibh placerat accumsan. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce pharetra convallis urna. Phasellus accumsan cursus velit. Ut id nisl quis enim dignissim sagittis. Nam at tortor in tellus interdum sagittis. Suspendisse feugiat. Quisque rutrum. Sed libero. Morbi mattis ullamcorper velit. Aenean ut eros et nisl sagittis vestibulum. Curabitur suscipit suscipit tellus. Nullam cursus lacinia erat. Nam adipiscing.</p>
-        </div>
-        <div class="projectButtons">
-          <app-button (click)="selectProject(null)">Indietro</app-button>
-          <app-button (click)="selectProject(null)">Candidati</app-button>
+      </div>
+      <div class="deleteFilters" (click)="deleteFilters()" *ngIf="selectedNames.size !== 0 || selectedKeywords.size !== 0">
+        <img alt="close" src="assets/images/close_blue.svg" width="16" height="16">
+        <p class="underline">Elimina filtri</p>
+      </div>
+      </div>
+      <div >
+        <div *ngFor="let project of projectsToShow" (click)="selectProject(project)">
+          <div class="projectLine" *ngIf="project.title.toLocaleLowerCase().includes(searchValue)">
+            <p class="projectTitle">{{project.title}}</p>
+            <p class="profName">{{project.name}}</p>
+          </div>
         </div>
       </div>
     </div>
-      <div class="md:w-1/5 md:p-4 border-l-2">
-  <!--        <app-notification *ngFor="let n of notifications">-->
-  <!--          {{n.name}}-->
-  <!--          {{n.title}}-->
-  <!--          {{n.state}}-->
-  <!--        </app-notification>-->
-      </div>
-    </div>
-  </div>
-</div>
+
+     <div *ngIf="selectedProject!==null" main-col>
+       <div class="projectDetails">
+         <div class="projectHeader">
+           <h2 class="projectTitle">{{selectedProject.title}}</h2>
+           <h3>Professor: <span class="profName">{{selectedProject.name}}</span></h3>
+         </div>
+         <div class="projectDescription">
+  <!--             <p>{{selectedProject.description}}</p>-->
+           <p>Nunc sed turpis. Sed in libero ut nibh placerat accumsan. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce pharetra convallis urna. Phasellus accumsan cursus velit. Ut id nisl quis enim dignissim sagittis. Nam at tortor in tellus interdum sagittis. Suspendisse feugiat. Quisque rutrum. Sed libero. Morbi mattis ullamcorper velit. Aenean ut eros et nisl sagittis vestibulum. Curabitur suscipit suscipit tellus. Nullam cursus lacinia erat. Nam adipiscing.</p>
+         </div>
+         <div class="projectButtons">
+           <app-button (click)="selectProject(null)">Indietro</app-button>
+           <app-button (click)="selectProject(null)">Candidati</app-button>
+         </div>
+       </div>
+     </div>
+
+</app-page-skeleton>

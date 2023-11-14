@@ -16,6 +16,7 @@ import { NotificationComponent } from './shared/components/notification/notifica
 import { ButtonComponent } from './shared/components/button/button.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { LoginFormComponent } from './shared/components/login-form/login-form.component';
+import { PageSkeletonComponent } from './shared/components/page-skeleton/page-skeleton.component';
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
@@ -36,7 +37,8 @@ const routes: Routes = [
     NotificationComponent,
     ButtonComponent,
     HomePageComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    PageSkeletonComponent
   ],
   imports: [
     BrowserModule, RouterModule.forRoot(routes), FormsModule, CdkDrag
