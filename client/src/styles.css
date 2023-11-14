@@ -4,3 +4,13 @@
 @tailwind utilities;
 
 /*# sourceMappingURL=styles.css.map */
+
+
+.card{
+  @apply shadow-sm rounded-md shadow-gray-400 p-4 bg-white;
+}
+.separator{
+  height: 1px;
+  width: 100%;
+  @apply bg-orange-500
+}

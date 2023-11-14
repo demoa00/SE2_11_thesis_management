@@ -5,7 +5,6 @@
   padding: 8px;
   border-radius: 8px;
 }
-
 input, select {
   padding: 5px;
   margin-bottom: 30px;
@@ -13,20 +12,15 @@ input, select {
   border: none;
   border-bottom: 1px solid #eee;
 }
-
-.data {
+.data{
   margin-bottom: 0;
 }
-
-.info {
+.info{
   @apply flex flex-col p-3;
 }
-
-.button-tesi {
+.button-tesi{
   @apply dropdownButton flex gap-1 items-center justify-around hover:cursor-pointer hover:drop-shadow-lg;
+  &.orange {
+    @apply bg-orange-500;
+  }
 }
-.button-tesi.orange {
-  @apply bg-orange-500;
-}
-
-/*# sourceMappingURL=thesis-management.component.css.map */

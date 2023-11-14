@@ -148,4 +148,27 @@
   background-color: #e5e7eb;
 }
 
+.projectHeader {
+  margin-bottom: 16px;
+}
+.projectHeader .projectTitle {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+  margin-bottom: 8px;
+}
+.projectHeader .profName {
+  font-weight: bold;
+}
+
+.projectDescription {
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.projectButtons {
+  display: flex;
+  gap: 8px;
+}
+
 /*# sourceMappingURL=student-page.component.css.map */

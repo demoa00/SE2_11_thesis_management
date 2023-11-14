@@ -2,7 +2,7 @@
   <div class="flex flex-col bo-popup-content p-2 justify-between" (click)="$event.stopPropagation()">
     <div class="flex items-center justify-around gap-2 w-160">
       <img alt="logo" src="../../../assets/images/LogoPoli.svg" class="h-1/2 w-1/2">
-      <div class="text-3xl">{{ title }}</div>
+      <div *ngIf="title" class="text-3xl">{{ title }}</div>
       <app-icon
         *ngIf="showCloseButton"
         name="cross"
@@ -19,7 +19,7 @@
         (buttonSliderSubmit)="send.emit()"
         (requestAccepted)="requestAccepted.emit($event); toggleButton()"
         [responseFromServer]="response">
-        {{ title == 'Annulla Operazione' ? 'Annulla' : 'Inserisci' }}
+        {{ title == 'Annulla Operazione' ? 'Cancel' : 'Insert' }}
       </app-button-slider>
     </div>
   </div>

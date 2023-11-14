@@ -1,0 +1,13 @@
+@import '../../../../styles';
+
+:host {
+  background-color: $polilightblue;
+  padding: 8px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  height: fit-content;
+  &.orange {
+    @apply bg-orange-600;
+  }
+}

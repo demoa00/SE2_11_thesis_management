@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 
 import { StudentPageComponent } from './student-page.component';
 import { FormsModule } from '@angular/forms';
-import { NotificationComponent } from 'src/app/shared/notification/notification.component';
 import { By } from '@angular/platform-browser';
 
 describe('StudentPageComponent', () => {
@@ -12,7 +11,7 @@ describe('StudentPageComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule],
-      declarations: [StudentPageComponent, NotificationComponent]
+      declarations: [StudentPageComponent]
     });
     fixture = TestBed.createComponent(StudentPageComponent);
     component = fixture.componentInstance;

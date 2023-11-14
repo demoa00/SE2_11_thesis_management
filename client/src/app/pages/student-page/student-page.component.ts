@@ -6,7 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./student-page.component.css']
 })
 export class StudentPageComponent {
-  searchValue: string = "";
   projects =  [
     { title: 'Analysis of climate data', name: 'Charlie Smith', keywords: ['climate'] },
     { title: 'Development of a web application', name: 'Alice Johnson', keywords: ['web', 'application'] },
@@ -26,12 +25,23 @@ export class StudentPageComponent {
     { title: 'Renewable energy research', name: 'Eva Brown', state: 'accepted' },
   ];
 
+  searchValue: string = "";
   projectsToShow = this.projects;
-
+  selectedProject: Project | null = null;
   professorNames = new Set(this.projects.map(project => project.name));
   keywords = new Set(this.projects.map(project => project.keywords).flat());
   selectedKeywords = new Set<string>();
   selectedNames = new Set<string>();
+
+  keywordsHover = false;
+  professorsHover = false;
+  menuItems = [
+    { id: 1, hover: false, selected: true  },
+    { id: 2, hover: false, selected: false },
+    { id: 3, hover: false, selected: false }
+  ];
+  professorsSearchValue = "";
+  keywordsSearchValue = "";
 
   toggleKeyword(keyword: string) {
     this.selectedKeywords.has(keyword) ? this.selectedKeywords.delete(keyword) : this.selectedKeywords.add(keyword);
@@ -55,16 +65,6 @@ export class StudentPageComponent {
             this.selectedNames.has(project.name));
     }
   }
-
-  keywordsHover = false;
-  professorsHover = false;
-  menuItems = [
-    { id: 1, hover: false, selected: true  },
-    { id: 2, hover: false, selected: false },
-    { id: 3, hover: false, selected: false }
-  ];
-  professorsSearchValue = "";
-  keywordsSearchValue = "";
 
   updateSearchValue(value: string) {
     this.searchValue = value.trim().toLowerCase();
@@ -90,5 +90,16 @@ export class StudentPageComponent {
     this.keywordsSearchValue = keyword.trim().toLowerCase();
   }
 
-  protected readonly JSON = JSON;
+  selectProject(project: any) {
+    this.selectedProject = project;
+  }
+
+  objectToString(object: any) {
+    return JSON.stringify(object);
+  }
+
 }
+type Project = {
+  title: string,
+  name: string
+};
