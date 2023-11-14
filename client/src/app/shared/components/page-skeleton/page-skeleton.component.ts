@@ -9,6 +9,9 @@ import {Router} from "@angular/router";
 export class PageSkeletonComponent {
 
   constructor(private _router: Router) {}
+
+  currentRoute = this._router.url;
+
   logout() {
     this._router.navigate(['/']);
   }
