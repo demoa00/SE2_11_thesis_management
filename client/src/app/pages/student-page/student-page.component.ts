@@ -12,7 +12,7 @@ export class StudentPageComponent {
     { title: 'Renewable energy research', name: 'Eva Brown', keywords: ['renewable', 'energy'] },
     { title: 'Study on modern medicine', name: 'David Wilson', keywords: ['medicine'] },
     { title: 'Global economic analysis', name: 'Bob Lee', keywords: ['economy'] },
-    { title: 'Intelligent systems design', name: 'Eva Smith', keywords: ['systems'] },
+    { title: 'Intelligent systems design', name: 'Eva Smith', keywords: ['systems', 'IA', 'AI', 'neural'] },
     { title: 'Development of new green technologies', name: 'Alice Johnson', keywords: ['green', 'development'] },
     { title: 'Study of neural networks', name: 'David Lee', keywords: ['neural', 'networks'] },
     { title: 'Nanotechnology research', name: 'Alice Johnson', keywords: ['nanotechnology'] },
@@ -26,7 +26,7 @@ export class StudentPageComponent {
   ];
 
   searchValue: string = "";
-  projectsToShow = this.projects;
+  projectsToShow = new Set(this.projects);
   selectedProject: Project | null = null;
   professorNames = new Set(this.projects.map(project => project.name));
   keywords = new Set(this.projects.map(project => project.keywords).flat());
@@ -55,19 +55,37 @@ export class StudentPageComponent {
 
   updateProjectsToShow() {
     if (this.selectedKeywords.size === 0 && this.selectedNames.size === 0) {
-      this.projectsToShow = this.projects;
+      this.projectsToShow = new Set(this.projects);
     }
     else {
-      this.projectsToShow = this.projects.filter(
+      this.projectsToShow = new Set(this.projects.filter(
         project =>
           project.keywords.some(keyword =>
             this.selectedKeywords.has(keyword)) ||
-            this.selectedNames.has(project.name));
+            this.selectedNames.has(project.name)));
     }
   }
 
   updateSearchValue(value: string) {
-    this.searchValue = value.trim().toLowerCase();
+    // this.searchValue = value.trim().toLowerCase();
+    this.selectedKeywords.clear();
+    this.projectsToShow = new Set();
+    this.projects.forEach(project => {
+      value.trim().split(' ').forEach(word => {
+        if (project.title.toLowerCase().includes(word)) {
+          this.projectsToShow.add(project);
+        }
+        else {
+          project.keywords.some(keyword => {
+            if (keyword.toLowerCase().includes(word)) {
+              this.projectsToShow.add(project);
+            }
+          })
+        }
+      })
+    })
+    console.log(value.trim().split(''));
+
   }
 
   deleteFilters() {
@@ -96,6 +114,9 @@ export class StudentPageComponent {
 
   objectToString(object: any) {
     return JSON.stringify(object);
+  }
+  setToString(object: Set<any>) {
+    return Array.from(object).join(', ');
   }
 
 }
