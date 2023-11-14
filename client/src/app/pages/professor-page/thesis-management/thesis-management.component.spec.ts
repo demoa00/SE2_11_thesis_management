@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { ThesisManagementComponent } from './thesis-management.component';
 import { IconComponent } from 'src/app/shared/components/icon/icon.component';
@@ -18,5 +18,64 @@ describe('ThesisManagementComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should toggle createPopup property on OpenCreatePopup', fakeAsync(() => {
+    const component = new ThesisManagementComponent();
+
+    component.OpenCreatePopup();
+    fixture.detectChanges();
+    tick();
+    expect(component.createPopup).toBeTruthy();
+    
+    component.OpenCreatePopup();
+    fixture.detectChanges();
+    tick();
+    expect(component.createPopup).toBeFalsy();
+  }));
+
+  it('should log thesis object on InsertThesis', () => {
+    const component = new ThesisManagementComponent();
+    let mockThesis = {
+      title: "",
+      supervisor: "",
+      coSupervisor: "",
+      level: "",
+      type: "",
+      groups: "",
+      description: "",
+      requiredKnoledge: "",
+      notes: "",
+      keywords: "",
+      courseType: "",
+      data: new Date
+    };
+    spyOn(console, 'log');
+    component.insertThesis();
+    expect(console.log).toHaveBeenCalledWith(mockThesis);
+  });
+
+  it('should set showApplicants to true and others to false on showApplicantsTable', () => {
+    const component = new ThesisManagementComponent();
+    component.showApplicantsTable();
+    expect(component.showApplicants).toBe(true);
+    expect(component.showActiveTheses).toBe(false);
+    expect(component.showArchivedTheses).toBe(false);
+  });
+  
+  it('should set showActiveThesis to true and others to false on showActiveThesesTable', () => {
+    const component = new ThesisManagementComponent();
+    component.showActiveThesesTable();
+    expect(component.showApplicants).toBe(false);
+    expect(component.showActiveTheses).toBe(true);
+    expect(component.showArchivedTheses).toBe(false);
+  });
+
+  it('should set showArchivedThesis to true and others to false on showArchivedThesesTable', () => {
+    const component = new ThesisManagementComponent();
+    component.showArchivedThesesTable();
+    expect(component.showApplicants).toBe(false);
+    expect(component.showActiveTheses).toBe(false);
+    expect(component.showArchivedTheses).toBe(true);
   });
 });
