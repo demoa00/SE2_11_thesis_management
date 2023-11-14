@@ -1,5 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "thesisProposal_schema",
     "title": "Thesis Proposal Schema",
     "definitions": {
         "thesisProposal": {

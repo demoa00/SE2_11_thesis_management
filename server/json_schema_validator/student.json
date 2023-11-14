@@ -1,5 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "student_schema",
     "title": "Student Schema",
     "definitions": {
         "student": {
@@ -44,13 +45,12 @@
                     "type": "integer"
                 },
                 "password": {
-                    "type": "string"
-                },
-                "salt": {
-                    "type": "string"
+                    "type": "string",
+                    "minimum": 8,
+                    "maximum": 20
                 }
             },
-            "minProperties": 10,
+            "minProperties": 1,
             "maxProperties": 10,
             "required": [
                 "email"

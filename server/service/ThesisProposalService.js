@@ -1,5 +1,9 @@
 'use strict';
 
+const sqlite = require('sqlite3');
+
+const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
+
 
 /**
  *
@@ -7,27 +11,9 @@
  * professorId String 
  * returns thesisProposals
  **/
-exports.getAllThesisProposalsOfProfessor = function(authenticatedUserId,professorId) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = [ {
-  "keywords" : [ "keywords", "keywords" ],
-  "self" : "http://example.com/aeiou",
-  "title" : "title",
-  "thesisProposalId" : 1,
-  "expirationDate" : "2000-01-23"
-}, {
-  "keywords" : [ "keywords", "keywords" ],
-  "self" : "http://example.com/aeiou",
-  "title" : "title",
-  "thesisProposalId" : 1,
-  "expirationDate" : "2000-01-23"
-} ];
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+exports.getAllThesisProposalsOfProfessor = function (professorId) {
+  return new Promise(function (resolve, reject) {
+    //to do!
   });
 }
 
@@ -37,34 +23,9 @@ exports.getAllThesisProposalsOfProfessor = function(authenticatedUserId,professo
  * thesisProposalId Integer 
  * returns thesisProposal
  **/
-exports.getThesisProposal = function(thesisProposalId) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "requirements" : "requirements",
-  "notes" : "notes",
-  "keywords" : [ "keywords", "keywords" ],
-  "level" : "",
-  "thesisType" : {
-    "abroad" : true,
-    "inCompany" : true
-  },
-  "groups" : [ "groups", "groups" ],
-  "description" : "description",
-  "title" : "title",
-  "coSupervisor" : [ "coSupervisor", "coSupervisor" ],
-  "isArchieved" : false,
-  "CdS" : [ "CdS", "CdS" ],
-  "self" : "http://example.com/aeiou",
-  "supervisor" : "supervisor",
-  "thesisProposalId" : 1,
-  "expirationDate" : "2000-01-23"
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+exports.getThesisProposal = function (thesisProposalId) {
+  return new Promise(function (resolve, reject) {
+    //to do!
   });
 }
 
@@ -80,27 +41,9 @@ exports.getThesisProposal = function(thesisProposalId) {
  * expirationDate date  (optional)
  * returns thesisProposals
  **/
-exports.getThesisProposals = function(codDegree,keywords,supervisor,title,inCompany,abroad,expirationDate) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = [ {
-  "keywords" : [ "keywords", "keywords" ],
-  "self" : "http://example.com/aeiou",
-  "title" : "title",
-  "thesisProposalId" : 1,
-  "expirationDate" : "2000-01-23"
-}, {
-  "keywords" : [ "keywords", "keywords" ],
-  "self" : "http://example.com/aeiou",
-  "title" : "title",
-  "thesisProposalId" : 1,
-  "expirationDate" : "2000-01-23"
-} ];
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+exports.getThesisProposals = function (codDegree, keywords, supervisor, title, inCompany, abroad, expirationDate) {
+  return new Promise(function (resolve, reject) {
+    //to do!
   });
 }
 
@@ -112,34 +55,9 @@ exports.getThesisProposals = function(codDegree,keywords,supervisor,title,inComp
  * authenticatedUserId String The authenticated user id corresponds to the professor that perform this request
  * returns thesisProposal
  **/
-exports.insertNewThesisProposal = function(body,professorId,authenticatedUserId) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "requirements" : "requirements",
-  "notes" : "notes",
-  "keywords" : [ "keywords", "keywords" ],
-  "level" : "",
-  "thesisType" : {
-    "abroad" : true,
-    "inCompany" : true
-  },
-  "groups" : [ "groups", "groups" ],
-  "description" : "description",
-  "title" : "title",
-  "coSupervisor" : [ "coSupervisor", "coSupervisor" ],
-  "isArchieved" : false,
-  "CdS" : [ "CdS", "CdS" ],
-  "self" : "http://example.com/aeiou",
-  "supervisor" : "supervisor",
-  "thesisProposalId" : 1,
-  "expirationDate" : "2000-01-23"
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+exports.insertNewThesisProposal = function (professorId, newThesisProposal) {
+  return new Promise(function (resolve, reject) {
+    //to do!
   });
 }
 

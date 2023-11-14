@@ -1,5 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "application_schema",
     "title": "Thesis Application Schema",
     "definitions": {
         "application": {

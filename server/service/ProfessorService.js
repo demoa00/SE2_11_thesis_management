@@ -1,29 +1,18 @@
 'use strict';
 
+const sqlite = require('sqlite3');
+
+const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
+
 
 /**
  *
  * professorId String 
  * returns professor
  **/
-exports.getProfessorById = function(professorId) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "codDepartment" : "codDepartment",
-  "password" : "password",
-  "surname" : "surname",
-  "name" : "name",
-  "self" : "http://example.com/aeiou",
-  "professorId" : "professorId",
-  "codGroup" : "codGroup",
-  "email" : ""
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+exports.getProfessorById = function (professorId) {
+  return new Promise(function (resolve, reject) {
+    //to do!
   });
 }
 
@@ -32,25 +21,9 @@ exports.getProfessorById = function(professorId) {
  *
  * returns professors
  **/
-exports.getProfessors = function() {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = [ {
-  "surname" : "surname",
-  "name" : "name",
-  "self" : "http://example.com/aeiou",
-  "professorId" : "professorId"
-}, {
-  "surname" : "surname",
-  "name" : "name",
-  "self" : "http://example.com/aeiou",
-  "professorId" : "professorId"
-} ];
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+exports.getProfessors = function () {
+  return new Promise(function (resolve, reject) {
+    //to do!
   });
 }
 

@@ -1,14 +1,21 @@
+/* TABLE FRO MANAGE AUTHENTICATION OF PROFESSOR AND STUDENT */
+DROP TABLE users;
+CREATE TABLE users(
+    email TEXT PRIMARY KEY NOT NULL,
+    salt TEXT NOT NULL,
+    password TEXT NOT NULL,
+    isStudent BOLEAN NOT NULL
+);
+
 /* TABLE FOR MANAGE PROFESSORS */
 DROP TABLE professors;
 CREATE TABLE professors(
     professorId TEXT(7) PRIMARY KEY NOT NULL,
     name TEXT(20) NOT NULL,
     surname TEXT(20) NOT NULL,
-    codGroup TEXT(20) NOT NULL,
-    codDepartment TEXT(20) NOT NULL,
     email TEXT(50) NOT NULL,
-    password TEXT NOT NULL,
-    salt TEXT NOT NULL
+    codGroup TEXT(20) NOT NULL,
+    codDepartment TEXT(20) NOT NULL
 );
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
@@ -20,12 +27,10 @@ CREATE TABLE students(
     name TEXT(20) NOT NULL,
     surname TEXT(20) NOT NULL,
     gender TEXT(20) NOT NULL,
+    email TEXT(50) NOT NULL,
     nationality TEXT(20) NOT NULL,
     codDegree TEXT(20) NOT NULL,
-    enrollmentYear INTEGER NOT NULL,
-    email TEXT(50) NOT NULL,
-    password TEXT NOT NULL,
-    salt TEXT NOT NULL
+    enrollmentYear INTEGER NOT NULL 
 );
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
