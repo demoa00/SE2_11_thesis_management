@@ -6,6 +6,7 @@
   border-radius: 8px;
 }
 
+
 input, select {
   padding: 5px;
   margin-bottom: 30px;
@@ -22,9 +23,20 @@ input, select {
   @apply flex flex-col p-3;
 }
 
+<<<<<<< HEAD
 .button-tesi {
   @apply dropdownButton flex gap-1 items-center justify-between hover:cursor-pointer hover:drop-shadow-lg;
+=======
+  @apply dropdownButton flex gap-1 items-center justify-around hover:cursor-pointer hover:drop-shadow-lg;
+>>>>>>> origin/frontend
 }
+.button-tesi.orange {
+  @apply bg-orange-600;
+}
+
+/*# sourceMappingURL=thesis-management.component.css.map */
+
+.info {
 .button-tesi.orange {
   @apply bg-orange-600;
 }
