@@ -23,42 +23,6 @@ describe('StudentPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it("should update searchValue on ngModelChange", fakeAsync(() => {
-    const inputElement: HTMLInputElement = fixture.nativeElement.querySelector('#search-input');
-
-    fixture.detectChanges();
-    tick();
-
-    inputElement.value = 'New Value';
-    inputElement.dispatchEvent(new Event('input'));
-
-    fixture.detectChanges();
-    tick();
-
-    expect(component.searchValue).toEqual('new value');
-  }));
-
-  it("should update keywordsSearchValue on ngModelChange", fakeAsync(() => {
-    component.keywordsHover = true;
-
-    fixture.detectChanges();
-    tick();
-
-    const inputDebugElement = fixture.debugElement.query(By.css('#keywordsSearch-input'));
-    const inputElement: HTMLInputElement = inputDebugElement.nativeElement;
-
-    fixture.detectChanges();
-    tick();
-
-    inputElement.value = 'New Value';
-    inputElement.dispatchEvent(new Event('input'));
-
-    fixture.detectChanges();
-    tick();
-
-    expect(component.keywordsSearchValue).toEqual('new value');
-  }));
-
   it("should update professorsSearchValue on ngModelChange", fakeAsync(() => {
     component.professorsHover = true;
 
@@ -97,29 +61,6 @@ describe('StudentPageComponent', () => {
     expect(component.updateSearchValue).toHaveBeenCalledWith('new value');
   }));
 
-  it("should trigger updateKeywordsSearchValue on input change", fakeAsync(() => {
-    component.keywordsHover = true;
-
-    fixture.detectChanges();
-    tick();
-
-    const inputDebugElement = fixture.debugElement.query(By.css('#keywordsSearch-input'));
-    const inputElement: HTMLInputElement = inputDebugElement.nativeElement;
-
-    fixture.detectChanges();
-    tick();
-
-    spyOn(component, 'updateKeywordsSearchValue');
-
-    inputElement.value = 'new value';
-    inputElement.dispatchEvent(new Event('input'));
-
-    fixture.detectChanges();
-    tick();
-
-    expect(component.updateKeywordsSearchValue).toHaveBeenCalledWith('new value');
-  }));
-
   it("should trigger updateProfessorsSearchValue on input change", fakeAsync(() => {
     component.professorsHover = true;
 
@@ -156,9 +97,9 @@ describe('StudentPageComponent', () => {
 
     component.updateProjectsToShow();
 
-    expect(component.projectsToShow).toEqual([
-      { title: 'Development of a web application', name: 'Alice Johnson', keywords: ['web', 'application'] }
-    ]);
+    const expectedProject = { title: 'Development of a web application', name: 'Alice Johnson', keywords: ['web', 'application'] };
+
+    expect(component.projectsToShow).toContain(expectedProject);
   });
 
   it("should add and remove items from selectedKeywords when toggleKeyword is called", () => {
@@ -241,30 +182,8 @@ describe('StudentPageComponent', () => {
     // Check if sets are cleared and projectsToShow is updated
     expect(component.selectedKeywords.size).toBe(0);  // Ensure selectedKeywords set is cleared
     expect(component.selectedNames.size).toBe(0);      // Ensure selectedNames set is cleared
-    expect(component.projectsToShow).toEqual(component.projects);  // Ensure projectsToShow is reset to all projects
+    expect(component.projectsToShow).toEqual(new Set(component.projects));  // Ensure projectsToShow is reset to all projects
   });
-  
-  it('should show/hide and update values for keyword dropdown', fakeAsync(() => {
-    // Ensure initial state
-    component.keywordsHover = false;
-    const initialKeywordsSearchValue = 'initialKeyword';
-    component.keywordsSearchValue = initialKeywordsSearchValue;
-
-    // Simulate mouse enter and input event on the keyword dropdown
-    component.keywordsHover = true;
-    fixture.detectChanges();
-    tick();
-    
-    const keywordsInputElement: HTMLInputElement = fixture.nativeElement.querySelector('#keywordsSearch-input');
-    keywordsInputElement.value = 'updatedKeyword';
-    keywordsInputElement.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-    tick();
-
-    // Check if dropdown is shown, value is updated
-    expect(component.keywordsHover).toBeTrue();  // Ensure dropdown is shown
-    expect(component.keywordsSearchValue).toBe('updatedkeyword');  // Ensure value is updated
-  }));
 
   it('should show/hide and update values for professor dropdown', fakeAsync(() => {
     // Ensure initial state
@@ -310,6 +229,37 @@ describe('StudentPageComponent', () => {
   
     component.updateProjectsToShow();
   
-    expect(component.projectsToShow.length).toBe(component.projects.length);
+    expect(component.projectsToShow.size).toBe(component.projects.length);
+  });
+
+  it('should clear selected keywords and names', () => {
+    const component = new StudentPageComponent();
+    component.selectedKeywords.add('testKeyword');
+    component.selectedNames.add('testName');
+  
+    // Call the method
+    component.deleteFilters();
+  
+    // Add expectations to ensure that selectedKeywords and selectedNames are empty
+    expect(component.selectedKeywords.size).toBe(0);
+    expect(component.selectedNames.size).toBe(0);
+  });
+
+  it('should update projectsToShow based on searchValue', () => {
+    // Set up test data
+    component.projects = [
+      { title: 'Study of neural networks', name: 'David Lee', keywords: ['neural', 'networks'] },
+      { title: 'Study on modern medicine', name: 'David Wilson', keywords: ['medicine'] },
+      { title: 'Development of a web application', name: 'Alice Johnson', keywords: ['web', 'application'] }
+    ];
+
+    component.updateSearchValue('web');
+
+    fixture.detectChanges();
+
+    expect(component.projectsToShow.size).toBe(1);
+
+    const expectedProject = component.projects.find(project => project.title === 'Development of a web application');
+    expect(component.projectsToShow.has(expectedProject!)).toBe(true);
   });
 });

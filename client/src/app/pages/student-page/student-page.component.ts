@@ -104,9 +104,9 @@ export class StudentPageComponent {
     this.professorsSearchValue = name.trim().toLowerCase();
   }
 
-  updateKeywordsSearchValue(keyword: string) {
-    this.keywordsSearchValue = keyword.trim().toLowerCase();
-  }
+  // updateKeywordsSearchValue(keyword: string) {
+  //   this.keywordsSearchValue = keyword.trim().toLowerCase();
+  // }
 
   selectProject(project: any) {
     this.selectedProject = project;
