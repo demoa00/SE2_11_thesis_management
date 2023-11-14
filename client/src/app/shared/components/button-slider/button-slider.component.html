@@ -4,7 +4,7 @@
     class="slider"
     [class.slider_sent]="messageSendable">
     <ng-content *ngIf="!messageSendable"></ng-content>
-    <div class="text-green-400 text-xs" *ngIf="messageSendable">RILASCIA</div>
+    <div class="text-green-400 text-xs" *ngIf="messageSendable">Release</div>
     <div class="slider_box flex items-center">
       <div
         class="cursor flex justify-center items-center cursor-pointer"
@@ -20,7 +20,7 @@
     </div>
   </div>
   <div *ngIf="messageEmitted" class="loading">
-    ATTENDI
+    Wait
     <svg
       aria-hidden="true"
       class="loading_spinner"
@@ -36,6 +36,6 @@
     </svg>
     <!--</div>-->
   </div>
-  <div *ngIf="responseReceived" class="checkSent flex text-xs">inviato correttamente</div>
-  <div *ngIf="responseNotReceived" class="checkNotSent flex">ERRORE</div>
+  <div *ngIf="responseReceived" class="checkSent flex text-xs">Inserted correctly</div>
+  <div *ngIf="responseNotReceived" class="checkNotSent flex">ERROR</div>
 </div>
