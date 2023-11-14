@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-thesis-management',
   templateUrl: './thesis-management.component.html',
-  styleUrls: ['./thesis-management.component.css']
+  styleUrls: ['./thesis-management.component.scss']
 })
 export class ThesisManagementComponent {
   createPopup: boolean = false;
