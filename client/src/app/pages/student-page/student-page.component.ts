@@ -27,6 +27,7 @@ export class StudentPageComponent {
 
   searchValue: string = "";
   projectsToShow = new Set(this.projects);
+  notFilteredProjects = new Set(this.projectsToShow);
   selectedProject: Project | null = null;
   professorNames = new Set(this.projects.map(project => project.name));
   keywords = new Set(this.projects.map(project => project.keywords).flat());
@@ -43,55 +44,55 @@ export class StudentPageComponent {
   professorsSearchValue = "";
   keywordsSearchValue = "";
 
-  toggleKeyword(keyword: string) {
-    this.selectedKeywords.has(keyword) ? this.selectedKeywords.delete(keyword) : this.selectedKeywords.add(keyword);
-    this.updateProjectsToShow()
-  }
+  // toggleKeyword(keyword: string) {
+  //   this.selectedKeywords.has(keyword) ? this.selectedKeywords.delete(keyword) : this.selectedKeywords.add(keyword);
+  //   this.updateProjectsToShow()
+  // }
 
   toggleName(keyword: string) {
     this.selectedNames.has(keyword) ? this.selectedNames.delete(keyword) : this.selectedNames.add(keyword);
-    this.updateProjectsToShow()
-  }
-
-  updateProjectsToShow() {
-    if (this.selectedKeywords.size === 0 && this.selectedNames.size === 0) {
-      this.projectsToShow = new Set(this.projects);
+    console.log(this.notFilteredProjects)
+    if(this.selectedNames.size === 0){
+      this.projectsToShow = new Set(this.notFilteredProjects);
     }
     else {
-      this.projectsToShow = new Set(this.projects.filter(
-        project =>
-          project.keywords.some(keyword =>
-            this.selectedKeywords.has(keyword)) ||
-            this.selectedNames.has(project.name)));
+      this.projectsToShow = new Set(this.notFilteredProjects);
+      this.projects.forEach(project => {
+        if (this.selectedNames.has(project.name)) {
+          this.projectsToShow.add(project);
+        }
+      })
     }
   }
 
   updateSearchValue(value: string) {
     // this.searchValue = value.trim().toLowerCase();
-    this.selectedKeywords.clear();
     this.projectsToShow = new Set();
-    this.projects.forEach(project => {
-      value.trim().split(' ').forEach(word => {
-        if (project.title.toLowerCase().includes(word)) {
-          this.projectsToShow.add(project);
-        }
-        else {
-          project.keywords.some(keyword => {
-            if (keyword.toLowerCase().includes(word)) {
-              this.projectsToShow.add(project);
-            }
-          })
-        }
+    if(value){
+      this.projects.forEach(project => {
+        value.trim().split(' ').forEach(word => {
+          if (project.title.toLowerCase().includes(word)) {
+            this.projectsToShow.add(project);
+          }
+          else {
+            project.keywords.some(keyword => {
+              if (keyword.toLowerCase().includes(word)) {
+                this.projectsToShow.add(project);
+              }
+            })
+          }
+        })
       })
-    })
-    console.log(value.trim().split(''));
-
+    }
+    else{
+      this.projectsToShow = new Set(this.projects);
+    }
+    this.notFilteredProjects = new Set(this.projectsToShow);
   }
 
   deleteFilters() {
-    this.selectedKeywords.clear();
     this.selectedNames.clear();
-    this.updateProjectsToShow();
+    this.projectsToShow = new Set(this.notFilteredProjects);
   }
 
   selectMenuItem(id: number) {
