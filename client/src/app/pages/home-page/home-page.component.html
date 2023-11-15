@@ -1,8 +1,16 @@
 <app-page-skeleton>
-  <form main-col class="login-container">
-    <h2>Login</h2>
-    <input name="email" type="text" placeholder="Email" [ngModel]="email" (ngModelChange)="updateEmail($event)">
-    <input name="password" type="password" placeholder="Password" [ngModel]="password" (ngModelChange)="updatePassword($event)">
-    <app-button class="orange" (click)="login()">Login</app-button>
-  </form>
+  <app-popup
+    [showSlider]="false">
+    <div class="separator"></div>
+    <form class="login-container">
+      <h2>Login</h2>
+      <input name="email" type="text" placeholder="Email" class="{{loginFailed ? 'failed' : '' }}" [ngModel]="email" (ngModelChange)="updateEmail($event)">
+      <input name="password" type="password" placeholder="Password" class="{{loginFailed ? 'failed' : '' }}" [ngModel]="password" (ngModelChange)="updatePassword($event)">
+      <app-button class="orange" (click)="login()">Login</app-button>
+    </form>
+  </app-popup>
+
+  <app-alert  class="danger login {{showAlert ? 'show' : ''}}">
+    <p>Invalid email or password</p>
+  </app-alert>
 </app-page-skeleton>

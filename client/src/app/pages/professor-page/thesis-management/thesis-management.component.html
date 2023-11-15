@@ -3,19 +3,18 @@
     <div class=" w-1/6 flex flex-col gap-4 bg-white card">
       <div class="button-tesi orange" (click)="OpenCreatePopup()">
           <p class="text-center">Create new thesis </p>
-          <!--<app-icon name="add" class="w-4 h-4"></app-icon>--><!--Should restore this line but it gives problems-->>
+          <app-icon name="add" class="w-4 h-4"></app-icon><!--Should restore this line but it gives problems-->
       </div>
       <div class="separator"></div>
-      <!--<button class="dropdownButton " (click)="OpenCreatePopup()"> Crea Nuova Tesi</button>-->
       <div class="w-full flex flex-col gap-6">
         <div class="h-full w-full flex flex-col gap-2">
-          <h2 class=""> Lists of theses </h2>
+          <h2 class=""> Show Theses: </h2>
           <button class="dropdownButton " (click)="showActiveThesesTable()"> Active </button>
           <button class="dropdownButton " (click)="showArchivedThesesTable()"> Archived </button>
         </div>
         <div class="h-full w-full flex flex-col gap-2">
-          <h2 class=""> List of applicants </h2>
-          <button class="dropdownButton  items-start" (click)="showApplicantsTable()"> Show</button>
+          <h2 class=""> Show applicants: </h2>
+          <button class="dropdownButton  items-start" (click)="showApplicantsTable()">All theses</button>
         </div>
       </div>
     </div>
@@ -37,13 +36,11 @@
   [closeClickOutside]="false"
   (send)="insertThesis()"
   [response]="response"  >
-  <div class="flex flex-col h-full w-full ">
-    <div class="p-4 w-full flex flex-col gap-2 items-center ">
+  <div *ngIf="!requestAccepted" class="flex flex-col h-full w-full">
+    <div class="p-2 w-full flex flex-col gap-2 items-center ">
       <div style="width: 90%; height: 1px" class="bg-orange-500"></div>
-      <div class="text-3xl font-bold">Fill in the following fields</div>
-
+      <div class="text-3xl font-bold">Fill the following fields</div>
     </div>
-
     <div class="info">
       <div class="flex w-full h-full justify-center gap-4">
         <div class="flex flex-col w-full h-full">
@@ -70,5 +67,6 @@
       </div>
     </div>
   </div>
+  <div *ngIf="requestAccepted" class="text-green-500 text-xl"> The insertion of the thesis was successful </div>
 
 </app-popup>

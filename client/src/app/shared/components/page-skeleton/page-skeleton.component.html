@@ -1,4 +1,5 @@
 <div class="columns-2 min-h-screen flex bg-gray-50">
+  <ng-content></ng-content>
   <div class="w-1/6 border-r-2">
     <div class="md:p-4 border-b-2">
       <img src="assets/images/LogoPoli.svg" alt="no image found">
@@ -12,8 +13,10 @@
     <div class="title p-4 flex items-center justify-between border-b-2 border-orange-500">
       <h2 class="uppercase text-3xl font-bold">thesis proposals</h2>
       <div class="flex items-center">
-        <img alt="propic" src="https://picsum.photos/512/512" class="propic mr-4">
-        <p class="text-sm uppercase">first last, p123456</p>
+        <img alt="propic" src="https://picsum.photos/512/512" class="propic mr-4" *ngIf="currentRoute!=='/'">
+        <p class="text-sm uppercase" *ngIf="currentRoute==='/student'">first last, s123456</p>
+        <p class="text-sm uppercase" *ngIf="currentRoute==='/professor'">first last, p123456</p>
+        <app-button class="ml-4" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
       </div>
     </div>
     <div class="main columns-2 flex">

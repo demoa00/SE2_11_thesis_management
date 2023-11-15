@@ -2,10 +2,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-* {
-  color: #04264c;
-}
-
 .h-1\/8 {
   height: 12.5%;
 }

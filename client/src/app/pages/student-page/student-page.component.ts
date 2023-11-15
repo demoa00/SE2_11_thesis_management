@@ -33,6 +33,9 @@ export class StudentPageComponent {
   keywords = new Set(this.projects.map(project => project.keywords).flat());
   selectedKeywords = new Set<string>();
   selectedNames = new Set<string>();
+  showSuccessAlert = false;
+  showDangerAlert = false;
+  alertContent = "";
 
   keywordsHover = false;
   professorsHover = false;
@@ -51,15 +54,14 @@ export class StudentPageComponent {
 
   toggleName(keyword: string) {
     this.selectedNames.has(keyword) ? this.selectedNames.delete(keyword) : this.selectedNames.add(keyword);
-    console.log(this.notFilteredProjects)
     if(this.selectedNames.size === 0){
       this.projectsToShow = new Set(this.notFilteredProjects);
     }
     else {
       this.projectsToShow = new Set(this.notFilteredProjects);
-      this.projects.forEach(project => {
-        if (this.selectedNames.has(project.name)) {
-          this.projectsToShow.add(project);
+      this.projectsToShow.forEach(project => {
+        if (!this.selectedNames.has(project.name)) {
+          this.projectsToShow.delete(project);
         }
       })
     }
@@ -118,6 +120,20 @@ export class StudentPageComponent {
   }
   setToString(object: Set<any>) {
     return Array.from(object).join(', ');
+  }
+
+  showAlert(value: string) {
+    if(value === 'success'){
+      this.showSuccessAlert = true;
+    }
+    else {
+      this.showDangerAlert = true;
+    }
+    setTimeout(() => {
+      this.showSuccessAlert = false;
+      this.showDangerAlert = false;
+      this.selectedProject = null;
+    }, 3000);
   }
 
 }

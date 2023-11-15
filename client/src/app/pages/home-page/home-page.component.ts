@@ -10,11 +10,14 @@ export class HomePageComponent {
   email: string = "";
   password: string = "";
 
-  studentEmail: string = "s123456@studenti.polito.it";
+  studentEmail: string = "s123456";
   studentPassword: string = "password";
 
-  professorEmail: string = "p123456@polito.it";
+  professorEmail: string = "p123456";
   professorPassword: string = "password";
+
+  showAlert = false;
+  loginFailed = false;
 
   constructor(private _router: Router) { }
 
@@ -24,7 +27,11 @@ export class HomePageComponent {
     } else if (this.email == this.professorEmail && this.password == this.professorPassword) {
       this._router.navigate(['/professor']);
     } else {
-      alert("Email o password errati");
+      this.showAlert = true;
+      this.loginFailed = true;
+      setTimeout(() => {
+        this.showAlert = false;
+      }, 3000)
     }
   }
 

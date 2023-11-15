@@ -18,5 +18,10 @@
     &:focus {
       @apply border-orange-600;
     }
+
+    &.failed {
+      @apply border-red-600;
+    }
+
   }
 }

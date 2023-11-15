@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class ThesisManagementComponent {
   createPopup: boolean = false;
-  response = undefined;
+  response :any;
   requestAccepted: boolean = false;
   title: string = "";
   supervisor: string = "";
@@ -51,6 +51,7 @@ export class ThesisManagementComponent {
       data: this.data
     }
     console.log(thesis)
+    this.response = {prova:"prova"}
   }
 
   showApplicantsTable() {
