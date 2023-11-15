@@ -13,6 +13,8 @@
   transition: all 0.2s ease-in-out;
   opacity: 0;
   border-radius: 8px;
+  z-index: 100;
+  width: max-content;
 }
 :host.show {
   opacity: 1;
@@ -28,6 +30,9 @@
 }
 :host.danger * {
   color: white !important;
+}
+:host.login {
+  top: 20%;
 }
 
 /*# sourceMappingURL=alert.component.css.map */
