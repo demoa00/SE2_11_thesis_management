@@ -18,4 +18,12 @@ describe('PageSkeletonComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should navigate to the home page on logout', () => {
+    const routerSpy = spyOn(component['_router'], 'navigate');
+  
+    component.logout();
+  
+    expect(routerSpy).toHaveBeenCalledWith(['/']);
+  });
 });

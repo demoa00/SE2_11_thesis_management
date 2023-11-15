@@ -1,10 +1,11 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HomePageComponent } from './home-page.component';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { PageSkeletonComponent } from 'src/app/shared/components/page-skeleton/page-skeleton.component';
+import { PopupComponent } from 'src/app/shared/components/popup-conferma/popup.component';
+import { AlertComponent } from 'src/app/shared/alert/alert.component';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
@@ -13,7 +14,7 @@ describe('HomePageComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule],
-      declarations: [HomePageComponent, ButtonComponent, PageSkeletonComponent]
+      declarations: [HomePageComponent, ButtonComponent, PageSkeletonComponent, PopupComponent, AlertComponent]
     });
     fixture = TestBed.createComponent(HomePageComponent);
     component = fixture.componentInstance;
@@ -24,64 +25,44 @@ describe('HomePageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it("should initialize email and password", () => {
-    // Create a mock router
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-    const component = new HomePageComponent(routerSpy);
-    expect(component.email).toBe('');
-    expect(component.password).toBe('');
+  it('should update email property on updateEmail method call', () => {
+    component.updateEmail('test@example.com');
+  
+    expect(component.email).toEqual('test@example.com');
   });
 
-  it('should update email and password', fakeAsync(() => {
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-    const component = new HomePageComponent(routerSpy);
-    component.updateEmail('test@example.com');
-    component.updatePassword('testpassword');
-    fixture.detectChanges();
-    tick();
-    expect(component.email).toBe('test@example.com');
-    expect(component.password).toBe('testpassword');
-  }));
+  it('should update password property on updatePassword method call', () => {
+    component.updatePassword('password123');
   
-  it("should navigate to student route for valid student credentials", fakeAsync(() => {
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-    const component = new HomePageComponent(routerSpy);
-    component.email = 's123456@studenti.polito.it';
+    expect(component.password).toEqual('password123');
+  });
+
+  it('should navigate to student page on successful student login', () => {
+    spyOn(component['_router'], 'navigate'); // Spy on router.navigate
+  
+    component.email = 's123456';
     component.password = 'password';
-    
-    fixture.detectChanges();
-    tick();
-    
     component.login();
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/student']);
-  }));
+  
+    expect(component['_router'].navigate).toHaveBeenCalledWith(['/student']);
+  });
 
-  it("should navigate to professor route for valid professor credentials", fakeAsync(() => {
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-    const component = new HomePageComponent(routerSpy);
-
-    component.email = 'p123456@polito.it';
+  it('should navigate to professor page on successful professor login', () => {
+    spyOn(component['_router'], 'navigate'); // Spy on router.navigate
+  
+    component.email = 'p123456';
     component.password = 'password';
-    
-    fixture.detectChanges();
-    tick();
-    
     component.login();
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/professor']);
-  }));
+  
+    expect(component['_router'].navigate).toHaveBeenCalledWith(['/professor']);
+  });
 
-  it("should alert for invalid credentials", fakeAsync(() => {
-    spyOn(window, 'alert');
-
-    const component = new HomePageComponent({} as Router); // Pass an empty object for the Router, as it's not used in this test
-
-    component.email = 'invalid@example.com';
-    component.password = 'invalidpassword';
-
-    fixture.detectChanges();
-    tick();
-
+  it('should show alert on failed login attempt', () => {
+    component.email = 'invalid';
+    component.password = 'invalid';
     component.login();
-    expect(window.alert).toHaveBeenCalledWith('Email o password errati');
-  }));
+  
+    expect(component.showAlert).toBeTruthy();
+    expect(component.loginFailed).toBeTruthy();
+  });
 });
