@@ -1,3 +1,12 @@
+.dropdownButton {
+  background-color: #03577A;
+  color: white;
+  line-height: 16px;
+  padding: 8px;
+  border-radius: 8px;
+  min-width: 160px;
+  @apply hover:drop-shadow-lg;
+}
 
 .bo-popup-close-1 {
   @apply absolute top-0 right-0 cursor-pointer h-10 w-10 text-gray-500;

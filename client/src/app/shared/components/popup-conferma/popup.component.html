@@ -11,16 +11,25 @@
         (click)="close.emit()"></app-icon>
       <!--<div *ngIf="showCloseButton" class="bo-popup-close-1" (click)="close.emit()"></div>-->
     </div>
-    <div class="flex flex-col items-center gap-4 mb-4">
+    <div class="flex flex-col w-full items-center gap-4 mb-4">
       <ng-content></ng-content>
       <app-button-slider
-        *ngIf="showSlider && showButton"
+        *ngIf="showSlider && showSliderAfterResponse"
         class="place-content-center"
         (buttonSliderSubmit)="send.emit()"
         (requestAccepted)="requestAccepted.emit($event); toggleButton()"
         [responseFromServer]="response">
         {{ title == 'Annulla Operazione' ? 'Cancel' : 'Insert' }}
       </app-button-slider>
+      <div *ngIf="showButton" >
+        <button
+          *ngIf="showButton && showSliderAfterResponse && !sending"
+          class="place-content-center dropdownButton "
+          (click)="send.emit() ;sending = true; requestAccepted.emit(true)">
+          {{ title == 'Annulla Operazione' ? 'Cancel' : 'Insert' }}
+        </button>
+        <app-loading *ngIf="!response && sending"></app-loading>
+      </div>
     </div>
   </div>
 </div>

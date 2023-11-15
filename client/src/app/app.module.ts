@@ -18,6 +18,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { LoginFormComponent } from './shared/components/login-form/login-form.component';
 import { PageSkeletonComponent } from './shared/components/page-skeleton/page-skeleton.component';
 import { AlertComponent } from './shared/alert/alert.component';
+import {LoadingComponent} from "./shared/components/loading/loading.component";
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
@@ -40,7 +41,8 @@ const routes: Routes = [
     HomePageComponent,
     LoginFormComponent,
     PageSkeletonComponent,
-    AlertComponent
+    AlertComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule, RouterModule.forRoot(routes), FormsModule, CdkDrag

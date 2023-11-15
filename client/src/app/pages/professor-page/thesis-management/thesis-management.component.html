@@ -35,7 +35,9 @@
   (close)="OpenCreatePopup()"
   [closeClickOutside]="false"
   (send)="insertThesis()"
-  [response]="response"  >
+  [response]="response"
+  [showSlider] = "false"
+  [showButton] = "true">
   <div *ngIf="!requestAccepted" class="flex flex-col h-full w-full">
     <div class="p-2 w-full flex flex-col gap-2 items-center ">
       <div style="width: 90%; height: 1px" class="bg-orange-500"></div>

@@ -16,7 +16,8 @@ export class PopupComponent implements OnInit {
   response: any;
   @Input()
   showSlider?: boolean = true;
-
+  @Input()
+  showButton?: boolean = false;
   @Output()
   close = new EventEmitter();
 
@@ -26,7 +27,8 @@ export class PopupComponent implements OnInit {
   @Output()
   requestAccepted = new EventEmitter<boolean>();
 
-  showButton = true;
+  showSliderAfterResponse = true;
+  sending = false;
   constructor() {}
 
   ngOnInit() {
@@ -34,7 +36,7 @@ export class PopupComponent implements OnInit {
   }
 
   toggleButton() {
-    this.showButton = false;
+    this.showSliderAfterResponse = false;
   }
 
   @HostListener('window:keyup', ['$event'])
