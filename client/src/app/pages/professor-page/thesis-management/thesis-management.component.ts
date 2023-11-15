@@ -25,7 +25,10 @@ export class ThesisManagementComponent {
   showApplicants: boolean = false;
   showActiveTheses: boolean = false;
   showArchivedTheses: boolean = false;
-  applicantsRow:{}[] = [{nome:'carlo', matricola:314251, titoloTesi:'AI'},{nome:'massimo', matricola:314251, titoloTesi:'Machine Learning'}];
+  applicantsRow:{}[] = [{nome:'Claudio Montanari', matricola:314461, titoloTesi:'AI'},{nome:'Massimo Decimo Meridio', matricola:314251, titoloTesi:'AI - nuovo universo'},
+    {nome:'Carlo Bianchi', matricola:315851, titoloTesi:'AI - nuovo universo'},{nome:'Luca Verdi', matricola:314249, titoloTesi:'Machine Learning - Troppi Dati'},
+    {nome:'Massimo Rossi', matricola:317453, titoloTesi:'Cloud in the envoironment'},{nome:'Giorgio Rosi', matricola:314254, titoloTesi:'Machine Learning - Find the right pattern'},
+    {nome:'Carlo verdi', matricola:314253, titoloTesi:'AI - nuovo universo'},{nome:'George Lucas', matricola:314259, titoloTesi:'Cloud in the envoironment'}];
   activeThesesRow:{}[] = []
   archivedTheses:{}[] = []
 
