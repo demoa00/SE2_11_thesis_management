@@ -1,13 +1,9 @@
 {
     "$schema": "../professor.json",
-    "professor": {
-        "professorId": "p123456",
-        "name": "Mario",
-        "surname": "Rossi",
-        "email": "mario.rossi@polito.it",
-        "codGroup": "CG_12",
-        "codDepartment": "CD_34",
-        "password": "erkjbvibvciqabvqiavbqa",
-        "salt": "dnei13ur83fhqnpvub28024b"
-    }
+    "professorId": "p123456",
+    "name": "Mario",
+    "surname": "Rossi",
+    "email": "mario.rossi@polito.it",
+    "codGroup": "CG_12",
+    "codDepartment": "CD_34"
 }

@@ -7,7 +7,7 @@
         "$schema": {
             "type": "string"
         },
-        "id": {
+        "thesisProposalId": {
             "type": "integer",
             "minimum": 1
         },

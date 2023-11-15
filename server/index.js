@@ -61,9 +61,10 @@ const addFormats = require('ajv-formats').default;
 
 const applicationSchema = JSON.parse(fs.readFileSync(path.join('.', 'json_schema_validator', 'application.json')).toString());
 const thesisProposalSchema = JSON.parse(fs.readFileSync(path.join('.', 'json_schema_validator', 'thesisProposal.json')).toString());
+const userCredentialsSchema = JSON.parse(fs.readFileSync(path.join('.', 'json_schema_validator', 'userCredentials.json')).toString());
 
 const validator = new Validator({ allErrors: true });
-validator.ajv.addSchema([applicationSchema, thesisProposalSchema]);
+validator.ajv.addSchema([applicationSchema, thesisProposalSchema, userCredentialsSchema]);
 addFormats(validator.ajv);
 
 const validate = validator.validate;
@@ -101,7 +102,7 @@ app.use(passport.authenticate('session'));
 ////////////////
 
 app.post('/api/professors/:professorId/thesisProposals', validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal);
-app.post('/api/authenticatedSession', userController.createNewAuthenticatedSession);
+app.post('/api/authenticatedSession', validate({ body: userCredentialsSchema }), userController.createNewAuthenticatedSession);
 app.delete('/api/authenticatedSession/:userId', isLoggedIn, userController.deleteAuthenticatedSession);
 
 

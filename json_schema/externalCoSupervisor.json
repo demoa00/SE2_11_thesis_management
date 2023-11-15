@@ -1,46 +1,45 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "externalCoSupervisor_schema",
     "title": "External CoSupervisor Schema",
-    "definitions": {
-        "externalCoSupervisor": {
-            "type": "object",
-            "properties": {
-                "externalCoSupervisorId": {
-                    "type": "string",
-                    "pattern": "^(e|E)[0-9]{6}$"
-                },
-                "name": {
-                    "type": "string",
-                    "pattern": "^[a-zA-Z ]+$",
-                    "minLength": 1
-                },
-                "surname": {
-                    "type": "string",
-                    "pattern": "^[a-zA-Z ]+$",
-                    "minLength": 1
-                },
-                "email": {
-                    "type": "string",
-                    "format": "email"
-                },
-                "company": {
-                    "type": "string",
-                    "minLength": 1
-                }
-            },
-            "required": [
-                "externalCoSupervisorId",
-                "name",
-                "surname",
-                "email",
-                "company"
-            ]
-        }
-    },
     "type": "object",
     "properties": {
-        "externalCoSupervisor": {
-            "$ref": "#/definitions/externalCoSupervisor"
+        "$schema": {
+            "type": "string"
+        },
+        "externalCoSupervisorId": {
+            "type": "string",
+            "pattern": "^(e|E)[0-9]{6}$"
+        },
+        "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Z ]+$",
+            "minLength": 1
+        },
+        "surname": {
+            "type": "string",
+            "pattern": "^[a-zA-Z ]+$",
+            "minLength": 1
+        },
+        "email": {
+            "type": "string",
+            "format": "email"
+        },
+        "company": {
+            "type": "string",
+            "minLength": 1
+        },
+        "self": {
+            "type": "string",
+            "format": "uri"
         }
-    }
+    },
+    "additionalProperties": false,
+    "required": [
+        "externalCoSupervisorId",
+        "name",
+        "surname",
+        "email",
+        "company"
+    ]
 }
