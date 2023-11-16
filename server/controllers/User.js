@@ -29,7 +29,7 @@ module.exports.createNewAuthenticatedSession = function createNewAuthenticatedSe
     }
 
     if (!user) {
-      return res.status(401).json(info);
+      utils.writeJson(res, info, 400);
     }
 
     req.login(user, (err) => {
@@ -37,7 +37,7 @@ module.exports.createNewAuthenticatedSession = function createNewAuthenticatedSe
         return next(err);
       }
 
-      return res.json(req.user);
+      utils.writeJson(res, req.user, 201);
     });
   })(req, res, next);
 };
@@ -47,13 +47,13 @@ module.exports.deleteAuthenticatedSession = function deleteAuthenticatedSession(
     if (req.user.studentId === req.params.userId) {
       req.logOut(() => res.end());
     } else {
-      res.status(403).json({ error: "Forbidden" });
+      utils.writeJson(res, { error: "Forbidden" }, 403);
     }
   } else {
     if (req.user.professorId === req.params.userId) {
       req.logOut(() => res.end());
     } else {
-      res.status(403).json({ error: "Forbidden" });
+      utils.writeJson(res, { error: "Forbidden" }, 403);
     }
   }
 };

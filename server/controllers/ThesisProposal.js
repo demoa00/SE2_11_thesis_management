@@ -1,13 +1,20 @@
 'use strict';
 
-var utils = require('../utils/writer.js');
-var ThesisProposal = require('../service/ThesisProposalService');
+const utils = require('../utils/writer.js');
+const Professor = require('../service/ProfessorService');
+const ThesisProposal = require('../service/ThesisProposalService');
 
-module.exports.getAllThesisProposalsOfProfessor = function getAllThesisProposalsOfProfessor(req, res, next) {
+module.exports.getThesisProposalsOfProfessor = async function getThesisProposalsOfProfessor(req, res, next) {
   try {
+    if (req.params.professorId !== req.user.professorId) {
+      utils.writeJson(res, { error: "Forbidden" }, 403);
+    }
 
+    let thesisProposalsList = await ThesisProposal.getThesisProposalsOfProfessor(req.user.professorId, req.query.filter);
+
+    utils.writeJson(res, thesisProposalsList, 200);
   } catch (error) {
-
+    utils.writeJson(res, { error: error.message }, error.code);
   }
 };
 

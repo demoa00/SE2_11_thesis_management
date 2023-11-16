@@ -1,7 +1,10 @@
 {
     "$schema": "../application.json",
-    "application": {
-        "thesisProposalId": 1,
-        "studentId": "s123456"
-    }
+    "thesisProposalId": 1,
+    "studentId": "s123456",
+    "message": "Hello",
+    "date": "2023-11-15",
+    "cv": "http://example.com/{folder}/{file}.pdf",
+    "isAccepted": false,
+    "isReaded": false
 }

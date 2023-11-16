@@ -61,9 +61,10 @@ const addFormats = require('ajv-formats').default;
 
 const applicationSchema = JSON.parse(fs.readFileSync(path.join('.', 'json_schema_validator', 'application.json')).toString());
 const thesisProposalSchema = JSON.parse(fs.readFileSync(path.join('.', 'json_schema_validator', 'thesisProposal.json')).toString());
+const userCredentialsSchema = JSON.parse(fs.readFileSync(path.join('.', 'json_schema_validator', 'userCredentials.json')).toString());
 
 const validator = new Validator({ allErrors: true });
-validator.ajv.addSchema([applicationSchema, thesisProposalSchema]);
+validator.ajv.addSchema([applicationSchema, thesisProposalSchema, userCredentialsSchema]);
 addFormats(validator.ajv);
 
 const validate = validator.validate;
@@ -100,23 +101,29 @@ app.use(passport.authenticate('session'));
 //Route methods
 ////////////////
 
-app.post('/api/authenticatedSession', userController.createNewAuthenticatedSession);
+//Login
+app.post('/api/authenticatedSession', validate({ body: userCredentialsSchema }), userController.createNewAuthenticatedSession);
 app.delete('/api/authenticatedSession/:userId', isLoggedIn, userController.deleteAuthenticatedSession);
 
-//////////////////////////////////////////////////////////
-// Error handlers for validation and authentication errors
-//////////////////////////////////////////////////////////
+//Thesis proposals
+app.get('/api/professors/:professorId/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposalsOfProfessor);
+app.post('/api/professors/:professorId/thesisProposals', validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal); //WORK IN PROGRESS
+
+//Professors
+app.get('/api/professors', isLoggedIn, professorController.getProfessors);
+app.get('/api/professors/:professorId', isLoggedIn, professorController.getProfessorById);
+
+//External co-supervisors
+app.get('/api/externalCoSupervisors', isLoggedIn, externalCoSupervisorController.getExternalCoSupervisors);
+app.get('/api/externalCoSupervisors/:externalCoSupervisorId', isLoggedIn, externalCoSupervisorController.getExternalCoSupervisorById);
+
+////////////////////////////////
+// Error handlers for validation
+////////////////////////////////
 
 app.use(function (err, req, res, next) {
     if (err instanceof ValidationError) {
         res.status(400).send(err);
-    } else next(err);
-});
-
-app.use(function (err, req, res, next) {
-    if (err.name === 'UnauthorizedError') {
-        const authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error' }] };
-        res.status(401).json(authErrorObj);
     } else next(err);
 });
 
