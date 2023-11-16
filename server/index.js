@@ -129,3 +129,51 @@ http.createServer(app).listen(serverPort, function () {
     console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
     console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
 });
+
+
+
+
+// Thesis Proposal Table Functions:
+
+app.post('/api/professors/{professorId}/thesisProposals', isLoggedIn, [
+    //TODO: insert Express validator functions
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(errors)
+        return res.status(422).json({ errors: errors.array() });
+    } else {
+        try {
+            const newThesisProposal = {
+                title: req.body.title,
+                coSupervisors: req.body.coSupervisors,
+                keywords: JSON.stringify(req.body.keywords),
+                thesisType: req.body.thesisType,
+                abroad: req.body.abroad,
+                description: req.body.description,
+                requirements: req.body.requirements,
+                expirationDate: req.body.expirationDate,
+                level: req.body.level
+            }
+            const newThesis = await thesisProposalController.insertNewThesisProposal(req.user.id, newThesisProposal);
+            res.json(newThesis);
+        } catch (err) {
+            console.log(err)
+            res.status(503).json({ error: `Database error during the add of the thesis proposal  ${req.params.id}.` });
+        }
+    }
+});
+
+app.get('api/thesisProposals', (req, res) => {
+    thesisProposalController.getThesisProposals(
+        req.user.id,
+        req.body.keywords,
+        req.body.supervisor,
+        req.body.title,
+        req.body.thesisType,
+        req.body.abroad,
+        req.bodyexpirationDate
+    )
+        .then(thesis => res.json(thesis))
+        .catch(() => res.status(500).end());
+});
