@@ -1,3 +1,12 @@
 <app-page-skeleton>
+  <div class="leftMenuItem" left-col
+       [class.selected]="n.selected"
+       [class.hovered]="n.hover && !n.selected"
+       (mouseenter)="n.hover=true"
+       (mouseleave)="n.hover=false"
+       (click)="selectMenuItem(n.id)"
+       *ngFor="let n of menuItems">
+    <p>Lorem Ipsum</p>
+  </div>
   <app-thesis-management main-col></app-thesis-management>
 </app-page-skeleton>

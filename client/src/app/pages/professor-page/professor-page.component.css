@@ -1,3 +1,21 @@
-
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.leftMenuItem {
+  border-radius: 8px;
+  padding: 4px 16px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.leftMenuItem.selected {
+  background-color: #03577A;
+}
+.leftMenuItem.selected * {
+  color: white;
+}
+.leftMenuItem.hovered {
+  background-color: #e5e7eb;
+}
 
 /*# sourceMappingURL=professor-page.component.css.map */
