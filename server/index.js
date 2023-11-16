@@ -101,10 +101,21 @@ app.use(passport.authenticate('session'));
 //Route methods
 ////////////////
 
-app.post('/api/professors/:professorId/thesisProposals', validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal);
+//Login
 app.post('/api/authenticatedSession', validate({ body: userCredentialsSchema }), userController.createNewAuthenticatedSession);
 app.delete('/api/authenticatedSession/:userId', isLoggedIn, userController.deleteAuthenticatedSession);
 
+//Thesis proposals
+app.get('/api/professors/:professorId/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposalsOfProfessor);
+app.post('/api/professors/:professorId/thesisProposals', validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal); //WORK IN PROGRESS
+
+//Professors
+app.get('/api/professors', isLoggedIn, professorController.getProfessors);
+app.get('/api/professors/:professorId', isLoggedIn, professorController.getProfessorById);
+
+//External co-supervisors
+app.get('/api/externalCoSupervisors', isLoggedIn, externalCoSupervisorController.getExternalCoSupervisors);
+app.get('/api/externalCoSupervisors/:externalCoSupervisorId', isLoggedIn, externalCoSupervisorController.getExternalCoSupervisorById);
 
 ////////////////////////////////
 // Error handlers for validation

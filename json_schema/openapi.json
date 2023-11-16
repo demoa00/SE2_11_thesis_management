@@ -387,6 +387,33 @@
                     }
                 },
                 "additionalProperties": false
+            },
+            "externalCoSupervisors": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "externalCoSupervisorId": {
+                            "type": "string",
+                            "pattern": "^(e|E)[0-9]{6}$"
+                        },
+                        "name": {
+                            "type": "string",
+                            "pattern": "^[a-zA-Z ]+$",
+                            "minLength": 1
+                        },
+                        "surname": {
+                            "type": "string",
+                            "pattern": "^[a-zA-Z ]+$",
+                            "minLength": 1
+                        },
+                        "self": {
+                            "type": "string",
+                            "format": "uri"
+                        }
+                    },
+                    "additionalProperties": false
+                }
             }
         }
     },
@@ -488,7 +515,7 @@
                 "tags": [
                     "thesisProposal"
                 ],
-                "operationId": "getAllThesisProposalsOfProfessor",
+                "operationId": "getThesisProposalsOfProfessor",
                 "parameters": [
                     {
                         "name": "authenticatedUserId",
@@ -983,7 +1010,7 @@
                 "tags": [
                     "externalCoSupervisor"
                 ],
-                "operationId": "getAllExternalCoSupervisors",
+                "operationId": "getExternalCoSupervisors",
                 "parameters": [
                     {
                         "name": "authenticatedUserId",
@@ -1002,10 +1029,54 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "items": {
-                                        "$ref": "#/components/schemas/externalCoSupervisor"
-                                    }
+                                    "$ref": "#/components/schemas/externalCoSupervisors"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/externalCoSupervisors/{externalCoSupervisorId}": {
+            "get": {
+                "tags": [
+                    "externalCoSupervisor"
+                ],
+                "operationId": "getExternalCoSupervisorById",
+                "parameters": [
+                    {
+                        "name": "authenticatedUserId",
+                        "in": "cookie",
+                        "required": true,
+                        "description": "The authenticated user id corresponds to the professor that perform this request",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^((p|P)|(s|S))[0-9]{6}$"
+                        }
+                    },
+                    {
+                        "name": "externalCoSupervisorId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^(e|E)[0-9]{6}$"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/externalCoSupervisor"
                                 }
                             }
                         }
@@ -1015,6 +1086,9 @@
                     },
                     "401": {
                         "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
                     },
                     "500": {
                         "description": "Internal Server Error"

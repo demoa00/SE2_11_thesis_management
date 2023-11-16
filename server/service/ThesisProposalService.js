@@ -11,9 +11,45 @@ const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => {
  * professorId String 
  * returns thesisProposals
  **/
-exports.getAllThesisProposalsOfProfessor = function (professorId) {
+exports.getThesisProposalsOfProfessor = function (professorId, filter) {
+  if (filter instanceof Array) {
+    filter = filter[0];
+  }
+  
   return new Promise(function (resolve, reject) {
-    //to do!
+    let sql = 'SELECT * FROM thesisProposals WHERE ';
+    let params = [];
+
+    if (filter != undefined) {
+      if (filter === 'supervisor') {
+        sql = sql + 'supervisor = ?';
+        params.push(professorId);
+      } else if (filter === 'cosupervisor') {
+        sql = sql + 'thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?)';
+        params.push(professorId);
+      }
+    } else {
+      sql = sql + 'supervisor = ?' + ' OR ' + 'thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?)';
+      params.push(professorId);
+      params.push(professorId);
+    }
+
+    db.all(sql, params, (err, rows) => {
+      if (err) {
+        reject({ code: 500, message: "Internal Server Error" });
+      } else if (rows === undefined) {
+        reject({ code: 404, message: "Not Found" });
+      } else {
+        let thesisProposalsList = rows.map((r) => ({
+          thesisProposalId: r.thesisProposalId,
+          title: r.title,
+          keywords: r.keywords.split("/"),
+          self: `/api/professors/${professorId}/thesisProposals/${r.thesisProposalId}`
+        }));
+
+        resolve(thesisProposalsList);
+      }
+    });
   });
 }
 
