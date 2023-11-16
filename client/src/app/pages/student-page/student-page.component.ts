@@ -54,16 +54,20 @@ export class StudentPageComponent {
 
   toggleName(keyword: string) {
     this.selectedNames.has(keyword) ? this.selectedNames.delete(keyword) : this.selectedNames.add(keyword);
-    if(this.selectedNames.size === 0){
-      this.projectsToShow = new Set(this.notFilteredProjects);
-    }
-    else {
-      this.projectsToShow = new Set(this.notFilteredProjects);
-      this.projectsToShow.forEach(project => {
-        if (!this.selectedNames.has(project.name)) {
-          this.projectsToShow.delete(project);
-        }
-      })
+    this.projectsToShow = new Set(this.notFilteredProjects);
+    // if(this.selectedNames.size !== 0){
+      this.filterByNames();
+    // }
+  }
+
+  filterByNames() {
+    this.projectsToShow.forEach(project => {
+      if (!this.selectedNames.has(project.name)) {
+        this.projectsToShow.delete(project);
+      }
+    })
+    if (this.selectedNames.size === 0) {
+      this.projectsToShow = new Set(this.projects);
     }
   }
 
@@ -88,13 +92,15 @@ export class StudentPageComponent {
     }
     else{
       this.projectsToShow = new Set(this.projects);
+      this.filterByNames();
     }
     this.notFilteredProjects = new Set(this.projectsToShow);
   }
 
   deleteFilters() {
     this.selectedNames.clear();
-    this.projectsToShow = new Set(this.notFilteredProjects);
+    this.filterByNames();
+    // this.projectsToShow = new Set(this.notFilteredProjects);
   }
 
   selectMenuItem(id: number) {
