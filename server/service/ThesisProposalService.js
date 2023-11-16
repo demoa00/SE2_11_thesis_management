@@ -79,7 +79,33 @@ exports.getThesisProposal = function (thesisProposalId) {
  **/
 exports.getThesisProposals = function (codDegree, keywords, supervisor, title, inCompany, abroad, expirationDate) {
   return new Promise(function (resolve, reject) {
-    //to do!
+    const sql = 'SELECT thesisProposalId FROM thesisProposal_cds_bridge WHERE cdsId = ?';
+    db.all(sql, [codDegree], (err, rows) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      const thesisProposals = rows.map((e) => ({
+        thesis: e.thesis
+      }
+      ));
+      resolve(thesisProposals);
+    }).then(function () {
+      return new Promise(function (resolve, reject) {
+        const sql = 'SELECT * FROM thesisProposals WHERE ';
+        db.all(sql, [], (err, rows) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          const thesisProposals = rows.map((e) => ({
+            thesis: e.thesis
+          }
+          ));
+          resolve(thesisProposals);
+        })
+      })
+    })
   });
 }
 
@@ -93,7 +119,26 @@ exports.getThesisProposals = function (codDegree, keywords, supervisor, title, i
  **/
 exports.insertNewThesisProposal = function (professorId, newThesisProposal) {
   return new Promise(function (resolve, reject) {
-    //to do!
+    const sql = 'INSERT INTO thesisProposals(title, supervisor, keywords, description, requirements, thesisType, abroad, notes, expirationDate, level, isArchieved) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    db.run(sql, [
+      newThesisProposal.title,
+      professorId,
+      newThesisProposal.keywords,
+      newThesisProposal.description,
+      newThesisProposal.reqirements,
+      newThesisProposal.thesisType,
+      newThesisProposal.abroad,
+      newThesisProposal.notes,
+      newThesisProposal.expirationDate,
+      newThesisProposal.level,
+      0
+    ], function (err) {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(this.lastID);
+    })
   });
 }
 
