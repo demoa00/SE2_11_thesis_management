@@ -23,7 +23,7 @@
     }
   }
   &.danger {
-    background-color: #f56565;
+    background-color: $danger;
     * {
       color: white !important;
     }
