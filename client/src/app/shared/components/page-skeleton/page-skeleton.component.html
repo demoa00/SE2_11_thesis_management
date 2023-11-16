@@ -1,6 +1,6 @@
 <div class="columns-2 min-h-screen flex bg-gray-50">
   <ng-content></ng-content>
-  <div class="w-1/6 border-r-2">
+  <div class="max-md:hidden w-1/6 border-r-2">
     <div class="md:p-4 border-b-2">
       <img src="assets/images/LogoPoli.svg" alt="no image found">
     </div>
@@ -9,7 +9,7 @@
     </div>
 
   </div>
-  <div class="w-5/6 flex flex-col">
+  <div class="md:w-5/6 max-md:w-full flex flex-col">
     <div class="title p-4 flex items-center justify-between border-b-2 border-orange-500">
       <h2 class="uppercase text-3xl font-bold">thesis proposals</h2>
       <div class="flex items-center">
@@ -20,10 +20,10 @@
       </div>
     </div>
     <div class="main columns-2 flex">
-      <div class="w-4/5 p-4">
+      <div class="md:w-4/5 max-md:w-full p-4">
         <ng-content select="[main-col]"></ng-content>
       </div>
-      <div class="w-1/5 border-l-2">
+      <div class="max-md:hidden w-1/5 border-l-2">
         <ng-content select="[right-col]"></ng-content>
       </div>
     </div>
