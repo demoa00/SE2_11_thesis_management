@@ -80,7 +80,7 @@ CREATE TABLE thesisProposals(
     keywords TEXT(100) NOT NULL,
     description TEXT(1000) NOT NULL,
     requirements TEXT(1000) NOT NULL,
-    inCompany BOLEAN NOT NULL,
+    thesisType TEXT(20) NOT NULL,
     abroad BOLEAN NOT NULL,
     notes TEXT(500),
     expirationDate DATE NOT NULL,

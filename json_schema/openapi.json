@@ -247,20 +247,11 @@
                         "minItems": 1
                     },
                     "thesisType": {
-                        "type": "object",
-                        "properties": {
-                            "inCompany": {
-                                "type": "boolean"
-                            },
-                            "abroad": {
-                                "type": "boolean"
-                            }
-                        },
-                        "additionalProperties": false,
-                        "required": [
-                            "inCompany",
-                            "abroad"
-                        ]
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "abroad": {
+                        "type": "boolean"
                     },
                     "groups": {
                         "type": "array",
