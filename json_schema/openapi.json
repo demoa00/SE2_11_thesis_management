@@ -229,14 +229,56 @@
                         "minLength": 1
                     },
                     "supervisor": {
-                        "type": "string",
-                        "pattern": "^(p|P)[0-9]{6}$"
+                        "type": "object",
+                        "properties": {
+                            "professorId": {
+                                "type": "string",
+                                "pattern": "^(p|P)[0-9]{6}$"
+                            },
+                            "name": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "surname": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "professor": {
+                                "type": "string",
+                                "format": "uri"
+                            }
+                        },
+                        "additionalProperties": false,
+                        "required": [
+                            "professorId"
+                        ]
                     },
                     "coSupervisor": {
                         "type": "array",
                         "items": {
-                            "type": "string",
-                            "pattern": "^((p|P)|(e|E))[0-9]{6}$"
+                            "type": "object",
+                            "properties": {
+                                "coSupervisorId": {
+                                    "type": "string",
+                                    "pattern": "^((p|P)|(e|E))[0-9]{6}$"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "surname": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "coSupervisor": {
+                                    "type": "string",
+                                    "format": "uri"
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": [
+                                "coSupervisorId"
+                            ]
                         }
                     },
                     "keywords": {
@@ -325,6 +367,14 @@
                             "minimum": 1
                         },
                         "title": {
+                            "type": "string",
+                            "minLength": 1
+                        },
+                        "name": {
+                            "type": "string",
+                            "minLength": 1
+                        },
+                        "surname": {
                             "type": "string",
                             "minLength": 1
                         },

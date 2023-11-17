@@ -9,11 +9,11 @@ module.exports.getThesisProposalsOfProfessor = async function getThesisProposals
   try {
     if (req.params.professorId !== req.user.professorId) {
       utils.writeJson(res, { error: "Forbidden" }, 403);
+    } else {
+      let thesisProposalsList = await ThesisProposal.getThesisProposalsOfProfessor(req.user.professorId, req.query.filter);
+
+      utils.writeJson(res, thesisProposalsList, 200);
     }
-
-    let thesisProposalsList = await ThesisProposal.getThesisProposalsOfProfessor(req.user.professorId, req.query.filter);
-
-    utils.writeJson(res, thesisProposalsList, 200);
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
   }
@@ -31,11 +31,11 @@ module.exports.getThesisProposals = async function getThesisProposals(req, res, 
   try {
     if (req.user.studentId === undefined) {
       utils.writeJson(res, { error: "Forbidden" }, 403);
+    } else {
+      let thesisProposalsList = await ThesisProposal.getThesisProposals(req.user.codDegree, req.query);
+
+      utils.writeJson(res, thesisProposalsList, 200);
     }
-
-    let thesisProposalsList = await ThesisProposal.getThesisProposals(req.user.codDegree, req.query);
-
-    utils.writeJson(res, thesisProposalsList, 200);
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
   }
