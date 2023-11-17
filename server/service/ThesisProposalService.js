@@ -1,6 +1,8 @@
 'use strict';
 
 const sqlite = require('sqlite3');
+const Professor = require('./ProfessorService');
+const ExternalCoSupervisor = require('./ExternalCoSupervisorService');
 
 const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
 
@@ -15,7 +17,7 @@ exports.getThesisProposalsOfProfessor = function (professorId, filter) {
   if (filter instanceof Array) {
     filter = filter[0];
   }
-  
+
   return new Promise(function (resolve, reject) {
     let sql = 'SELECT * FROM thesisProposals WHERE ';
     let params = [];
@@ -77,35 +79,125 @@ exports.getThesisProposal = function (thesisProposalId) {
  * expirationDate date  (optional)
  * returns thesisProposals
  **/
-exports.getThesisProposals = function (codDegree, keywords, supervisor, title, inCompany, abroad, expirationDate) {
-  return new Promise(function (resolve, reject) {
-    const sql = 'SELECT thesisProposalId FROM thesisProposal_cds_bridge WHERE cdsId = ?';
-    db.all(sql, [codDegree], (err, rows) => {
-      if (err) {
-        reject(err);
-        return;
+exports.getThesisProposals = function (codDegree, filter) {
+  let promise = [];
+  let sql_text = '';
+  let sql_filter_supervisor = '';
+  let sql_filter_internal_cosupervisor = '';
+  let sql_filter_external_cosupervisor = '';
+  let sql_filter_expirationdate = '';
+  let sql_filter_abroad = '';
+  let sql_coddegree = ' (SELECT thesisProposalId FROM thesisProposal_cds_bridge WHERE cdsId = ?) ';
+
+  let params = [codDegree];
+
+  if (filter != undefined) {
+    if (filter.text != undefined) {
+      sql_text += `thesisProposalId IN (SELECT thesisProposalId FROM virtualThesisProposals WHERE virtualThesisProposals MATCH '${filter.text}*')`;
+    }
+    if (filter.supervisor != undefined) {
+      if (!(filter.supervisor instanceof Array)) {
+        filter.supervisor = [filter.supervisor];
       }
-      const thesisProposals = rows.map((e) => ({
-        thesis: e.thesis
+
+      [...filter.supervisor].forEach((s, i) => {
+        promise.push(Professor.getProfessorById(s));
+
+        if (i == 0) {
+          sql_filter_supervisor += '(SELECT thesisProposalId FROM thesisProposals WHERE supervisor = ? ';
+          params.push(s);
+        } else {
+          sql_filter_supervisor += 'OR supervisor = ? ';
+          params.push(s);
+        }
+      });
+
+      sql_filter_supervisor = sql_filter_supervisor + ')';
+    }
+    if (filter.cosupervisor != undefined) {
+      const regex = new RegExp("p.*");
+
+      if (!(filter.cosupervisor instanceof Array)) {
+        filter.cosupervisor = [filter.cosupervisor];
       }
-      ));
-      resolve(thesisProposals);
-    }).then(function () {
-      return new Promise(function (resolve, reject) {
-        const sql = 'SELECT * FROM thesisProposals WHERE ';
-        db.all(sql, [], (err, rows) => {
-          if (err) {
-            reject(err);
-            return;
+
+      let i = 0;
+      let j = 0;
+      [...filter.cosupervisor].forEach((c) => {
+        if (regex.test(c)) {
+          promise.push(Professor.getProfessorById(c));
+
+          if (i == 0) {
+            sql_filter_internal_cosupervisor += '(SELECT thesisProposalId FROM thesisProposal_internalCoSupervisor_bridge WHERE internalCoSupervisorId = ? ';
+            i = i + 1;
+          } else {
+            sql_filter_internal_cosupervisor += ' OR internalCoSupervisorId = ? ';
           }
-          const thesisProposals = rows.map((e) => ({
-            thesis: e.thesis
+
+          sql_filter_internal_cosupervisor += ')';
+          params.push(c);
+        } else {
+          promise.push(ExternalCoSupervisor.getExternalCoSupervisorById(c));
+
+          if (j == 0) {
+            sql_filter_external_cosupervisor += '(SELECT thesisProposalId FROM thesisProposal_externalCoSupervisor_bridge WHERE externalCoSupervisorId = ? ';
+            j = j + 1;
+          } else {
+            sql_filter_external_cosupervisor += ' OR externalCoSupervisorId = ? ';
           }
-          ));
-          resolve(thesisProposals);
-        })
-      })
-    })
+
+          sql_filter_external_cosupervisor += ')';
+          params.push(c);
+        }
+      });
+    }
+    if (filter.expirationdate != undefined) {
+      sql_filter_expirationdate = 'expirationDate < ? ';
+      params.push(filter.expirationdate);
+    }
+    if (filter.abroad != undefined) {
+      sql_filter_abroad = 'abroad = ?';
+      params.push(filter.abroad);
+    }
+  }
+
+  let sql_1 = '';
+  [sql_filter_supervisor, sql_filter_internal_cosupervisor, sql_filter_external_cosupervisor].filter((s) => s != '').forEach((s, i) => {
+    if (i == 0) {
+      sql_1 += ' thesisProposalId IN ( SELECT DISTINCT thesisProposalId FROM thesisProposals WHERE thesisProposalId IN ' + s;
+    } else {
+      sql_1 += ' OR thesisProposalId IN ' + s;
+    }
+  });
+
+  if (sql_1 != '') {
+    sql_1 += ')';
+  }
+
+  let sql = 'SELECT * FROM thesisProposals WHERE thesisProposalId IN ' + sql_coddegree;
+  [sql_1, sql_filter_expirationdate, sql_filter_abroad, sql_text].filter((s) => s != '').forEach((s, i) => {
+    sql += ' AND ' + s;
+  });
+
+  return Promise.all(promise).then(() => {
+    return new Promise(function (resolve, reject) {
+      db.all(sql, params, function (err, rows) {
+        if (err) {
+          reject({ code: 500, message: "Internal Server Error" });
+        } else if (rows.length == 0) {
+          reject({ code: 404, message: "Not Found" });
+        } else {
+          let thesisProposalsList = rows.map((r) => ({
+            thesisProposalId: r.thesisProposalId,
+            title: r.title,
+            keywords: r.keywords.split("/"),
+            self: `/api/thesisproposals/${r.thesisProposalId}`
+          }));
+
+          resolve(thesisProposalsList);
+        }
+      });
+    });
   });
 }
 
