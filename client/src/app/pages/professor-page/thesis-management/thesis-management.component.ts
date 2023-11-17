@@ -38,25 +38,6 @@ export class ThesisManagementComponent {
     this.response = undefined;
   }
 
-  insertThesis() {
-    let thesis = {
-      title: this.title,
-      supervisor: this.supervisor,
-      coSupervisor: this.coSupervisor,
-      level: this.level,
-      type: this.type,
-      groups: this.groups,
-      description: this.description,
-      requiredKnoledge: this.requiredKnoledge,
-      notes: this.notes,
-      keywords: this.keywords,
-      courseType: this.courseType,
-      data: this.data
-    }
-    console.log(thesis)
-    this.response = {prova:"prova"}
-  }
-
   showApplicantsTable() {
     this.showApplicants = true;
     this.showActiveTheses = false;

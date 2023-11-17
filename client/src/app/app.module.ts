@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { RouterModule, Routes } from "@angular/router";
 import { StudentPageComponent } from './pages/student-page/student-page.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ProfessorPageComponent} from "./pages/professor-page/professor-page.component";
 import {ThesisManagementComponent} from "./pages/professor-page/thesis-management/thesis-management.component";
 import { ThesisTableComponent } from './pages/professor-page/thesis-management/thesis-table/thesis-table.component';
@@ -19,6 +19,7 @@ import { LoginFormComponent } from './shared/components/login-form/login-form.co
 import { PageSkeletonComponent } from './shared/components/page-skeleton/page-skeleton.component';
 import { AlertComponent } from './shared/alert/alert.component';
 import {LoadingComponent} from "./shared/components/loading/loading.component";
+import { CreateThesisFormComponent } from './pages/professor-page/thesis-management/create-thesis-form/create-thesis-form.component';
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
@@ -42,11 +43,12 @@ const routes: Routes = [
     LoginFormComponent,
     PageSkeletonComponent,
     AlertComponent,
-    LoadingComponent
+    LoadingComponent,
+    CreateThesisFormComponent
   ],
-  imports: [
-    BrowserModule, RouterModule.forRoot(routes), FormsModule, CdkDrag
-  ],
+    imports: [
+        BrowserModule, RouterModule.forRoot(routes), FormsModule, CdkDrag, ReactiveFormsModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

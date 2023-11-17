@@ -1,0 +1,84 @@
+<form class="flex flex-col gap-4" [formGroup]="myForm" (ngSubmit)="onSubmit()">
+
+  <div class="grid gap-6 md:grid-cols-2">
+    <div class="">
+      <label for="title" class="label-field">Title *</label>
+      <input type="text" id="title" formControlName="title" class="input-field" placeholder="Title" required>
+      <div *ngIf="myForm.get('title')?.hasError('required') && myForm.get('title')?.touched"
+           class="text-danger text-sm mt-1">Title is required</div>
+    </div>
+
+    <div class="">
+      <label for="supervisor" class="label-field">Supervisor *</label>
+      <input type="text" id="supervisor" formControlName="supervisor" class="input-field" placeholder="Supervisor" required>
+      <div *ngIf="myForm.get('supervisor')?.hasError('required') && myForm.get('supervisor')?.touched"
+           class="text-danger text-sm mt-1">Supervisor is required</div>
+    </div>
+    <div class="">
+      <label for="coSupervisor" class="label-field">Co-supervisor</label>
+      <input type="text" id="coSupervisor" formControlName="coSupervisor" class="input-field" placeholder="Co-supervisor" >
+    </div>
+    <div class="">
+      <label for="level" class="label-field">Level *</label>
+      <input type="text" id="level" formControlName="level" class="input-field" placeholder="Level" required>
+      <div *ngIf="myForm.get('level')?.hasError('required') && myForm.get('level')?.touched"
+           class="text-danger text-sm mt-1">Level is required</div>
+    </div>
+    <div class="">
+      <label for="type" class="label-field">Type *</label>
+      <input type="text" id="type" formControlName="type" class="input-field" placeholder="Type" required>
+      <div *ngIf="myForm.get('type')?.hasError('required') && myForm.get('type')?.touched"
+           class="text-danger text-sm mt-1">Type is required</div>
+    </div>
+    <div class="">
+      <label for="groups" class="label-field">Groups</label>
+      <input type="text" id="groups" formControlName="groups" class="input-field" placeholder="Groups" >
+    </div>
+  </div>
+  <div class="flex flex-col gap-6">
+    <div class="">
+      <label for="courseType" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cds/programmes *</label>
+      <select id="courseType" formControlName="courseType" class="input-field" (focus)="onSelectFocus()" (blur)="onSelectBlur()" [class.text-soft] = "myForm.get('courseType')?.hasError('required')  && !selectFocus">
+        <option value=""   disabled selected hidden>Select a course type</option>
+        <option value="Computer Science">Computer Science</option>
+        <option value="Mechatronics">Mechatronics</option>
+        <option value="Mechanics">Mechanics</option>
+        <option value="Biomedical">Biomedical</option>
+      </select>
+      <div *ngIf="myForm.get('courseType')?.hasError('required') && myForm.get('courseType')?.touched"
+           class="text-danger">Course Type is required</div>
+    </div>
+    <div class="">
+      <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description *</label>
+      <textarea  type="text" id="description" formControlName="description" class="input-field" placeholder="Description" rows = 3 ></textarea>
+      <div *ngIf="myForm.get('description')?.hasError('required') && myForm.get('description')?.touched"
+           class="text-danger text-sm mt-1">Description is required</div>
+    </div>
+    <div class="">
+      <label for="requiredKnowledge" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Required Knowledge *</label>
+      <textarea type="text" id="requiredKnowledge" formControlName="requiredKnowledge" class="input-field" placeholder="Required Knowledge" rows = 3 ></textarea>
+      <div *ngIf="myForm.get('requiredKnowledge')?.hasError('required') && myForm.get('requiredKnowledge')?.touched"
+           class="text-danger text-sm mt-1">Required Knoledge is required</div>
+    </div>
+    <div class="">
+      <label for="notes" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notes</label>
+      <textarea type="text" id="notes" formControlName="notes" class="input-field" placeholder="Notes" rows = 3 ></textarea>
+    </div>
+    <div class="">
+      <label for="keywords" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Keywords</label>
+      <input type="text" id="keywords" formControlName="keywords" class="input-field" placeholder="Keywords" >
+    </div>
+    <div class="">
+      <label for="expirationDate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Expiration Date *</label>
+      <input type="date" id="expirationDate" formControlName="expirationDate" placeholder="Expiration" class="input-field" [class.text-soft] = "myForm.get('expirationDate')?.hasError('required')">
+      <div *ngIf="myForm.get('expirationDate')?.hasError('required') && myForm.get('expirationDate')?.touched"
+           class="text-danger">Expiration Date is required</div>
+    </div>
+  </div>
+  <div class="flex flex-col items-center justify-center w-full gap-2">
+    <div *ngIf="myForm.invalid" class="text-danger">Fields required marked with *</div>
+    <button type="submit" [disabled]="myForm.invalid"  class=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800 disabled:bg-gray-500">
+      Submit
+    </button>
+  </div>
+</form>
