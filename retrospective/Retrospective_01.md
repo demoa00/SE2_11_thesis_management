@@ -1,4 +1,4 @@
-TEMPLATE FOR RETROSPECTIVE (Team ##)
+TEMPLATE FOR RETROSPECTIVE (Team 11)
 =====================================
 
 The retrospective should include _at least_ the following
@@ -14,7 +14,7 @@ sections:
 
 - Number of stories committed vs. done: 4/0
 - Total points committed vs. done: 20/0
-- Nr of hours planned vs. spent (as a team) 96/87o45m
+- Nr of hours planned vs. spent (as a team) 96/87h45m
 
 **Remember** a story is done ONLY if it fits the Definition of Done:
  
@@ -29,17 +29,19 @@ sections:
 
 | Story | # Tasks | Points | Hours est. | Hours actual |
 |-------|---------|--------|------------|--------------|
-| _#1_  | 10      | 8      | 19         | 15           |
-| _#2_  | 10      | 8      | 19         | 15           |
-| _#3_  | 6       | 2      | 15.5       | 11.5         |
-| _#4_  | 4       | 2      | 12         | 6.5          |
+| _#0_  | 5       | /      | 30         | 31.75        | 
+| _#1_  | 10      | 8      | 19         | 16           |
+| _#2_  | 10      | 8      | 19         | 16           |
+| _#3_  | 6       | 2      | 16         | 13.5         |
+| _#4_  | 4       | 2      | 12         | 10.5         |
 
    
 
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
 
 - Hours per task average, standard deviation (estimate and actual)
-- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1
+  Total hours: 87.75 ; # of tasks: 35 --> Hours per task average: 2.5 (2h 30m) 
+- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1 = ( 96 / 87.75 ) - 1 = 0.09402
 
   
 ## QUALITY MEASURES 
