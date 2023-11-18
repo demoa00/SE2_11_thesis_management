@@ -9,67 +9,6 @@ const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => {
 
 /**
  *
- * authenticatedUserId String The authenticated user id corresponds to the professor that perform this request
- * professorId String 
- * returns thesisProposals
- **/
-exports.getThesisProposalsOfProfessor = function (professorId, filter) {
-  if (filter instanceof Array) {
-    filter = filter[0];
-  }
-
-  return new Promise(function (resolve, reject) {
-    let sql = 'SELECT * FROM thesisProposals WHERE ';
-    let params = [];
-
-    if (filter != undefined) {
-      if (filter === 'supervisor') {
-        sql = sql + 'supervisor = ?';
-        params.push(professorId);
-      } else if (filter === 'cosupervisor') {
-        sql = sql + 'thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?)';
-        params.push(professorId);
-      }
-    } else {
-      sql = sql + 'supervisor = ?' + ' OR ' + 'thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?)';
-      params.push(professorId);
-      params.push(professorId);
-    }
-
-    db.all(sql, params, (err, rows) => {
-      if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
-      } else if (rows === undefined) {
-        reject({ code: 404, message: "Not Found" });
-      } else {
-        let thesisProposalsList = rows.map((r) => ({
-          thesisProposalId: r.thesisProposalId,
-          title: r.title,
-          keywords: r.keywords.split("/"),
-          self: `/api/professors/${professorId}/thesisProposals/${r.thesisProposalId}`
-        }));
-
-        resolve(thesisProposalsList);
-      }
-    });
-  });
-}
-
-
-/**
- *
- * thesisProposalId Integer 
- * returns thesisProposal
- **/
-exports.getThesisProposal = function (thesisProposalId) {
-  return new Promise(function (resolve, reject) {
-    //to do!
-  });
-}
-
-
-/**
- *
  * codDegree String The codDegree is about the degree that the student, that perform this request, attends
  * keywords List  (optional)
  * supervisor String  (optional)
@@ -168,7 +107,7 @@ exports.getThesisProposals = function (codDegree, filter) {
   }
 
   let sql = 'SELECT thesisProposals.thesisProposalId, professors.name, professors.surname, thesisProposals.title, thesisProposals.keywords, thesisProposals.expirationDate FROM thesisProposals, professors WHERE thesisProposalId IN ' + sql_coddegree;
-  [sql_1, sql_text, sql_filter_expirationdate, sql_filter_abroad].filter((s) => s != '').forEach((s, i) => {
+  [sql_1, sql_text, sql_filter_expirationdate, sql_filter_abroad, 'isArchived = 0 '].filter((s) => s != '').forEach((s, i) => {
     sql += 'AND ' + s;
   });
 
@@ -189,6 +128,191 @@ exports.getThesisProposals = function (codDegree, filter) {
           keywords: r.keywords.split("/"),
           expirationDate: r.expirationDate,
           self: `/api/thesisproposals/${r.thesisProposalId}`
+        }));
+
+        resolve(thesisProposalsList);
+      }
+    });
+  });
+}
+
+
+/**
+ *
+ * thesisProposalId Integer 
+ * returns thesisProposal
+ **/
+exports.getThesisProposal = function (user, thesisProposalId) {
+  let sql = '';
+  let params = [];
+
+  if (user.studentId === undefined) {//professor request
+    sql = 'SELECT * FROM thesisProposals WHERE thesisProposalId = ? AND supervisor = ? AND isArchived = 0';
+    params = [thesisProposalId, user.professorId];
+  } else {//student request
+    sql = 'SELECT * FROM thesisProposals WHERE thesisProposalId = ? AND thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_cds_bridge WHERE cdsId = ?) AND isArchived = 0';
+    params = [thesisProposalId, user.codDegree];
+  }
+
+  return new Promise(function (resolve, reject) {
+    db.get(sql, params, (err, row) => {
+      if (err) {
+        reject({ code: 500, message: "Internal Server Error" });
+      } else if (row === undefined) {
+        reject({ code: 404, message: "Not Found" });
+      } else {
+        let thesisProposal = {
+          thesisProposalId: row.thesisProposalId,
+          title: row.title,
+          supervisor: row.supervisor,
+          coSupervisor: [],
+          keywords: row.keywords.split("/"),
+          description: row.description,
+          reqirements: row.reqirements,
+          thesisType: row.thesisType,
+          abroad: row.abroad == 0 ? false : true,
+          groups: [],
+          expirationDate: row.expirationDate,
+          level: row.level,
+          Cds: []
+        }
+
+        resolve(thesisProposal);
+      }
+    })
+  }).then((thesisProposal) => {
+    return new Promise(function (resolve, reject) {
+      const sql = 'SELECT name, surname, codGroup FROM professors WHERE professorId = ?';
+
+      db.get(sql, [thesisProposal.supervisor], (err, row) => {
+        if (err) {
+          reject({ code: 500, message: "Internal Server Error" });
+        } else if (row === undefined) {
+          reject({ code: 404, message: "Not Found" });
+        } else {
+          let professor = {
+            professorId: thesisProposal.supervisor,
+            name: row.name,
+            surname: row.surname,
+            professor: `/api/professors/${thesisProposal.supervisor}`
+          }
+
+          resolve({ ...thesisProposal, supervisor: professor, groups: [...thesisProposal.groups, row.codGroup] });
+        }
+      });
+    });
+  }).then((thesisProposal) => {
+    return new Promise(function (resolve, reject) {
+      const sql = 'SELECT internalCoSupervisorId, name, surname, codGroup FROM thesisProposal_internalCoSupervisor_bridge, professors WHERE thesisProposalId = ? AND internalCoSupervisorId = professorId';
+
+      db.all(sql, [thesisProposal.thesisProposalId], (err, rows) => {
+        if (err) {
+          reject({ code: 500, message: "Internal Server Error" });
+        } else if (rows.length == 0) {
+          resolve(thesisProposal);
+        } else {
+          let groups = [];
+          let coSupervisors = rows.map((r) => {
+            groups.push(r.codGroup);
+
+            return {
+              coSupervisorId: r.internalCoSupervisorId,
+              name: r.name,
+              surname: r.surname,
+              coSupervisor: `/api/professors/${r.internalCoSupervisorId}`
+            };
+          });
+
+          groups.forEach((g) => {
+            if (!thesisProposal.groups.find((e) => e === g)) {
+              thesisProposal.groups.push(g);
+            }
+          });
+
+          resolve({ ...thesisProposal, coSupervisor: [...thesisProposal.coSupervisor, coSupervisors] });
+        }
+      });
+    });
+  }).then((thesisProposal) => {
+    return new Promise(function (resolve, reject) {
+      const sql = 'SELECT externalCoSupervisors.externalCoSupervisorId, name, surname FROM thesisProposal_externalCoSupervisor_bridge, externalCoSupervisors WHERE thesisProposalId = ? AND thesisProposal_externalCoSupervisor_bridge.externalCoSupervisorId = externalCoSupervisors.externalCoSupervisorId';
+
+      db.all(sql, [thesisProposal.thesisProposalId], (err, rows) => {
+        if (err) {
+          reject({ code: 500, message: "Internal Server Error" });
+        } else if (rows.length == 0) {
+          resolve(thesisProposal);
+        } else {
+          let coSupervisors = rows.map((r) => ({
+            coSupervisorId: r.externalCoSupervisorId,
+            name: r.name,
+            surname: r.surname,
+            coSupervisor: `/api/externalCoSupervisors/${r.externalCoSupervisorId}`
+          }));
+
+          resolve({ ...thesisProposal, coSupervisor: [...thesisProposal.coSupervisor, coSupervisors] });
+        }
+      });
+    });
+  }).then((thesisProposal) => {
+    return new Promise(function (resolve, reject) {
+      const sql = 'SELECT cdsId FROM thesisProposal_cds_bridge WHERE thesisProposalId = ?';
+
+      db.all(sql, [thesisProposal.thesisProposalId], (err, rows) => {
+        if (err) {
+          reject({ code: 500, message: "Internal Server Error" });
+        } else if (rows.length == 0) {
+          reject({ code: 404, message: "Not Found" });
+        } else {
+          let cds = rows.map((r) => (r.cdsId));
+
+          resolve({ ...thesisProposal, Cds: cds });
+        }
+      });
+    })
+  });
+}
+
+
+/**
+ *
+ * authenticatedUserId String The authenticated user id corresponds to the professor that perform this request
+ * professorId String 
+ * returns thesisProposals
+ **/
+exports.getThesisProposalsOfProfessor = function (professorId, filter) {
+  let sql = 'SELECT * FROM thesisProposals WHERE supervisor = ?' + ' OR ' + 'thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?) AND isArchived = 0';
+
+  let params = [];
+  params.push(professorId);
+  params.push(professorId);
+
+  if (filter != undefined) {
+    if (filter instanceof Array) {
+      filter = filter[0];
+    }
+
+    if (filter === 'supervisor') {
+      sql = 'SELECT * FROM thesisProposals WHERE supervisor = ? AND isArchived = 0';
+      params = [professorId];
+    } else if (filter === 'cosupervisor') {
+      sql += 'SELECT * FROM thesisProposals WHERE thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?) AND isArchived = 0';
+      params = [professorId];
+    }
+  }
+
+  return new Promise(function (resolve, reject) {
+    db.all(sql, params, (err, rows) => {
+      if (err) {
+        reject({ code: 500, message: "Internal Server Error" });
+      } else if (rows.length == 0) {
+        reject({ code: 404, message: "Not Found" });
+      } else {
+        let thesisProposalsList = rows.map((r) => ({
+          thesisProposalId: r.thesisProposalId,
+          title: r.title,
+          keywords: r.keywords.split("/"),
+          self: `/api/professors/${professorId}/thesisProposals/${r.thesisProposalId}`
         }));
 
         resolve(thesisProposalsList);

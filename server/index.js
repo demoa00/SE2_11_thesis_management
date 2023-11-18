@@ -107,8 +107,12 @@ app.delete('/api/authenticatedSession/:userId', isLoggedIn, userController.delet
 
 //Thesis proposals
 app.get('/api/professors/:professorId/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposalsOfProfessor);
+app.get('/api/professors/:professorId/thesisProposals/:thesisProposalId', isLoggedIn, thesisProposalController.getThesisProposalProfessor);
+
 app.post('/api/professors/:professorId/thesisProposals', validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal); //WORK IN PROGRESS
+
 app.get('/api/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposals);
+app.get('/api/thesisProposals/:thesisProposalId', isLoggedIn, thesisProposalController.getThesisProposalStudent);
 
 //Professors
 app.get('/api/professors', isLoggedIn, professorController.getProfessors);

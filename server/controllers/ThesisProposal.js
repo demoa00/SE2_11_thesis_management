@@ -5,12 +5,12 @@ const Professor = require('../service/ProfessorService');
 const ThesisProposal = require('../service/ThesisProposalService');
 
 
-module.exports.getThesisProposalsOfProfessor = async function getThesisProposalsOfProfessor(req, res, next) {
+module.exports.getThesisProposals = async function getThesisProposals(req, res, next) {
   try {
-    if (req.params.professorId !== req.user.professorId) {
+    if (req.user.studentId === undefined) {
       utils.writeJson(res, { error: "Forbidden" }, 403);
     } else {
-      let thesisProposalsList = await ThesisProposal.getThesisProposalsOfProfessor(req.user.professorId, req.query.filter);
+      let thesisProposalsList = await ThesisProposal.getThesisProposals(req.user.codDegree, req.query);
 
       utils.writeJson(res, thesisProposalsList, 200);
     }
@@ -19,20 +19,36 @@ module.exports.getThesisProposalsOfProfessor = async function getThesisProposals
   }
 };
 
-module.exports.getThesisProposal = function getThesisProposal(req, res, next) {
+module.exports.getThesisProposalStudent = async function getThesisProposal(req, res, next) {
   try {
+    let thesisProposal = await ThesisProposal.getThesisProposal(req.user, req.params.thesisProposalId);
 
+    utils.writeJson(res, thesisProposal, 200);
   } catch (error) {
-
+    utils.writeJson(res, { error: error.message }, error.code);
   }
 };
 
-module.exports.getThesisProposals = async function getThesisProposals(req, res, next) {
+module.exports.getThesisProposalProfessor = async function getThesisProposal(req, res, next) {
   try {
-    if (req.user.studentId === undefined) {
+    if (req.user.professorId != req.params.professorId) {
       utils.writeJson(res, { error: "Forbidden" }, 403);
     } else {
-      let thesisProposalsList = await ThesisProposal.getThesisProposals(req.user.codDegree, req.query);
+      let thesisProposal = await ThesisProposal.getThesisProposal(req.user, req.params.thesisProposalId);
+
+      utils.writeJson(res, thesisProposal, 200);
+    }
+  } catch (error) {
+    utils.writeJson(res, { error: error.message }, error.code);
+  }
+};
+
+module.exports.getThesisProposalsOfProfessor = async function getThesisProposalsOfProfessor(req, res, next) {
+  try {
+    if (req.params.professorId !== req.user.professorId) {
+      utils.writeJson(res, { error: "Forbidden" }, 403);
+    } else {
+      let thesisProposalsList = await ThesisProposal.getThesisProposalsOfProfessor(req.user.professorId, req.query.position);
 
       utils.writeJson(res, thesisProposalsList, 200);
     }
