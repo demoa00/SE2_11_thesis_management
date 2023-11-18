@@ -4,9 +4,6 @@
     "title": "Thesis Proposal Schema",
     "type": "object",
     "properties": {
-        "$schema": {
-            "type": "string"
-        },
         "thesisProposalId": {
             "type": "integer",
             "minimum": 1
@@ -35,10 +32,7 @@
                     "format": "uri"
                 }
             },
-            "additionalProperties": false,
-            "required": [
-                "professorId"
-            ]
+            "additionalProperties": false
         },
         "coSupervisor": {
             "type": "array",
@@ -118,14 +112,31 @@
         "CdS": {
             "type": "array",
             "items": {
-                "type": "string",
-                "minLength": 1
+                "type": "object",
+                "properties": {
+                    "degreeId": {
+                        "type": "string",
+                        "pattern": "^LM?-([1-9]|[1-9][0-9])$"
+                    },
+                    "titleDegree": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "degreeId"
+                ],
+                "additionalProperties": false
             },
             "minItems": 1
         },
         "isArchieved": {
             "type": "boolean",
             "default": false
+        },
+        "self": {
+            "type": "string",
+            "format": "uri"
         }
     },
     "additionalProperties": false,

@@ -12,7 +12,9 @@ const session = require('express-session');
 const serverPort = 3001;
 
 const applicationController = require(path.join(__dirname, 'controllers/Application'));
+const degreeController = require(path.join(__dirname, 'controllers/Degree'));
 const externalCoSupervisorController = require(path.join(__dirname, 'controllers/ExternalCoSupervisor'));
+const keywordController = require(path.join(__dirname, 'controllers/Keyword'));
 const professorController = require(path.join(__dirname, 'controllers/Professor'));
 const studentController = require(path.join(__dirname, 'controllers/Student'));
 const thesisProposalController = require(path.join(__dirname, 'controllers/ThesisProposal'));
@@ -109,7 +111,7 @@ app.delete('/api/authenticatedSession/:userId', isLoggedIn, userController.delet
 app.get('/api/professors/:professorId/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposalsOfProfessor);
 app.get('/api/professors/:professorId/thesisProposals/:thesisProposalId', isLoggedIn, thesisProposalController.getThesisProposalProfessor);
 
-app.post('/api/professors/:professorId/thesisProposals', validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal); //WORK IN PROGRESS
+app.post('/api/professors/:professorId/thesisProposals', isLoggedIn, validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal);
 
 app.get('/api/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposals);
 app.get('/api/thesisProposals/:thesisProposalId', isLoggedIn, thesisProposalController.getThesisProposalStudent);
@@ -121,6 +123,12 @@ app.get('/api/professors/:professorId', isLoggedIn, professorController.getProfe
 //External co-supervisors
 app.get('/api/externalCoSupervisors', isLoggedIn, externalCoSupervisorController.getExternalCoSupervisors);
 app.get('/api/externalCoSupervisors/:externalCoSupervisorId', isLoggedIn, externalCoSupervisorController.getExternalCoSupervisorById);
+
+//Degrees
+app.get('/api/degrees', isLoggedIn, degreeController.getDegrees);
+
+//Keywords
+app.get('/api/keywords', isLoggedIn, keywordController.getKeywords);
 
 
 ////////////////////////////////

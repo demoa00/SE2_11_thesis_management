@@ -248,10 +248,7 @@
                                 "format": "uri"
                             }
                         },
-                        "additionalProperties": false,
-                        "required": [
-                            "professorId"
-                        ]
+                        "additionalProperties": false
                     },
                     "coSupervisor": {
                         "type": "array",
@@ -331,8 +328,21 @@
                     "CdS": {
                         "type": "array",
                         "items": {
-                            "type": "string",
-                            "minLength": 1
+                            "type": "object",
+                            "properties": {
+                                "degreeId": {
+                                    "type": "string",
+                                    "pattern": "^LM?-([1-9]|[1-9][0-9])$"
+                                },
+                                "titleDegree": {
+                                    "type": "string",
+                                    "minLength": 1
+                                }
+                            },
+                            "required": [
+                                "degreeId"
+                            ],
+                            "additionalProperties": false
                         },
                         "minItems": 1
                     },
@@ -455,6 +465,31 @@
                     },
                     "additionalProperties": false
                 }
+            },
+            "degrees": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "degreeId": {
+                            "type": "string",
+                            "pattern": "^LM?-([1-9]|[1-9][0-9])$"
+                        },
+                        "titleDegree": {
+                            "type": "string",
+                            "minLength": 1
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "keywords": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "additionalProperties": false
+                }
             }
         }
     },
@@ -476,6 +511,12 @@
         },
         {
             "name": "externalCoSupervisor"
+        },
+        {
+            "name": "degree"
+        },
+        {
+            "name": "keyword"
         }
     ],
     "paths": {
@@ -1130,6 +1171,82 @@
                     },
                     "404": {
                         "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/degrees": {
+            "get": {
+                "tags": [
+                    "degree"
+                ],
+                "operationId": "getDegrees",
+                "parameters": [
+                    {
+                        "name": "authenticatedUserId",
+                        "in": "cookie",
+                        "required": true,
+                        "description": "The authenticated user id corresponds to the professor that perform this request",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^(p|P)[0-9]{6}$"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/degrees"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/keywords": {
+            "get": {
+                "tags": [
+                    "keyword"
+                ],
+                "operationId": "getKeywords",
+                "parameters": [
+                    {
+                        "name": "authenticatedUserId",
+                        "in": "cookie",
+                        "required": true,
+                        "description": "The authenticated user id corresponds to the professor that perform this request",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^(p|P)[0-9]{6}$"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/keywords"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
                     },
                     "500": {
                         "description": "Internal Server Error"

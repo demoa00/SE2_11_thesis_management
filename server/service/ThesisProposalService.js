@@ -3,6 +3,7 @@
 const sqlite = require('sqlite3');
 const Professor = require('./ProfessorService');
 const ExternalCoSupervisor = require('./ExternalCoSupervisorService');
+const Degree = require('./DegreeService');
 
 const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
 
@@ -174,7 +175,7 @@ exports.getThesisProposal = function (user, thesisProposalId) {
           groups: [],
           expirationDate: row.expirationDate,
           level: row.level,
-          Cds: []
+          CdS: []
         }
 
         resolve(thesisProposal);
@@ -229,7 +230,9 @@ exports.getThesisProposal = function (user, thesisProposalId) {
             }
           });
 
-          resolve({ ...thesisProposal, coSupervisor: [...thesisProposal.coSupervisor, coSupervisors] });
+          coSupervisors.forEach((c) => thesisProposal.coSupervisor.push(c));
+
+          resolve({ ...thesisProposal });
         }
       });
     });
@@ -250,13 +253,15 @@ exports.getThesisProposal = function (user, thesisProposalId) {
             coSupervisor: `/api/externalCoSupervisors/${r.externalCoSupervisorId}`
           }));
 
-          resolve({ ...thesisProposal, coSupervisor: [...thesisProposal.coSupervisor, coSupervisors] });
+          coSupervisors.forEach((c) => thesisProposal.coSupervisor.push(c));
+
+          resolve({ ...thesisProposal });
         }
       });
     });
   }).then((thesisProposal) => {
     return new Promise(function (resolve, reject) {
-      const sql = 'SELECT cdsId FROM thesisProposal_cds_bridge WHERE thesisProposalId = ?';
+      const sql = 'SELECT cdsId, titleDegree FROM thesisProposal_cds_bridge, degrees WHERE thesisProposalId = ? AND cdsId = degreeId';
 
       db.all(sql, [thesisProposal.thesisProposalId], (err, rows) => {
         if (err) {
@@ -264,9 +269,9 @@ exports.getThesisProposal = function (user, thesisProposalId) {
         } else if (rows.length == 0) {
           reject({ code: 404, message: "Not Found" });
         } else {
-          let cds = rows.map((r) => (r.cdsId));
+          let cds = rows.map((r) => ({ degreeId: r.cdsId, titleDegree: r.titleDegree }));
 
-          resolve({ ...thesisProposal, Cds: cds });
+          resolve({ ...thesisProposal, CdS: cds });
         }
       });
     })
@@ -330,27 +335,136 @@ exports.getThesisProposalsOfProfessor = function (professorId, filter) {
  * returns thesisProposal
  **/
 exports.insertNewThesisProposal = function (professorId, newThesisProposal) {
-  return new Promise(function (resolve, reject) {
-    const sql = 'INSERT INTO thesisProposals(title, supervisor, keywords, description, requirements, thesisType, abroad, notes, expirationDate, level, isArchieved) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-    db.run(sql, [
-      newThesisProposal.title,
-      professorId,
-      newThesisProposal.keywords,
+  let promise = [];
+  let internalCosupervisor = [];
+  let externalCosupervisor = [];
+  let degree = [];
+
+  if (newThesisProposal.coSupervisor != undefined) {
+    let regex = new RegExp("(p|P)[0-9]{6}");
+
+    newThesisProposal.coSupervisor.forEach((c) => {
+      if (regex.test(c.coSupervisorId)) {//internal co-supervisor
+        promise.push(Professor.getProfessorById(c.coSupervisorId));
+        internalCosupervisor.push(c.coSupervisorId);
+      } else {//external co-supervisor
+        promise.push(ExternalCoSupervisor.getExternalCoSupervisorById(c.coSupervisorId));
+        externalCosupervisor.push(c.coSupervisorId);
+      }
+    });
+  }
+
+  newThesisProposal.CdS.forEach((c) => {
+    promise.push(Degree.getDegreeById(c.degreeId));
+    degree.push(c.degreeId);
+  });
+
+  return Promise.all(promise).then(() => {
+    return new Promise(function (resolve, reject) {
+      const sql = 'INSERT INTO thesisProposals(title, supervisor, keywords, description, requirements, thesisType, abroad, notes, expirationDate, level, isArchived) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+      db.run(sql, [newThesisProposal.title,
+        professorId,
+      JSON.stringify(newThesisProposal.keywords),
       newThesisProposal.description,
-      newThesisProposal.reqirements,
+      newThesisProposal.requirements,
       newThesisProposal.thesisType,
       newThesisProposal.abroad,
       newThesisProposal.notes,
       newThesisProposal.expirationDate,
       newThesisProposal.level,
-      0
-    ], function (err) {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve(this.lastID);
-    })
+        false
+      ], function (err) {
+        if (err) {
+          reject({ code: 500, message: "Internal Server Error" });
+        } else {
+          resolve(this.lastID);
+        }
+      });
+    }).then((lastID) => {
+      return new Promise(function (resolve, reject) {
+        if (internalCosupervisor.length == 0) {
+          resolve(lastID);
+        } else {
+          let sql = 'INSERT INTO thesisProposal_internalCoSupervisor_bridge (thesisProposalId, internalCoSupervisorId) VALUES ';
+          let params = [];
+
+          internalCosupervisor.forEach((c, i) => {
+            if (i == 0) {
+              sql += '(?, ?)';
+            } else {
+              sql += ', (?, ?)';
+            }
+
+            params.push(lastID);
+            params.push(c);
+          });
+
+          db.run(sql, params, function (err, row) {
+            if (err) {
+              reject({ code: 500, message: "Internal Server Error" });
+            } else {
+              resolve(lastID);
+            }
+          });
+        }
+      })
+    }).then((lastID) => {
+      return new Promise(function (resolve, reject) {
+        if (externalCosupervisor.length == 0) {
+          resolve(lastID);
+        } else {
+          let sql = 'INSERT INTO thesisProposal_externalCoSupervisor_bridge (thesisProposalId, externalCoSupervisorId) VALUES ';
+          let params = [];
+
+          externalCosupervisor.forEach((c, i) => {
+            if (i == 0) {
+              sql += '(?, ?)';
+            } else {
+              sql += ', (?, ?)';
+            }
+
+            params.push(lastID);
+            params.push(c);
+          });
+
+          db.run(sql, params, function (err, row) {
+            if (err) {
+              reject({ code: 500, message: "Internal Server Error" });
+            } else {
+              resolve(lastID);
+            }
+          });
+        }
+      });
+    }).then((lastID) => {
+      return new Promise(function (resolve, reject) {
+        if (degree.length == 0) {
+          reject({ code: 500, message: "internal Server Error" });
+        } else {
+          let sql = 'INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES ';
+          let params = [];
+
+          degree.forEach((c, i) => {
+            if (i == 0) {
+              sql += '(?, ?)';
+            } else {
+              sql += ', (?, ?)';
+            }
+
+            params.push(lastID);
+            params.push(c);
+          });
+
+          db.run(sql, params, function (err, row) {
+            if (err) {
+              reject({ code: 500, message: "Internal Server Error" });
+            } else {
+              resolve({ newThesisProposal: `/api/thesisProposals/${lastID}` });
+            }
+          });
+        }
+      });
+    });
   });
 }
 
