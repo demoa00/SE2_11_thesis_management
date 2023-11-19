@@ -105,6 +105,9 @@ components:
           minLength: 1
         enrollmentYear:
           type: integer
+        cv:
+          type: string
+          format: uri
         self:
           type: string
           format: uri
@@ -116,18 +119,28 @@ components:
       properties:
         thesisProposalId:
           type: integer
-        studentId:
-          type: string
-          pattern: ^(s|S)[0-9]{6}$
+        applicant:
+          type: object
+          properties:
+            studentId:
+              type: string
+              pattern: ^(s|S)[0-9]{6}$
+            name:
+              type: string
+              minLength: 1
+            surname:
+              type: string
+              minLength: 1
+            student:
+              type: string
+              format: uri
+          additionalProperties: false
         message:
           type: string
           maxLength: 1000
         date:
           type: string
           format: date
-        cv:
-          type: string
-          format: uri
         isReadedByProfessor:
           type: boolean
           default: false

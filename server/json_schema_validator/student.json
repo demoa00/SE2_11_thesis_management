@@ -44,6 +44,10 @@
         },
         "enrollmentYear": {
             "type": "integer"
+        },
+        "cv": {
+            "type": "string",
+            "format": "uri"
         }
     },
     "additionalProperties": false,

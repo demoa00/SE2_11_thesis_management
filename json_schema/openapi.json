@@ -143,6 +143,10 @@
                     "enrollmentYear": {
                         "type": "integer"
                     },
+                    "cv": {
+                        "type": "string",
+                        "format": "uri"
+                    },
                     "self": {
                         "type": "string",
                         "format": "uri"
@@ -159,9 +163,27 @@
                     "thesisProposalId": {
                         "type": "integer"
                     },
-                    "studentId": {
-                        "type": "string",
-                        "pattern": "^(s|S)[0-9]{6}$"
+                    "applicant": {
+                        "type": "object",
+                        "properties": {
+                            "studentId": {
+                                "type": "string",
+                                "pattern": "^(s|S)[0-9]{6}$"
+                            },
+                            "name": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "surname": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "student": {
+                                "type": "string",
+                                "format": "uri"
+                            }
+                        },
+                        "additionalProperties": false
                     },
                     "message": {
                         "type": "string",
@@ -170,10 +192,6 @@
                     "date": {
                         "type": "string",
                         "format": "date"
-                    },
-                    "cv": {
-                        "type": "string",
-                        "format": "uri"
                     },
                     "isReadedByProfessor": {
                         "type": "boolean",
