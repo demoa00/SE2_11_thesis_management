@@ -108,11 +108,12 @@ app.post('/api/authenticatedSession', validate({ body: userCredentialsSchema }),
 app.delete('/api/authenticatedSession/:userId', isLoggedIn, userController.deleteAuthenticatedSession);
 
 //Applications
-app.post('/student/:studentId/applications', isLoggedIn, validate({ body: applicationSchema }), applicationController.insertNewApplication);
-app.get('/student/:studentId/applications/:applicationId', isLoggedIn, applicationController.getApplicationForStudent);
-app.get('/applications/:applicationId', isLoggedIn, applicationController.getApplicationForProfessor);
-app.get('/applications', isLoggedIn, applicationController.getApplications);
-app.post('/student/:studentId/applications', isLoggedIn, applicationController.getAllApplicationsOfStudent);
+app.get('/api/applications', isLoggedIn, applicationController.getApplications);
+app.get('/api/students/:studentId/applications/:thesisProposalId', isLoggedIn, applicationController.getApplicationForStudent);
+app.get('/api/applications/:studentId/:thesisProposalId', isLoggedIn, applicationController.getApplicationForProfessor);
+app.get('/api/students/:studentId/applications', isLoggedIn, applicationController.getAllApplicationsOfStudent);
+app.post('/api/students/:studentId/applications', isLoggedIn, validate({ body: applicationSchema }), applicationController.insertNewApplication);
+
 
 //Thesis proposals
 app.get('/api/professors/:professorId/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposalsOfProfessor);

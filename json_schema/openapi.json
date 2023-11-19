@@ -212,10 +212,6 @@
                             "Accepted"
                         ],
                         "default": "Pending"
-                    },
-                    "self": {
-                        "type": "string",
-                        "format": "uri"
                     }
                 },
                 "additionalProperties": false,
@@ -384,10 +380,6 @@
                     "isArchieved": {
                         "type": "boolean",
                         "default": false
-                    },
-                    "self": {
-                        "type": "string",
-                        "format": "uri"
                     }
                 },
                 "additionalProperties": false,
@@ -737,7 +729,7 @@
                 }
             }
         },
-        "/student/{studentId}": {
+        "/students/{studentId}": {
             "get": {
                 "tags": [
                     "student"
@@ -780,7 +772,7 @@
                 }
             }
         },
-        "/student/{studentId}/applications": {
+        "/students/{studentId}/applications": {
             "get": {
                 "tags": [
                     "application"

@@ -55,8 +55,8 @@ INSERT INTO students (studentId, name, surname, gender, nationality, email, codD
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s987654', 'Peter', 'Williams', 'male', 'British', 's987654@studenti.polito.it', 'L-6', 2021);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s345678', 'Mary', 'Johnson', 'male', 'Canadian', 's345678@studenti.polito.it', 'L-34', 2020);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s012345', 'David', 'Davis', 'female', 'Australian', 's012345@studenti.polito.it', 'L-25', 2019);
-INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s654321', 'Alice', 'Taylor', 'male', 'French', 's654321@studenti.polito.it', 'LM-9', 2018);
-INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s876543', 'Bob', 'Wilson', 'female', 'German', 's876543@studenti.polito.it', 'LM-10', 2017);
+INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s654321', 'Alice', 'Taylor', 'female', 'French', 's654321@studenti.polito.it', 'LM-9', 2018);
+INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s876543', 'Bob', 'Wilson', 'male', 'German', 's876543@studenti.polito.it', 'LM-9', 2017);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s456789', 'Emily', 'Davis', 'female', 'Spanish', 's456789@studenti.polito.it', 'LM-7', 2016);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s234567', 'Michael', 'Rodriguez', 'male', 'Chinese', 's234567@studenti.polito.it', 'L-4', 2015);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s098765', 'Jessica', 'Lee', 'female', 'Indian', 's098765@studenti.polito.it', 'L-2', 2014);

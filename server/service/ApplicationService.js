@@ -8,6 +8,76 @@ const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => {
 
 /**
  *
+ * authenticatedUserId String The authenticated user id corresponds to the professor that perform this request
+ * returns applications
+ **/
+exports.getApplications = function (professorId) {
+  return new Promise(function (resolve, reject) {
+    const sql = 'SELECT applications.thesisProposalId, thesis.title, applications.studentId, applications.date FROM applications, (SELECT thesisProposalId, title FROM thesisProposals WHERE supervisor = ?) AS thesis WHERE applications.thesisProposalId = thesis.thesisProposalId';
+
+    db.all(sql, [professorId], (err, rows) => {
+      if (err) {
+        reject({ code: 500, message: "Internal Server Error" });
+      } else if (rows.length == 0) {
+        reject({ code: 404, message: "Not Found" });
+      } else {
+        let applicationsList = rows.map((r) => ({
+          thesisProposalId: r.thesisProposalId,
+          thesisProposalTitle: r.title,
+          studentId: r.studentId,
+          date: r.date
+        }));
+
+        resolve(applicationsList);
+      }
+    });
+  });
+}
+
+
+/**
+ *
+ * authenticatedUserId String The authenticated user id corresponds to the professor that perform this request
+ * applicationId Integer 
+ * returns application
+ **/
+exports.getApplication = function (user, studentId, thesisProposalId) {
+  let sql = '';
+  let params = [];
+
+  if (user.studentId === undefined) {//professor request
+    sql = 'SELECT applications.thesisProposalId, students.studentId, students.name, students.surname, thesis.title, applications.message, applications.date, applications.isAccepted FROM applications, students, (SELECT thesisProposalId, title FROM thesisProposals WHERE thesisProposalId = ? AND supervisor = ?) AS thesis WHERE applications.studentId = ? AND applications.thesisProposalId = ? AND applications.studentId = students.studentId AND applications.thesisProposalId = thesis.thesisProposalId';
+    params = [thesisProposalId, user.professorId, studentId, thesisProposalId];
+  } else {//student request
+    sql = 'SELECT applications.thesisProposalId, students.studentId, students.name, students.surname, thesis.title, applications.message, applications.date, applications.isAccepted FROM applications, students, (SELECT thesisProposalId, title FROM thesisProposals WHERE thesisProposalId = ?) AS thesis WHERE applications.studentId = ? AND applications.thesisProposalId = ? AND applications.studentId = students.studentId AND applications.thesisProposalId = thesis.thesisProposalId';
+    params = [thesisProposalId, user.studentId, thesisProposalId];
+  }
+
+  return new Promise(function (resolve, reject) {
+    db.get(sql, params, function (err, row) {
+      if (err) {
+        console.log(err)
+        reject({ code: 500, message: "Internal Server Error" });
+      } else if (row === undefined) {
+        reject({ code: 404, message: "Not Found" });
+      } else {
+        let application = {
+          thesisProposalId: thesisProposalId,
+          title: row.title,
+          applicant: { studentId: row.studentId, name: row.name, surname: row.surname, student: `/api/students/${row.studentId}` },
+          message: row.message,
+          date: row.date,
+          isAccepted: row.isAccepted,
+        }
+        resolve(application);
+      }
+    })
+  });
+}
+
+
+/**
+ *
  * authenticatedUserId String The authenticated user id corresponds to the student that perform this request
  * studentId String 
  * returns applications
@@ -38,65 +108,6 @@ exports.getAllApplicationsOfStudent = function (studentId) {
 
 /**
  *
- * authenticatedUserId String The authenticated user id corresponds to the professor that perform this request
- * applicationId Integer 
- * returns application
- **/
-exports.getApplication = function (applicationId) {
-  return new Promise(function (resolve, reject) {
-    const sql = 'SELECT applications.applicationId, students.studentId, students.name, students.surname, thesis.title, applications.message, applications.date, applications.isAccepted FROM applications, students, (SELECT thesisProposalId, title FROM thesisProposals) AS thesis WHERE applications.studentId = students.studentsId AND applications.thesisProposalId = thesis.thesisProposalId AND applications.applicationId = ?';
-    db.get(sql, [applicationId], function (err, row) {
-      if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
-      } else if (row === undefined) {
-        reject({ code: 404, message: "Not Found" });
-      } else {
-        let application = {
-          applicationId: applicationId,
-          title: row.title,
-          applicant: {studentId: row.studentId, name: row.name, surname: row.surname, student: `/api/students/${row.studentId}`},
-          message: row.message,
-          date: row.date,
-          isAccepted: row.isAccepted,
-        }
-        resolve(application);
-      }
-    })
-  });
-}
-
-
-/**
- *
- * authenticatedUserId String The authenticated user id corresponds to the professor that perform this request
- * returns applications
- **/
-exports.getApplications = function (professorId) {
-  return new Promise(function (resolve, reject) {
-    const sql = 'SELECT applications.thesisProposalId, thesis.title, applications.studentId, applications.date FROM applications, (SELECT thesisProposalId, title FROM thesisProposals WHERE supervisor = ?) AS thesis WHERE applications.thesisProposalId = thesis.thesisProposalId';
-
-    db.all(sql, [professorId], (err, rows) => {
-      if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
-      } else if (rows.length == 0) {
-        reject({ code: 404, message: "Not Found" });
-      } else {
-        let applicationsList = rows.map((r) => ({
-          thesisProposalId: r.thesisProposalId,
-          thesisProposalTitle: r.title,
-          studentId: r.studentId,
-          date: r.date
-        }));
-
-        resolve(applicationsList);
-      }
-    });
-  });
-}
-
-
-/**
- *
  * body Application  (optional)
  * studentId String 
  * authenticatedUserId String The authenticated user id corresponds to the student that perform this request
@@ -104,14 +115,14 @@ exports.getApplications = function (professorId) {
  **/
 exports.insertNewApplication = function (studentId, newApplication) {
   return new Promise(function (resolve, reject) {
-    const sql = "INSERT INTO applications(?, ?, ?, ?, ?, ?, ?) VALUES (thesisProposalId, studentId, message, date, isReadedByProfessor, isReadedByStudent, isAccepted)";
+    const sql = 'INSERT INTO applications(thesisProposalId, studentId, message, date, isReadedByProfessor, isReadedByStudent, isAccepted) VALUES (?, ?, ?, ?, ?, ?, ?)';
     db.run(sql, [newApplication.thesisProposalId, studentId, newApplication.message, dayjs().format('YYYY-MM-DD'), 0, 0, 'Pending'], function (err) {
       if (err) {
         reject({ code: 500, message: "Internal Server Error" });
       } else {
-        resolve({ newApplication: `/student/${studentId}/applications/${lastID}` });
+        resolve({ newApplication: `/student/${studentId}/applications/${newApplication.thesisProposalId}` });
       }
-    })
+    });
   });
 }
 
