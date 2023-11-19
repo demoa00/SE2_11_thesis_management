@@ -44,9 +44,23 @@ exports.getAllApplicationsOfStudent = function (studentId) {
  **/
 exports.getApplication = function (applicationId) {
   return new Promise(function (resolve, reject) {
-    const sql = 'SELECT students.studentId, students.name, students.surname, thesis.title, applications.message, applications.date, applications.isAccepted FROM applications, students, (SELECT thesisProposalId, title FROM thesisProposals WHERE thesisProposalId = ?) AS thesis WHERE applications.studentId = students.studentsId AND applications.thesisProposalId = thesis.thesisProposalId';
-    db.get(sql, params, function (err, row) {
-      
+    const sql = 'SELECT applications.applicationId, students.studentId, students.name, students.surname, thesis.title, applications.message, applications.date, applications.isAccepted FROM applications, students, (SELECT thesisProposalId, title FROM thesisProposals) AS thesis WHERE applications.studentId = students.studentsId AND applications.thesisProposalId = thesis.thesisProposalId AND applications.applicationId = ?';
+    db.get(sql, [applicationId], function (err, row) {
+      if (err) {
+        reject({ code: 500, message: "Internal Server Error" });
+      } else if (row === undefined) {
+        reject({ code: 404, message: "Not Found" });
+      } else {
+        let application = {
+          applicationId: applicationId,
+          title: row.title,
+          applicant: {studentId: row.studentId, name: row.name, surname: row.surname, student: `/api/students/${row.studentId}`},
+          message: row.message,
+          date: row.date,
+          isAccepted: row.isAccepted,
+        }
+        resolve(application);
+      }
     })
   });
 }
