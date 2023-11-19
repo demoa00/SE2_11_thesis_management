@@ -128,11 +128,18 @@ components:
         cv:
           type: string
           format: uri
-        isReaded:
+        isReadedByProfessor:
+          type: boolean
+          default: false
+        isReadedByStudent:
           type: boolean
           default: false
         isAccepted:
-          type: boolean
+          enum:
+            - Rejected
+            - Pending
+            - Accepted
+          default: Pending
         self:
           type: string
           format: uri
@@ -182,8 +189,6 @@ components:
               type: string
               format: uri
           additionalProperties: false
-          required:
-            - professorId
         coSupervisor:
           type: array
           items:
@@ -242,8 +247,17 @@ components:
         CdS:
           type: array
           items:
-            type: string
-            minLength: 1
+            type: object
+            properties:
+              degreeId:
+                type: string
+                pattern: ^LM?-([1-9]|[1-9][0-9])$
+              titleDegree:
+                type: string
+                minLength: 1
+            required:
+              - degreeId
+            additionalProperties: false
           minItems: 1
         isArchieved:
           type: boolean
@@ -334,6 +348,24 @@ components:
             type: string
             format: uri
         additionalProperties: false
+    degrees:
+      type: array
+      items:
+        type: object
+        properties:
+          degreeId:
+            type: string
+            pattern: ^LM?-([1-9]|[1-9][0-9])$
+          titleDegree:
+            type: string
+            minLength: 1
+        additionalProperties: false
+    keywords:
+      type: array
+      items:
+        type: string
+        minLength: 1
+        additionalProperties: false
 tags:
   - name: user
   - name: professor
@@ -341,6 +373,8 @@ tags:
   - name: thesisProposal
   - name: application
   - name: externalCoSupervisor
+  - name: degree
+  - name: keyword
 paths:
   /professors:
     get:
@@ -774,6 +808,58 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+        '500':
+          description: Internal Server Error
+  /degrees:
+    get:
+      tags:
+        - degree
+      operationId: getDegrees
+      parameters:
+        - name: authenticatedUserId
+          in: cookie
+          required: true
+          description: >-
+            The authenticated user id corresponds to the professor that perform
+            this request
+          schema:
+            type: string
+            pattern: ^(p|P)[0-9]{6}$
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/degrees'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /keywords:
+    get:
+      tags:
+        - keyword
+      operationId: getKeywords
+      parameters:
+        - name: authenticatedUserId
+          in: cookie
+          required: true
+          description: >-
+            The authenticated user id corresponds to the professor that perform
+            this request
+          schema:
+            type: string
+            pattern: ^(p|P)[0-9]{6}$
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/keywords'
+        '401':
+          description: Unauthorized
         '500':
           description: Internal Server Error
   /authenticatedSession:

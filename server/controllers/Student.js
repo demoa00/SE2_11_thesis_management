@@ -1,7 +1,8 @@
 'use strict';
 
-var utils = require('../utils/writer.js');
-var Student = require('../service/StudentService');
+const utils = require('../utils/writer.js');
+const Student = require('../service/StudentService');
+
 
 module.exports.getStudentById = function getStudentById(req, res, next) {
   try {
@@ -10,3 +11,4 @@ module.exports.getStudentById = function getStudentById(req, res, next) {
 
   }
 };
+

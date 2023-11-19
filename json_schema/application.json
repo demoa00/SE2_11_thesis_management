@@ -26,12 +26,21 @@
             "type": "string",
             "format": "uri"
         },
-        "isReaded": {
+        "isReadedByProfessor": {
+            "type": "boolean",
+            "default": false
+        },
+        "isReadedByStudent": {
             "type": "boolean",
             "default": false
         },
         "isAccepted": {
-            "type": "boolean"
+            "enum": [
+                "Rejected",
+                "Pending",
+                "Accepted"
+            ],
+            "default": "Pending"
         }
     },
     "additionalProperties": false,

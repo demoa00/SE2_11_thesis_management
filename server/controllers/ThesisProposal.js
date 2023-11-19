@@ -1,7 +1,6 @@
 'use strict';
 
 const utils = require('../utils/writer.js');
-const Professor = require('../service/ProfessorService');
 const ThesisProposal = require('../service/ThesisProposalService');
 
 
@@ -19,7 +18,7 @@ module.exports.getThesisProposals = async function getThesisProposals(req, res, 
   }
 };
 
-module.exports.getThesisProposalStudent = async function getThesisProposal(req, res, next) {
+module.exports.getThesisProposalStudent = async function getThesisProposalStudent(req, res, next) {
   try {
     if (req.user.professorId != undefined) {
       utils.writeJson(res, { error: "Forbidden" }, 403);
@@ -33,7 +32,7 @@ module.exports.getThesisProposalStudent = async function getThesisProposal(req, 
   }
 };
 
-module.exports.getThesisProposalProfessor = async function getThesisProposal(req, res, next) {
+module.exports.getThesisProposalProfessor = async function getThesisProposalProfessor(req, res, next) {
   try {
     if (req.user.studentId != undefined || req.user.professorId != req.params.professorId) {
       utils.writeJson(res, { error: "Forbidden" }, 403);
