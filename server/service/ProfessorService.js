@@ -16,6 +16,8 @@ exports.getProfessors = function () {
     db.all(sql, [], (err, rows) => {
       if (err) {
         reject({ code: 500, message: "Internal Server Error" });
+      } else if (rows.length == 0) {
+        reject({ code: 404, message: "Not Found" });
       } else {
         let professorsList = rows.map((r) => ({
           professorId: r.professorId,

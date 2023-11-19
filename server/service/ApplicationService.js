@@ -14,7 +14,24 @@ const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => {
  **/
 exports.getAllApplicationsOfStudent = function (studentId) {
   return new Promise(function (resolve, reject) {
-    //to do!
+    const sql = 'SELECT applications.thesisProposalId, thesis.title, applications.studentId, applications.date FROM applications, (SELECT thesisProposalId, title FROM thesisProposals) AS thesis WHERE applications.thesisProposalId = thesis.thesisProposalId AND applications.studentId = ?';
+
+    db.all(sql, [studentId], (err, rows) => {
+      if (err) {
+        reject({ code: 500, message: "Internal Server Error" });
+      } else if (rows.length == 0) {
+        reject({ code: 404, message: "Not Found" });
+      } else {
+        let applicationsList = rows.map((r) => ({
+          thesisProposalId: r.thesisProposalId,
+          thesisProposalTitle: r.title,
+          studentId: r.studentId,
+          date: r.date
+        }));
+
+        resolve(applicationsList);
+      }
+    });
   });
 }
 
@@ -39,7 +56,24 @@ exports.getApplication = function (applicationId) {
  **/
 exports.getApplications = function (professorId) {
   return new Promise(function (resolve, reject) {
-    //to do!
+    const sql = 'SELECT applications.thesisProposalId, thesis.title, applications.studentId, applications.date FROM applications, (SELECT thesisProposalId, title FROM thesisProposals WHERE supervisor = ?) AS thesis WHERE applications.thesisProposalId = thesis.thesisProposalId';
+
+    db.all(sql, [professorId], (err, rows) => {
+      if (err) {
+        reject({ code: 500, message: "Internal Server Error" });
+      } else if (rows.length == 0) {
+        reject({ code: 404, message: "Not Found" });
+      } else {
+        let applicationsList = rows.map((r) => ({
+          thesisProposalId: r.thesisProposalId,
+          thesisProposalTitle: r.title,
+          studentId: r.studentId,
+          date: r.date
+        }));
+
+        resolve(applicationsList);
+      }
+    });
   });
 }
 

@@ -119,6 +119,9 @@ components:
       properties:
         thesisProposalId:
           type: integer
+        thesisProposalTitle:
+          type: string
+          minLength: 1
         applicant:
           type: object
           properties:
@@ -395,17 +398,17 @@ paths:
         - professor
       operationId: getProfessors
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/professors'
-        '400':
+                $ref: "#/components/schemas/professors"
+        "400":
           description: Bad Request
-        '401':
+        "401":
           description: Unauthorized
-        '500':
+        "500":
           description: Internal Server Error
   /professors/{professorId}:
     get:
@@ -420,19 +423,19 @@ paths:
             type: string
             pattern: ^(p|P)[0-9]{6}$
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/professor'
-        '400':
+                $ref: "#/components/schemas/professor"
+        "400":
           description: Bad Request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Not Found
-        '500':
+        "500":
           description: Internal Server Error
   /professors/{professorId}/thesisProposals:
     get:
@@ -456,17 +459,17 @@ paths:
             type: string
             pattern: ^(p|P)[0-9]{6}$
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/thesisProposals'
-        '400':
+                $ref: "#/components/schemas/thesisProposals"
+        "400":
           description: Bad Request
-        '401':
+        "401":
           description: Unauthorized
-        '500':
+        "500":
           description: Internal Server Error
     post:
       tags:
@@ -492,21 +495,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/thesisProposal'
+              $ref: "#/components/schemas/thesisProposal"
       responses:
-        '201':
+        "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/thesisProposal'
-        '400':
+                $ref: "#/components/schemas/thesisProposal"
+        "400":
           description: Bad Request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Not Found
-        '500':
+        "500":
           description: Internal Server Error
   /student/{studentId}:
     get:
@@ -521,19 +524,19 @@ paths:
             type: string
             pattern: ^(s|S)[0-9]{6}$
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/student'
-        '400':
+                $ref: "#/components/schemas/student"
+        "400":
           description: Bad Request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Not Found
-        '500':
+        "500":
           description: Internal Server Error
   /student/{studentId}/applications:
     get:
@@ -557,17 +560,17 @@ paths:
             type: string
             pattern: ^(s|S)[0-9]{6}$
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/applications'
-        '400':
+                $ref: "#/components/schemas/applications"
+        "400":
           description: Bad Request
-        '401':
+        "401":
           description: Unauthorized
-        '500':
+        "500":
           description: Internal Server Error
     post:
       tags:
@@ -592,21 +595,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/application'
+              $ref: "#/components/schemas/application"
       responses:
-        '201':
+        "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/application'
-        '400':
+                $ref: "#/components/schemas/application"
+        "400":
           description: Bad Request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Not Found
-        '500':
+        "500":
           description: Internal Server Error
   /thesisProposals:
     get:
@@ -656,19 +659,19 @@ paths:
             type: string
             format: date
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/thesisProposals'
-        '400':
+                $ref: "#/components/schemas/thesisProposals"
+        "400":
           description: Bad Request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Not Found
-        '500':
+        "500":
           description: Internal Server Error
   /thesisProposals/{thesisProposalId}:
     get:
@@ -682,19 +685,19 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/thesisProposal'
-        '400':
+                $ref: "#/components/schemas/thesisProposal"
+        "400":
           description: Bad Request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Not Found
-        '500':
+        "500":
           description: Internal Server Error
   /applications:
     get:
@@ -712,19 +715,19 @@ paths:
             type: string
             pattern: ^(p|P)[0-9]{6}$
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/applications'
-        '400':
+                $ref: "#/components/schemas/applications"
+        "400":
           description: Bad Request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Not Found
-        '500':
+        "500":
           description: Internal Server Error
   /applications/{applicationId}:
     get:
@@ -747,19 +750,19 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/application'
-        '400':
+                $ref: "#/components/schemas/application"
+        "400":
           description: Bad Request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Not Found
-        '500':
+        "500":
           description: Internal Server Error
   /externalCoSupervisors:
     get:
@@ -777,15 +780,15 @@ paths:
             type: string
             pattern: ^(p|P)[0-9]{6}$
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/externalCoSupervisors'
-        '401':
+                $ref: "#/components/schemas/externalCoSupervisors"
+        "401":
           description: Unauthorized
-        '500':
+        "500":
           description: Internal Server Error
   /externalCoSupervisors/{externalCoSupervisorId}:
     get:
@@ -809,19 +812,19 @@ paths:
             type: string
             pattern: ^(e|E)[0-9]{6}$
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/externalCoSupervisor'
-        '400':
+                $ref: "#/components/schemas/externalCoSupervisor"
+        "400":
           description: Bad Request
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Not Found
-        '500':
+        "500":
           description: Internal Server Error
   /degrees:
     get:
@@ -839,15 +842,15 @@ paths:
             type: string
             pattern: ^(p|P)[0-9]{6}$
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/degrees'
-        '401':
+                $ref: "#/components/schemas/degrees"
+        "401":
           description: Unauthorized
-        '500':
+        "500":
           description: Internal Server Error
   /keywords:
     get:
@@ -865,15 +868,15 @@ paths:
             type: string
             pattern: ^(p|P)[0-9]{6}$
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/keywords'
-        '401':
+                $ref: "#/components/schemas/keywords"
+        "401":
           description: Unauthorized
-        '500':
+        "500":
           description: Internal Server Error
   /authenticatedSession:
     post:
@@ -884,17 +887,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/userCredentials'
+              $ref: "#/components/schemas/userCredentials"
       responses:
-        '201':
+        "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/student'
-        '400':
+                $ref: "#/components/schemas/student"
+        "400":
           description: Bad Request
-        '500':
+        "500":
           description: Internal Server Error
   /authenticatedSession/{userId}:
     delete:
@@ -921,15 +924,15 @@ paths:
             type: string
             pattern: ^((p|P)|(s|S))[0-9]{6}$
       responses:
-        '203':
+        "203":
           description: No Content
-        '400':
+        "400":
           description: Bad Request
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-        '500':
+        "500":
           description: Internal Server Error

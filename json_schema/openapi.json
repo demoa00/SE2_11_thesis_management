@@ -163,6 +163,10 @@
                     "thesisProposalId": {
                         "type": "integer"
                     },
+                    "thesisProposalTitle": {
+                        "type": "string",
+                        "minLength": 1
+                    },
                     "applicant": {
                         "type": "object",
                         "properties": {
@@ -231,6 +235,10 @@
                         "thesisProposalTitle": {
                             "type": "string",
                             "minLength": 1
+                        },
+                        "studentId": {
+                            "type": "string",
+                            "pattern": "^(s|S)[0-9]{6}$"
                         },
                         "date": {
                             "type": "string",
