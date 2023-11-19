@@ -107,6 +107,9 @@ app.use(passport.authenticate('session'));
 app.post('/api/authenticatedSession', validate({ body: userCredentialsSchema }), userController.createNewAuthenticatedSession);
 app.delete('/api/authenticatedSession/:userId', isLoggedIn, userController.deleteAuthenticatedSession);
 
+//Applications
+app.post('/student/{studentId}/applications', isLoggedIn, validate({ body: applicationSchema }), applicationController.insertNewApplication);
+
 //Thesis proposals
 app.get('/api/professors/:professorId/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposalsOfProfessor);
 app.get('/api/professors/:professorId/thesisProposals/:thesisProposalId', isLoggedIn, thesisProposalController.getThesisProposalProfessor);
