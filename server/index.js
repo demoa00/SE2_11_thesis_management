@@ -111,6 +111,8 @@ app.delete('/api/authenticatedSession/:userId', isLoggedIn, userController.delet
 app.post('/student/:studentId/applications', isLoggedIn, validate({ body: applicationSchema }), applicationController.insertNewApplication);
 app.get('/student/:studentId/applications/:applicationId', isLoggedIn, applicationController.getApplicationForStudent);
 app.get('/applications/:applicationId', isLoggedIn, applicationController.getApplicationForProfessor);
+app.get('/applications', isLoggedIn, applicationController.getApplications);
+app.post('/student/:studentId/applications', isLoggedIn, applicationController.getAllApplicationsOfStudent);
 
 //Thesis proposals
 app.get('/api/professors/:professorId/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposalsOfProfessor);

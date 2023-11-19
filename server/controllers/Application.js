@@ -34,11 +34,18 @@ module.exports.getApplicationForStudent = async function getApplicationForStuden
 };
 
 
-module.exports.getApplicationForProfessor = function getApplicationForProfessor(req, res, next) {
+module.exports.getApplicationForProfessor = async function getApplicationForProfessor(req, res, next) {
   try {
+    if (req.user.professorId === undefined) {
+      utils.writeJson(res, { error: "Forbidden" }, 403);
+    } else {
+      let application = await Application.getApplication(req.params.applicationId);
+
+      utils.writeJson(res, application, 200);
+    }
 
   } catch (error) {
-
+    utils.writeJson(res, { error: error.message }, error.code);
   }
 };
 
@@ -48,9 +55,9 @@ module.exports.getAllApplicationsOfStudent = async function getAllApplicationsOf
     if (req.user.studentId === undefined) {
       utils.writeJson(res, { error: "Forbidden" }, 403);
     } else {
-      let newApplication = await Application.getApplication(req.query.applicationId);
+      let application = await Application.getApplication(req.params.applicationId);
 
-      utils.writeJson(res, newApplication, 200);
+      utils.writeJson(res, application, 200);
     }
 
   } catch (error) {

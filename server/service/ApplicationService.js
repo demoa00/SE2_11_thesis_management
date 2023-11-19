@@ -44,7 +44,10 @@ exports.getAllApplicationsOfStudent = function (studentId) {
  **/
 exports.getApplication = function (applicationId) {
   return new Promise(function (resolve, reject) {
-    //to do!
+    const sql = 'SELECT students.studentId, students.name, students.surname, thesis.title, applications.message, applications.date, applications.isAccepted FROM applications, students, (SELECT thesisProposalId, title FROM thesisProposals WHERE thesisProposalId = ?) AS thesis WHERE applications.studentId = students.studentsId AND applications.thesisProposalId = thesis.thesisProposalId';
+    db.get(sql, params, function (err, row) {
+      
+    })
   });
 }
 
@@ -87,8 +90,8 @@ exports.getApplications = function (professorId) {
  **/
 exports.insertNewApplication = function (studentId, newApplication) {
   return new Promise(function (resolve, reject) {
-    const sql = "INSERT INTO applications(?, ?, ?, ?, ?, ?) VALUES (applicant, message, date, isReadedByProfessor, isReadedByStudent, isAccepted)";
-    db.run(sql, [studentId, newApplication.message, dayjs().format('YYYY-MM-DD'), 0, 0, 'Pending'], function (err) {
+    const sql = "INSERT INTO applications(?, ?, ?, ?, ?, ?, ?) VALUES (thesisProposalId, studentId, message, date, isReadedByProfessor, isReadedByStudent, isAccepted)";
+    db.run(sql, [newApplication.thesisProposalId, studentId, newApplication.message, dayjs().format('YYYY-MM-DD'), 0, 0, 'Pending'], function (err) {
       if (err) {
         reject({ code: 500, message: "Internal Server Error" });
       } else {
