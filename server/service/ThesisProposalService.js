@@ -15,7 +15,7 @@ exports.getThesisProposalsOfProfessor = function (professorId, filter) {
   if (filter instanceof Array) {
     filter = filter[0];
   }
-  
+
   return new Promise(function (resolve, reject) {
     let sql = 'SELECT * FROM thesisProposals WHERE ';
     let params = [];
@@ -61,7 +61,17 @@ exports.getThesisProposalsOfProfessor = function (professorId, filter) {
  **/
 exports.getThesisProposal = function (thesisProposalId) {
   return new Promise(function (resolve, reject) {
-    //to do!
+    const sql = 'SELECT * FROM thesisProposals WHERE thesisProposalId = ? ';
+    db.get(sql, [thesisProposalId], function (err, row) {
+      if (err) {
+        reject({ code: 500, message: "Internal Server Error" });
+      }
+      if (row == undefined) {
+        reject({ code: 404, message: "Not Found" });
+      }
+      let thesis = { ...row, self: `/api/thesisProposals/${thesisProposalId}` }
+      resolve(thesis);
+    })
   });
 }
 
@@ -79,36 +89,9 @@ exports.getThesisProposal = function (thesisProposalId) {
  **/
 exports.getThesisProposals = function (codDegree, keywords, supervisor, title, inCompany, abroad, expirationDate) {
   return new Promise(function (resolve, reject) {
-    const sql = 'SELECT thesisProposalId FROM thesisProposal_cds_bridge WHERE cdsId = ?';
-    db.all(sql, [codDegree], (err, rows) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-      const thesisProposals = rows.map((e) => ({
-        thesis: e.thesis
-      }
-      ));
-      resolve(thesisProposals);
-    }).then(function () {
-      return new Promise(function (resolve, reject) {
-        const sql = 'SELECT * FROM thesisProposals WHERE ';
-        db.all(sql, [], (err, rows) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-          const thesisProposals = rows.map((e) => ({
-            thesis: e.thesis
-          }
-          ));
-          resolve(thesisProposals);
-        })
-      })
-    })
-  });
+  // to do!
+  })
 }
-
 
 /**
  *
@@ -131,13 +114,13 @@ exports.insertNewThesisProposal = function (professorId, newThesisProposal) {
       newThesisProposal.notes,
       newThesisProposal.expirationDate,
       newThesisProposal.level,
-      0
+      false
     ], function (err) {
       if (err) {
-        reject(err);
-        return;
+        reject({ code: 500, message: "Internal Server Error" });
       }
-      resolve(this.lastID);
+      let newThesis = { ...newThesisProposal, thesisProposalId: this.lastID, self: `/api/professors/${professorId}/thesisProposals/${this.lastID}` }
+      resolve(newThesis);
     })
   });
 }

@@ -107,7 +107,9 @@ app.delete('/api/authenticatedSession/:userId', isLoggedIn, userController.delet
 
 //Thesis proposals
 app.get('/api/professors/:professorId/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposalsOfProfessor);
-app.post('/api/professors/:professorId/thesisProposals', validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal); //WORK IN PROGRESS
+app.post('/api/professors/:professorId/thesisProposals', isLoggedIn, validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal);
+app.get('api/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposals); //TO DO!
+app.get('api//thesisProposals/:thesisProposalId', isLoggedIn, thesisProposalController.getThesisProposal);
 
 //Professors
 app.get('/api/professors', isLoggedIn, professorController.getProfessors);
@@ -139,40 +141,8 @@ http.createServer(app).listen(serverPort, function () {
 
 
 
-
-// Thesis Proposal Table Functions:
-
-app.post('/api/professors/{professorId}/thesisProposals', isLoggedIn, [
-    //TODO: insert Express validator functions
-], async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        console.log(errors)
-        return res.status(422).json({ errors: errors.array() });
-    } else {
-        try {
-            const newThesisProposal = {
-                title: req.body.title,
-                coSupervisors: req.body.coSupervisors,
-                keywords: JSON.stringify(req.body.keywords),
-                thesisType: req.body.thesisType,
-                abroad: req.body.abroad,
-                description: req.body.description,
-                requirements: req.body.requirements,
-                expirationDate: req.body.expirationDate,
-                level: req.body.level
-            }
-            const newThesis = await thesisProposalController.insertNewThesisProposal(req.user.id, newThesisProposal);
-            res.json(newThesis);
-        } catch (err) {
-            console.log(err)
-            res.status(503).json({ error: `Database error during the add of the thesis proposal  ${req.params.id}.` });
-        }
-    }
-});
-
 app.get('api/thesisProposals', (req, res) => {
-    thesisProposalController.getThesisProposals(
+    thesisProposalController.getThesisProposals(  
         req.user.id,
         req.body.keywords,
         req.body.supervisor,
