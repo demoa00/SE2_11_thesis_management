@@ -2,6 +2,7 @@
 
 const sqlite = require('sqlite3');
 
+const dayjs = require("dayjs");
 const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
 
 
@@ -53,11 +54,11 @@ exports.getApplications = function (professorId) {
 exports.insertNewApplication = function (studentId, newApplication) {
   return new Promise(function (resolve, reject) {
     const sql = "INSERT INTO applications(?, ?, ?, ?, ?, ?) VALUES (applicant, message, date, isReadedByProfessor, isReadedByStudent, isAccepted)";
-    db.run(sql, [studentId, newApplication.message, newApplication.date, 0, 0, 'Pending'], function (err) {
+    db.run(sql, [studentId, newApplication.message, dayjs().format('YYYY-MM-DD'), 0, 0, 'Pending'], function (err) {
       if (err) {
         reject({ code: 500, message: "Internal Server Error" });
       } else {
-        resolve(this.lastID);
+        resolve({ newApplication: `/student/${studentId}/applications/${lastID}` });
       }
     })
   });

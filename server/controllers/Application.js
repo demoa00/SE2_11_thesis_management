@@ -31,11 +31,18 @@ module.exports.getApplicationForProfessor = function getApplicationForProfessor(
 };
 
 
-module.exports.getAllApplicationsOfStudent = function getAllApplicationsOfStudent(req, res, next) {
+module.exports.getAllApplicationsOfStudent = async function getAllApplicationsOfStudent(req, res, next) {
   try {
+    if (req.user.studentId === undefined) {
+      utils.writeJson(res, { error: "Forbidden" }, 403);
+    } else {
+      let newApplication = await Application.getApplication(req.query.applicationId);
+
+      utils.writeJson(res, newApplication, 200);
+    }
 
   } catch (error) {
-
+    utils.writeJson(res, { error: error.message }, error.code);
   }
 };
 
