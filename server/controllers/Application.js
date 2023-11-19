@@ -40,11 +40,18 @@ module.exports.getAllApplicationsOfStudent = function getAllApplicationsOfStuden
 };
 
 
-module.exports.insertNewApplication = function insertNewApplication(req, res, next) {
+module.exports.insertNewApplication = async function insertNewApplication(req, res, next) {
   try {
+    if (req.user.studentId === undefined) {
+      utils.writeJson(res, { error: "Forbidden" }, 403);
+    } else {
+      let newApplication = await Application.insertNewApplication(req.user.studentId, req.body);
+
+      utils.writeJson(res, newApplication, 200);
+    }
 
   } catch (error) {
-
+    utils.writeJson(res, { error: error.message }, error.code);
   }
 };
 

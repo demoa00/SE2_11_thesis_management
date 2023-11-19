@@ -108,7 +108,7 @@ app.post('/api/authenticatedSession', validate({ body: userCredentialsSchema }),
 app.delete('/api/authenticatedSession/:userId', isLoggedIn, userController.deleteAuthenticatedSession);
 
 //Applications
-app.post('/student/{studentId}/applications', isLoggedIn, validate({ body: applicationSchema }), applicationController.insertNewApplication);
+app.post('/student/:studentId/applications', isLoggedIn, validate({ body: applicationSchema }), applicationController.insertNewApplication);
 
 //Thesis proposals
 app.get('/api/professors/:professorId/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposalsOfProfessor);
