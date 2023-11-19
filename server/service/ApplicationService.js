@@ -86,7 +86,14 @@ exports.getApplications = function (professorId) {
  **/
 exports.insertNewApplication = function (studentId, newApplication) {
   return new Promise(function (resolve, reject) {
-    //to do!
+    const sql = "INSERT INTO applications(?, ?, ?, ?, ?, ?) VALUES (applicant, message, date, isReadedByProfessor, isReadedByStudent, isAccepted)";
+    db.run(sql, [studentId, newApplication.message, newApplication.date, 0, 0, 'Pending'], function (err) {
+      if (err) {
+        reject({ code: 500, message: "Internal Server Error" });
+      } else {
+        resolve(this.lastID);
+      }
+    })
   });
 }
 
