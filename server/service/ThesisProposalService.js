@@ -286,17 +286,7 @@ exports.getThesisProposal = function (user, thesisProposalId) {
  * returns thesisProposals
  **/
 exports.getThesisProposalsOfProfessor = function (professorId, filter) {
-<<<<<<< HEAD
-  if (filter instanceof Array) {
-    filter = filter[0];
-  }
-
-  return new Promise(function (resolve, reject) {
-    let sql = 'SELECT * FROM thesisProposals WHERE ';
-    let params = [];
-=======
   let sql = 'SELECT * FROM thesisProposals WHERE supervisor = ?' + ' OR ' + 'thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?) AND isArchived = 0';
->>>>>>> 6d6fe259ba17739a6af88678b95fe7d91d10067d
 
   let params = [];
   params.push(professorId);
@@ -339,48 +329,6 @@ exports.getThesisProposalsOfProfessor = function (professorId, filter) {
 
 /**
  *
-<<<<<<< HEAD
- * thesisProposalId Integer 
- * returns thesisProposal
- **/
-exports.getThesisProposal = function (thesisProposalId) {
-  return new Promise(function (resolve, reject) {
-    const sql = 'SELECT * FROM thesisProposals WHERE thesisProposalId = ? ';
-    db.get(sql, [thesisProposalId], function (err, row) {
-      if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
-      }
-      if (row == undefined) {
-        reject({ code: 404, message: "Not Found" });
-      }
-      let thesis = { ...row, self: `/api/thesisProposals/${thesisProposalId}` }
-      resolve(thesis);
-    })
-  });
-}
-
-
-/**
- *
- * codDegree String The codDegree is about the degree that the student, that perform this request, attends
- * keywords List  (optional)
- * supervisor String  (optional)
- * title String  (optional)
- * inCompany Boolean  (optional)
- * abroad Boolean  (optional)
- * expirationDate date  (optional)
- * returns thesisProposals
- **/
-exports.getThesisProposals = function (codDegree, keywords, supervisor, title, inCompany, abroad, expirationDate) {
-  return new Promise(function (resolve, reject) {
-  // to do!
-  })
-}
-
-/**
- *
-=======
->>>>>>> 6d6fe259ba17739a6af88678b95fe7d91d10067d
  * body ThesisProposal  (optional)
  * professorId String 
  * authenticatedUserId String The authenticated user id corresponds to the professor that perform this request
@@ -424,16 +372,6 @@ exports.insertNewThesisProposal = function (professorId, newThesisProposal) {
       newThesisProposal.notes,
       newThesisProposal.expirationDate,
       newThesisProposal.level,
-<<<<<<< HEAD
-      false
-    ], function (err) {
-      if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
-      }
-      let newThesis = { ...newThesisProposal, thesisProposalId: this.lastID, self: `/api/professors/${professorId}/thesisProposals/${this.lastID}` }
-      resolve(newThesis);
-    })
-=======
         false
       ], function (err) {
         if (err) {
@@ -527,7 +465,6 @@ exports.insertNewThesisProposal = function (professorId, newThesisProposal) {
         }
       });
     });
->>>>>>> 6d6fe259ba17739a6af88678b95fe7d91d10067d
   });
 }
 
