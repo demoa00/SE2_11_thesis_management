@@ -1,4 +1,4 @@
-/* TABLE FRO MANAGE AUTHENTICATION OF PROFESSOR AND STUDENT */
+/* TABLE TO MANAGE AUTHENTICATION OF PROFESSOR AND STUDENT */
 DROP TABLE users;
 CREATE TABLE users(
     email TEXT PRIMARY KEY NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE users(
     isStudent BOLEAN NOT NULL
 );
 
-/* TABLE FOR MANAGE PROFESSORS */
+/* TABLE TO MANAGE PROFESSORS */
 DROP TABLE professors;
 CREATE TABLE professors(
     professorId TEXT(7) PRIMARY KEY NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE professors(
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-/* TABLE FOR MANAGE STUDENTS */
+/* TABLE TO MANAGE STUDENTS */
 DROP TABLE students;
 CREATE TABLE students(
     studentId TEXT(7) PRIMARY KEY NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE students(
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-/* TABLE FOR MANAGE EXTERNAL CO-SUPERVISORS */
+/* TABLE TO MANAGE EXTERNAL CO-SUPERVISORS */
 DROP TABLE externalCoSupervisors;
 CREATE TABLE externalCoSupervisors(
     externalCoSupervisorId TEXT(7) PRIMARY KEY NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE externalCoSupervisors(
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-/* TABLE FOR MANAGE DEGREES */
+/* TABLE TO MANAGE DEGREES */
 DROP TABLE degrees;
 CREATE TABLE degrees(
     degreeId TEXT(20) PRIMARY KEY NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE degrees(
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-/* TABLE FOR MANAGE STUDENT PASSED EXAMS */
+/* TABLE TO MANAGE STUDENT PASSED EXAMS */
 DROP TABLE careers;
 CREATE TABLE careers(
     studentId TEXT(7) PRIMARY KEY NOT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE careers(
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-/* TABLE FOR MANAGE THESIS PROPOSALS */
+/* TABLE TO MANAGE THESIS PROPOSALS */
 DROP TABLE thesisProposals;
 CREATE TABLE thesisProposals(
     thesisProposalId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE thesisProposals(
     keywords TEXT(100) NOT NULL,
     description TEXT(1000) NOT NULL,
     requirements TEXT(1000) NOT NULL,
-    inCompany BOLEAN NOT NULL,
+    thesisType TEXT(20) NOT NULL,
     abroad BOLEAN NOT NULL,
     notes TEXT(500),
     expirationDate DATE NOT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE thesisProposals(
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-/* TABLE FOR MANAGE STUDENT APPLICATIONS FOR THESIS PROPOSALS */
+/* TABLE TO MANAGE STUDENT APPLICATIONS FOR THESIS PROPOSALS */
 DROP TABLE applications;
 CREATE TABLE applications(
     thesisProposalId INTEGER NOT NULL,
@@ -108,7 +108,7 @@ CREATE TABLE applications(
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-/* TABLE FOR MANAGE THE LIST OF INTERNAL CO-SUPERVISOR FOR A THESIS PROPOSAL */
+/* TABLE TO MANAGE THE LIST OF INTERNAL CO-SUPERVISOR FOR A THESIS PROPOSAL */
 DROP TABLE thesisProposal_internalCoSupervisor_bridge;
 CREATE TABLE thesisProposal_internalCoSupervisor_bridge(
     thesisProposalId INTEGER NOT NULL,
@@ -121,7 +121,7 @@ CREATE TABLE thesisProposal_internalCoSupervisor_bridge(
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-/* TABLE FOR MANAGE THE LIST OF EXTERNAL CO-SUPERVISOR FOR A THESIS PROPOSAL */
+/* TABLE TO MANAGE THE LIST OF EXTERNAL CO-SUPERVISOR FOR A THESIS PROPOSAL */
 DROP TABLE thesisProposal_externalCoSupervisor_bridge;
 CREATE TABLE thesisProposal_externalCoSupervisor_bridge(
     thesisProposalId INTEGER NOT NULL,
@@ -134,7 +134,7 @@ CREATE TABLE thesisProposal_externalCoSupervisor_bridge(
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-/* TABLE FOR MANAGE THE LIST OF TITLE CDS FOR A THESIS PROPOSAL */
+/* TABLE TO MANAGE THE LIST OF TITLE CDS FOR A THESIS PROPOSAL */
 DROP TABLE thesisProposal_cds_bridge;
 CREATE TABLE thesisProposal_cds_bridge(
     thesisProposalId INTEGER NOT NULL,
@@ -143,4 +143,18 @@ CREATE TABLE thesisProposal_cds_bridge(
     PRIMARY KEY(thesisProposalId, cdsId),
     FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON DELETE CASCADE,
     FOREIGN KEY(cdsId) REFERENCES degrees(degreeId)
+);
+
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
+/* TABLE TO PERFORM FULL TABLE TEXT SEARCH */
+DROP TABLE virtualThesisProposals;
+CREATE VIRTUAL TABLE virtualThesisProposals USING fts5(
+    thesisProposalId,
+    title,
+    keywords,
+    description,
+    requirements,
+    thesisType,
+    notes
 );

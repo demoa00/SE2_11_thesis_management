@@ -16,14 +16,53 @@
             "minLength": 1
         },
         "supervisor": {
-            "type": "string",
-            "pattern": "^(p|P)[0-9]{6}$"
+            "type": "object",
+            "properties": {
+                "professorId": {
+                    "type": "string",
+                    "pattern": "^(p|P)[0-9]{6}$"
+                },
+                "name": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "surname": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "professor": {
+                    "type": "string",
+                    "format": "uri"
+                }
+            },
+            "additionalProperties": false
         },
         "coSupervisor": {
             "type": "array",
             "items": {
-                "type": "string",
-                "pattern": "^((p|P)|(e|E))[0-9]{6}$"
+                "type": "object",
+                "properties": {
+                    "coSupervisorId": {
+                        "type": "string",
+                        "pattern": "^((p|P)|(e|E))[0-9]{6}$"
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "surname": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "coSupervisor": {
+                        "type": "string",
+                        "format": "uri"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "coSupervisorId"
+                ]
             }
         },
         "keywords": {
@@ -34,20 +73,11 @@
             "minItems": 1
         },
         "thesisType": {
-            "type": "object",
-            "properties": {
-                "inCompany": {
-                    "type": "boolean"
-                },
-                "abroad": {
-                    "type": "boolean"
-                }
-            },
-            "additionalProperties": false,
-            "required": [
-                "inCompany",
-                "abroad"
-            ]
+            "type": "string",
+            "minLength": 1
+        },
+        "abroad": {
+            "type": "boolean"
         },
         "groups": {
             "type": "array",
@@ -85,29 +115,42 @@
         "CdS": {
             "type": "array",
             "items": {
-                "type": "string",
-                "minLength": 1
+                "type": "object",
+                "properties": {
+                    "degreeId": {
+                        "type": "string",
+                        "pattern": "^LM?-([1-9]|[1-9][0-9])$"
+                    },
+                    "titleDegree": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "degreeId"
+                ],
+                "additionalProperties": false
             },
             "minItems": 1
         },
         "isArchieved": {
             "type": "boolean",
             "default": false
+        },
+        "self": {
+            "type": "string",
+            "format": "uri"
         }
     },
     "additionalProperties": false,
     "required": [
-        "thesisProposalId",
         "title",
-        "supervisor",
         "keywords",
         "thesisType",
-        "groups",
         "description",
         "requirements",
         "expirationDate",
         "level",
-        "CdS",
-        "isArchieved"
+        "CdS"
     ]
 }

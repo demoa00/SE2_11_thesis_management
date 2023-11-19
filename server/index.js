@@ -12,7 +12,9 @@ const session = require('express-session');
 const serverPort = 3001;
 
 const applicationController = require(path.join(__dirname, 'controllers/Application'));
+const degreeController = require(path.join(__dirname, 'controllers/Degree'));
 const externalCoSupervisorController = require(path.join(__dirname, 'controllers/ExternalCoSupervisor'));
+const keywordController = require(path.join(__dirname, 'controllers/Keyword'));
 const professorController = require(path.join(__dirname, 'controllers/Professor'));
 const studentController = require(path.join(__dirname, 'controllers/Student'));
 const thesisProposalController = require(path.join(__dirname, 'controllers/ThesisProposal'));
@@ -107,9 +109,18 @@ app.delete('/api/authenticatedSession/:userId', isLoggedIn, userController.delet
 
 //Thesis proposals
 app.get('/api/professors/:professorId/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposalsOfProfessor);
+<<<<<<< HEAD
 app.post('/api/professors/:professorId/thesisProposals', isLoggedIn, validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal);
 app.get('api/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposals); //TO DO!
 app.get('api//thesisProposals/:thesisProposalId', isLoggedIn, thesisProposalController.getThesisProposal);
+=======
+app.get('/api/professors/:professorId/thesisProposals/:thesisProposalId', isLoggedIn, thesisProposalController.getThesisProposalProfessor);
+
+app.post('/api/professors/:professorId/thesisProposals', isLoggedIn, validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal);
+
+app.get('/api/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposals);
+app.get('/api/thesisProposals/:thesisProposalId', isLoggedIn, thesisProposalController.getThesisProposalStudent);
+>>>>>>> 6d6fe259ba17739a6af88678b95fe7d91d10067d
 
 //Professors
 app.get('/api/professors', isLoggedIn, professorController.getProfessors);
@@ -118,6 +129,13 @@ app.get('/api/professors/:professorId', isLoggedIn, professorController.getProfe
 //External co-supervisors
 app.get('/api/externalCoSupervisors', isLoggedIn, externalCoSupervisorController.getExternalCoSupervisors);
 app.get('/api/externalCoSupervisors/:externalCoSupervisorId', isLoggedIn, externalCoSupervisorController.getExternalCoSupervisorById);
+
+//Degrees
+app.get('/api/degrees', isLoggedIn, degreeController.getDegrees);
+
+//Keywords
+app.get('/api/keywords', isLoggedIn, keywordController.getKeywords);
+
 
 ////////////////////////////////
 // Error handlers for validation
@@ -139,6 +157,7 @@ http.createServer(app).listen(serverPort, function () {
     console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
 });
 
+<<<<<<< HEAD
 
 
 app.get('api/thesisProposals', (req, res) => {
@@ -154,3 +173,5 @@ app.get('api/thesisProposals', (req, res) => {
         .then(thesis => res.json(thesis))
         .catch(() => res.status(500).end());
 });
+=======
+>>>>>>> 6d6fe259ba17739a6af88678b95fe7d91d10067d
