@@ -6,7 +6,7 @@ const ThesisProposal = require('../service/ThesisProposalService');
 
 module.exports.getThesisProposals = async function getThesisProposals(req, res, next) {
   try {
-    if (req.user.studentId === undefined) {
+    if (req.user.professorId != undefined) {
       utils.writeJson(res, { error: "Forbidden" }, 403);
     } else {
       let thesisProposalsList = await ThesisProposal.getThesisProposals(req.user.codDegree, req.query);

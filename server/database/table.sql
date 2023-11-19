@@ -30,7 +30,8 @@ CREATE TABLE students(
     email TEXT(50) NOT NULL,
     nationality TEXT(20) NOT NULL,
     codDegree TEXT(20) NOT NULL,
-    enrollmentYear INTEGER NOT NULL 
+    enrollmentYear INTEGER NOT NULL,
+    cv TEXT(100)
 );
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
@@ -98,6 +99,7 @@ CREATE TABLE applications(
     thesisProposalId INTEGER NOT NULL,
     studentId TEXT(7) NOT NULL,
     message TEXT(1000),
+    date DATE NOT NULL,
     isReadedByProfessor BOLEAN DEFAULT FALSE NOT NULL,
     isReadedByStudent BOLEAN DEFAULT FALSE NOT NULL,
     isAccepted TEXT(20) NOT NULL DEFAULT 'Pending',
