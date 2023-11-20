@@ -17,6 +17,7 @@
     "connect": "^3.2.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
+    "dayjs": "^1.11.10",
     "express-json-validator-middleware": "^3.0.1",
     "express-session": "^1.17.3",
     "fs": "^0.0.1-security",
