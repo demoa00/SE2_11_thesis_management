@@ -1,15 +1,21 @@
-'use strict';
+"use strict";
 
-const utils = require('../utils/writer.js');
-const ThesisProposal = require('../service/ThesisProposalService');
+const utils = require("../utils/writer.js");
+const ThesisProposal = require("../service/ThesisProposalService");
 
-
-module.exports.getThesisProposals = async function getThesisProposals(req, res, next) {
+module.exports.getThesisProposals = async function getThesisProposals(
+  req,
+  res,
+  next
+) {
   try {
-    if (req.user.professorId != undefined) {
+    if (req.user.studentId == undefined) {
       utils.writeJson(res, { error: "Forbidden" }, 403);
     } else {
-      let thesisProposalsList = await ThesisProposal.getThesisProposals(req.user.codDegree, req.query);
+      let thesisProposalsList = await ThesisProposal.getThesisProposals(
+        req.user.codDegree,
+        req.query
+      );
 
       utils.writeJson(res, thesisProposalsList, 200);
     }
@@ -18,54 +24,77 @@ module.exports.getThesisProposals = async function getThesisProposals(req, res, 
   }
 };
 
-module.exports.getThesisProposalStudent = async function getThesisProposalStudent(req, res, next) {
-  try {
-    if (req.user.professorId != undefined) {
-      utils.writeJson(res, { error: "Forbidden" }, 403);
-    } else {
-      let thesisProposal = await ThesisProposal.getThesisProposal(req.user, req.params.thesisProposalId);
+module.exports.getThesisProposalStudent =
+  async function getThesisProposalStudent(req, res, next) {
+    try {
+      if (req.user.studentId == undefined) {
+        utils.writeJson(res, { error: "Forbidden" }, 403);
+      } else {
+        let thesisProposal = await ThesisProposal.getThesisProposal(
+          req.user,
+          req.params.thesisProposalId
+        );
 
-      utils.writeJson(res, thesisProposal, 200);
+        utils.writeJson(res, thesisProposal, 200);
+      }
+    } catch (error) {
+      utils.writeJson(res, { error: error.message }, error.code);
     }
-  } catch (error) {
-    utils.writeJson(res, { error: error.message }, error.code);
-  }
-};
+  };
 
-module.exports.getThesisProposalProfessor = async function getThesisProposalProfessor(req, res, next) {
-  try {
-    if (req.user.studentId != undefined || req.user.professorId != req.params.professorId) {
-      utils.writeJson(res, { error: "Forbidden" }, 403);
-    } else {
-      let thesisProposal = await ThesisProposal.getThesisProposal(req.user, req.params.thesisProposalId);
+module.exports.getThesisProposalProfessor =
+  async function getThesisProposalProfessor(req, res, next) {
+    try {
+      if (
+        req.user.professorId == undefined ||
+        req.user.professorId != req.params.professorId
+      ) {
+        utils.writeJson(res, { error: "Forbidden" }, 403);
+      } else {
+        let thesisProposal = await ThesisProposal.getThesisProposal(
+          req.user,
+          req.params.thesisProposalId
+        );
 
-      utils.writeJson(res, thesisProposal, 200);
+        utils.writeJson(res, thesisProposal, 200);
+      }
+    } catch (error) {
+      utils.writeJson(res, { error: error.message }, error.code);
     }
-  } catch (error) {
-    utils.writeJson(res, { error: error.message }, error.code);
-  }
-};
+  };
 
-module.exports.getThesisProposalsOfProfessor = async function getThesisProposalsOfProfessor(req, res, next) {
-  try {
-    if (req.params.professorId !== req.user.professorId) {
-      utils.writeJson(res, { error: "Forbidden" }, 403);
-    } else {
-      let thesisProposalsList = await ThesisProposal.getThesisProposalsOfProfessor(req.user.professorId, req.query.position);
+module.exports.getThesisProposalsOfProfessor =
+  async function getThesisProposalsOfProfessor(req, res, next) {
+    try {
+      if (req.params.professorId !== req.user.professorId) {
+        utils.writeJson(res, { error: "Forbidden" }, 403);
+      } else {
+        let thesisProposalsList =
+          await ThesisProposal.getThesisProposalsOfProfessor(
+            req.user.professorId,
+            req.query.position
+          );
 
-      utils.writeJson(res, thesisProposalsList, 200);
+        utils.writeJson(res, thesisProposalsList, 200);
+      }
+    } catch (error) {
+      utils.writeJson(res, { error: error.message }, error.code);
     }
-  } catch (error) {
-    utils.writeJson(res, { error: error.message }, error.code);
-  }
-};
+  };
 
-module.exports.insertNewThesisProposal = async function insertNewThesisProposal(req, res, next) {
+module.exports.insertNewThesisProposal = async function insertNewThesisProposal(
+  req,
+  res,
+  next
+) {
   try {
     if (req.user.professorId == undefined) {
-      utils.writeJson(res, { error: "Forbidden" }, 403)
+      utils.writeJson(res, { error: "Forbidden" }, 403);
     } else {
-      let newThesisProposalURI = await ThesisProposal.insertNewThesisProposal(req.user.professorId, req.body);
+      let newThesisProposalURI = await ThesisProposal.insertNewThesisProposal(
+        req.user.professorId,
+        req.body
+      );
 
       utils.writeJson(res, newThesisProposalURI, 201);
     }
@@ -73,4 +102,3 @@ module.exports.insertNewThesisProposal = async function insertNewThesisProposal(
     utils.writeJson(res, { error: error.message }, error.code);
   }
 };
-

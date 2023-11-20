@@ -86,11 +86,9 @@ describe("getProfessorsById", () => {
       JSON.stringify(professor, null, 2)
     );
   });
-  test("should respond with 404 not found", async () => {
+  test("should respond with 404 not found - missing professorId", async () => {
     const mockReq = {
-      params: {
-        professorId: "p987120",
-      },
+      params: {},
     };
     const mockRes = {
       writeHead: jest.fn().mockReturnThis(),
