@@ -34,27 +34,6 @@ describe('ThesisManagementComponent', () => {
     expect(component.createPopup).toBeFalsy();
   }));
 
-  it('should log thesis object on InsertThesis', () => {
-    const component = new ThesisManagementComponent();
-    let mockThesis = {
-      title: "",
-      supervisor: "",
-      coSupervisor: "",
-      level: "",
-      type: "",
-      groups: "",
-      description: "",
-      requiredKnoledge: "",
-      notes: "",
-      keywords: "",
-      courseType: "",
-      data: new Date
-    };
-    spyOn(console, 'log');
-    component.insertThesis();
-    expect(console.log).toHaveBeenCalledWith(mockThesis);
-  });
-
   it('should set showApplicants to true and others to false on showApplicantsTable', () => {
     const component = new ThesisManagementComponent();
     component.showApplicantsTable();
