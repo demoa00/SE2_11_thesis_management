@@ -52,7 +52,7 @@
             "type": "boolean",
             "default": false
         },
-        "isAccepted": {
+        "status": {
             "enum": [
                 "Rejected",
                 "Pending",

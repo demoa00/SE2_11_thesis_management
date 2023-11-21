@@ -1,6 +1,7 @@
 'use strict';
 
 const sqlite = require('sqlite3');
+
 const Professor = require('./ProfessorService');
 const ExternalCoSupervisor = require('./ExternalCoSupervisorService');
 const Degree = require('./DegreeService');
@@ -293,15 +294,11 @@ exports.getThesisProposalsOfProfessor = function (professorId, filter) {
   params.push(professorId);
 
   if (filter != undefined) {
-    if (filter instanceof Array) {
-      filter = filter[0];
-    }
-
-    if (filter === 'supervisor') {
+    if (filter === 'false') {
       sql = 'SELECT * FROM thesisProposals WHERE supervisor = ? AND isArchived = 0';
       params = [professorId];
-    } else if (filter === 'cosupervisor') {
-      sql += 'SELECT * FROM thesisProposals WHERE thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?) AND isArchived = 0';
+    } else if (filter === 'true') {
+      sql = 'SELECT * FROM thesisProposals WHERE thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?) AND isArchived = 0';
       params = [professorId];
     }
   }

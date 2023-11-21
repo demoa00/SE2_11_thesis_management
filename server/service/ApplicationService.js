@@ -1,8 +1,11 @@
 'use strict';
 
 const sqlite = require('sqlite3');
+const dayjs = require('dayjs');
 
-const dayjs = require("dayjs");
+const Student = require('./StudentService');
+const ThesisProposal = require('./ThesisProposalService');
+
 const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
 
 
@@ -46,10 +49,10 @@ exports.getApplication = function (user, studentId, thesisProposalId) {
   let params = [];
 
   if (user.studentId === undefined) {//professor request
-    sql = 'SELECT applications.thesisProposalId, students.studentId, students.name, students.surname, thesis.title, applications.message, applications.date, applications.isAccepted FROM applications, students, (SELECT thesisProposalId, title FROM thesisProposals WHERE thesisProposalId = ? AND supervisor = ?) AS thesis WHERE applications.studentId = ? AND applications.thesisProposalId = ? AND applications.studentId = students.studentId AND applications.thesisProposalId = thesis.thesisProposalId';
+    sql = 'SELECT applications.thesisProposalId, students.studentId, students.name, students.surname, thesis.title, applications.message, applications.date, applications.status FROM applications, students, (SELECT thesisProposalId, title FROM thesisProposals WHERE thesisProposalId = ? AND supervisor = ?) AS thesis WHERE applications.studentId = ? AND applications.thesisProposalId = ? AND applications.studentId = students.studentId AND applications.thesisProposalId = thesis.thesisProposalId';
     params = [thesisProposalId, user.professorId, studentId, thesisProposalId];
   } else {//student request
-    sql = 'SELECT applications.thesisProposalId, students.studentId, students.name, students.surname, thesis.title, applications.message, applications.date, applications.isAccepted FROM applications, students, (SELECT thesisProposalId, title FROM thesisProposals WHERE thesisProposalId = ?) AS thesis WHERE applications.studentId = ? AND applications.thesisProposalId = ? AND applications.studentId = students.studentId AND applications.thesisProposalId = thesis.thesisProposalId';
+    sql = 'SELECT applications.thesisProposalId, students.studentId, students.name, students.surname, thesis.title, applications.message, applications.date, applications.status FROM applications, students, (SELECT thesisProposalId, title FROM thesisProposals WHERE thesisProposalId = ?) AS thesis WHERE applications.studentId = ? AND applications.thesisProposalId = ? AND applications.studentId = students.studentId AND applications.thesisProposalId = thesis.thesisProposalId';
     params = [thesisProposalId, user.studentId, thesisProposalId];
   }
 
@@ -67,11 +70,28 @@ exports.getApplication = function (user, studentId, thesisProposalId) {
           applicant: { studentId: row.studentId, name: row.name, surname: row.surname, student: `/api/students/${row.studentId}` },
           message: row.message,
           date: row.date,
-          isAccepted: row.isAccepted,
+          status: row.status,
         }
         resolve(application);
       }
     })
+  });
+}
+
+
+exports.updateApplication = function (professorId, studentId, thesisProposalId, newApplication) {
+  return new Promise(function (resolve, reject) {
+    const sql = 'UPDATE applications SET status = ? WHERE thesisProposalId = ? AND studentId = ? AND thesisProposalId IN (SELECT thesisProposalId FROM thesisProposals WHERE supervisor = ?)';
+
+    db.run(sql, [newApplication.status, thesisProposalId, studentId, professorId], function (err) {
+      if (err) {
+        reject({ code: 500, message: "Internal Server Error" });
+      } else if (this.changes == 0) {
+        reject({ code: 404, message: "Not Found" });
+      } else {
+        resolve({ newApplication: `/api/professors/${professorId}/thesisProposals/${studentId}/${thesisProposalId}` })
+      }
+    });
   });
 }
 
@@ -115,8 +135,8 @@ exports.getAllApplicationsOfStudent = function (studentId) {
  **/
 exports.insertNewApplication = function (studentId, newApplication) {
   return new Promise(function (resolve, reject) {
-    const sql = 'INSERT INTO applications(thesisProposalId, studentId, message, date, isReadedByProfessor, isReadedByStudent, isAccepted) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    db.run(sql, [newApplication.thesisProposalId, studentId, newApplication.message, dayjs().format('YYYY-MM-DD'), 0, 0, 'Pending'], function (err) {
+    const sql = 'INSERT INTO applications(thesisProposalId, studentId, message, date) VALUES (?, ?, ?, ?)';
+    db.run(sql, [newApplication.thesisProposalId, studentId, newApplication.message, dayjs().format('YYYY-MM-DD')], function (err) {
       if (err) {
         reject({ code: 500, message: "Internal Server Error" });
       } else {

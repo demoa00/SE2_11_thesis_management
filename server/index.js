@@ -54,6 +54,24 @@ const isLoggedIn = (req, res, next) => {
     return res.status(401).json({ error: 'Not authorized' });
 }
 
+const isStudent = (req, res, next) => {
+    if (req.user.studentId != undefined && req.user.codDegree != undefined) {
+        if (req.user.isStudent != undefined && req.user.isStudent == true) {
+            return next();
+        }
+    }
+    return res.status(403).json({ error: 'Forbidden' });
+}
+
+const isProfessor = (req, res, next) => {
+    if (req.user.professorId != undefined) {
+        if (req.user.isStudent != undefined && req.user.isStudent == false) {
+            return next();
+        }
+    }
+    return res.status(403).json({ error: 'Forbidden' });
+}
+
 
 /////////////////////////////////////
 // Defining JSON validator middleware
@@ -108,25 +126,28 @@ app.post('/api/authenticatedSession', validate({ body: userCredentialsSchema }),
 app.delete('/api/authenticatedSession/:userId', isLoggedIn, userController.deleteAuthenticatedSession);
 
 //Applications
-app.get('/api/applications', isLoggedIn, applicationController.getApplications);
-app.get('/api/students/:studentId/applications/:thesisProposalId', isLoggedIn, applicationController.getApplicationForStudent);
-app.get('/api/applications/:studentId/:thesisProposalId', isLoggedIn, applicationController.getApplicationForProfessor);
-app.get('/api/students/:studentId/applications', isLoggedIn, applicationController.getAllApplicationsOfStudent);
-app.post('/api/students/:studentId/applications', isLoggedIn, validate({ body: applicationSchema }), applicationController.insertNewApplication);
+app.get('/api/professors/:professorId/thesisProposals/applications', isLoggedIn, isProfessor, applicationController.getApplications); //Only professors
+app.get('/api/professors/:professorId/thesisProposals/:studentId/:thesisProposalId', isLoggedIn, isProfessor, applicationController.getApplicationForProfessor); //Only professors
+app.put('/api/professors/:professorId/thesisProposals/:studentId/:thesisProposalId', isLoggedIn, isProfessor, validate({ body: applicationSchema }), applicationController.updateApplication) //Only professors
 
+app.get('/api/students/:studentId/applications', isLoggedIn, isStudent, applicationController.getAllApplicationsOfStudent); //Only students
+app.get('/api/students/:studentId/applications/:thesisProposalId', isLoggedIn, isStudent, applicationController.getApplicationForStudent); //Only students
+app.post('/api/thesisProposals/:thesisProposalId', isLoggedIn, isStudent, validate({ body: applicationSchema }), applicationController.insertNewApplication); //Only students
 
 //Thesis proposals
-app.get('/api/professors/:professorId/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposalsOfProfessor);
-app.get('/api/professors/:professorId/thesisProposals/:thesisProposalId', isLoggedIn, thesisProposalController.getThesisProposalProfessor);
+app.get('/api/professors/:professorId/thesisProposals', isLoggedIn, isProfessor, thesisProposalController.getThesisProposalsOfProfessor); //Only professors
+app.get('/api/professors/:professorId/thesisProposals/:thesisProposalId', isLoggedIn, isProfessor, thesisProposalController.getThesisProposalProfessor); //Only professors
+app.post('/api/professors/:professorId/thesisProposals', isLoggedIn, isProfessor, validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal); //Only professors
 
-app.post('/api/professors/:professorId/thesisProposals', isLoggedIn, validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal);
-
-app.get('/api/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposals);
-app.get('/api/thesisProposals/:thesisProposalId', isLoggedIn, thesisProposalController.getThesisProposalStudent);
+app.get('/api/thesisProposals', isLoggedIn, isStudent, thesisProposalController.getThesisProposals); //Only students
+app.get('/api/thesisProposals/:thesisProposalId', isLoggedIn, isStudent, thesisProposalController.getThesisProposalStudent); //Only students
 
 //Professors
 app.get('/api/professors', isLoggedIn, professorController.getProfessors);
 app.get('/api/professors/:professorId', isLoggedIn, professorController.getProfessorById);
+
+//Student
+app.get('/api/students/:studentId', isLoggedIn, studentController.getStudentById);
 
 //External co-supervisors
 app.get('/api/externalCoSupervisors', isLoggedIn, externalCoSupervisorController.getExternalCoSupervisors);

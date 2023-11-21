@@ -3,6 +3,7 @@
 const utils = require('../utils/writer.js');
 const ExternalCoSupervisor = require('../service/ExternalCoSupervisorService');
 
+
 module.exports.getExternalCoSupervisors = async function getExternalCoSupervisors(req, res, next) {
   try {
     let externalCoSupervisorsList = await ExternalCoSupervisor.getExternalCoSupervisors();
@@ -13,6 +14,7 @@ module.exports.getExternalCoSupervisors = async function getExternalCoSupervisor
   }
 };
 
+
 module.exports.getExternalCoSupervisorById = async function getExternalCoSupervisorById(req, res, next) {
   try {
     let externalCoSupervisor = await ExternalCoSupervisor.getExternalCoSupervisorById(req.params.externalCoSupervisorId);
@@ -22,3 +24,4 @@ module.exports.getExternalCoSupervisorById = async function getExternalCoSupervi
     utils.writeJson(res, { error: error.message }, error.code);
   }
 };
+

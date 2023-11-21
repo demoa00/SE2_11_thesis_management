@@ -1,7 +1,8 @@
 'use strict';
 
-var utils = require('../utils/writer.js');
-var Keyword = require('../service/KeywordService');
+const utils = require('../utils/writer.js');
+const Keyword = require('../service/KeywordService');
+
 
 module.exports.getKeywords = async function getKeywords (req, res, next) {
   try {
@@ -12,3 +13,4 @@ module.exports.getKeywords = async function getKeywords (req, res, next) {
     utils.writeJson(res, { error: error.message }, error.code);
   }
 };
+

@@ -1,7 +1,8 @@
 'use strict';
 
-var utils = require('../utils/writer.js');
-var Degree = require('../service/DegreeService');
+const utils = require('../utils/writer.js');
+const Degree = require('../service/DegreeService');
+
 
 module.exports.getDegrees = async function getDegrees(req, res, next) {
   try {
@@ -12,3 +13,4 @@ module.exports.getDegrees = async function getDegrees(req, res, next) {
     utils.writeJson(res, { error: error.message }, error.code);
   }
 };
+

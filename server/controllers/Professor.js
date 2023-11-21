@@ -3,6 +3,7 @@
 const utils = require('../utils/writer.js');
 const Professor = require('../service/ProfessorService');
 
+
 module.exports.getProfessors = async function getProfessors(req, res, next) {
   try {
     let professorsList = await Professor.getProfessors();
@@ -12,6 +13,7 @@ module.exports.getProfessors = async function getProfessors(req, res, next) {
     utils.writeJson(res, { error: error.message }, error.code);
   }
 };
+
 
 module.exports.getProfessorById = async function getProfessorById(req, res, next) {
   try {

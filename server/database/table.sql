@@ -102,7 +102,7 @@ CREATE TABLE applications(
     date DATE NOT NULL,
     isReadedByProfessor BOLEAN DEFAULT FALSE NOT NULL,
     isReadedByStudent BOLEAN DEFAULT FALSE NOT NULL,
-    isAccepted TEXT(20) NOT NULL DEFAULT 'Pending',
+    status TEXT(20) NOT NULL DEFAULT 'Pending',
     
     PRIMARY KEY(thesisProposalId, studentId),
     FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON DELETE CASCADE, /* ON DELETE (PERFORM AUTOMATIC REJECT) ? */
