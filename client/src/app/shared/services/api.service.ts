@@ -17,7 +17,5 @@ export class APIService {
       console.log(error);
     })
   }
-
-
-
+  
 }

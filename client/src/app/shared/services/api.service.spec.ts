@@ -1,19 +1,62 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { APIService } from './api.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpService } from './http.service';
+import { of, throwError } from 'rxjs';
 
 describe('APIService', () => {
-  let service: APIService;
+  let apiService: APIService;
+  let httpServiceSpy: jasmine.SpyObj<HttpService>;
 
   beforeEach(() => {
+    const spy = jasmine.createSpyObj('HttpService', ['formPost']);
+
     TestBed.configureTestingModule({
-      imports: [HttpClientModule]
+      providers: [
+        APIService,
+        { provide: HttpService, useValue: spy }
+      ]
     });
-    service = TestBed.inject(APIService);
+    
+    apiService = TestBed.inject(APIService);
+    httpServiceSpy = TestBed.inject(HttpService) as jasmine.SpyObj<HttpService>;
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(apiService).toBeTruthy();
   });
+
+  it('should handle successful login', fakeAsync(() => {
+    const username = 'testUser';
+    const password = 'testPassword';
+    const mockResponse = { };
+
+    httpServiceSpy.formPost.and.returnValue(of(mockResponse).toPromise());
+
+    spyOn(console, 'log');
+
+    apiService.login(username, password);
+
+    tick();
+
+    expect(console.log).toHaveBeenCalledWith('response');
+    expect(console.log).toHaveBeenCalledWith(mockResponse);
+  }));
+
+  it('should handle login error', fakeAsync(() => {
+    const username = 'testUser';
+    const password = 'testPassword';
+    const mockError = new Error('Test error');
+
+    httpServiceSpy.formPost.and.returnValue(throwError(mockError).toPromise());
+
+    spyOn(console, 'log');
+
+    apiService.login(username, password);
+
+    tick();
+
+    expect(console.log).toHaveBeenCalledWith('error');
+    expect(console.log).toHaveBeenCalledWith(mockError);
+  }));
 });
