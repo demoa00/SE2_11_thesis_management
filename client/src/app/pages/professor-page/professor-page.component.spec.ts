@@ -21,4 +21,18 @@ describe('ProfessorPageComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should update selected property on menu item click', () => {
+    component.selectMenuItem(2);
+
+    expect(component.menuItems[0].selected).toBe(false);
+    expect(component.menuItems[1].selected).toBe(true);
+    expect(component.menuItems[2].selected).toBe(false);
+
+    component.selectMenuItem(3);
+
+    expect(component.menuItems[0].selected).toBe(false);
+    expect(component.menuItems[1].selected).toBe(false);
+    expect(component.menuItems[2].selected).toBe(true);
+  });
 });
