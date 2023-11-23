@@ -3,4 +3,8 @@
   <input name="email" type="text" placeholder="Email" class="{{loginFailed ? 'failed' : '' }}" [ngModel]="email" (ngModelChange)="updateEmail($event)">
   <input name="password" type="password" placeholder="Password" class="{{loginFailed ? 'failed' : '' }}" [ngModel]="password" (ngModelChange)="updatePassword($event)">
   <app-button class="orange" (click)="login()">Login</app-button>
+  <ul *ngIf="auth.user$ | async as user">
+    <li>nickname: {{ user.nickname }}</li>
+    <li>email: {{ user.email }}</li>
+  </ul>
 </form>

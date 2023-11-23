@@ -24,6 +24,8 @@ import {
 } from './pages/professor-page/thesis-management/create-thesis-form/create-thesis-form.component';
 import {HttpClientModule} from '@angular/common/http';
 
+import {AuthModule} from "@auth0/auth0-angular";
+
 const routes: Routes = [
   {path: '', component: HomePageComponent},
   {path: 'student', component: StudentPageComponent},
@@ -50,7 +52,19 @@ const routes: Routes = [
     CreateThesisFormComponent,
   ],
   imports: [
-    BrowserModule, RouterModule.forRoot(routes), FormsModule, CdkDrag, ReactiveFormsModule, HttpClientModule
+    BrowserModule,
+    RouterModule.forRoot(routes),
+    FormsModule,
+    CdkDrag,
+    ReactiveFormsModule,
+    HttpClientModule,
+    AuthModule.forRoot({
+      domain: 'dev-qzcvobvfrndn6b3g.us.auth0.com',
+      clientId: 'OmyzHGjNrO1FRlu3umd3xv1ZMMHyEYq6',
+      authorizationParams: {
+        redirect_uri: window.location.origin
+      }
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]
