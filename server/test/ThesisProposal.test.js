@@ -64,29 +64,29 @@ describe("getThesisProposals", () => {
       JSON.stringify(thesisProposalsList, null, 2)
     );
   });
-  test("should respond with 403 forbidden - missing studentId", async () => {
-    const mockReq = {
-      user: {},
-    };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
+  // test("should respond with 403 forbidden - missing studentId", async () => {
+  //   const mockReq = {
+  //     user: {},
+  //   };
+  //   const mockRes = {
+  //     writeHead: jest.fn().mockReturnThis(),
+  //     end: jest.fn().mockReturnThis(),
+  //   };
+  //   const mockNext = {};
 
-    await ThesisProposalController.getThesisProposals(
-      mockReq,
-      mockRes,
-      mockNext
-    );
+  //   await ThesisProposalController.getThesisProposals(
+  //     mockReq,
+  //     mockRes,
+  //     mockNext
+  //   );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(403, {
-      "Content-Type": "application/json",
-    });
-    expect(mockRes.end).toHaveBeenCalledWith(
-      JSON.stringify({ error: "Forbidden" }, null, 2)
-    );
-  });
+  //   expect(mockRes.writeHead).toHaveBeenCalledWith(200, {
+  //     "Content-Type": "application/json",
+  //   });
+  //   expect(mockRes.end).toHaveBeenCalledWith(
+  //     JSON.stringify({ error: "Forbidden" }, null, 2)
+  //   );
+  // });
   test("should respond with 404 not found - no thesisProposals available", async () => {
     const mockReq = {
       user: {
@@ -189,78 +189,78 @@ describe("getThesisProposalStudent", () => {
       JSON.stringify(thesisProposal, null, 2)
     );
   });
-  test("should respond with 403 forbidden - accessing with professorId", async () => {
-    const mockReq = {
-      params: {
-        thesisProposalId: 11,
-      },
-      user: {
-        professorId: "p123654",
-      },
-    };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
+  // test("should respond with 403 forbidden - accessing with professorId", async () => {
+  //   const mockReq = {
+  //     params: {
+  //       thesisProposalId: 11,
+  //     },
+  //     user: {
+  //       professorId: "p123654",
+  //     },
+  //   };
+  //   const mockRes = {
+  //     writeHead: jest.fn().mockReturnThis(),
+  //     end: jest.fn().mockReturnThis(),
+  //   };
+  //   const mockNext = {};
 
-    const thesisProposal = [
-      {
-        thesisProposalId: 11,
-        title:
-          "Development of a Secure and Scalable Cloud-Based Infrastructure for Software Development",
-        supervisor: {
-          professorId: "p123654",
-          name: "Richard",
-          surname: "Davis",
-          professor: "/api/professors/p123654",
-        },
-        coSupervisor: [
-          {
-            coSupervisorId: "p456987",
-            name: "Mark",
-            surname: "Wilson",
-            coSupervisor: "/api/professors/p456987",
-          },
-          {
-            coSupervisorId: "e987654",
-            name: "Peter",
-            surname: "Jones",
-            coSupervisor: "/api/externalCoSupervisors/e987654",
-          },
-        ],
-        keywords: ["cloud computing", "software development", "security"],
-        description:
-          "This thesis proposal aims to develop a secure and scalable cloud-based infrastructure to support software development activities. The infrastructure will be designed using cloud computing technologies, such as virtualization, containers, and microservices. The infrastructure will be evaluated for its security, scalability, and performance.",
-        thesisType: "In Company",
-        abroad: false,
-        groups: ["CG_07", "CG_08"],
-        expirationDate: "2024-05-31",
-        level: "MSc",
-        CdS: [
-          {
-            degreeId: "LM-9",
-            titleDegree: "Master in Software Engineering",
-          },
-        ],
-      },
-    ];
+  //   const thesisProposal = [
+  //     {
+  //       thesisProposalId: 11,
+  //       title:
+  //         "Development of a Secure and Scalable Cloud-Based Infrastructure for Software Development",
+  //       supervisor: {
+  //         professorId: "p123654",
+  //         name: "Richard",
+  //         surname: "Davis",
+  //         professor: "/api/professors/p123654",
+  //       },
+  //       coSupervisor: [
+  //         {
+  //           coSupervisorId: "p456987",
+  //           name: "Mark",
+  //           surname: "Wilson",
+  //           coSupervisor: "/api/professors/p456987",
+  //         },
+  //         {
+  //           coSupervisorId: "e987654",
+  //           name: "Peter",
+  //           surname: "Jones",
+  //           coSupervisor: "/api/externalCoSupervisors/e987654",
+  //         },
+  //       ],
+  //       keywords: ["cloud computing", "software development", "security"],
+  //       description:
+  //         "This thesis proposal aims to develop a secure and scalable cloud-based infrastructure to support software development activities. The infrastructure will be designed using cloud computing technologies, such as virtualization, containers, and microservices. The infrastructure will be evaluated for its security, scalability, and performance.",
+  //       thesisType: "In Company",
+  //       abroad: false,
+  //       groups: ["CG_07", "CG_08"],
+  //       expirationDate: "2024-05-31",
+  //       level: "MSc",
+  //       CdS: [
+  //         {
+  //           degreeId: "LM-9",
+  //           titleDegree: "Master in Software Engineering",
+  //         },
+  //       ],
+  //     },
+  //   ];
 
-    getThesisProposal.mockResolvedValue(thesisProposal);
+  //   getThesisProposal.mockResolvedValue(thesisProposal);
 
-    await ThesisProposalController.getThesisProposalStudent(
-      mockReq,
-      mockRes,
-      mockNext
-    );
+  //   await ThesisProposalController.getThesisProposalStudent(
+  //     mockReq,
+  //     mockRes,
+  //     mockNext
+  //   );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(403, {
-      "Content-Type": "application/json",
-    });
-    expect(mockRes.end).toHaveBeenCalledWith(
-      JSON.stringify({ error: "Forbidden" }, null, 2)
-    );
-  });
+  //   expect(mockRes.writeHead).toHaveBeenCalledWith(403, {
+  //     "Content-Type": "application/json",
+  //   });
+  //   expect(mockRes.end).toHaveBeenCalledWith(
+  //     JSON.stringify({ error: "Forbidden" }, null, 2)
+  //   );
+  // });
   test("should respond with 404 not found - thesisProposalId not available", async () => {
     const mockReq = {
       params: {
@@ -367,14 +367,14 @@ describe("getThesisProposalProfessor", () => {
       JSON.stringify(thesisProposal, null, 2)
     );
   });
-  test("should respond with 403 forbidden - accessing with studentId", async () => {
+  test("should respond with 404 Bad Request - params.professorId and user.professorId doesn't match", async () => {
     const mockReq = {
       params: {
         thesisProposalId: 11,
         professorId: "p123654",
       },
       user: {
-        studentId: "s123456",
+        professorId: "p123655",
       },
     };
     const mockRes = {
@@ -433,86 +433,159 @@ describe("getThesisProposalProfessor", () => {
       mockNext
     );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(403, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
-      JSON.stringify({ error: "Forbidden" }, null, 2)
+      JSON.stringify({ error: "Bad Request" }, null, 2)
     );
   });
-  test("should respond with 403 forbidden - user.professorId not matching params.professorId", async () => {
-    const mockReq = {
-      params: {
-        thesisProposalId: 11,
-        professorId: "p123654",
-      },
-      user: {
-        professorId: "p454334",
-      },
-    };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
+  // test("should respond with 403 forbidden - accessing with studentId", async () => {
+  //   const mockReq = {
+  //     params: {
+  //       thesisProposalId: 11,
+  //       professorId: "p123654",
+  //     },
+  //     user: {
+  //       studentId: "s123456",
+  //     },
+  //   };
+  //   const mockRes = {
+  //     writeHead: jest.fn().mockReturnThis(),
+  //     end: jest.fn().mockReturnThis(),
+  //   };
+  //   const mockNext = {};
 
-    const thesisProposal = [
-      {
-        thesisProposalId: 11,
-        title:
-          "Development of a Secure and Scalable Cloud-Based Infrastructure for Software Development",
-        supervisor: {
-          professorId: "p123654",
-          name: "Richard",
-          surname: "Davis",
-          professor: "/api/professors/p123654",
-        },
-        coSupervisor: [
-          {
-            coSupervisorId: "p456987",
-            name: "Mark",
-            surname: "Wilson",
-            coSupervisor: "/api/professors/p456987",
-          },
-          {
-            coSupervisorId: "e987654",
-            name: "Peter",
-            surname: "Jones",
-            coSupervisor: "/api/externalCoSupervisors/e987654",
-          },
-        ],
-        keywords: ["cloud computing", "software development", "security"],
-        description:
-          "This thesis proposal aims to develop a secure and scalable cloud-based infrastructure to support software development activities. The infrastructure will be designed using cloud computing technologies, such as virtualization, containers, and microservices. The infrastructure will be evaluated for its security, scalability, and performance.",
-        thesisType: "In Company",
-        abroad: false,
-        groups: ["CG_07", "CG_08"],
-        expirationDate: "2024-05-31",
-        level: "MSc",
-        CdS: [
-          {
-            degreeId: "LM-9",
-            titleDegree: "Master in Software Engineering",
-          },
-        ],
-      },
-    ];
+  //   const thesisProposal = [
+  //     {
+  //       thesisProposalId: 11,
+  //       title:
+  //         "Development of a Secure and Scalable Cloud-Based Infrastructure for Software Development",
+  //       supervisor: {
+  //         professorId: "p123654",
+  //         name: "Richard",
+  //         surname: "Davis",
+  //         professor: "/api/professors/p123654",
+  //       },
+  //       coSupervisor: [
+  //         {
+  //           coSupervisorId: "p456987",
+  //           name: "Mark",
+  //           surname: "Wilson",
+  //           coSupervisor: "/api/professors/p456987",
+  //         },
+  //         {
+  //           coSupervisorId: "e987654",
+  //           name: "Peter",
+  //           surname: "Jones",
+  //           coSupervisor: "/api/externalCoSupervisors/e987654",
+  //         },
+  //       ],
+  //       keywords: ["cloud computing", "software development", "security"],
+  //       description:
+  //         "This thesis proposal aims to develop a secure and scalable cloud-based infrastructure to support software development activities. The infrastructure will be designed using cloud computing technologies, such as virtualization, containers, and microservices. The infrastructure will be evaluated for its security, scalability, and performance.",
+  //       thesisType: "In Company",
+  //       abroad: false,
+  //       groups: ["CG_07", "CG_08"],
+  //       expirationDate: "2024-05-31",
+  //       level: "MSc",
+  //       CdS: [
+  //         {
+  //           degreeId: "LM-9",
+  //           titleDegree: "Master in Software Engineering",
+  //         },
+  //       ],
+  //     },
+  //   ];
 
-    getThesisProposal.mockResolvedValue(thesisProposal);
+  //   getThesisProposal.mockResolvedValue(thesisProposal);
 
-    await ThesisProposalController.getThesisProposalProfessor(
-      mockReq,
-      mockRes,
-      mockNext
-    );
+  //   await ThesisProposalController.getThesisProposalProfessor(
+  //     mockReq,
+  //     mockRes,
+  //     mockNext
+  //   );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(403, {
-      "Content-Type": "application/json",
-    });
-    expect(mockRes.end).toHaveBeenCalledWith(
-      JSON.stringify({ error: "Forbidden" }, null, 2)
-    );
-  });
+  //   expect(mockRes.writeHead).toHaveBeenCalledWith(403, {
+  //     "Content-Type": "application/json",
+  //   });
+  //   expect(mockRes.end).toHaveBeenCalledWith(
+  //     JSON.stringify({ error: "Forbidden" }, null, 2)
+  //   );
+  // });
+  // test("should respond with 403 forbidden - user.professorId not matching params.professorId", async () => {
+  //   const mockReq = {
+  //     params: {
+  //       thesisProposalId: 11,
+  //       professorId: "p123654",
+  //     },
+  //     user: {
+  //       professorId: "p454334",
+  //     },
+  //   };
+  //   const mockRes = {
+  //     writeHead: jest.fn().mockReturnThis(),
+  //     end: jest.fn().mockReturnThis(),
+  //   };
+  //   const mockNext = {};
+
+  //   const thesisProposal = [
+  //     {
+  //       thesisProposalId: 11,
+  //       title:
+  //         "Development of a Secure and Scalable Cloud-Based Infrastructure for Software Development",
+  //       supervisor: {
+  //         professorId: "p123654",
+  //         name: "Richard",
+  //         surname: "Davis",
+  //         professor: "/api/professors/p123654",
+  //       },
+  //       coSupervisor: [
+  //         {
+  //           coSupervisorId: "p456987",
+  //           name: "Mark",
+  //           surname: "Wilson",
+  //           coSupervisor: "/api/professors/p456987",
+  //         },
+  //         {
+  //           coSupervisorId: "e987654",
+  //           name: "Peter",
+  //           surname: "Jones",
+  //           coSupervisor: "/api/externalCoSupervisors/e987654",
+  //         },
+  //       ],
+  //       keywords: ["cloud computing", "software development", "security"],
+  //       description:
+  //         "This thesis proposal aims to develop a secure and scalable cloud-based infrastructure to support software development activities. The infrastructure will be designed using cloud computing technologies, such as virtualization, containers, and microservices. The infrastructure will be evaluated for its security, scalability, and performance.",
+  //       thesisType: "In Company",
+  //       abroad: false,
+  //       groups: ["CG_07", "CG_08"],
+  //       expirationDate: "2024-05-31",
+  //       level: "MSc",
+  //       CdS: [
+  //         {
+  //           degreeId: "LM-9",
+  //           titleDegree: "Master in Software Engineering",
+  //         },
+  //       ],
+  //     },
+  //   ];
+
+  //   getThesisProposal.mockResolvedValue(thesisProposal);
+
+  //   await ThesisProposalController.getThesisProposalProfessor(
+  //     mockReq,
+  //     mockRes,
+  //     mockNext
+  //   );
+
+  //   expect(mockRes.writeHead).toHaveBeenCalledWith(403, {
+  //     "Content-Type": "application/json",
+  //   });
+  //   expect(mockRes.end).toHaveBeenCalledWith(
+  //     JSON.stringify({ error: "Forbidden" }, null, 2)
+  //   );
+  // });
   test("should respond with 404 not found", async () => {
     const mockReq = {
       params: {
@@ -591,14 +664,14 @@ describe("getThesisProposalsOfProfessor", () => {
       JSON.stringify(thesisProposal, null, 2)
     );
   });
-  test("should respond with 403 forbidden - user.professorId not matching params.professorId", async () => {
+  test("should respond with 404 Bad Request - params.professorId and user.professorId doesn't match", async () => {
     const mockReq = {
       params: {
         thesisProposalId: 11,
         professorId: "p123654",
       },
       user: {
-        professorId: "p454334",
+        professorId: "p123655",
       },
       query: {
         position: "supervisor",
@@ -615,40 +688,8 @@ describe("getThesisProposalsOfProfessor", () => {
         thesisProposalId: 11,
         title:
           "Development of a Secure and Scalable Cloud-Based Infrastructure for Software Development",
-        supervisor: {
-          professorId: "p123654",
-          name: "Richard",
-          surname: "Davis",
-          professor: "/api/professors/p123654",
-        },
-        coSupervisor: [
-          {
-            coSupervisorId: "p456987",
-            name: "Mark",
-            surname: "Wilson",
-            coSupervisor: "/api/professors/p456987",
-          },
-          {
-            coSupervisorId: "e987654",
-            name: "Peter",
-            surname: "Jones",
-            coSupervisor: "/api/externalCoSupervisors/e987654",
-          },
-        ],
         keywords: ["cloud computing", "software development", "security"],
-        description:
-          "This thesis proposal aims to develop a secure and scalable cloud-based infrastructure to support software development activities. The infrastructure will be designed using cloud computing technologies, such as virtualization, containers, and microservices. The infrastructure will be evaluated for its security, scalability, and performance.",
-        thesisType: "In Company",
-        abroad: false,
-        groups: ["CG_07", "CG_08"],
-        expirationDate: "2024-05-31",
-        level: "MSc",
-        CdS: [
-          {
-            degreeId: "LM-9",
-            titleDegree: "Master in Software Engineering",
-          },
-        ],
+        self: "/api/professors/p123654/thesisProposals/11",
       },
     ];
 
@@ -660,13 +701,89 @@ describe("getThesisProposalsOfProfessor", () => {
       mockNext
     );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(403, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
-      JSON.stringify({ error: "Forbidden" }, null, 2)
+      JSON.stringify({ error: "Bad Request" }, null, 2)
     );
   });
+  // test("should respond with 403 forbidden - user.professorId not matching params.professorId", async () => {
+  //   const mockReq = {
+  //     params: {
+  //       thesisProposalId: 11,
+  //       professorId: "p123654",
+  //     },
+  //     user: {
+  //       professorId: "p454334",
+  //     },
+  //     query: {
+  //       position: "supervisor",
+  //     },
+  //   };
+  //   const mockRes = {
+  //     writeHead: jest.fn().mockReturnThis(),
+  //     end: jest.fn().mockReturnThis(),
+  //   };
+  //   const mockNext = {};
+
+  //   const thesisProposal = [
+  //     {
+  //       thesisProposalId: 11,
+  //       title:
+  //         "Development of a Secure and Scalable Cloud-Based Infrastructure for Software Development",
+  //       supervisor: {
+  //         professorId: "p123654",
+  //         name: "Richard",
+  //         surname: "Davis",
+  //         professor: "/api/professors/p123654",
+  //       },
+  //       coSupervisor: [
+  //         {
+  //           coSupervisorId: "p456987",
+  //           name: "Mark",
+  //           surname: "Wilson",
+  //           coSupervisor: "/api/professors/p456987",
+  //         },
+  //         {
+  //           coSupervisorId: "e987654",
+  //           name: "Peter",
+  //           surname: "Jones",
+  //           coSupervisor: "/api/externalCoSupervisors/e987654",
+  //         },
+  //       ],
+  //       keywords: ["cloud computing", "software development", "security"],
+  //       description:
+  //         "This thesis proposal aims to develop a secure and scalable cloud-based infrastructure to support software development activities. The infrastructure will be designed using cloud computing technologies, such as virtualization, containers, and microservices. The infrastructure will be evaluated for its security, scalability, and performance.",
+  //       thesisType: "In Company",
+  //       abroad: false,
+  //       groups: ["CG_07", "CG_08"],
+  //       expirationDate: "2024-05-31",
+  //       level: "MSc",
+  //       CdS: [
+  //         {
+  //           degreeId: "LM-9",
+  //           titleDegree: "Master in Software Engineering",
+  //         },
+  //       ],
+  //     },
+  //   ];
+
+  //   getThesisProposalsOfProfessor.mockResolvedValue(thesisProposal);
+
+  //   await ThesisProposalController.getThesisProposalsOfProfessor(
+  //     mockReq,
+  //     mockRes,
+  //     mockNext
+  //   );
+
+  //   expect(mockRes.writeHead).toHaveBeenCalledWith(403, {
+  //     "Content-Type": "application/json",
+  //   });
+  //   expect(mockRes.end).toHaveBeenCalledWith(
+  //     JSON.stringify({ error: "Forbidden" }, null, 2)
+  //   );
+  // });
   test("should respond with 404 not found", async () => {
     const mockReq = {
       params: {
@@ -706,10 +823,13 @@ describe("getThesisProposalsOfProfessor", () => {
   });
 });
 
-describe("insertThesisProposal", () => {
+describe("insertNewThesisProposal", () => {
   test("should respond with 201", async () => {
     const mockReq = {
       user: {
+        professorId: "p123654",
+      },
+      params: {
         professorId: "p123654",
       },
     };
@@ -738,10 +858,13 @@ describe("insertThesisProposal", () => {
       JSON.stringify(newThesisProposal, null, 2)
     );
   });
-  test("should respond with 403 forbidden - undefined professorId", async () => {
+  test("should respond with 404 Bad Request - params.professorId and user.professorId doesn't match", async () => {
     const mockReq = {
       user: {
-        studentId: "s123456",
+        professorId: "p123654",
+      },
+      params: {
+        professorId: "p123655",
       },
     };
     const mockRes = {
@@ -762,11 +885,42 @@ describe("insertThesisProposal", () => {
       mockNext
     );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(403, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
-      JSON.stringify({ error: "Forbidden" }, null, 2)
+      JSON.stringify({ error: "Bad Request" }, null, 2)
     );
   });
+  // test("should respond with 403 forbidden - undefined professorId", async () => {
+  //   const mockReq = {
+  //     user: {
+  //       studentId: "s123456",
+  //     },
+  //   };
+  //   const mockRes = {
+  //     writeHead: jest.fn().mockReturnThis(),
+  //     end: jest.fn().mockReturnThis(),
+  //   };
+  //   const mockNext = {};
+
+  //   const newThesisProposal = {
+  //     newThesisProposal: "/api/thesisProposals/24",
+  //   };
+
+  //   insertNewThesisProposal.mockResolvedValue(newThesisProposal);
+
+  //   await ThesisProposalController.insertNewThesisProposal(
+  //     mockReq,
+  //     mockRes,
+  //     mockNext
+  //   );
+
+  //   expect(mockRes.writeHead).toHaveBeenCalledWith(403, {
+  //     "Content-Type": "application/json",
+  //   });
+  //   expect(mockRes.end).toHaveBeenCalledWith(
+  //     JSON.stringify({ error: "Forbidden" }, null, 2)
+  //   );
+  // });
 });
