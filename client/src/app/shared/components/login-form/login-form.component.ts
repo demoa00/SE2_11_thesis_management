@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthService} from "@auth0/auth0-angular";
+import {APIService} from "../../services/api.service";
 
 @Component({
   selector: 'app-login-form',
@@ -25,7 +26,7 @@ export class LoginFormComponent {
 
   loginFailed = false;
 
-  constructor(private _router: Router, public auth: AuthService) { }
+  constructor(private _router: Router, public auth: AuthService, private api: APIService) { }
 
   login() {
     // if (this.email == this.studentEmail && this.password == this.studentPassword) {
@@ -41,7 +42,7 @@ export class LoginFormComponent {
     //     // this.showAlert = false;
     //   }, 3000)
     // }
-    // this.api.login(this.email, this.password)
+     this.api.login(this.email, this.password)
     // this.auth.loginWithRedirect()
     console.log(this.auth.user$)
   }

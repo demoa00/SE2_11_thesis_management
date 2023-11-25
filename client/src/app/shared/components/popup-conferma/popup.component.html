@@ -26,7 +26,7 @@
           *ngIf="showButton && showSliderAfterResponse && !sending"
           class="place-content-center dropdownButton "
           (click)="send.emit() ;sending = true; requestAccepted.emit(true)">
-          {{ title == 'Annulla Operazione' ? 'Cancel' : 'Insert' }}
+          {{ title == 'Annulla Operazione' ? 'Cancel' : 'Confirm' }}
         </button>
         <app-loading *ngIf="!response && sending"></app-loading>
       </div>

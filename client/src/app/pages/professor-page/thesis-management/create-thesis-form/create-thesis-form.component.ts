@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
@@ -12,6 +12,9 @@ export class CreateThesisFormComponent {
   selectFocus: boolean = false;
   keywordsList: string[] = [];
 
+
+  @Input()
+  thesisProposal: any;
   @Output()
   requestAccepted= new EventEmitter<boolean>();
   @Output()

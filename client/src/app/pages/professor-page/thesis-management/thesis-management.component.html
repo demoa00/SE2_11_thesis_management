@@ -1,7 +1,7 @@
 <div class="h-full w-full flex gap-2">
   <div class="w-full flex gap-4">
     <div class=" w-1/6 flex flex-col gap-4 bg-white card">
-      <div class="button-tesi orange" (click)="OpenCreatePopup()">
+      <div class="button-tesi orange" (click)="openCreatePopup()">
           <p class="text-center">Create new thesis </p>
           <app-icon name="add" class="w-4 h-4"></app-icon><!--Should restore this line but it gives problems-->
       </div>
@@ -19,10 +19,10 @@
       </div>
     </div>
     <div class="card h-full p-5 w-5/6 ">
-      <app-thesis-table [rows]="applicantsRow" *ngIf="showApplicants"></app-thesis-table>
+      <app-applicants-table [rows]="applicantsRow" *ngIf="showApplicants"></app-applicants-table>
+      <app-active-thesis-table [rows]="activeThesesRow" *ngIf="showActiveTheses"></app-active-thesis-table>
       <!--
-      <app-thesis-table [rows]="activeThesesRow" *ngIf="showActiveTheses"></app-thesis-table>
-      <app-thesis-table [rows]="archivedThesesRow" *ngIf="showArchivedTheses"></app-thesis-table>
+      <app-applicants-table [rows]="archivedThesesRow" *ngIf="showArchivedTheses"></app-applicants-table>
       -->
     </div>
   </div>
@@ -31,7 +31,7 @@
 
 <app-popup
   *ngIf="createPopup"
-  (close)="OpenCreatePopup()"
+  (close)="openCreatePopup()"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "false">
