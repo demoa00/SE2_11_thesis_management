@@ -619,116 +619,6 @@
                 }
             }
         },
-        "/professors/{professorId}/thesisProposals": {
-            "get": {
-                "tags": [
-                    "thesisProposal"
-                ],
-                "operationId": "getThesisProposalsOfProfessor",
-                "parameters": [
-                    {
-                        "name": "authenticatedUserId",
-                        "in": "cookie",
-                        "required": true,
-                        "description": "The authenticated user id corresponds to the professor that perform this request",
-                        "schema": {
-                            "type": "string",
-                            "pattern": "^(p|P)[0-9]{6}$"
-                        }
-                    },
-                    {
-                        "name": "professorId",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "pattern": "^(p|P)[0-9]{6}$"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/thesisProposals"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "thesisProposal"
-                ],
-                "operationId": "insertNewThesisProposal",
-                "parameters": [
-                    {
-                        "name": "authenticatedUserId",
-                        "in": "cookie",
-                        "required": true,
-                        "description": "The authenticated user id corresponds to the professor that perform this request",
-                        "schema": {
-                            "type": "string",
-                            "pattern": "^(p|P)[0-9]{6}$"
-                        }
-                    },
-                    {
-                        "name": "professorId",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "pattern": "^(p|P)[0-9]{6}$"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/thesisProposal"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/thesisProposal"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
         "/students/{studentId}": {
             "get": {
                 "tags": [
@@ -772,115 +662,6 @@
                 }
             }
         },
-        "/students/{studentId}/applications": {
-            "get": {
-                "tags": [
-                    "application"
-                ],
-                "operationId": "getAllApplicationsOfStudent",
-                "parameters": [
-                    {
-                        "name": "authenticatedUserId",
-                        "in": "cookie",
-                        "description": "The authenticated user id corresponds to the student that perform this request",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "pattern": "^(s|S)[0-9]{6}$"
-                        }
-                    },
-                    {
-                        "name": "studentId",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "pattern": "^(s|S)[0-9]{6}$"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/applications"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "application"
-                ],
-                "operationId": "insertNewApplication",
-                "parameters": [
-                    {
-                        "name": "authenticatedUserId",
-                        "in": "cookie",
-                        "description": "The authenticated user id corresponds to the student that perform this request",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "studentId",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "pattern": "^(s|S)[0-9]{6}$"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/application"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/application"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
         "/thesisProposals": {
             "get": {
                 "tags": [
@@ -889,10 +670,29 @@
                 "operationId": "getThesisProposals",
                 "parameters": [
                     {
+                        "name": "authenticatedUserId",
+                        "in": "cookie",
+                        "required": false,
+                        "description": "The authenticated user id corresponds to the professor that perform this request",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^(p|P)[0-9]{6}$"
+                        }
+                    },
+                    {
+                        "name": "cosupervisor",
+                        "in": "query",
+                        "required": false,
+                        "description": "Respresent the filter for the professor",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
                         "name": "codDegree",
                         "description": "The codDegree is about the degree that the student, that perform this request, attends",
                         "in": "cookie",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }
@@ -925,11 +725,11 @@
                         }
                     },
                     {
-                        "name": "inCompany",
+                        "name": "thesisType",
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "type": "boolean"
+                            "type": "string"
                         }
                     },
                     {
@@ -974,6 +774,57 @@
                         "description": "Internal Server Error"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "thesisProposal"
+                ],
+                "operationId": "insertNewThesisProposal",
+                "parameters": [
+                    {
+                        "name": "authenticatedUserId",
+                        "in": "cookie",
+                        "required": true,
+                        "description": "The authenticated user id corresponds to the professor that perform this request",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^(p|P)[0-9]{6}$"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/thesisProposal"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/thesisProposal"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
             }
         },
         "/thesisProposals/{thesisProposalId}": {
@@ -981,7 +832,7 @@
                 "tags": [
                     "thesisProposal"
                 ],
-                "operationId": "getThesisProposal",
+                "operationId": "getThesisProposalById",
                 "parameters": [
                     {
                         "name": "thesisProposalId",
@@ -1016,6 +867,65 @@
                         "description": "Internal Server Error"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "application"
+                ],
+                "operationId": "insertNewApplication",
+                "parameters": [
+                    {
+                        "name": "thesisProposalId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "authenticatedUserId",
+                        "in": "cookie",
+                        "description": "The authenticated user id corresponds to the student that perform this request",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^(s|S)[0-9]{6}$"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/application"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/application"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
             }
         },
         "/applications": {
@@ -1032,7 +942,7 @@
                         "description": "The authenticated user id corresponds to the professor that perform this request",
                         "schema": {
                             "type": "string",
-                            "pattern": "^(p|P)[0-9]{6}$"
+                            "pattern": "^((p|P)[0-9]{6})|((s|S)[0-9]{6})$"
                         }
                     }
                 ],
@@ -1062,12 +972,70 @@
                 }
             }
         },
-        "/applications/{applicationId}": {
+        "/applications/{thesisProposalId}/{studentId}": {
             "get": {
                 "tags": [
                     "application"
                 ],
-                "operationId": "getApplication",
+                "operationId": "getApplicationById",
+                "parameters": [
+                    {
+                        "name": "authenticatedUserId",
+                        "in": "cookie",
+                        "required": true,
+                        "description": "The authenticated user id corresponds to the professor that perform this request",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^((p|P)[0-9]{6})|((s|S)[0-9]{6})$"
+                        }
+                    },
+                    {
+                        "name": "thesisProposalId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "studentId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/application"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "put" : {
+                "tags": [
+                    "application"
+                ],
+                "operationId": "updateApplication",
                 "parameters": [
                     {
                         "name": "authenticatedUserId",
@@ -1080,7 +1048,15 @@
                         }
                     },
                     {
-                        "name": "applicationId",
+                        "name": "thesisProposalId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "studentId",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -1088,6 +1064,15 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/application"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1282,30 +1267,13 @@
             }
         },
         "/authenticatedSession": {
-            "post": {
+            "get": {
                 "tags": [
                     "user"
                 ],
-                "operationId": "createNewAuthenticatedSession",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/userCredentials"
-                            }
-                        }
-                    }
-                },
                 "responses": {
-                    "201": {
-                        "description": "Created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/student"
-                                }
-                            }
-                        }
+                    "200": {
+                        "description": "OK"
                     },
                     "400": {
                         "description": "Bad Request"
@@ -1321,7 +1289,6 @@
                 "tags": [
                     "user"
                 ],
-                "operationId": "deleteAuthenticatedSession",
                 "parameters": [
                     {
                         "name": "authenticatedUserId",
