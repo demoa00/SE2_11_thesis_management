@@ -5,10 +5,6 @@ const sqlite = require('sqlite3');
 const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
 
 
-/**
- *
- * returns professors
- **/
 exports.getProfessors = function () {
   return new Promise(function (resolve, reject) {
     const sql = 'SELECT * FROM professors';
@@ -32,11 +28,29 @@ exports.getProfessors = function () {
   });
 }
 
-/**
- *
- * professorId String 
- * returns professor
- **/
+exports.getProfessorByEmail = function (email) {
+  return new Promise(function (resolve, reject) {
+    const sql = 'SELECT * FROM professors WHERE email = ?';
+
+    db.get(sql, [email], (err, row) => {
+      if (err) {
+        reject({ code: 500, message: "Internal Server Error" });
+      } else if (row === undefined) {
+        reject({ code: 404, message: "Not Found" });
+      } else {
+        let professor = {
+          userId: row.professorId,
+          email: row.email,
+          codGroup: row.codGroup,
+          role: 'professor'
+        };
+
+        resolve(professor);
+      }
+    });
+  });
+}
+
 exports.getProfessorById = function (professorId) {
   return new Promise(function (resolve, reject) {
     const sql = 'SELECT * FROM professors WHERE professorId = ?';
@@ -52,7 +66,6 @@ exports.getProfessorById = function (professorId) {
           name: row.name,
           surname: row.surname,
           email: row.email,
-          company: row.company,
           codGroup: row.codGroup,
           codDepartment: row.codDepartment,
           self: `/api/professors/${row.professorId}`
@@ -63,4 +76,3 @@ exports.getProfessorById = function (professorId) {
     });
   });
 }
-

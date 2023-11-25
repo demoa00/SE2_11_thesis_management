@@ -59,6 +59,10 @@
                 "Accepted"
             ],
             "default": "Pending"
+        },
+        "self": {
+                "type": "string",
+                "format": "uri"
         }
     },
     "additionalProperties": false,

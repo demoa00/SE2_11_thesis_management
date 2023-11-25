@@ -14,7 +14,6 @@ module.exports.getProfessors = async function getProfessors(req, res, next) {
   }
 };
 
-
 module.exports.getProfessorById = async function getProfessorById(req, res, next) {
   try {
     let professor = await Professor.getProfessorById(req.params.professorId);
@@ -24,4 +23,3 @@ module.exports.getProfessorById = async function getProfessorById(req, res, next
     utils.writeJson(res, { error: error.message }, error.code);
   }
 };
-

@@ -13,4 +13,3 @@ module.exports.getKeywords = async function getKeywords (req, res, next) {
     utils.writeJson(res, { error: error.message }, error.code);
   }
 };
-

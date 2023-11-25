@@ -1,98 +1,62 @@
 'use strict';
 
-const path = require('path');
+//-- -- -- -- -- -- --
+// SERVER DEPENDENCES
+//-- -- -- -- -- -- --
+
+require('dotenv').config()
 const http = require('http');
+const session = require('express-session');
+const passport = require('passport');
+const saml = require('passport-saml').Strategy;
+const morgan = require('morgan');
 const cors = require('cors');
-const fs = require('fs');
+const bodyParser = require('body-parser');
 const oas3Tools = require('oas3-tools');
 const { Validator, ValidationError } = require('express-json-validator-middleware');
-const passport = require('passport');
-const session = require('express-session');
-
-const serverPort = 3001;
-
-const applicationController = require(path.join(__dirname, 'controllers/Application'));
-const degreeController = require(path.join(__dirname, 'controllers/Degree'));
-const externalCoSupervisorController = require(path.join(__dirname, 'controllers/ExternalCoSupervisor'));
-const keywordController = require(path.join(__dirname, 'controllers/Keyword'));
-const professorController = require(path.join(__dirname, 'controllers/Professor'));
-const studentController = require(path.join(__dirname, 'controllers/Student'));
-const thesisProposalController = require(path.join(__dirname, 'controllers/ThesisProposal'));
-const userController = require(path.join(__dirname, 'controllers/User'));
-
-/////////////////////////////////////////////////////////
-// Set up and enable Cross-Origin Resource Sharing (CORS)
-/////////////////////////////////////////////////////////
-
-const corsOptions = {
-    origin: 'http://localhost:4200',
-    credentials: true,
-};
-
-
-////////////
-// Passport
-////////////
-
-// Serializing in the session the user object given from LocalStrategy(verify).
-passport.serializeUser(function (user, cb) { // this user is id + username + name 
-    cb(null, user);
-});
-
-// Starting from the data in the session, we extract the current (logged-in) user.
-passport.deserializeUser(function (user, cb) { // this user is id + email + name 
-    // if needed, we can do extra check here (e.g., double check that the user is still in the database, etc.)
-    // e.g.: return userDao.getUserById(id).then(user => cb(null, user)).catch(err => cb(err, null));
-    return cb(null, user); // this will be available in req.user
-});
-
-// Defining authentication verification middleware
-const isLoggedIn = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    return res.status(401).json({ error: 'Not authorized' });
-}
-
-const isStudent = (req, res, next) => {
-    if (req.user.studentId != undefined && req.user.codDegree != undefined) {
-        if (req.user.isStudent != undefined && req.user.isStudent == true) {
-            return next();
-        }
-    }
-    return res.status(403).json({ error: 'Forbidden' });
-}
-
-const isProfessor = (req, res, next) => {
-    if (req.user.professorId != undefined) {
-        if (req.user.isStudent != undefined && req.user.isStudent == false) {
-            return next();
-        }
-    }
-    return res.status(403).json({ error: 'Forbidden' });
-}
-
-
-/////////////////////////////////////
-// Defining JSON validator middleware
-/////////////////////////////////////
-
 const addFormats = require('ajv-formats').default;
+const fs = require('fs');
+const path = require('path');
+
+
+//-- -- -- -- -- -- -- -- -- --
+// IMPORT RESOURCE CONTROLLERS
+//-- -- -- -- -- -- -- -- -- --
+
+const thesisProposalController = require(path.join(__dirname, 'controllers/ThesisProposalController'));
+const applicationController = require(path.join(__dirname, 'controllers/ApplicationController'));
+const studentController = require(path.join(__dirname, 'controllers/StudentController'));
+const professorController = require(path.join(__dirname, 'controllers/ProfessorController'));
+const externalCoSupervisorController = require(path.join(__dirname, 'controllers/ExternalCoSupervisorController'));
+const keywordController = require(path.join(__dirname, 'controllers/KeywordController'));
+const degreeController = require(path.join(__dirname, 'controllers/DegreeController'));
+
+
+//-- -- -- -- -- -- -- -- -- --
+// IMPORT RESOURCE SERVICES
+//-- -- -- -- -- -- -- -- -- --
+
+const studentService = require(path.join(__dirname, 'service/StudentService'));
+const professorService = require(path.join(__dirname, 'service/ProfessorService'));
+
+
+//-- -- -- -- -- -- -- -- -- -- --
+// SCHEMA VALIDATOR INITIALIZATION
+//-- -- -- -- -- -- -- -- -- -- --
 
 const applicationSchema = JSON.parse(fs.readFileSync(path.join('.', 'json_schema_validator', 'application.json')).toString());
 const thesisProposalSchema = JSON.parse(fs.readFileSync(path.join('.', 'json_schema_validator', 'thesisProposal.json')).toString());
-const userCredentialsSchema = JSON.parse(fs.readFileSync(path.join('.', 'json_schema_validator', 'userCredentials.json')).toString());
 
 const validator = new Validator({ allErrors: true });
-validator.ajv.addSchema([applicationSchema, thesisProposalSchema, userCredentialsSchema]);
+validator.ajv.addSchema([applicationSchema, thesisProposalSchema]);
 addFormats(validator.ajv);
 
 const validate = validator.validate;
 
 
-//////////////////////////////
-// swaggerRouter configuration
-//////////////////////////////
+//-- -- -- -- -- -- -- -- -- -- 
+// SWAGGER ROUTER CONFIGURATION
+//-- -- -- -- -- -- -- -- -- --
 
 const options = {
     routing: {
@@ -104,66 +68,23 @@ const expressAppConfig = oas3Tools.expressAppConfig(path.join(__dirname, 'api/op
 const app = expressAppConfig.getApp();
 
 
-///////////////////////
-// Creating the session
-///////////////////////
+//-- -- -- -- -- -- -- --
+// SERVER INITIALIZATION
+//-- -- -- -- -- -- -- --
 
-app.use(cors(corsOptions));
+const PORT = 3000;
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
-    secret: "shhhhh... it's a secret!",
+    secret: process.env.SECRET_SESSION,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: false
 }));
-app.use(passport.authenticate('session'));
-
-
-////////////////
-//Route methods
-////////////////
-
-//Login
-app.post('/api/authenticatedSession', validate({ body: userCredentialsSchema }), userController.createNewAuthenticatedSession);
-app.delete('/api/authenticatedSession/:userId', isLoggedIn, userController.deleteAuthenticatedSession);
-
-//Applications
-app.get('/api/professors/:professorId/thesisProposals/applications', isLoggedIn, isProfessor, applicationController.getApplications); //Only professors
-app.get('/api/professors/:professorId/thesisProposals/:studentId/:thesisProposalId', isLoggedIn, isProfessor, applicationController.getApplicationForProfessor); //Only professors
-app.put('/api/professors/:professorId/thesisProposals/:studentId/:thesisProposalId', isLoggedIn, isProfessor, validate({ body: applicationSchema }), applicationController.updateApplication) //Only professors
-
-app.get('/api/students/:studentId/applications', isLoggedIn, isStudent, applicationController.getAllApplicationsOfStudent); //Only students
-app.get('/api/students/:studentId/applications/:thesisProposalId', isLoggedIn, isStudent, applicationController.getApplicationForStudent); //Only students
-app.post('/api/thesisProposals/:thesisProposalId', isLoggedIn, isStudent, validate({ body: applicationSchema }), applicationController.insertNewApplication); //Only students
-
-//Thesis proposals
-app.get('/api/professors/:professorId/thesisProposals', isLoggedIn, isProfessor, thesisProposalController.getThesisProposalsOfProfessor); //Only professors
-app.get('/api/professors/:professorId/thesisProposals/:thesisProposalId', isLoggedIn, isProfessor, thesisProposalController.getThesisProposalProfessor); //Only professors
-app.post('/api/professors/:professorId/thesisProposals', isLoggedIn, isProfessor, validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal); //Only professors
-
-app.get('/api/thesisProposals', isLoggedIn, isStudent, thesisProposalController.getThesisProposals); //Only students
-app.get('/api/thesisProposals/:thesisProposalId', isLoggedIn, isStudent, thesisProposalController.getThesisProposalStudent); //Only students
-
-//Professors
-app.get('/api/professors', isLoggedIn, professorController.getProfessors);
-app.get('/api/professors/:professorId', isLoggedIn, professorController.getProfessorById);
-
-//Student
-app.get('/api/students/:studentId', isLoggedIn, studentController.getStudentById);
-
-//External co-supervisors
-app.get('/api/externalCoSupervisors', isLoggedIn, externalCoSupervisorController.getExternalCoSupervisors);
-app.get('/api/externalCoSupervisors/:externalCoSupervisorId', isLoggedIn, externalCoSupervisorController.getExternalCoSupervisorById);
-
-//Degrees
-app.get('/api/degrees', isLoggedIn, degreeController.getDegrees);
-
-//Keywords
-app.get('/api/keywords', isLoggedIn, keywordController.getKeywords);
-
-
-////////////////////////////////
-// Error handlers for validation
-////////////////////////////////
-
+app.use(morgan('dev'));
+app.use(cors({
+    origin: 'http://localhost:4200',
+    credentials: true,
+}));
 app.use(function (err, req, res, next) {
     if (err instanceof ValidationError) {
         res.status(400).send(err);
@@ -171,12 +92,205 @@ app.use(function (err, req, res, next) {
 });
 
 
-/////////////////////////////////////
-// Initialize the Swagger middleware
-/////////////////////////////////////
+//-- -- -- -- -- -- -- -- --
+// PASSPORT INITIALIZATION
+//-- -- -- -- -- -- -- -- --
 
-http.createServer(app).listen(serverPort, function () {
-    console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
-    console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(passport.authenticate('session'));
+
+/**
+ * Definition of passport strategy
+ * for authenticate users into the 
+ * application
+ */
+const strategy = new saml(
+    {
+        entryPoint: process.env.SAML_ENTRY_POINT,
+        issuer: process.env.SAML_ISSUER,
+        protocol: process.env.SAML_PROTOCOL,
+        logoutUrl: process.env.SAML_LOGOUT_URL,
+        cert: fs.readFileSync('./certs/idp_cert.pem', 'utf-8')
+    },
+    async (profile, done) => {
+        let userEmail = profile.attributes['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
+        let regex = new RegExp('.*@studenti.*');
+        let user;
+
+        if (regex.test(userEmail)) { //user is a student
+            try {
+                user = await studentService.getStudentByEmail(userEmail); //da cambiare
+                done(null, user);
+            } catch (error) {
+                done(null, false);
+            }
+        } else { //user is a professor
+            try {
+                user = await professorService.getProfessorByEmail(userEmail); //da cambiare
+                console.log(user)
+                done(null, user);
+            } catch (error) {
+                done(null, false);
+            }
+        }
+    }
+);
+
+passport.serializeUser((user, done) => {
+    done(null, user);
 });
 
+passport.deserializeUser((user, done) => {
+    done(null, user);
+});
+
+passport.use(strategy);
+
+
+//-- -- -- -- -- -- -- -- --
+// AUTHENTICATION MIDDLEWARE
+//-- -- -- -- -- -- -- -- --
+
+/**
+ * Verify if the user that want to accede 
+ * to the application is logged, if not 
+ * he is redirected to the IDP login page
+ * 
+ * @returns bool
+*/
+const redirectToLogin = (req, res, next) => {
+    if (!req.isAuthenticated() || req.user == null) {
+        return res.redirect('/api/authenticatedSession');
+    } else {
+        return next();
+    }
+};
+
+/**
+ * Verify if the user that want to accede
+ * to a specific resorce is correctly logged
+ */
+const isLoggedIn = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        return res.status(401).json({ error: 'Not authorized' });
+    }
+}
+
+/**
+ * Verify if the user that want to accede
+ * to a specific resorce has the role of 
+ * student
+ */
+const isStudent = (req, res, next) => {
+    if (req.user.userId != undefined && req.user.codDegree != undefined && req.user.role != undefined) {
+        if (req.user.role === 'student') {
+            return next();
+        }
+    }
+
+    return res.status(403).json({ error: 'Forbidden' });
+}
+
+/**
+ * Verify if the user that want to accede
+ * to a specific resorce has the role of 
+ * professor
+ */
+const isProfessor = (req, res, next) => {
+    if (req.user.professorId != undefined && user.codGroup != undefined && req.user.role != undefined) {
+        if (req.user.isStudent === 'professor') {
+            return next();
+        }
+    }
+
+    return res.status(403).json({ error: 'Forbidden' });
+}
+
+
+//-- -- -- --
+// API ROUTES
+//-- -- -- --
+
+/* LOGIN/LOGOUT API */
+app.get('/api/app', redirectToLogin, (req, res) => {
+    res.redirect('/home'/* 'http://localhost:4200/professor' */);
+});
+app.get('/api/authenticatedSession',
+    passport.authenticate('saml', {
+        successRedirect: '/api/app',
+        failureRedirect: '/api/authenticatedSession'
+    })
+);
+app.get('/api/authenticatedSession/:userId', (req, res) => {
+    if (req.user == null) {
+        return res.redirect('/api/authenticatedSession');
+    }
+
+    if (req.params.userId == undefined || req.params.userId != req.user.userId) {
+        res.status(403).send('Forbidden');
+    } else {
+        return strategy.logout(req, (err, uri) => {
+            req.logout(() => { res.redirect(uri); });
+        });
+    }
+});
+app.get('/api/authenticatedSession/failed', (req, res) => {
+    res.status(401).send('Login failed');
+});
+app.post('/saml/consume',
+    passport.authenticate('saml', {
+        failureRedirect: '/api/authenticatedSession/failed',
+        failureFlash: true
+    }),
+    (req, res) => { //login success redirect to application
+        return res.redirect('/api/app');
+    }
+);
+
+/* THESIS PROPOSALS API */
+app.get('/api/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposals);
+app.get('/api/thesisProposals/:thesisProposalId', isLoggedIn, thesisProposalController.getThesisProposalById);
+app.post('/api/thesisProposals', isLoggedIn, isProfessor, validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal);
+//app.put('/api/thesisProposals/:thesisProposalId', isLoggedIn, isProfessor, validate({ body: thesisProposalSchema }));
+//app.delete('/api/thesisProposals/:thesisProposalId', isLoggedIn, isProfessor);
+
+/* APPLICATIONS API */
+app.get('/api/applications', isLoggedIn, applicationController.getApplications);
+app.get('/api/applications/:thesisProposalId/:studentId', isLoggedIn, applicationController.getApplicationById);
+app.post('/api/thesisProposals/:thesisProposalId', isLoggedIn, isStudent, validate({ body: applicationSchema }), applicationController.insertNewApplication);
+app.put('/api/applications/:thesisProposalId/:studentId', isLoggedIn, isProfessor, validate({ body: applicationSchema }), applicationController.updateApplication);
+
+
+/* STUDENTS API */
+app.get('/api/students/:studentId', isLoggedIn, studentController.getStudentById);
+
+
+/* PROFESSORS API */
+app.get('/api/professors', isLoggedIn, professorController.getProfessors);
+app.get('/api/professors/:professorId', isLoggedIn, professorController.getProfessorById);
+
+
+/* EXTERNAL CO-SUPERVISORS API */
+app.get('/api/externalCoSupervisors', isLoggedIn, externalCoSupervisorController.getExternalCoSupervisors);
+app.get('/api/externalCoSupervisors/:externalCoSupervisorId', isLoggedIn, externalCoSupervisorController.getExternalCoSupervisorById);
+
+
+/* KEYWORDS API */
+app.get('/api/keywords', isLoggedIn, keywordController.getKeywords);
+
+
+/* DEGREES API */
+app.get('/api/degrees', isLoggedIn, degreeController.getDegrees);
+
+
+//-- -- -- -- --
+// SERVER START
+//-- -- -- -- --
+
+http.createServer(app).listen(PORT, function () {
+    console.log('Your server is listening on port %d (http://localhost:%d)', PORT, PORT);
+    console.log('Swagger-ui is available on http://localhost:%d/docs', PORT);
+});

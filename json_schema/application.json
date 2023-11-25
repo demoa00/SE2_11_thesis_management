@@ -47,10 +47,6 @@
             "type": "string",
             "format": "date"
         },
-        "cv": {
-            "type": "string",
-            "format": "uri"
-        },
         "isReadedByProfessor": {
             "type": "boolean",
             "default": false
@@ -59,7 +55,7 @@
             "type": "boolean",
             "default": false
         },
-        "isAccepted": {
+        "status": {
             "enum": [
                 "Rejected",
                 "Pending",
@@ -71,6 +67,8 @@
     "additionalProperties": false,
     "required": [
         "thesisProposalId",
-        "applicant"
+        "applicant",
+        "date",
+        "status"
     ]
 }

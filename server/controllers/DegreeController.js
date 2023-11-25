@@ -13,4 +13,3 @@ module.exports.getDegrees = async function getDegrees(req, res, next) {
     utils.writeJson(res, { error: error.message }, error.code);
   }
 };
-

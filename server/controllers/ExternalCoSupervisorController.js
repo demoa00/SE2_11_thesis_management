@@ -14,7 +14,6 @@ module.exports.getExternalCoSupervisors = async function getExternalCoSupervisor
   }
 };
 
-
 module.exports.getExternalCoSupervisorById = async function getExternalCoSupervisorById(req, res, next) {
   try {
     let externalCoSupervisor = await ExternalCoSupervisor.getExternalCoSupervisorById(req.params.externalCoSupervisorId);
@@ -24,4 +23,3 @@ module.exports.getExternalCoSupervisorById = async function getExternalCoSupervi
     utils.writeJson(res, { error: error.message }, error.code);
   }
 };
-

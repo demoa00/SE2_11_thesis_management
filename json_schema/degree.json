@@ -1,31 +1,24 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "degree_schema",
     "title": "Degree Schema",
-    "definitions": {
-        "degree": {
-            "type": "object",
-            "properties": {
-                "degreeId": {
-                    "type": "string",
-                    "pattern": "^LM?-([1-9]|[1-9][0-9])$"
-                },
-                "titleDegree": {
-                    "type": "string",
-                    "minLength": 1
-                }
-            },
-            "minProperties": 2,
-            "maxProperties": 2,
-            "required": [
-                "degreeId",
-                "titleDegree"
-            ]
-        }
-    },
     "type": "object",
     "properties": {
-        "degree": {
-            "$ref": "#/definitions/degree"
+        "$schema": {
+            "type": "string"
+        },
+        "degreeId": {
+            "type": "string",
+            "pattern": "^LM?-([1-9]|[1-9][0-9])$"
+        },
+        "titleDegree": {
+            "type": "string",
+            "minLength": 1
         }
-    }
+    },
+    "additionalProperties": false,
+    "required": [
+        "degreeId",
+        "titleDegree"
+    ]
 }

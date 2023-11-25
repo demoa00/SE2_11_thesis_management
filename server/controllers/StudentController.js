@@ -13,4 +13,3 @@ module.exports.getStudentById = async function getStudentById(req, res, next) {
     utils.writeJson(res, { error: error.message }, error.code);
   }
 };
-

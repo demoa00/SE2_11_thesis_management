@@ -5,11 +5,29 @@ const sqlite = require('sqlite3');
 const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
 
 
-/**
- *
- * studentId String 
- * returns student
- **/
+exports.getStudentByEmail = function (email) {
+  return new Promise(function (resolve, reject) {
+    let sql = 'SELECT * FROM students WHERE email = ?';
+
+    db.get(sql, [email], (err, row) => {
+      if (err) {
+        reject({ code: 500, message: "Internal Server Error" });
+      } else if (row == undefined) {
+        reject({ code: 404, message: "Not Found" });
+      } else {
+        let student = {
+          userId: row.studentId,
+          email: row.email,
+          codDegree: row.codDegree,
+          role: 'student'
+        };
+
+        resolve(student);
+      }
+    });
+  });
+}
+
 exports.getStudentById = function (studentId) {
   return new Promise(function (resolve, reject) {
     let sql = 'SELECT * FROM students WHERE studentId = ?';
@@ -37,4 +55,3 @@ exports.getStudentById = function (studentId) {
     });
   });
 }
-

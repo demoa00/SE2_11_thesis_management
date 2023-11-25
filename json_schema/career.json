@@ -1,53 +1,58 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "career_schema",
     "title": "Career Schema",
-    "definitions": {
-        "career": {
-            "type": "object",
-            "properties": {
-                "studentId": {
-                    "type": "string",
-                    "pattern": "^(s|S)[0-9]{6}$"
-                },
-                "codCourse": {
-                    "type": "string",
-                    "pattern": "^[0-9]{2}[A-Z]{5}$"
-                },
-                "titleCourse": {
-                    "type": "string",
-                    "minLength": 1
-                },
-                "cfu": {
-                    "type": "integer",
-                    "minimun": 3,
-                    "maximum": 30
-                },
-                "grade": {
-                    "type": "integer",
-                    "minimun": 18,
-                    "maximum": 31
-                },
-                "date": {
-                    "type": "string",
-                    "format": "date"
-                }
-            },
-            "minProperties": 6,
-            "maxProperties": 6,
-            "required": [
-                "studentId",
-                "codCourse",
-                "titleCourse",
-                "cfu",
-                "grade",
-                "date"
-            ]
-        }
-    },
     "type": "object",
     "properties": {
-        "career": {
-            "$ref": "#/definitions/career"
+        "$schema": {
+            "type": "string"
+        },
+        "studentId": {
+            "type": "string",
+            "pattern": "^(s|S)[0-9]{6}$"
+        },
+        "exams": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "codCourse": {
+                        "type": "string",
+                        "pattern": "^[0-9]{2}[A-Z]{5}$"
+                    },
+                    "titleCourse": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "cfu": {
+                        "type": "integer",
+                        "minimun": 3,
+                        "maximum": 30
+                    },
+                    "grade": {
+                        "type": "integer",
+                        "minimun": 18,
+                        "maximum": 31
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "codCourse",
+                    "titleCourse",
+                    "cfu",
+                    "grade",
+                    "date"
+                ]
+            }
         }
-    }
+    },
+    "additionalProperties": false,
+    "required": [
+        "studentId",
+        "exams"
+    ]
 }

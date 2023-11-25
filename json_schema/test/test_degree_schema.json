@@ -1,7 +1,0 @@
-{
-    "$schema": "../degree.json",
-    "degree": {
-        "degreeId": "L-3",
-        "titleDegree": "Computer Science"
-    }
-}

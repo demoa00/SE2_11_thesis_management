@@ -5,11 +5,6 @@ const sqlite = require('sqlite3');
 const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
 
 
-/**
- *
- * authenticatedUserId String The authenticated user id corresponds to the professor that perform this request
- * returns keywords
- **/
 exports.getKeywords = function () {
   return new Promise(function (resolve, reject) {
     const sql = "SELECT keywords FROM thesisProposals";
@@ -33,4 +28,3 @@ exports.getKeywords = function () {
     });
   });
 }
-

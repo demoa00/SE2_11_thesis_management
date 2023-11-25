@@ -24,8 +24,7 @@
         "gender": {
             "enum": [
                 "male",
-                "female",
-                "other"
+                "female"
             ]
         },
         "email": {
