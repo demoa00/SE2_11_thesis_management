@@ -131,19 +131,20 @@ exports.getThesisProposalsForStudent = function (codDegree, filter) {
 }
 
 exports.getThesisProposalsForProfessor = function (professorId, filter) {
-  let sql = 'SELECT * FROM thesisProposals WHERE supervisor = ?' + ' OR ' + 'thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?) AND isArchived = 0';
+  let sql = 'SELECT thesisProposals.thesisProposalId, thesisProposals.title, p.name, p.surname, thesisProposals.keywords, thesisProposals.expirationDate FROM thesisProposals, (SELECT professorId, name, surname FROM professors WHERE professorId = ?) p WHERE supervisor = ?' + ' OR ' + 'thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?) AND supervisor = p.professorId AND isArchived = 0';
 
   let params = [];
+  params.push(professorId);
   params.push(professorId);
   params.push(professorId);
 
   if (filter != undefined) {
     if (filter === 'false') {
-      sql = 'SELECT * FROM thesisProposals WHERE supervisor = ? AND isArchived = 0';
-      params = [professorId];
+      sql = 'SELECT thesisProposals.thesisProposalId, thesisProposals.title, p.name, p.surname, thesisProposals.keywords, thesisProposals.expirationDate FROM thesisProposals, (SELECT professorId, name, surname FROM professors WHERE professorId = ?) p WHERE supervisor = ? AND supervisor = p.professorId AND isArchived = 0';
+      params = [professorId, professorId];
     } else if (filter === 'true') {
-      sql = 'SELECT * FROM thesisProposals WHERE thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?) AND isArchived = 0';
-      params = [professorId];
+      sql = 'SELECT thesisProposals.thesisProposalId, thesisProposals.title, p.name, p.surname, thesisProposals.keywords, thesisProposals.expirationDate FROM thesisProposals, (SELECT professorId, name, surname FROM professors WHERE professorId = ?) p WHERE thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?) AND supervisor = p.professorId AND isArchived = 0';
+      params = [professorId, professorId];
     }
   }
 
@@ -157,7 +158,10 @@ exports.getThesisProposalsForProfessor = function (professorId, filter) {
         let thesisProposalsList = rows.map((r) => ({
           thesisProposalId: r.thesisProposalId,
           title: r.title,
+          name: r.name,
+          surname: r.surname,
           keywords: r.keywords.split("/"),
+          expirationDate: r.expirationDate,
           self: `/api/thesisProposals/${r.thesisProposalId}`
         }));
 
