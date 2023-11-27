@@ -23,12 +23,12 @@ describe('ThesisManagementComponent', () => {
   it('should toggle createPopup property on OpenCreatePopup', fakeAsync(() => {
     const component = new ThesisManagementComponent();
 
-    component.OpenCreatePopup();
+    component.openCreatePopup();
     fixture.detectChanges();
     tick();
     expect(component.createPopup).toBeTruthy();
-    
-    component.OpenCreatePopup();
+
+    component.openCreatePopup();
     fixture.detectChanges();
     tick();
     expect(component.createPopup).toBeFalsy();
@@ -41,7 +41,7 @@ describe('ThesisManagementComponent', () => {
     expect(component.showActiveTheses).toBe(false);
     expect(component.showArchivedTheses).toBe(false);
   });
-  
+
   it('should set showActiveThesis to true and others to false on showActiveThesesTable', () => {
     const component = new ThesisManagementComponent();
     component.showActiveThesesTable();

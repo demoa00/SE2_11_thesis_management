@@ -7,7 +7,7 @@ import {StudentPageComponent} from './pages/student-page/student-page.component'
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ProfessorPageComponent} from "./pages/professor-page/professor-page.component";
 import {ThesisManagementComponent} from "./pages/professor-page/thesis-management/thesis-management.component";
-import {ThesisTableComponent} from './pages/professor-page/thesis-management/thesis-table/thesis-table.component';
+import {ApplicantsTableComponent} from './pages/professor-page/thesis-management/applicants-table/applicants-table.component';
 import {PopupComponent} from "./shared/components/popup-conferma/popup.component";
 import {ButtonSliderComponent} from "./shared/components/button-slider/button-slider.component";
 import {IconComponent} from "./shared/components/icon/icon.component";
@@ -25,6 +25,7 @@ import {
 import {HttpClientModule} from '@angular/common/http';
 
 import {AuthModule} from "@auth0/auth0-angular";
+import { ActiveThesisTableComponent } from './pages/professor-page/thesis-management/active-thesis-table/active-thesis-table.component';
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
@@ -38,7 +39,7 @@ const routes: Routes = [
     StudentPageComponent,
     ProfessorPageComponent,
     ThesisManagementComponent,
-    ThesisTableComponent,
+    ApplicantsTableComponent,
     PopupComponent,
     ButtonSliderComponent,
     IconComponent,
@@ -50,6 +51,7 @@ const routes: Routes = [
     AlertComponent,
     LoadingComponent,
     CreateThesisFormComponent,
+    ActiveThesisTableComponent,
   ],
   imports: [
     BrowserModule,

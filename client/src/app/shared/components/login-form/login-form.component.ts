@@ -41,8 +41,9 @@ export class LoginFormComponent {
     //     // this.showAlert = false;
     //   }, 3000)
     // }
-    // this.api.login(this.email, this.password)
-    // this.auth.loginWithRedirect()
+    window.location.href = 'http://localhost:3000/api/authenticatedSession';
+    //this.api.login(this.email, this.password)
+    //this.auth.loginWithRedirect()
     console.log(this.auth.user$)
   }
 

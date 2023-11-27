@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ThesisTableComponent } from './thesis-table.component';
+import { ApplicantsTableComponent } from './applicants-table.component';
 
 describe('ThesisTableComponent', () => {
-  let component: ThesisTableComponent;
-  let fixture: ComponentFixture<ThesisTableComponent>;
+  let component: ApplicantsTableComponent;
+  let fixture: ComponentFixture<ApplicantsTableComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ThesisTableComponent]
+      declarations: [ApplicantsTableComponent]
     });
-    fixture = TestBed.createComponent(ThesisTableComponent);
+    fixture = TestBed.createComponent(ApplicantsTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
