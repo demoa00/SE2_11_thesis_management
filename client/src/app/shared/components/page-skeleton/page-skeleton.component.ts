@@ -15,7 +15,7 @@ export class PageSkeletonComponent {
 
   logout() {
     let user= localStorage.getItem('user')
-      console.log(JSON.parse(user!=null?user:''))
+    localStorage.removeItem('user')
     this.api.logout(JSON.parse(user!=null?user:'').userId);
 
   }

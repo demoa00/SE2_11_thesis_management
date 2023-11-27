@@ -25,12 +25,15 @@ import {
 import {HttpClientModule} from '@angular/common/http';
 
 import {AuthModule} from "@auth0/auth0-angular";
+import { AuthGuardProfessorService } from "./shared/services/auth-guard-professor.service";
 import { ActiveThesisTableComponent } from './pages/professor-page/thesis-management/active-thesis-table/active-thesis-table.component';
+import {AuthGuardStudentService} from "./shared/services/auth-guard-student.service";
+
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
-  {path: 'student', component: StudentPageComponent},
-  {path: 'professor', component: ProfessorPageComponent}
+  {path: 'student', canActivate : [AuthGuardStudentService],component: StudentPageComponent},
+  {path: 'professor', canActivate : [AuthGuardProfessorService],  component: ProfessorPageComponent}
 ]
 
 @NgModule({
@@ -68,7 +71,7 @@ const routes: Routes = [
       }
     }),
   ],
-  providers: [],
+  providers: [AuthGuardProfessorService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
