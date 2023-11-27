@@ -40,4 +40,13 @@ export class APIService {
       window.location.href = 'http://localhost:3000/api/authenticatedSession';
     })
   }
+  async insertNewThesis(body: {}){
+    return await this.httpService.post('thesisProposals', body)
+  }
+  async getAllApplications(){
+    return await this.httpService.get('applications')
+  }
+  async getAllActiveTheses(){
+    return await this.httpService.get('thesisProposals')
+  }
 }

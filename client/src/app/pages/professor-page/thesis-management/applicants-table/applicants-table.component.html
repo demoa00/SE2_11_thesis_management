@@ -4,15 +4,15 @@
   <table class="bo-table w-full h-fit overflow-auto">
   <tbody >
   <tr class="thead">
-    <th>Name</th>
-    <th>Serial Number</th>
+    <th>Student ID</th>
     <th>Thesis Title</th>
+    <th>Expiration Date</th>
     <th></th>
   </tr>
   <tr *ngFor="let row of rows">
-    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.nome}}</td>
-    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.matricola}}</td>
-    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.titoloTesi}}</td>
+    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.studentId}}</td>
+    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.thesisProposalTitle}}</td>
+    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.date}}</td>
     <td class="py-0.5 w-12 h-6">
       <button class="dropdownButton" (click)="openAcceptPopup(); applicant = row" >Accept</button>
     </td>
