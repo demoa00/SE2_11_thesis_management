@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
+import {APIService} from "../../services/api.service";
 
 @Component({
   selector: 'app-page-skeleton',
@@ -8,11 +9,14 @@ import {Router} from "@angular/router";
 })
 export class PageSkeletonComponent {
 
-  constructor(private _router: Router) {}
+  constructor(private _router: Router, private api: APIService) {}
 
   currentRoute = this._router.url;
 
   logout() {
-    this._router.navigate(['/']);
+    let user= localStorage.getItem('user')
+      console.log(JSON.parse(user!=null?user:''))
+    this.api.logout(JSON.parse(user!=null?user:'').userId);
+
   }
 }

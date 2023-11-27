@@ -16,7 +16,7 @@ export class HttpService {
   async loadPreferences() {
     const preferences = await fetch('/assets/preferences.json').then((response) => response.json());
     localStorage.setItem('urlSocket', preferences.urlSocket);
-    localStorage.setItem('apiEndpoint', preferences.apiEndpoint);
+    localStorage.setItem('apiEndpoint', 'http://localhost:3000/api');
     localStorage.setItem('timeRangeMs', preferences.timeRangeMs);
     localStorage.setItem('timebarStartDeltaMs', preferences.timebarStartDeltaMs);
     this.rootUrl = localStorage.getItem('apiEndpoint');
@@ -39,7 +39,7 @@ export class HttpService {
   ): Promise<T> {
     return this.makeRequest(async () => {
       return this.http
-        .get<T>(rawpath ? path : this.url(path, usePrefix), this.headerOptions(additionalHeaders))
+        .get<T>(rawpath ? path : this.url(path, usePrefix),{...additionalHeaders, withCredentials:true})
         .toPromise();
     });
   }
@@ -88,7 +88,7 @@ export class HttpService {
     try {
       const rawResult = await r();
 
-      const result = rawResult.body;
+      const result = rawResult;
       if (rawResult.status < 200 || rawResult.status >= 400) {
         console.log(result);
         throw new Error();

@@ -1,11 +1,19 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {APIService} from "../../shared/services/api.service";
 
 @Component({
   selector: 'app-student-page',
   templateUrl: './student-page.component.html',
   styleUrls: ['./student-page.component.css']
 })
-export class StudentPageComponent {
+export class StudentPageComponent implements OnInit{
+
+  constructor(public api: APIService) {
+  }
+  ngOnInit() {
+    this.api.checkAutorization()
+  }
+
   projects =  [
     { title: 'Analysis of climate data', name: 'Charlie Smith', keywords: ['climate'] },
     { title: 'Development of a web application', name: 'Alice Johnson', keywords: ['web', 'application'] },
