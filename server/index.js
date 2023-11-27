@@ -83,7 +83,7 @@ app.use(session({
 app.use(morgan('dev'));
 app.use(cors({
     origin: 'http://localhost:4200',
-    credentials: true,
+    credentials: true
 }));
 app.use(function (err, req, res, next) {
     if (err instanceof ValidationError) {
@@ -120,15 +120,14 @@ const strategy = new saml(
 
         if (regex.test(userEmail)) { //user is a student
             try {
-                user = await studentService.getStudentByEmail(userEmail); //da cambiare
+                user = await studentService.getStudentByEmail(userEmail);
                 done(null, user);
             } catch (error) {
                 done(null, false);
             }
         } else { //user is a professor
             try {
-                user = await professorService.getProfessorByEmail(userEmail); //da cambiare
-                console.log(user)
+                user = await professorService.getProfessorByEmail(userEmail);
                 done(null, user);
             } catch (error) {
                 done(null, false);
@@ -156,8 +155,6 @@ passport.use(strategy);
  * Verify if the user that want to accede 
  * to the application is logged, if not 
  * he is redirected to the IDP login page
- * 
- * @returns bool
 */
 const redirectToLogin = (req, res, next) => {
     if (!req.isAuthenticated() || req.user == null) {
@@ -216,7 +213,7 @@ const isProfessor = (req, res, next) => {
 
 /* LOGIN/LOGOUT API */
 app.get('/api/app', redirectToLogin, (req, res) => {
-    res.redirect('/home'/* 'http://localhost:4200/professor' */);
+    res.redirect('http://localhost:4200');
 });
 app.get('/api/authenticatedSession',
     passport.authenticate('saml', {
@@ -224,7 +221,14 @@ app.get('/api/authenticatedSession',
         failureRedirect: '/api/authenticatedSession'
     })
 );
-app.get('/api/authenticatedSession/:userId', (req, res) => {
+app.get('/api/authenticatedSession/current', isLoggedIn, (req, res) => {
+    if (req.isAuthenticated()) {
+        res.status(200).json(req.user);
+    } else {
+        res.status(401).json({ error: 'Not authorized' });
+    }
+});
+app.get('/api/authenticatedSession/:userId', isLoggedIn, (req, res) => {
     if (req.user == null) {
         return res.redirect('/api/authenticatedSession');
     }
