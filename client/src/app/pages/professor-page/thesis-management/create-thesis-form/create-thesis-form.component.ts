@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {APIService} from "../../../../shared/services/api.service";
 
 @Component({
   selector: 'app-create-thesis-form',
@@ -20,7 +21,7 @@ export class CreateThesisFormComponent {
   @Output()
   response= new EventEmitter<{}>();
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private api: APIService) {
       this.myForm = this.fb.group({
           title: ['', [Validators.required]],
           supervisor: ['', [Validators.required]],
@@ -37,10 +38,11 @@ export class CreateThesisFormComponent {
       });
   }
 
-    onSubmit() {
+    async onSubmit() {
         if (this.myForm.valid) {
+            const response = await this.api.insertNewThesis(this.myForm)
             // Handle form submission
-            this.requestAccepted.emit(true);
+            this.requestAccepted.emit(response !=undefined);
             this.response.emit({});
             console.log(this.myForm.value);
         }

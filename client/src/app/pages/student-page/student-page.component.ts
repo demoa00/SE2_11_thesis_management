@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {APIService} from "../../shared/services/api.service";
 
 @Component({
@@ -6,12 +6,9 @@ import {APIService} from "../../shared/services/api.service";
   templateUrl: './student-page.component.html',
   styleUrls: ['./student-page.component.css']
 })
-export class StudentPageComponent implements OnInit{
+export class StudentPageComponent{
 
   constructor(public api: APIService) {
-  }
-  ngOnInit() {
-    this.api.checkAutorization()
   }
 
   projects =  [

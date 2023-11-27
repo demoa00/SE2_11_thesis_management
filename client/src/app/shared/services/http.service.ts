@@ -28,7 +28,10 @@ export class HttpService {
 
   url(path: string, usePrefix = true) {
     if (path.indexOf('http') == 0) return path;
-    else return this.rootUrl + (usePrefix ? this.prefix : '') + path;
+
+    else {
+      return this.rootUrl + (usePrefix ? this.prefix : '') + path;
+    }
   }
 
   async get<T>(
@@ -65,7 +68,7 @@ export class HttpService {
     return this.makeRequest(async () => {
       return this.http
         .post(this.url(path, usePrefix), body, {
-          ...this.headerOptions(additionalHeaders)
+          ...this.headerOptions(additionalHeaders), withCredentials:true
         })
         .toPromise();
     });

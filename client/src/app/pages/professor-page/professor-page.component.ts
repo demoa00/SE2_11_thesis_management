@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {APIService} from "../../shared/services/api.service";
 
 @Component({
@@ -6,13 +6,11 @@ import {APIService} from "../../shared/services/api.service";
   templateUrl: './professor-page.component.html',
   styleUrls: ['./professor-page.component.scss']
 })
-export class ProfessorPageComponent implements OnInit{
+export class ProfessorPageComponent{
 
   constructor(public api: APIService) {
   }
-  ngOnInit() {
-    this.api.checkAutorization()
-  }
+
 
   menuItems = [
     { id: 1, hover: false, selected: true  },
