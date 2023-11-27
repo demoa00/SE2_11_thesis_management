@@ -2,38 +2,18 @@
 
 const utils = require('../utils/writer.js');
 const ThesisProposal = require('../service/ThesisProposalService');
-
-
-const isStudent = (user) => {
-  if (user.userId != undefined && user.codDegree != undefined && user.role != undefined) {
-    if (user.role === 'student') {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-const isProfessor = (user) => {
-  if (user.userId != undefined && user.codGroup != undefined && user.role != undefined) {
-    if (user.role === 'professor') {
-      return true;
-    }
-  }
-
-  return false;
-}
+const checkRole = require('../utils/checkRole.js');
 
 
 module.exports.getThesisProposals = async function getThesisProposals(req, res, next) {
   try {
     let thesisProposalsList;
-    
-    if (isStudent(req.user)) {
+
+    if (checkRole.isStudent(req.user)) {
       thesisProposalsList = await ThesisProposal.getThesisProposalsForStudent(req.user.codDegree, req.query);
 
       utils.writeJson(res, thesisProposalsList, 200);
-    } else if (isProfessor(req.user)) {
+    } else if (checkRole.isProfessor(req.user)) {
       thesisProposalsList = await ThesisProposal.getThesisProposalsForProfessor(req.user.userId, req.query.cosupervisor);
 
       utils.writeJson(res, thesisProposalsList, 200);

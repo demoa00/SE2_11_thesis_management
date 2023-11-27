@@ -22,12 +22,12 @@ exports.getThesisProposalsForStudent = function (codDegree, filter) {
 
   if (filter != undefined) {
     if (filter.text != undefined) {
+      filter.text = filter.text instanceof Array ? filter.text[0] : filter.text;
+
       sql_text += `thesisProposalId IN (SELECT thesisProposalId FROM virtualThesisProposals WHERE virtualThesisProposals MATCH '${filter.text}*') `;
     }
     if (filter.supervisor != undefined) {
-      if (!(filter.supervisor instanceof Array)) {
-        filter.supervisor = [filter.supervisor];
-      }
+      filter.supervisor = filter.supervisor instanceof Array ? filter.supervisor : [filter.supervisor];
 
       [...filter.supervisor].forEach((s, i) => {
         if (i == 0) {
@@ -43,13 +43,11 @@ exports.getThesisProposalsForStudent = function (codDegree, filter) {
     }
     if (filter.cosupervisor != undefined) {
       const regex = new RegExp("p.*");
-
-      if (!(filter.cosupervisor instanceof Array)) {
-        filter.cosupervisor = [filter.cosupervisor];
-      }
-
       let i = 0;
       let j = 0;
+
+      filter.cosupervisor = filter.cosupervisor instanceof Array ? filter.cosupervisor : [filter.cosupervisor];
+
       [...filter.cosupervisor].forEach((c) => {
         if (regex.test(c)) {
           if (i == 0) {
@@ -75,10 +73,14 @@ exports.getThesisProposalsForStudent = function (codDegree, filter) {
       });
     }
     if (filter.expirationdate != undefined) {
+      filter.expirationdate = filter.expirationdate instanceof Array ? filter.expirationdate[0] : filter.expirationdate;
+
       sql_filter_expirationdate = 'expirationDate < ? ';
       params.push(filter.expirationdate);
     }
     if (filter.abroad != undefined) {
+      filter.abroad = filter.abroad instanceof Array ? filter.abroad[0] : filter.abroad;
+
       sql_filter_abroad = 'abroad = ? ';
       params.push(filter.abroad == 'true' ? 1 : 0);
     }
@@ -107,6 +109,7 @@ exports.getThesisProposalsForStudent = function (codDegree, filter) {
   return new Promise(function (resolve, reject) {
     db.all(sql, params, function (err, rows) {
       if (err) {
+        console.log(err)
         reject({ code: 500, message: "Internal Server Error" });
       } else if (rows.length == 0) {
         reject({ code: 404, message: "Not Found" });

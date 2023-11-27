@@ -85,11 +85,6 @@ app.use(cors({
     origin: 'http://localhost:4200',
     credentials: true
 }));
-app.use(function (err, req, res, next) {
-    if (err instanceof ValidationError) {
-        res.status(400).send(err);
-    } else next(err);
-});
 
 
 //-- -- -- -- -- -- -- -- --
@@ -293,6 +288,12 @@ app.get('/api/degrees', isLoggedIn, degreeController.getDegrees);
 //-- -- -- -- --
 // SERVER START
 //-- -- -- -- --
+
+app.use(function (err, req, res, next) {
+    if (err instanceof ValidationError) {
+        res.status(400).send(err);
+    } else next(err);
+});
 
 http.createServer(app).listen(PORT, function () {
     console.log('Your server is listening on port %d (http://localhost:%d)', PORT, PORT);
