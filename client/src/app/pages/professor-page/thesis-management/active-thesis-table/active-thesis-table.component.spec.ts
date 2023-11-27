@@ -18,4 +18,16 @@ describe('ActiveThesisTableComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should open create popup and reset state', () => {
+    component.createPopup = false;
+    component.requestAccepted = true;
+    component.response = { someData: 'test data' };
+
+    component.openCreatePopup();
+
+    expect(component.createPopup).toBe(true);
+    expect(component.requestAccepted).toBe(false);
+    expect(component.response).toBeUndefined();
+  });
 });

@@ -33,7 +33,7 @@ describe('HTTPService', () => {
         });
     
         // Set up a mock request
-        const req = httpTestingController.expectOne('http://localhost:3001/api/sample-path');
+        const req = httpTestingController.expectOne('http://localhost:3000/api/sample-path');
         expect(req.request.method).toBe('GET');
     
         // Respond with mock data
@@ -53,7 +53,7 @@ describe('HTTPService', () => {
           result = data;
         });
     
-        const req = httpTestingController.expectOne('http://localhost:3001/api/sample-path');
+        const req = httpTestingController.expectOne('http://localhost:3000/api/sample-path');
         expect(req.request.method).toBe('POST');
     
         req.flush(testData);
@@ -72,7 +72,7 @@ describe('HTTPService', () => {
           result = data;
         });
     
-        const req = httpTestingController.expectOne('http://localhost:3001/api/sample-path');
+        const req = httpTestingController.expectOne('http://localhost:3000/api/sample-path');
         expect(req.request.method).toBe('PUT');
     
         req.flush(testData);
@@ -88,7 +88,7 @@ describe('HTTPService', () => {
         const req = httpTestingController.expectOne(request => {
           return (
             request.method === 'DELETE' &&
-            request.urlWithParams === 'http://localhost:3001/api/sample-path'
+            request.urlWithParams === 'http://localhost:3000/api/sample-path'
           );
         });
     
