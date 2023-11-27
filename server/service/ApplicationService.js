@@ -96,7 +96,7 @@ exports.updateApplication = function (professorId, studentId, thesisProposalId, 
       } else if (this.changes == 0) {
         reject({ code: 404, message: "Not Found" });
       } else {
-        resolve({ newApplication: `/api/professors/${professorId}/thesisProposals/${studentId}/${thesisProposalId}` })
+        resolve({ newApplication: `/api/applications/${newApplication.thesisProposalId}/${studentId}` })
       }
     });
   });
@@ -109,7 +109,7 @@ exports.insertNewApplication = function (studentId, newApplication) {
       if (err) {
         reject({ code: 500, message: "Internal Server Error" });
       } else {
-        resolve({ newApplication: `/student/${studentId}/applications/${newApplication.thesisProposalId}` });
+        resolve({ newApplication: `/api/applications/${newApplication.thesisProposalId}/${studentId}` });
       }
     });
   });
