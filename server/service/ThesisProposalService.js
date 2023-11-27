@@ -119,7 +119,7 @@ exports.getThesisProposalsForStudent = function (codDegree, filter) {
           title: r.title,
           name: r.name,
           surname: r.surname,
-          keywords: r.keywords.split("/"),
+          keywords: JSON.parse(r.keywords),
           expirationDate: r.expirationDate,
           self: `/api/thesisproposals/${r.thesisProposalId}`
         }));
@@ -160,7 +160,7 @@ exports.getThesisProposalsForProfessor = function (professorId, filter) {
           title: r.title,
           name: r.name,
           surname: r.surname,
-          keywords: r.keywords.split("/"),
+          keywords: JSON.parse(r.keywords),
           expirationDate: r.expirationDate,
           self: `/api/thesisProposals/${r.thesisProposalId}`
         }));
@@ -195,7 +195,7 @@ exports.getThesisProposalById = function (user, thesisProposalId) {
           title: row.title,
           supervisor: row.supervisor,
           coSupervisor: [],
-          keywords: row.keywords.split("/"),
+          keywords: JSON.parse(row.keywords),
           description: row.description,
           reqirements: row.reqirements,
           thesisType: row.thesisType,
