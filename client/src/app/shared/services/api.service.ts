@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpService} from "./http.service";
 import {Router} from "@angular/router";
 
@@ -66,4 +66,9 @@ export class APIService {
   async getAllActiveTheses(){
     return await this.httpService.get('thesisProposals')
   }
+
+  async getUserDetails(userId: any) {
+    return await this.httpService.get(`students/${userId}`, false, true);
+  }
+
 }

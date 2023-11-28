@@ -1,5 +1,8 @@
 import {Component} from '@angular/core';
 import {APIService} from "../../shared/services/api.service";
+import {User} from "../../shared/classes/student/user";
+import {StudentDetails} from "../../shared/classes/student/student-details";
+
 
 @Component({
   selector: 'app-student-page',
@@ -10,6 +13,17 @@ export class StudentPageComponent{
 
   constructor(public api: APIService) {
     this.api.setStudent()
+  }
+
+  user: User | undefined
+  userDetails: StudentDetails | undefined
+  ngOnInit() {
+    this.api.checkAutorization()
+    this.user = JSON.parse(localStorage.getItem('user') || '{}')
+    this.api.getUserDetails(this.user?.userId).then((response: any)=>{
+      this.userDetails = response
+      console.log(this.userDetails)
+    })
   }
 
   projects =  [
