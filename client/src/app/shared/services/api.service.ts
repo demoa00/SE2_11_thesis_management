@@ -31,13 +31,11 @@ export class APIService {
 
   checkAutorization() {
     this.httpService.get('authenticatedSession/current',false,true).then((response: any)=>{
-      console.log(response.body)
       localStorage.setItem('user',JSON.stringify(response));
-      if(response.body.role=='student'){
+      if(response.role=='student'){
         this.router.navigateByUrl('student')
       }
-      else if(response.body.role=='professor'){
-        console.log(response)
+      else if(response.role=='professor'){
         this.router.navigateByUrl('professor')
       }
       else {
@@ -45,7 +43,6 @@ export class APIService {
       return(response)
     }).catch((error)=>{
       console.log(error)
-      window.location.href = 'http://localhost:3000/api/authenticatedSession';
     })
   }
   async insertNewThesis(body: {}){
@@ -56,13 +53,13 @@ export class APIService {
   }
   async setProfessor(){
     let user= localStorage.getItem('user')
-    await this.httpService.get(`professors/${(JSON.parse(user!=null?user:'').body.userId)}`,false,true).then((response: any)=>{
+    await this.httpService.get(`professors/${(JSON.parse(user!=null?user:'').userId)}`,false,true).then((response: any)=>{
       localStorage.setItem('professor',JSON.stringify(response));
     })
   }
   async setStudent(){
     let user= localStorage.getItem('user')
-    await this.httpService.get(`students/${(JSON.parse(user!=null?user:'').body.userId)}`,false,true).then((response: any)=>{
+    await this.httpService.get(`students/${(JSON.parse(user!=null?user:'').userId)}`,false,true).then((response: any)=>{
       localStorage.setItem('student',JSON.stringify(response));
     })
   }

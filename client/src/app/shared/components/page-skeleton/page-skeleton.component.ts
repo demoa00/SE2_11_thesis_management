@@ -29,7 +29,7 @@ export class PageSkeletonComponent {
     localStorage.removeItem('user')
     this.api.logout(JSON.parse(user!=null?user:'').userId);
   }
-
+/*
   ngOnInit(){
     this.api.checkAutorization()
     this.user = JSON.parse(localStorage.getItem('user') || '{}')
@@ -38,4 +38,6 @@ export class PageSkeletonComponent {
     })
   }
 
+ //sta cosa da errore se loggo come professore, perchè fai la richiesta su studente, dato che la skeleton la uso anche come professore
+*/
 }
