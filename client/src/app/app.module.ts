@@ -27,6 +27,7 @@ import {AuthModule} from "@auth0/auth0-angular";
 import { AuthGuardProfessorService } from "./shared/services/auth-guard-professor.service";
 import { ActiveThesisTableComponent } from './pages/professor-page/thesis-management/active-thesis-table/active-thesis-table.component';
 import {AuthGuardStudentService} from "./shared/services/auth-guard-student.service";
+import {MatIconModule} from "@angular/material/icon";
 
 
 const routes: Routes = [
@@ -68,6 +69,7 @@ const routes: Routes = [
         redirect_uri: window.location.origin
       }
     }),
+    MatIconModule,
   ],
   providers: [AuthGuardProfessorService],
   bootstrap: [AppComponent]

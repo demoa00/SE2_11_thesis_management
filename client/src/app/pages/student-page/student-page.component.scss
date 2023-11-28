@@ -25,19 +25,18 @@
   justify-content: flex-start;
   align-items: center;
   gap: 16px;
-  width: 60%;
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-  @media (max-width: 1024px) {
-    width: 80%;
-  }
   .searchbar {
-    width: 100%;
+    width: 40%;
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+    @media (max-width: 1024px) {
+      width: 80%;
+    }
     height: fit-content;
     border-radius: 25px;
     border: 2px solid $lightgrey;
-    padding: 4px;
+    padding: 6px;
     outline: none;
     input {
       border: none;
@@ -55,9 +54,10 @@
     .dropdownButton {
       background-color: $polilightblue;
       color: white;
-      line-height: 16px;
+      line-height: 20px;
       padding: 8px;
       border-radius: 8px;
+      font-size: 16px;
     }
     .dropdownContent {
       position: absolute;
@@ -71,7 +71,7 @@
       box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
       z-index: 1;
       text-align: right;
-      .keywordContainer {
+      .professorsContainer {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -159,4 +159,11 @@
 .projectButtons {
   display: flex;
   gap: 8px;
+}
+
+
+.searchButton {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
 }

@@ -35,7 +35,6 @@ export class PageSkeletonComponent {
     this.user = JSON.parse(localStorage.getItem('user') || '{}')
     this.api.getUserDetails(this.user?.userId).then((response: any)=>{
       this.userDetails = response
-      console.log(this.userDetails)
     })
   }
 

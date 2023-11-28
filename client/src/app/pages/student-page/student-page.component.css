@@ -28,25 +28,24 @@
   justify-content: flex-start;
   align-items: center;
   gap: 16px;
-  width: 60%;
+}
+.searchToolsContainer .searchbar {
+  width: 40%;
+  height: fit-content;
+  border-radius: 25px;
+  border: 2px solid #e5e7eb;
+  padding: 6px;
+  outline: none;
 }
 @media (max-width: 768px) {
-  .searchToolsContainer {
+  .searchToolsContainer .searchbar {
     width: 100%;
   }
 }
 @media (max-width: 1024px) {
-  .searchToolsContainer {
+  .searchToolsContainer .searchbar {
     width: 80%;
   }
-}
-.searchToolsContainer .searchbar {
-  width: 100%;
-  height: fit-content;
-  border-radius: 25px;
-  border: 2px solid #e5e7eb;
-  padding: 4px;
-  outline: none;
 }
 .searchToolsContainer .searchbar input {
   border: none;
@@ -64,9 +63,10 @@
 .searchToolsContainer .dropdownContainer .dropdownButton {
   background-color: #03577A;
   color: white;
-  line-height: 16px;
+  line-height: 20px;
   padding: 8px;
   border-radius: 8px;
+  font-size: 16px;
 }
 .searchToolsContainer .dropdownContainer .dropdownContent {
   position: absolute;
@@ -81,23 +81,23 @@
   z-index: 1;
   text-align: right;
 }
-.searchToolsContainer .dropdownContainer .dropdownContent .keywordContainer {
+.searchToolsContainer .dropdownContainer .dropdownContent .professorsContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-bottom: 4px;
   cursor: pointer;
 }
-.searchToolsContainer .dropdownContainer .dropdownContent .keywordContainer:hover {
+.searchToolsContainer .dropdownContainer .dropdownContent .professorsContainer:hover {
   text-decoration: underline;
 }
-.searchToolsContainer .dropdownContainer .dropdownContent .keywordContainer .checkbox {
+.searchToolsContainer .dropdownContainer .dropdownContent .professorsContainer .checkbox {
   width: 12px;
   height: 12px;
   margin-right: 16px;
   border: 1px solid #04264c;
 }
-.searchToolsContainer .dropdownContainer .dropdownContent .keywordContainer .checkbox.checked {
+.searchToolsContainer .dropdownContainer .dropdownContent .professorsContainer .checkbox.checked {
   background-color: #04264c;
 }
 
@@ -166,6 +166,12 @@
 .projectButtons {
   display: flex;
   gap: 8px;
+}
+
+.searchButton {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
 }
 
 /*# sourceMappingURL=student-page.component.css.map */
