@@ -21,6 +21,8 @@
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
     "@auth0/auth0-angular": "^2.2.1",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
     "rxjs": "~7.8.0",

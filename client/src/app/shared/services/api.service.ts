@@ -1,7 +1,14 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpService} from "./http.service";
 import {Router} from "@angular/router";
 
+type ProposalsParams = {
+    text: string | null;
+    supervisors: any [] | null;
+    cosupervisors: {}[] | null;
+    expirationDate: string | null;
+    abroad: boolean | null;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -67,4 +74,30 @@ export class APIService {
   async getAllActiveTheses(){
     return await this.httpService.get('thesisProposals')
   }
+
+  async getUserDetails(userId: any) {
+    return await this.httpService.get(`students/${userId}`, false, true);
+  }
+
+
+  async getAllProposals(params: ProposalsParams | null){
+    let url = 'thesisProposals/?'
+    console.log(params)
+    if(params){
+      if(params.supervisors !== null){
+        for (let s of params.supervisors){
+          url += `supervisor=${s?.professorId}&`
+        }
+      }
+      if(params.text !== null){
+        url += `text=${params.text}&`
+      }
+    }
+      return await this.httpService.get(url,false,true)
+  }
+
+  async getProfessors() {
+    return await this.httpService.get('professors')
+  }
+
 }

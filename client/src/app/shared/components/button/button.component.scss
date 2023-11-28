@@ -7,7 +7,19 @@
   color: white;
   cursor: pointer;
   height: fit-content;
+  display: flex;
   &.orange {
     @apply bg-orange-600;
+  }
+  &.grey {
+    background-color: $lightgrey;
+    color: $poliblue;
+  }
+  &.rounded {
+    border-radius: 50% !important;
+  }
+  &.small {
+    //padding: 4px;
+    font-size: 12px;
   }
 }
