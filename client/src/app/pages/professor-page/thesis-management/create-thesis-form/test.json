@@ -1,0 +1,33 @@
+{
+    "$schema": "../../../../../../../json_schema/thesisProposal.json",
+    "title": "ciao",
+    "keywords": [
+        "dfdfgd",
+        "nwncw"
+    ],
+    "abroad": false,
+    "thesisType": "icbiCBucv",
+    "description": "odencI",
+    "expirationDate": "2023-11-28",
+    "level": "MSc",
+    "requirements": "fff",
+    "CdS": [
+        {
+            "degreeId": "LM-9"
+        },
+        {
+            "degreeId": "L-9"
+        },
+        {
+            "degreeId": "LM-9"
+        }
+    ],
+    "coSupervisor": [
+        {
+            "coSupervisorId": "p123456"
+        },
+        {
+            "coSupervisorId": "e123456"
+        }
+    ]
+}

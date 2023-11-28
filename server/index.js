@@ -191,13 +191,13 @@ const isStudent = (req, res, next) => {
  * to a specific resorce has the role of 
  * professor
  */
-const isProfessor = (req, res, next) => {
-    if (req.user.professorId != undefined && user.codGroup != undefined && req.user.role != undefined) {
-        if (req.user.isStudent === 'professor') {
+const isProfessor = (req, res, next) => {console.log(req.user)
+    if (req.user.userId != undefined && req.user.codGroup != undefined && req.user.role != undefined) {
+        if (req.user.role === 'professor') {
             return next();
         }
     }
-
+    console.log("NO")
     return res.status(403).json({ error: 'Forbidden' });
 }
 

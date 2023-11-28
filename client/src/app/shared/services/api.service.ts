@@ -71,7 +71,7 @@ export class APIService {
     })
   }
   async getAllActiveTheses(){
-    return await this.httpService.get('thesisProposals')
+    return await this.httpService.get('thesisProposals/?cosupervisor=false')
   }
 
   async getUserDetails(userId: any) {
