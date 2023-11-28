@@ -12,7 +12,6 @@
   @apply absolute top-0 right-0 cursor-pointer h-10 w-10 text-gray-500;
 }
 
-
 .bo-popup{
   position: fixed;
   top: 0;
@@ -48,7 +47,7 @@
   position: relative;
   display: block;
   overflow-y: auto;
-  border-radius: 0.375rem;
+  border-radius: 8px;
   border-width: 1px;
   --tw-border-opacity: 1;
   border-color: rgb(243 244 246 / var(--tw-border-opacity));
@@ -58,4 +57,13 @@
   min-height: 200px;
   max-width: calc(100vw - 140px);
   max-height: 80vh;
+  &.small {
+    max-width: 40vw;
+    @media (max-width: 640px) {
+      max-width: 90vw;
+    }
+    @media (max-width: 768px) {
+      max-width: 80vw;
+    }
+  }
 }

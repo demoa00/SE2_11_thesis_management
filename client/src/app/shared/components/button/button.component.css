@@ -27,12 +27,21 @@
   height: fit-content;
   display: flex;
 }
+:host.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 :host.orange {
   @apply bg-orange-600;
 }
 :host.grey {
   background-color: #e5e7eb;
   color: #04264c;
+}
+:host.danger {
+  background-color: #f56565;
+  color: white;
 }
 :host.rounded {
   border-radius: 50% !important;

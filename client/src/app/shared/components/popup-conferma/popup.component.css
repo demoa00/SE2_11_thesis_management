@@ -1,4 +1,14 @@
 @charset "UTF-8";
+.dropdownButton {
+  background-color: #03577A;
+  color: white;
+  line-height: 16px;
+  padding: 8px;
+  border-radius: 8px;
+  min-width: 160px;
+  @apply hover:drop-shadow-lg;
+}
+
 .bo-popup-close-1 {
   @apply absolute top-0 right-0 cursor-pointer h-10 w-10 text-gray-500;
 }
@@ -41,7 +51,7 @@
   position: relative;
   display: block;
   overflow-y: auto;
-  border-radius: 0.375rem;
+  border-radius: 8px;
   border-width: 1px;
   --tw-border-opacity: 1;
   border-color: rgb(243 244 246/var(--tw-border-opacity));
@@ -51,6 +61,19 @@
   min-height: 200px;
   max-width: calc(100vw - 140px);
   max-height: 80vh;
+}
+.bo-popup-content.small {
+  max-width: 40vw;
+}
+@media (max-width: 640px) {
+  .bo-popup-content.small {
+    max-width: 90vw;
+  }
+}
+@media (max-width: 768px) {
+  .bo-popup-content.small {
+    max-width: 80vw;
+  }
 }
 
 /*# sourceMappingURL=popup.component.css.map */

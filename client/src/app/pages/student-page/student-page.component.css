@@ -145,19 +145,28 @@
   text-decoration: underline;
 }
 
-.projectHeader {
+.projectHeader, .projectBody {
   margin-bottom: 16px;
 }
-.projectHeader .projectTitle {
+.projectHeader .projectTitle, .projectBody .projectTitle {
   font-weight: bold;
   font-size: 24px;
   line-height: 28px;
   margin-bottom: 8px;
 }
-
-.regularText {
+.projectHeader .regularText, .projectBody .regularText {
   font-weight: normal;
   font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.projectFooter {
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+.projectFooter .regularText {
+  font-weight: normal;
+  font-size: 12px;
   margin-bottom: 16px;
 }
 
@@ -170,6 +179,12 @@
   width: 20px;
   height: 20px;
   font-size: 20px;
+}
+
+.popupContent .textArea {
+  @apply w-full h-32 bg-gray-50 border-2 border-gray-300 rounded-md p-2;
+  font-size: 12px;
+  line-height: 14px;
 }
 
 /*# sourceMappingURL=student-page.component.css.map */
