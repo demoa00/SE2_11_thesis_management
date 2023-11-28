@@ -39,10 +39,12 @@ export class APIService {
         this.router.navigateByUrl('professor')
       }
       else {
+        window.location.href = `http://localhost:3000/api/authenticatedSession`;
       }
       return(response)
     }).catch((error)=>{
       console.log(error)
+      window.location.href = `http://localhost:3000/api/authenticatedSession`;
     })
   }
   async insertNewThesis(body: {}){
