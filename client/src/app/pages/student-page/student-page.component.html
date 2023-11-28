@@ -62,15 +62,16 @@
     <div class="projectDetails">
       <div class="projectHeader">
         <h2 class="projectTitle">{{selectedProposal.title}}</h2>
-        <h3>Professor: <span class="profName">{{selectedProposal.supervisor.name}} {{selectedProposal.supervisor.surname}}</span></h3>
+        <h3 class="font-bold">Supervisor: <span class="regularText">{{selectedProposal.supervisor.name}} {{selectedProposal.supervisor.surname}}</span></h3>
+        <h3 class="font-bold">Cosupervisors: <span class="regularText" *ngFor="let cs of selectedProposal.coSupervisor; let last = last">{{cs.name}} {{cs.surname}}{{last ? '' : ', '}}</span></h3>
       </div>
-      <div class="projectDescription">
-        <!--             <p>{{selectedProject.description}}</p>-->
-        <p>Nunc sed turpis. Sed in libero ut nibh placerat accumsan. Pellentesque habitant morbi tristique senectus
-          et netus et malesuada fames ac turpis egestas. Fusce pharetra convallis urna. Phasellus accumsan cursus
-          velit. Ut id nisl quis enim dignissim sagittis. Nam at tortor in tellus interdum sagittis. Suspendisse
-          feugiat. Quisque rutrum. Sed libero. Morbi mattis ullamcorper velit. Aenean ut eros et nisl sagittis
-          vestibulum. Curabitur suscipit suscipit tellus. Nullam cursus lacinia erat. Nam adipiscing.</p>
+      <h3 class="font-bold">Decription</h3>
+      <div class="regularText">
+       <p>{{selectedProposal.description}}</p>
+      </div>
+      <div class="projectHeader">
+        <h3 class="font-bold">Type: <span class="regularText">{{selectedProposal.thesisType}}</span></h3>
+        <h3 class="font-bold">Abroad: <span class="regularText">{{selectedProposal.abroad ? 'Yes' : 'No'}}</span></h3>
       </div>
 <!--      <div class="projectButtons">-->
 <!--        <app-button (click)="selectProject(null)">Back</app-button>-->
