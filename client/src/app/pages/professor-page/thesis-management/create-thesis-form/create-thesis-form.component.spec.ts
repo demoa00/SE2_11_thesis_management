@@ -4,6 +4,7 @@ import { CreateThesisFormComponent } from './create-thesis-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APIService } from 'src/app/shared/services/api.service';
+import { of } from 'rxjs';
 
 describe('CreateThesisFormComponent', () => {
   let component: CreateThesisFormComponent;
@@ -47,7 +48,7 @@ describe('CreateThesisFormComponent', () => {
 
     component.myForm.setValue(validFormValue);
 
-    apiServiceSpy.insertNewThesis.and.returnValue(Promise.resolve({}));
+    apiServiceSpy.insertNewThesis.and.returnValue(of({}).toPromise());
 
     const requestAcceptedEmitSpy = spyOn(component.requestAccepted, 'emit');
     const responseEmitSpy = spyOn(component.response, 'emit');
