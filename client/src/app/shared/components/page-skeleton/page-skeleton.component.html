@@ -1,8 +1,10 @@
-<div class="columns-2 min-h-screen flex bg-gray-50">
+<div class="columns-2 min-h-screen flex bg-gray-50" [ngClass]="theme ? 'dark' : ''">
   <ng-content></ng-content>
-  <div class="max-md:hidden w-1/6 border-r-2">
+  <div class="max-md:hidden w-1/6 border-r-2 dark:bg-gray-900">
     <div class="md:p-4 border-b-2">
-      <img src="assets/images/LogoPoli.svg" alt="no image found">
+      <img src="assets/images/LogoPoli.svg" *ngIf="!theme" alt="no image found">
+<!--      <img src="assets/images/LogoPoli.svg" alt="no image found">-->
+      <img src="assets/images/LogoPoliWhite.svg" *ngIf="theme" alt="no image found">
     </div>
     <div class="md:p-4">
       <ng-content select="[left-col]"></ng-content>
@@ -14,8 +16,8 @@
       <h2 class="uppercase text-3xl font-bold">thesis proposals</h2>
       <div class="flex items-center">
         <img alt="propic" src="https://picsum.photos/512/512" class="propic mr-4" *ngIf="currentRoute!=='/'">
-        <p class="text-sm uppercase" *ngIf="currentRoute==='/student'">first last, s123456</p>
-        <p class="text-sm uppercase" *ngIf="currentRoute==='/professor'">first last, p123456</p>
+        <p class="text-sm uppercase" *ngIf="currentRoute==='/student'">{{student?.name}} {{student?.surname}}, {{student?.studentId}}</p>
+        <p class="text-sm uppercase" *ngIf="currentRoute==='/professor'">{{professor?.name}} {{professor?.surname}}, {{professor?.professorId}}</p>
         <app-button class="ml-4" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
       </div>
     </div>

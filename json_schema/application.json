@@ -67,8 +67,6 @@
     "additionalProperties": false,
     "required": [
         "thesisProposalId",
-        "applicant",
-        "date",
         "status"
     ]
 }

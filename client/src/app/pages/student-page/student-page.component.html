@@ -1,73 +1,88 @@
 <app-page-skeleton>
+
   <div class="leftMenuItem" left-col
-      [class.selected]="n.selected"
-      [class.hovered]="n.hover && !n.selected"
-      (mouseenter)="n.hover=true"
-      (mouseleave)="n.hover=false"
-      (click)="selectMenuItem(n.id)"
-      *ngFor="let n of menuItems">
-    <p>Lorem Ipsum</p>
+       [class.selected]="n.selected"
+       [class.hovered]="n.hovered && !n.selected"
+       (mouseenter)="n.hovered=true"
+       (mouseleave)="n.hovered=false"
+       (click)="selectMenuItem(n.id)"
+       *ngFor="let n of menuItems">
+    <p>{{n.text}}</p>
   </div>
 
-  <div *ngIf="selectedProject===null" main-col>
-    <div class="flex items-center mb-8 gap-4 max-md:flex-col max-md:items-start">
+  <div *ngIf="selectedProposal===null" main-col>
+    <div class="flex-col items-center mb-8 gap-4 max-md:flex-col max-md:items-start">
       <div class="searchToolsContainer">
         <div class="searchbar">
-          <input id="search-input" type="text" placeholder="Search..." [ngModel]="searchValue" (ngModelChange)="updateSearchValue($event)"/>
+          <input id="search-input" type="text" placeholder="Search..." [ngModel]="searchValue"
+                 (ngModelChange)="updateSearchValue($event)"/>
         </div>
+        <app-button class="rounded small" (click)="search()">
+          <mat-icon class="searchButton">search</mat-icon>
+        </app-button>
         <div class="dropdownContainer" (mouseenter)="professorsHover = true" (mouseleave)="professorsHover=false">
           <button type="button" class="dropdownButton">Professor</button>
           <div class="dropdownContent" *ngIf="professorsHover">
             <div class="border-b-2 mb-2 flex justify-between">
-              <input id="professorsSearch-input" class="outline-0 w-24" type="text" placeholder="Search..." [ngModel]="professorsSearchValue" (ngModelChange)="updateProfessorsSearchValue($event)"/>
-              <img class="cursor-pointer" alt="delete" style="color: red" src="assets/images/close_grey.svg" width="12" height="12" (click)="updateProfessorsSearchValue('')"/>
+              <input id="professorsSearch-input" class="outline-0 w-24" type="text" placeholder="Search..."
+                     [ngModel]="professorsSearchValue" (ngModelChange)="updateProfessorsSearchValue($event)"/>
+              <img class="cursor-pointer" alt="delete" style="color: red" src="assets/images/close_grey.svg" width="12"
+                   height="12" (click)="updateProfessorsSearchValue('')"/>
             </div>
-            <div *ngFor="let name of professorNames" (click)="toggleName(name)">
-              <div class="keywordContainer" *ngIf="name.toLocaleLowerCase().includes(professorsSearchValue)">
-                <div class="checkbox" [ngClass]="selectedNames.has(name) ? 'checked' : ''"></div>
-                <p class="dropdownKeyword" >{{name}}</p>
+            <div *ngFor="let prof of professors" (click)="toggleProf(prof)">
+              <div class="professorsContainer"
+                   *ngIf="prof.name.toLocaleLowerCase().includes(professorsSearchValue) || prof.surname.toLocaleLowerCase().includes(professorsSearchValue)">
+                <div class="checkbox" [ngClass]="isProfSelected(prof) ? 'checked' : ''"></div>
+                <p class="dropdownKeyword">{{prof.name}} {{prof.surname}}</p>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="deleteFilters" (click)="deleteFilters()" *ngIf="selectedNames.size !== 0 || selectedKeywords.size !== 0">
-        <img alt="close" src="assets/images/close_blue.svg" width="16" height="16">
-        <p class="underline">Delete filters</p>
-      </div>
-      </div>
-      <div >
-        <div *ngFor="let project of projectsToShow" (click)="selectProject(project)">
-          <div class="projectLine">
-            <p class="projectTitle">{{project.title}}</p>
-            <p class="profName">{{project.name}}</p>
-          </div>
+        <div class="deleteFilters" (click)="deleteFilters()"
+             *ngIf="checkFilters()">
+          <img alt="close" src="assets/images/close_blue.svg" width="16" height="16">
+          <p class="underline">Delete filters</p>
         </div>
       </div>
-    {{setToString(selectedKeywords)}}
     </div>
+    <div>
+      <div *ngFor="let proposal of proposals" (click)="selectProposal(proposal.thesisProposalId)">
+        <div class="projectLine">
+          <p class="projectTitle">{{proposal.title}}</p>
+          <p class="profName">{{proposal.name}} {{proposal.surname}}</p>
+        </div>
+      </div>
+      <p class="text-center" *ngIf="proposals.length === 0">There is no thesis proposal containing the text:
+        "{{searchValue}}"</p>
+    </div>
+  </div>
 
-     <div *ngIf="selectedProject!==null" main-col>
-       <div class="projectDetails">
-         <div class="projectHeader">
-           <h2 class="projectTitle">{{selectedProject.title}}</h2>
-           <h3>Professor: <span class="profName">{{selectedProject.name}}</span></h3>
-         </div>
-         <div class="projectDescription">
-  <!--             <p>{{selectedProject.description}}</p>-->
-           <p>Nunc sed turpis. Sed in libero ut nibh placerat accumsan. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce pharetra convallis urna. Phasellus accumsan cursus velit. Ut id nisl quis enim dignissim sagittis. Nam at tortor in tellus interdum sagittis. Suspendisse feugiat. Quisque rutrum. Sed libero. Morbi mattis ullamcorper velit. Aenean ut eros et nisl sagittis vestibulum. Curabitur suscipit suscipit tellus. Nullam cursus lacinia erat. Nam adipiscing.</p>
-         </div>
-         <div class="projectButtons">
-           <app-button (click)="selectProject(null)">Back</app-button>
-           <app-button (click)="showAlert('success')">Apply</app-button>
-         </div>
-       </div>
-       <app-alert class="success {{showSuccessAlert ? 'show' : ''}}">
-         <p>You applied succesfully!</p>
-       </app-alert>
-       <app-alert class="danger {{showDangerAlert ? 'show' : ''}}">
-         <p>Something went wrong</p>
-       </app-alert>
-     </div>
-
+  <div *ngIf="selectedProposal!==null" main-col>
+    {{selectedProposal | json}}
+    <div class="projectDetails">
+      <div class="projectHeader">
+        <h2 class="projectTitle">{{selectedProposal.title}}</h2>
+        <h3 class="font-bold">Supervisor: <span class="regularText">{{selectedProposal.supervisor.name}} {{selectedProposal.supervisor.surname}}</span></h3>
+        <h3 class="font-bold">Cosupervisors: <span class="regularText" *ngFor="let cs of selectedProposal.coSupervisor; let last = last">{{cs.name}} {{cs.surname}}{{last ? '' : ', '}}</span></h3>
+      </div>
+      <h3 class="font-bold">Decription</h3>
+      <div class="regularText">
+       <p>{{selectedProposal.description}}</p>
+      </div>
+      <div class="projectHeader">
+        <h3 class="font-bold">Type: <span class="regularText">{{selectedProposal.thesisType}}</span></h3>
+        <h3 class="font-bold">Abroad: <span class="regularText">{{selectedProposal.abroad ? 'Yes' : 'No'}}</span></h3>
+      </div>
+<!--      <div class="projectButtons">-->
+<!--        <app-button (click)="selectProject(null)">Back</app-button>-->
+<!--        <app-button (click)="showAlert('success')">Apply</app-button>-->
+<!--      </div>-->
+    </div>
+<!--    <app-alert class="success {{showSuccessAlert ? 'show' : ''}}">-->
+<!--      <p>You applied succesfully!</p>-->
+<!--    </app-alert>-->
+<!--    <app-alert class="danger {{showDangerAlert ? 'show' : ''}}">-->
+<!--      <p>Something went wrong</p>-->
+<!--    </app-alert>-->
+  </div>
 </app-page-skeleton>
