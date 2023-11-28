@@ -14,10 +14,10 @@ export class AuthGuardStudentService implements CanActivate {
     // For example, you can check a cookie or a service that holds user information and permissions
 
     if(user!=undefined) {
-      const hasPermission = JSON.parse(user).role == 'student'/* Check if the user has the required permission */;
+      const hasPermission = JSON.parse(user).body.role == 'student'/* Check if the user has the required permission */;
       if (hasPermission) {
         return true;
-      }else if(JSON.parse(user).role == 'professor'){
+      }else if(JSON.parse(user).body.role == 'professor'){
         this.router.navigate(['professor']);
         return false;
       }

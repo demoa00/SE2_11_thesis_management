@@ -37,8 +37,8 @@ export class CreateThesisFormComponent {
   constructor(private fb: FormBuilder, private api: APIService) {
     let stringProfessor= localStorage.getItem('professor')
     let stringDegree = localStorage.getItem('degrees')
-    this.degrees = (JSON.parse(stringDegree!=null?stringDegree:''))
-    this.professor = (JSON.parse(stringProfessor!=null?stringProfessor:''))
+    this.degrees = (JSON.parse(stringDegree!=null?stringDegree:'')).body
+    this.professor = (JSON.parse(stringProfessor!=null?stringProfessor:'')).body
     console.log(this.professor)
     console.log(this.degrees)
       this.myForm = this.fb.group({
@@ -47,7 +47,7 @@ export class CreateThesisFormComponent {
           coSupervisor: [''],
           level: ['', [Validators.required]],
           thesisType: ['', [Validators.required]],
-          groups: [(JSON.parse(stringProfessor!=null?stringProfessor:'')).codGroup],
+          groups: [this.professor.codGroup],
           description: ['', [Validators.required]],
           requirements: ['', [Validators.required]],
           notes: [''],
