@@ -42,7 +42,7 @@ export class HttpService {
   ): Promise<T> {
     return this.makeRequest(async () => {
       return this.http
-        .get<T>(rawpath ? path : this.url(path, usePrefix),{...additionalHeaders, withCredentials:true})
+        .get<T>(rawpath ? path : this.url(path, usePrefix),{...this.headerOptions(additionalHeaders), withCredentials:true})
         .toPromise();
     });
   }

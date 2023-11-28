@@ -9,6 +9,7 @@ import {APIService} from "../../shared/services/api.service";
 export class StudentPageComponent{
 
   constructor(public api: APIService) {
+    this.api.setStudent()
   }
 
   projects =  [

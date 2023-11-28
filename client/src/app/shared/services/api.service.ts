@@ -46,6 +46,23 @@ export class APIService {
   async getAllApplications(){
     return await this.httpService.get('applications')
   }
+  async setProfessor(){
+    let user= localStorage.getItem('user')
+    await this.httpService.get(`professors/${(JSON.parse(user!=null?user:'').userId)}`,false,true).then((response: any)=>{
+      localStorage.setItem('professor',JSON.stringify(response));
+    })
+  }
+  async setStudent(){
+    let user= localStorage.getItem('user')
+    await this.httpService.get(`students/${(JSON.parse(user!=null?user:'').userId)}`,false,true).then((response: any)=>{
+      localStorage.setItem('student',JSON.stringify(response));
+    })
+  }
+  async getDegrees(){
+    await this.httpService.get('degrees/',false,true).then((response: any)=>{
+      localStorage.setItem('degrees',JSON.stringify(response))
+    })
+  }
   async getAllActiveTheses(){
     return await this.httpService.get('thesisProposals')
   }

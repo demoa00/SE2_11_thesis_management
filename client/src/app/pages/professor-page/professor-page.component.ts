@@ -8,7 +8,9 @@ import {APIService} from "../../shared/services/api.service";
 })
 export class ProfessorPageComponent{
 
-  constructor(public api: APIService) {
+  constructor(public api: APIService ) {
+    this.api.setProfessor()
+    this.api.getDegrees()
   }
 
 

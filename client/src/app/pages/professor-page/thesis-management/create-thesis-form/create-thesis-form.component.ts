@@ -12,6 +12,19 @@ export class CreateThesisFormComponent {
   error = false;
   selectFocus: boolean = false;
   keywordsList: string[] = [];
+  degrees:{
+    titleDegree: any;
+    degreeId:any;
+  }[] =[];
+  professor:{
+    codDepartment:any;
+    codGroup:any;
+    email:any;
+    professorId:any;
+    self:any;
+    name: any;
+    surname:any;
+  };
 
 
   @Input()
@@ -22,29 +35,35 @@ export class CreateThesisFormComponent {
   response= new EventEmitter<{}>();
 
   constructor(private fb: FormBuilder, private api: APIService) {
+    let stringProfessor= localStorage.getItem('professor')
+    let stringDegree = localStorage.getItem('degrees')
+    this.degrees = (JSON.parse(stringDegree!=null?stringDegree:''))
+    this.professor = (JSON.parse(stringProfessor!=null?stringProfessor:''))
+    console.log(this.professor)
+    console.log(this.degrees)
       this.myForm = this.fb.group({
           title: ['', [Validators.required]],
-          supervisor: ['', [Validators.required]],
+          supervisor: this.professor,
           coSupervisor: [''],
           level: ['', [Validators.required]],
-          type: ['', [Validators.required]],
-          groups: [''],
+          thesisType: ['', [Validators.required]],
+          groups: [(JSON.parse(stringProfessor!=null?stringProfessor:'')).codGroup],
           description: ['', [Validators.required]],
-          requiredKnowledge: ['', [Validators.required]],
+          requirements: ['', [Validators.required]],
           notes: [''],
-          keywords: [''],
-          courseType: ['', [Validators.required]],
+          keywords: ['', [Validators.required]],
+          CdS: ['', [Validators.required]],
           expirationDate: ['', [Validators.required]]
       });
   }
 
     async onSubmit() {
         if (this.myForm.valid) {
-            const response = await this.api.insertNewThesis(this.myForm)
+          console.log(this.myForm.value);
+            const response = await this.api.insertNewThesis(this.myForm.value)
             // Handle form submission
             this.requestAccepted.emit(response !=undefined);
             this.response.emit({});
-            console.log(this.myForm.value);
         }
     }
 
@@ -54,6 +73,10 @@ export class CreateThesisFormComponent {
 
     onSelectBlur() {
         this.selectFocus=false
+    }
+    get supervisorName() {
+      console.log(this.myForm.get('supervisor')?.value?.name || '')
+      return this.myForm.get('supervisor')?.value?.name || '';
     }
 
     addKeyword(event: any) {
