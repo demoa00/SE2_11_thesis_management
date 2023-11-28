@@ -14,7 +14,7 @@ module.exports.getThesisProposals = async function getThesisProposals(req, res, 
 
       utils.writeJson(res, thesisProposalsList, 200);
     } else if (checkRole.isProfessor(req.user)) {
-      thesisProposalsList = await ThesisProposal.getThesisProposalsForProfessor(req.user.userId, req.query.cosupervisor);
+      thesisProposalsList = await ThesisProposal.getThesisProposalsForProfessor(req.user.userId, req.query);
 
       utils.writeJson(res, thesisProposalsList, 200);
     } else {

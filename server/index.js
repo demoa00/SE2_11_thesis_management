@@ -249,12 +249,14 @@ app.post('/saml/consume',
     }
 );
 
+
 /* THESIS PROPOSALS API */
 app.get('/api/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposals);
 app.get('/api/thesisProposals/:thesisProposalId', isLoggedIn, thesisProposalController.getThesisProposalById);
 app.post('/api/thesisProposals', isLoggedIn, isProfessor, validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal);
 //app.put('/api/thesisProposals/:thesisProposalId', isLoggedIn, isProfessor, validate({ body: thesisProposalSchema }));
 //app.delete('/api/thesisProposals/:thesisProposalId', isLoggedIn, isProfessor);
+
 
 /* APPLICATIONS API */
 app.get('/api/applications', isLoggedIn, applicationController.getApplications);

@@ -4,9 +4,6 @@
     "title": "Thesis Application Schema",
     "type": "object",
     "properties": {
-        "$schema": {
-            "type": "string"
-        },
         "thesisProposalId": {
             "type": "integer"
         },

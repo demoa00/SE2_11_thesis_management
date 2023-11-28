@@ -22,3 +22,14 @@ CREATE TRIGGER deleteVirtual AFTER DELETE ON thesisProposals
 BEGIN
     DELETE FROM virtualThesisProposals WHERE thesisProposalId = OLD.thesisProposalId;
 END;
+
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
+/* TRIGGER TO PERFORM AUTOMATIC DELETE ON BRIDGE TABLES AFTER UPDATE ON TABLE FOR THESIS PROPOSALS */
+DROP TRIGGER deleteBridgeOnUpdate;
+CREATE TRIGGER deleteBridgeOnUpdate AFTER UPDATE ON thesisProposals
+BEGIN
+    DELETE FROM thesisProposal_externalCoSupervisor_bridge WHERE thesisProposalId = OLD.thesisProposalId;
+    DELETE FROM thesisProposal_internalCoSupervisor_bridge WHERE thesisProposalId = OLD.thesisProposalId;
+    DELETE FROM thesisProposal_cds_bridge WHERE thesisProposalId = OLD.thesisProposalId;
+END;
