@@ -2,7 +2,7 @@
 
 import {Component} from '@angular/core';
 import {APIService} from "../../shared/services/api.service";
-import {User} from "../../shared/classes/student/user";
+import {User} from "../../shared/classes/user";
 import {StudentDetails} from "../../shared/classes/student/student-details";
 
 type ProposalsParams = {
@@ -14,13 +14,13 @@ type ProposalsParams = {
 }
 
 type Proposal = {
-  expirationDate: string | undefined;
-  keywords: string | undefined;
-  name: string | undefined;
-  self: string | undefined;
-  surname: string | undefined;
-  thesisProposalId: string | undefined;
-  title: string | undefined;
+  expirationDate: string;
+  keywords: string;
+  name: string;
+  self: string;
+  surname: string;
+  thesisProposalId: number;
+  title: string;
 }
 
 @Component({
@@ -38,7 +38,7 @@ export class StudentPageComponent {
   user: User | undefined
   userDetails: StudentDetails | undefined
   proposals: Proposal[] = []
-  selectedProposal: object | null = null;
+  selectedProposal: any | null = null;
   searchValue: string = "";
   professorsHover = false
   professors: any;
@@ -51,6 +51,20 @@ export class StudentPageComponent {
     expirationDate: null,
     abroad: null
   }
+  menuItems = [
+    {
+      'id': 0,
+      'selected': true,
+      'hovered': false,
+      'text': 'Proposals'
+    },
+    {
+      'id': 1,
+      'selected': false,
+      'hovered': false,
+      'text': 'Applications'
+    },
+  ]
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('user') || '{}')
@@ -67,6 +81,12 @@ export class StudentPageComponent {
     })
   }
 
+  selectMenuItem(id: number) {
+    this.menuItems.forEach((item) => {
+      item.selected = false
+    })
+    this.menuItems[id].selected = true
+  }
   updateSearchValue(value: string) {
     this.searchValue = value.trim().toLowerCase();
   }
@@ -94,7 +114,10 @@ export class StudentPageComponent {
     return this.selectedProfs.includes(prof)
   }
 
-  selectProposal(proposal: any) {
+  selectProposal(proposalId: number) {
+    this.api.getProposal(proposalId).then((response: any) => {
+      this.selectedProposal = response
+    })
   }
 
   search() {

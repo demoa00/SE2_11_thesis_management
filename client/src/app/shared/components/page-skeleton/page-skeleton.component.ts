@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
 import {APIService} from "../../services/api.service";
-import {User} from "../../classes/student/user";
+import {User} from "../../classes/user";
 import {StudentDetails} from "../../classes/student/student-details";
 import {DarkModeService} from "../../services/dark-mode.service";
+import {ProfessorDetails} from "../../classes/professor/professor-details";
 
 @Component({
   selector: 'app-page-skeleton',
@@ -20,7 +21,8 @@ export class PageSkeletonComponent {
   currentRoute = this._router.url;
 
   user: User | undefined;
-  userDetails: StudentDetails | undefined;
+  student: StudentDetails | undefined;
+  professor: ProfessorDetails | undefined;
 
   theme = false
 
@@ -29,15 +31,25 @@ export class PageSkeletonComponent {
     localStorage.removeItem('user')
     this.api.logout(JSON.parse(user!=null?user:'').userId);
   }
-/*
+
   ngOnInit(){
     this.api.checkAutorization()
     this.user = JSON.parse(localStorage.getItem('user') || '{}')
-    this.api.getUserDetails(this.user?.userId).then((response: any)=>{
-      this.userDetails = response
-    })
+    if(this.user?.role=='student'){
+      this.api.getUserDetails(this.user?.userId).then((response: any)=>{
+        this.student = response
+      })
+    }
+    else if(this.user?.role=='professor'){
+      this.api.getProfessorDetails(this.user?.userId).then((response: any)=>{
+        console.log(response)
+        this.professor = response
+      })
+    }
+    else {
+    }
   }
 
  //sta cosa da errore se loggo come professore, perchè fai la richiesta su studente, dato che la skeleton la uso anche come professore
-*/
+
 }

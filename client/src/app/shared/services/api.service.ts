@@ -78,6 +78,10 @@ export class APIService {
     return await this.httpService.get(`students/${userId}`, false, true);
   }
 
+  async getProfessorDetails(userId: any) {
+    return await this.httpService.get(`professors/${userId}`, false, true);
+  }
+
 
   async getAllProposals(params: ProposalsParams | null){
     let url = 'thesisProposals/?'
@@ -93,6 +97,10 @@ export class APIService {
       }
     }
       return await this.httpService.get(url,false,true)
+  }
+
+  async getProposal(proposalId: number | undefined) {
+    return await this.httpService.get(`thesisProposals/${proposalId}`,false,true)
   }
 
   async getProfessors() {

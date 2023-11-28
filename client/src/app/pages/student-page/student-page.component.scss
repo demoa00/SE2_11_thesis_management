@@ -124,20 +124,6 @@
   }
 }
 
-.leftMenuItem {
-  border-radius: 8px;
-  padding: 4px 16px;
-  text-align: center;
-  margin-bottom: 8px;
-  &.selected {
-    background-color: $polilightblue;
-    * {color: white;}
-  }
-  &.hovered {
-    background-color: $lightgrey;
-  }
-}
-
 .projectHeader {
   margin-bottom: 16px;
   .projectTitle {

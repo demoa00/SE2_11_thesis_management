@@ -2,6 +2,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.leftMenuItem {
+  border-radius: 8px;
+  padding: 4px 16px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.leftMenuItem.selected {
+  background-color: #03577A;
+}
+.leftMenuItem.selected * {
+  color: white;
+}
+.leftMenuItem.hovered {
+  background-color: #e5e7eb;
+}
+
 :host {
   background-color: #03577A;
   padding: 8px;
@@ -9,9 +25,20 @@
   color: white;
   cursor: pointer;
   height: fit-content;
+  display: flex;
 }
 :host.orange {
   @apply bg-orange-600;
+}
+:host.grey {
+  background-color: #e5e7eb;
+  color: #04264c;
+}
+:host.rounded {
+  border-radius: 50% !important;
+}
+:host.small {
+  font-size: 12px;
 }
 
 /*# sourceMappingURL=button.component.css.map */

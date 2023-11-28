@@ -16,8 +16,8 @@
       <h2 class="uppercase text-3xl font-bold">thesis proposals</h2>
       <div class="flex items-center">
         <img alt="propic" src="https://picsum.photos/512/512" class="propic mr-4" *ngIf="currentRoute!=='/'">
-        <p class="text-sm uppercase" *ngIf="currentRoute==='/student'">{{userDetails?.name}} {{userDetails?.surname}}, {{userDetails?.studentId}}</p>
-        <p class="text-sm uppercase" *ngIf="currentRoute==='/professor'">first last, p123456</p>
+        <p class="text-sm uppercase" *ngIf="currentRoute==='/student'">{{student?.name}} {{student?.surname}}, {{student?.studentId}}</p>
+        <p class="text-sm uppercase" *ngIf="currentRoute==='/professor'">{{professor?.name}} {{professor?.surname}}, {{professor?.professorId}}</p>
         <app-button class="ml-4" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
       </div>
     </div>
