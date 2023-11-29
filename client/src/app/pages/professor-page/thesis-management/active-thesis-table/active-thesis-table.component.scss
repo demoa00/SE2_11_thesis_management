@@ -52,3 +52,8 @@
     }
   }
 }
+.projectButtons {
+  display: flex;
+  gap: 8px;
+  @apply pl-4;
+}

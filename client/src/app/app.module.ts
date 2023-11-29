@@ -28,6 +28,7 @@ import { AuthGuardProfessorService } from "./shared/services/auth-guard-professo
 import { ActiveThesisTableComponent } from './pages/professor-page/thesis-management/active-thesis-table/active-thesis-table.component';
 import {AuthGuardStudentService} from "./shared/services/auth-guard-student.service";
 import {MatIconModule} from "@angular/material/icon";
+import { ThesisDetailsComponent } from './pages/professor-page/thesis-management/thesis-details/thesis-details.component';
 
 
 const routes: Routes = [
@@ -54,6 +55,7 @@ const routes: Routes = [
     LoadingComponent,
     CreateThesisFormComponent,
     ActiveThesisTableComponent,
+    ThesisDetailsComponent,
   ],
   imports: [
     BrowserModule,
