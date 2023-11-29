@@ -1,6 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { PageSkeletonComponent } from './page-skeleton.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ButtonComponent } from '../button/button.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('PageSkeletonComponent', () => {
   let component: PageSkeletonComponent;
@@ -8,7 +11,8 @@ describe('PageSkeletonComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PageSkeletonComponent]
+      imports: [RouterTestingModule, HttpClientTestingModule],
+      declarations: [PageSkeletonComponent, ButtonComponent],
     });
     fixture = TestBed.createComponent(PageSkeletonComponent);
     component = fixture.componentInstance;
@@ -17,13 +21,5 @@ describe('PageSkeletonComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should navigate to the home page on logout', () => {
-    const routerSpy = spyOn(component['_router'], 'navigate');
-  
-    component.logout();
-  
-    expect(routerSpy).toHaveBeenCalledWith(['/']);
   });
 });

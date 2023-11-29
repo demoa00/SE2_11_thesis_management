@@ -1,13 +1,13 @@
 <div class="bo-popup" (click)="closeClickOutside ? close.emit() : ''">
-  <div class="flex flex-col bo-popup-content p-2 justify-between" (click)="$event.stopPropagation()">
+  <div class="flex flex-col bo-popup-content small p-4 justify-between" (click)="$event.stopPropagation()">
     <div class="flex items-center justify-around gap-2 w-160 mb-4">
-      <img  alt="logo" src="../../../assets/images/LogoPoli.svg" class="h-1/2 w-1/2" >
-      <div *ngIf="title" class="text-3xl">{{ title }}</div>
+      <img *ngIf="showLogo" alt="logo" src="../../../assets/images/LogoPoli.svg" class="w-48" >
+      <h1 *ngIf="title" class="font-bold text-3xl">{{ title }}</h1>
       <app-icon
         *ngIf="showCloseButton"
         name="cross"
         title="Chiudi Finestra"
-        class="bo-popup-close-1 h-8 w-8"
+        class="bo-popup-close-1 h-6 w-6 flex justify-center items-center"
         (click)="close.emit()"></app-icon>
       <!--<div *ngIf="showCloseButton" class="bo-popup-close-1" (click)="close.emit()"></div>-->
     </div>

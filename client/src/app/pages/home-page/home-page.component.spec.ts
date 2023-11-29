@@ -6,10 +6,10 @@ import { FormsModule } from '@angular/forms';
 import { PageSkeletonComponent } from 'src/app/shared/components/page-skeleton/page-skeleton.component';
 import { PopupComponent } from 'src/app/shared/components/popup-conferma/popup.component';
 import { AlertComponent } from 'src/app/shared/alert/alert.component';
-import { LoginFormComponent } from 'src/app/shared/components/login-form/login-form.component';
-import { HttpClientModule } from '@angular/common/http';
 import { of } from 'rxjs';
 import { AuthService } from '@auth0/auth0-angular';
+import { LoadingComponent } from 'src/app/shared/components/loading/loading.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
@@ -23,8 +23,8 @@ describe('HomePageComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [HomePageComponent, ButtonComponent, PageSkeletonComponent, PopupComponent, AlertComponent, LoginFormComponent],
-      imports: [FormsModule, HttpClientModule],
+      declarations: [HomePageComponent, ButtonComponent, PageSkeletonComponent, PopupComponent, AlertComponent, LoadingComponent],
+      imports: [FormsModule, HttpClientTestingModule],
       providers: [
         { provide: AuthService, useValue: authServiceMock },
       ]

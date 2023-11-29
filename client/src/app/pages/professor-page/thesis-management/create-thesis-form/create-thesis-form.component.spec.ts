@@ -2,18 +2,27 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 
 import { CreateThesisFormComponent } from './create-thesis-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { APIService } from 'src/app/shared/services/api.service';
+import { of } from 'rxjs';
 
 describe('CreateThesisFormComponent', () => {
   let component: CreateThesisFormComponent;
   let fixture: ComponentFixture<CreateThesisFormComponent>;
+  let apiServiceSpy: jasmine.SpyObj<APIService>;
 
   beforeEach(() => {
+    const spy = jasmine.createSpyObj('APIService', ['insertNewThesis']);
+
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
-      declarations: [CreateThesisFormComponent]
+      declarations: [CreateThesisFormComponent],
+      providers: [{ provide: APIService, useValue: spy }]
     });
+
     fixture = TestBed.createComponent(CreateThesisFormComponent);
     component = fixture.componentInstance;
+    apiServiceSpy = TestBed.inject(APIService) as jasmine.SpyObj<APIService>;
     fixture.detectChanges();
   });
 
@@ -21,11 +30,8 @@ describe('CreateThesisFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit events on form submission', () => {
-    spyOn(component.requestAccepted, 'emit');
-    spyOn(component.response, 'emit');
-
-    component.myForm.setValue({
+  it('should submit the form and emit events', fakeAsync(() => {
+    const validFormValue = {
       title: 'Valid Title',
       supervisor: 'Valid Supervisor',
       coSupervisor: 'Valid CoSupervisor',
@@ -38,13 +44,24 @@ describe('CreateThesisFormComponent', () => {
       keywords: 'Valid Keywords',
       courseType: 'Valid CourseType',
       expirationDate: 'Valid ExpirationDate'
-    });
+    };
+
+    component.myForm.setValue(validFormValue);
+
+    apiServiceSpy.insertNewThesis.and.returnValue(of({}).toPromise());
+
+    const requestAcceptedEmitSpy = spyOn(component.requestAccepted, 'emit');
+    const responseEmitSpy = spyOn(component.response, 'emit');
 
     component.onSubmit();
 
-    expect(component.requestAccepted.emit).toHaveBeenCalledWith(true);
-    expect(component.response.emit).toHaveBeenCalledWith({});
-  });
+    tick();
+
+    expect(apiServiceSpy.insertNewThesis).toHaveBeenCalledWith(component.myForm);
+
+    expect(requestAcceptedEmitSpy).toHaveBeenCalledWith(true);
+    expect(responseEmitSpy).toHaveBeenCalledWith({});
+  }));
 
   it('should set and reset selectFocus correctly', () => {
     expect(component.selectFocus).toBe(false);

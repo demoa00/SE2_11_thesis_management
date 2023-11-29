@@ -3,21 +3,23 @@ import {HttpService} from "./http.service";
 import {Router} from "@angular/router";
 
 type ProposalsParams = {
-    text: string | null;
-    supervisors: any [] | null;
-    cosupervisors: {}[] | null;
-    expirationDate: string | null;
-    abroad: boolean | null;
+  text: string | null;
+  supervisors: any [] | null;
+  cosupervisors: {}[] | null;
+  expirationDate: string | null;
+  abroad: boolean | null;
 }
+
 @Injectable({
   providedIn: 'root'
 })
 export class APIService {
 
-  constructor(private httpService: HttpService, private router: Router) { }
+  constructor(private httpService: HttpService, private router: Router) {
+  }
 
   login(username: string, password: string) {
-    this.httpService.formPost('authenticatedSession', { username, password }).then((response) => {
+    this.httpService.formPost('authenticatedSession', {username, password}).then((response) => {
       console.log("response")
       console.log(response);
     }).catch((error) => {
@@ -25,49 +27,53 @@ export class APIService {
       console.log(error);
     })
   }
-  logout(userId:any) {
+
+  logout(userId: any) {
     window.location.href = `http://localhost:3000/api/authenticatedSession/${userId}`;
   }
 
   checkAutorization() {
-    this.httpService.get('authenticatedSession/current',false,true).then((response: any)=>{
-      localStorage.setItem('user',JSON.stringify(response));
-      if(response.role=='student'){
+    this.httpService.get('authenticatedSession/current', false, true).then((response: any) => {
+      localStorage.setItem('user', JSON.stringify(response));
+      if (response.role == 'student') {
         this.router.navigateByUrl('student')
-      }
-      else if(response.role=='professor'){
+      } else if (response.role == 'professor') {
         this.router.navigateByUrl('professor')
-      }
-      else {
+      } else {
         window.location.href = `http://localhost:3000/api/authenticatedSession`;
       }
-      return(response)
-    }).catch((error)=>{
+      return (response)
+    }).catch((error) => {
       console.log(error)
       window.location.href = `http://localhost:3000/api/authenticatedSession`;
     })
   }
-  async insertNewThesis(body: {}){
+
+  async insertNewThesis(body: {}) {
     return await this.httpService.post('thesisProposals', body)
   }
-  async getAllApplications(){
+
+  async getAllApplications() {
     return await this.httpService.get('applications')
   }
-  async setProfessor(){
-    let user= localStorage.getItem('user')
-    await this.httpService.get(`professors/${(JSON.parse(user!=null?user:'').userId)}`,false,true).then((response: any)=>{
-      localStorage.setItem('professor',JSON.stringify(response));
+
+  async setProfessor() {
+    let user = localStorage.getItem('user')
+    await this.httpService.get(`professors/${(JSON.parse(user != null ? user : '').userId)}`, false, true).then((response: any) => {
+      localStorage.setItem('professor', JSON.stringify(response));
     })
   }
-  async setStudent(){
-    let user= localStorage.getItem('user')
-    await this.httpService.get(`students/${(JSON.parse(user!=null?user:'').userId)}`,false,true).then((response: any)=>{
-      localStorage.setItem('student',JSON.stringify(response));
+
+  async setStudent() {
+    let user = localStorage.getItem('user')
+    await this.httpService.get(`students/${(JSON.parse(user != null ? user : '').userId)}`, false, true).then((response: any) => {
+      localStorage.setItem('student', JSON.stringify(response));
     })
   }
-  async getDegrees(){
-    await this.httpService.get('degrees/',false,true).then((response: any)=>{
-      localStorage.setItem('degrees',JSON.stringify(response))
+
+  async getDegrees() {
+    await this.httpService.get('degrees/', false, true).then((response: any) => {
+      localStorage.setItem('degrees', JSON.stringify(response))
     })
   }
   async getCoSupervisors() {
@@ -76,7 +82,7 @@ export class APIService {
       console.log(response)
     })
   }
-  async getAllActiveTheses(){
+  async getAllActiveTheses() {
     return await this.httpService.get('thesisProposals/?cosupervisor=false')
   }
 
@@ -88,29 +94,36 @@ export class APIService {
     return await this.httpService.get(`professors/${userId}`, false, true);
   }
 
-
-  async getAllProposals(params: ProposalsParams | null){
+  async getAllProposals(params: ProposalsParams | null) {
     let url = 'thesisProposals/?'
     console.log(params)
-    if(params){
-      if(params.supervisors !== null){
-        for (let s of params.supervisors){
+    if (params) {
+      if (params.supervisors !== null) {
+        for (let s of params.supervisors) {
           url += `supervisor=${s?.professorId}&`
         }
       }
-      if(params.text !== null){
+      if (params.text !== null) {
         url += `text=${params.text}&`
       }
     }
-      return await this.httpService.get(url,false,true)
+    return await this.httpService.get(url, false, true)
   }
 
   async getProposal(proposalId: number | undefined) {
-    return await this.httpService.get(`thesisProposals/${proposalId}`,false,true)
+    return await this.httpService.get(`thesisProposals/${proposalId}`, false, true)
   }
 
   async getProfessors() {
     return await this.httpService.get('professors')
+  }
+
+  async insertNewApplication(body: any) {
+    return await this.httpService.post(`thesisProposals/${body.thesisProposalId}`, body)
+  }
+
+  async getApplications(){
+    return await this.httpService.get('applications')
   }
 
 

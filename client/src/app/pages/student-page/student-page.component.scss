@@ -124,7 +124,7 @@
   }
 }
 
-.projectHeader {
+.projectHeader,.projectBody {
   margin-bottom: 16px;
   .projectTitle {
     font-weight: bold;
@@ -132,12 +132,21 @@
     line-height: 28px;
     margin-bottom: 8px;
   }
+  .regularText {
+    font-weight: normal;
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
 }
 
-.regularText {
-  font-weight: normal;
-  font-size: 14px;
+.projectFooter{
+  font-size: 12px;
   margin-bottom: 16px;
+  .regularText {
+    font-weight: normal;
+    font-size: 12px;
+    margin-bottom: 16px;
+  }
 }
 
 .projectButtons {
@@ -150,4 +159,12 @@
   width: 20px;
   height: 20px;
   font-size: 20px;
+}
+
+.popupContent {
+  .textArea{
+    @apply w-full h-32 bg-gray-50 border-2 border-gray-300 rounded-md p-2;
+    font-size: 12px;
+    line-height: 14px;
+  }
 }

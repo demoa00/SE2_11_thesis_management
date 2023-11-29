@@ -49,8 +49,8 @@ describe('HTTPService', () => {
         const requestBody = { key: 'value' };
         let result: any;
     
-        httpService.post('sample-path', requestBody).then(data => {
-          result = data;
+        httpService.post('sample-path', requestBody).then(response => {
+          result = response.body;
         });
     
         const req = httpTestingController.expectOne('http://localhost:3000/api/sample-path');
@@ -68,8 +68,8 @@ describe('HTTPService', () => {
         const requestBody = { key: 'new-value' };
         let result: any;
     
-        httpService.put('sample-path', requestBody).then(data => {
-          result = data;
+        httpService.put('sample-path', requestBody).then(response => {
+          result = response.body;
         });
     
         const req = httpTestingController.expectOne('http://localhost:3000/api/sample-path');

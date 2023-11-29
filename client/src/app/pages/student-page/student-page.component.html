@@ -25,7 +25,7 @@
           <div class="dropdownContent" *ngIf="professorsHover">
             <div class="border-b-2 mb-2 flex justify-between">
               <input id="professorsSearch-input" class="outline-0 w-24" type="text" placeholder="Search..."
-                     [ngModel]="professorsSearchValue" (ngModelChange)="updateProfessorsSearchValue($event)"/>
+                     [(ngModel)]="professorsSearchValue" (ngModelChange)="updateProfessorsSearchValue($event)"/>
               <img class="cursor-pointer" alt="delete" style="color: red" src="assets/images/close_grey.svg" width="12"
                    height="12" (click)="updateProfessorsSearchValue('')"/>
             </div>
@@ -58,31 +58,55 @@
   </div>
 
   <div *ngIf="selectedProposal!==null" main-col>
-    {{selectedProposal | json}}
     <div class="projectDetails">
       <div class="projectHeader">
         <h2 class="projectTitle">{{selectedProposal.title}}</h2>
         <h3 class="font-bold">Supervisor: <span class="regularText">{{selectedProposal.supervisor.name}} {{selectedProposal.supervisor.surname}}</span></h3>
         <h3 class="font-bold">Cosupervisors: <span class="regularText" *ngFor="let cs of selectedProposal.coSupervisor; let last = last">{{cs.name}} {{cs.surname}}{{last ? '' : ', '}}</span></h3>
       </div>
-      <h3 class="font-bold">Decription</h3>
-      <div class="regularText">
-       <p>{{selectedProposal.description}}</p>
+      <div class="projectBody">
+        <h3 class="font-bold">Description</h3>
+        <div class="regularText">
+          <p>{{selectedProposal.description}}</p>
+        </div>
       </div>
-      <div class="projectHeader">
+      <div class="projectFooter">
         <h3 class="font-bold">Type: <span class="regularText">{{selectedProposal.thesisType}}</span></h3>
         <h3 class="font-bold">Abroad: <span class="regularText">{{selectedProposal.abroad ? 'Yes' : 'No'}}</span></h3>
+        <h3 class="font-bold">Groups: <span class="regularText" *ngFor="let g of selectedProposal.groups; let last = last">{{g}}{{last ? '' : ', '}}</span></h3>
+        <h3 class="font-bold">Study Courses: <span class="regularText" *ngFor="let cs of selectedProposal.CdS; let last = last">{{cs.titleDegree}} ({{cs.degreeId}}){{last ? '' : ', '}}</span></h3>
+        <h3 class="font-bold">Expiration date: <span class="regularText">{{date(selectedProposal.expirationDate)}}</span></h3>
       </div>
-<!--      <div class="projectButtons">-->
-<!--        <app-button (click)="selectProject(null)">Back</app-button>-->
-<!--        <app-button (click)="showAlert('success')">Apply</app-button>-->
-<!--      </div>-->
+      <div class="projectButtons">
+        <app-button (click)="selectProposal(-1)">Back</app-button>
+        <app-button (click)="togglePopup()" [ngClass]="!canApply ? 'disabled' : ''">Apply</app-button>
+      </div>
+      <app-popup
+        *ngIf="popupVisible"
+        [showSlider]="false"
+        (close)="togglePopup()"
+        [closeClickOutside]="false"
+        [showCloseButton]="false"
+        [title]="'Apply'"
+        [showLogo]="false"
+        >
+        <div class="popupContent">
+          <p class="font-bold">Name: <span class="font-normal">{{userDetails?.name}} {{userDetails?.surname}}</span></p>
+          <p class="font-bold">Student ID: <span class="font-normal">{{userDetails?.studentId}}</span></p>
+          <p class="font-bold mb-2">Insert an application message (optional)</p>
+          <textarea class="textArea" [(ngModel)]="applicationMessage" maxlength="1000"></textarea>
+          <div class="flex justify-end">
+            <app-button class="grey mr-2" (click)="togglePopup(); applicationMessage=''">Back</app-button>
+            <app-button class="danger"  (click)="apply()">Apply</app-button>
+          </div>
+        </div>
+      </app-popup>
+    <app-alert class="success {{showSuccessAlert ? 'show' : ''}}">
+      <p>Application Submitted Succesfully!</p>
+    </app-alert>
+    <app-alert class="danger {{showErrorAlert ? 'show' : ''}}">
+      <p>Error: Something went wrong</p>
+    </app-alert>
     </div>
-<!--    <app-alert class="success {{showSuccessAlert ? 'show' : ''}}">-->
-<!--      <p>You applied succesfully!</p>-->
-<!--    </app-alert>-->
-<!--    <app-alert class="danger {{showDangerAlert ? 'show' : ''}}">-->
-<!--      <p>Something went wrong</p>-->
-<!--    </app-alert>-->
   </div>
 </app-page-skeleton>

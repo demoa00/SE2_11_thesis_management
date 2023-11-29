@@ -6,8 +6,8 @@ import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@a
   styleUrls: ['./popup.component.scss']
 })
 export class PopupComponent implements OnInit {
+  @Input()
   showCloseButton = true;
-
   @Input()
   title: string = '';
   @Input()
@@ -18,6 +18,8 @@ export class PopupComponent implements OnInit {
   showSlider?: boolean = true;
   @Input()
   showButton?: boolean = false;
+  @Input()
+  showLogo?: boolean = true;
   @Output()
   close = new EventEmitter();
 
