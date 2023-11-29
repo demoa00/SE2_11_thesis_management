@@ -43,7 +43,7 @@ describe('ThesisManagementComponent', () => {
   }));
 
   it('should set showApplicants to true and others to false on showApplicantsTable', fakeAsync(() => {
-    spyOn(apiService, 'getAllApplications').and.returnValue(of({}).toPromise());
+    spyOn(apiService, 'getApplications').and.returnValue(of({}).toPromise());
     component.showApplicantsTable();
     tick();
     expect(component.showApplicants).toBe(true);
