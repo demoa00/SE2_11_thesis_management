@@ -6,12 +6,33 @@ const checkRole = require('../utils/checkRole');
 
 const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
 
+const filterByStatus = (filter, sql, params) => {
+  if (filter != undefined) {
+    if (filter.status != undefined) {
+      if (filter.status === 'Reject') {
+        sql += 'AND status = ?';
+        params.push('Reject');
+      } else if (filter.status === 'Pending') {
+        sql += 'AND status = ?';
+        params.push('Pending');
+      } else if (filter.status === 'Accept') {
+        sql += 'AND status = ?';
+        params.push('Accept');
+      }
+    }
+  }
 
-exports.getAllApplicationsForStudent = function (studentId) {
+  return [sql, params];
+};
+
+exports.getAllApplicationsForStudent = function (studentId, filter) {
   return new Promise(function (resolve, reject) {
-    const sql = 'SELECT applications.thesisProposalId, thesis.title, applications.studentId, applications.date FROM applications, (SELECT thesisProposalId, title FROM thesisProposals) AS thesis WHERE applications.thesisProposalId = thesis.thesisProposalId AND applications.studentId = ?';
+    let sql = 'SELECT applications.thesisProposalId, thesis.title, applications.studentId, applications.date FROM applications, (SELECT thesisProposalId, title FROM thesisProposals) AS thesis WHERE applications.thesisProposalId = thesis.thesisProposalId AND applications.studentId = ? ';
+    let params = [studentId];
 
-    db.all(sql, [studentId], (err, rows) => {
+    let res = filterByStatus(filter, sql, params);
+
+    db.all(res[0], res[1], (err, rows) => {
       if (err) {
         reject({ code: 500, message: "Internal Server Error" });
       } else if (rows.length == 0) {
@@ -30,11 +51,14 @@ exports.getAllApplicationsForStudent = function (studentId) {
   });
 }
 
-exports.getApplicationsForProfessor = function (professorId) {
+exports.getApplicationsForProfessor = function (professorId, filter) {
   return new Promise(function (resolve, reject) {
-    const sql = 'SELECT applications.thesisProposalId, thesis.title, applications.studentId, applications.date FROM applications, (SELECT thesisProposalId, title FROM thesisProposals WHERE supervisor = ?) AS thesis WHERE applications.thesisProposalId = thesis.thesisProposalId';
+    let sql = 'SELECT applications.thesisProposalId, thesis.title, applications.studentId, applications.date FROM applications, (SELECT thesisProposalId, title FROM thesisProposals WHERE supervisor = ?) AS thesis WHERE applications.thesisProposalId = thesis.thesisProposalId ';
+    let params = [professorId];
 
-    db.all(sql, [professorId], (err, rows) => {
+    let res = filterByStatus(filter, sql, params);
+
+    db.all(res[0], res[1], (err, rows) => {
       if (err) {
         reject({ code: 500, message: "Internal Server Error" });
       } else if (rows.length == 0) {
@@ -89,7 +113,7 @@ exports.getApplicationById = function (user, studentId, thesisProposalId) {
 
 exports.updateApplication = function (professorId, studentId, thesisProposalId, newApplication) {
   return new Promise(function (resolve, reject) {
-    const sql = 'UPDATE applications SET status = ? WHERE thesisProposalId = ? AND studentId = ? AND thesisProposalId IN (SELECT thesisProposalId FROM thesisProposals WHERE supervisor = ?)';
+    const sql = "UPDATE applications SET status = ? WHERE status = 'Pending' AND thesisProposalId = ? AND studentId = ? AND thesisProposalId IN (SELECT thesisProposalId FROM thesisProposals WHERE supervisor = ?)";
 
     db.run(sql, [newApplication.status, thesisProposalId, studentId, professorId], function (err) {
       if (err) {

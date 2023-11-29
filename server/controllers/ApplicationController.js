@@ -10,11 +10,11 @@ module.exports.getApplications = async function getApplications(req, res, next) 
     let applicationsList;
 
     if (checkRole.isStudent(req.user)) {
-      applicationsList = await Application.getAllApplicationsForStudent(req.user.userId);
+      applicationsList = await Application.getAllApplicationsForStudent(req.user.userId, req.query);
 
       utils.writeJson(res, applicationsList, 200);
     } else if (checkRole.isProfessor(req.user)) {
-      applicationsList = await Application.getApplicationsForProfessor(req.user.userId);
+      applicationsList = await Application.getApplicationsForProfessor(req.user.userId, req.query);
 
       utils.writeJson(res, applicationsList, 200);
     } else {
