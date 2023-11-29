@@ -6,20 +6,29 @@ const checkRole = require('../utils/checkRole');
 const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
 
 
-exports.getProfessors = function (user) {
+exports.getProfessors = function (user, filter) {
   let sql = 'SELECT * FROM professors ';
   let params = [];
 
   if (checkRole.isStudent(user)) {
-    sql += 'WHERE professorId IN (SELECT DISTINCT thesisProposals.supervisor FROM thesisProposals, thesisProposal_cds_bridge WHERE thesisProposal_cds_bridge.cdsId = ? AND thesisProposals.thesisProposalId = thesisProposal_cds_bridge.thesisProposalId) ';
-    params = [user.codDegree];
-  }else if(checkRole.isProfessor(user)){
+    if (filter != undefined) {
+      if (filter.cosupervisor != undefined) {
+        if (filter.cosupervisor === 'true') {//retrive professor that are co-supervisor
+          sql += 'WHERE professorId IN (SELECT DISTINCT internalCoSupervisorId FROM thesisProposal_cds_bridge, thesisProposal_internalCoSupervisor_bridge WHERE thesisProposal_cds_bridge.cdsId = ? AND thesisProposal_internalCoSupervisor_bridge.thesisProposalId = thesisProposal_cds_bridge.thesisProposalId) ';
+          params = [user.codDegree];
+        } else if (filter.cosupervisor === 'false') {//retrive professor that are supervisor
+          sql += 'WHERE professorId IN (SELECT DISTINCT thesisProposals.supervisor FROM thesisProposals, thesisProposal_cds_bridge WHERE thesisProposal_cds_bridge.cdsId = ? AND thesisProposals.thesisProposalId = thesisProposal_cds_bridge.thesisProposalId) ';
+          params = [user.codDegree];
+        }
+      }
+    }
+  } else if (checkRole.isProfessor(user)) {
     sql += 'WHERE professorId != ? ';
     params = [user.userId];
   }
 
   sql += 'ORDER BY surname';
-  
+
   return new Promise(function (resolve, reject) {
     db.all(sql, params, (err, rows) => {
       if (err) {

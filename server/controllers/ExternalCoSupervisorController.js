@@ -6,7 +6,7 @@ const ExternalCoSupervisor = require('../service/ExternalCoSupervisorService');
 
 module.exports.getExternalCoSupervisors = async function getExternalCoSupervisors(req, res, next) {
   try {
-    let externalCoSupervisorsList = await ExternalCoSupervisor.getExternalCoSupervisors();
+    let externalCoSupervisorsList = await ExternalCoSupervisor.getExternalCoSupervisors(req.user);
 
     utils.writeJson(res, externalCoSupervisorsList, 200);
   } catch (error) {
