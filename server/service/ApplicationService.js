@@ -27,7 +27,7 @@ const filterByStatus = (filter, sql, params) => {
 
 exports.getAllApplicationsForStudent = function (studentId, filter) {
   return new Promise(function (resolve, reject) {
-    let sql = 'SELECT applications.thesisProposalId, thesis.title, applications.studentId, applications.date FROM applications, (SELECT thesisProposalId, title FROM thesisProposals) AS thesis WHERE applications.thesisProposalId = thesis.thesisProposalId AND applications.studentId = ? ';
+    let sql = 'SELECT applications.thesisProposalId, thesis.title, applications.studentId, applications.date, applications.status FROM applications, (SELECT thesisProposalId, title FROM thesisProposals) AS thesis WHERE applications.thesisProposalId = thesis.thesisProposalId AND applications.studentId = ? ';
     let params = [studentId];
 
     let res = filterByStatus(filter, sql, params);
@@ -42,7 +42,8 @@ exports.getAllApplicationsForStudent = function (studentId, filter) {
           thesisProposalId: r.thesisProposalId,
           thesisProposalTitle: r.title,
           studentId: r.studentId,
-          date: r.date
+          date: r.date,
+          status: r.status
         }));
 
         resolve(applicationsList);
@@ -53,7 +54,7 @@ exports.getAllApplicationsForStudent = function (studentId, filter) {
 
 exports.getApplicationsForProfessor = function (professorId, filter) {
   return new Promise(function (resolve, reject) {
-    let sql = 'SELECT applications.thesisProposalId, thesis.title, applications.studentId, applications.date FROM applications, (SELECT thesisProposalId, title FROM thesisProposals WHERE supervisor = ?) AS thesis WHERE applications.thesisProposalId = thesis.thesisProposalId ';
+    let sql = 'SELECT applications.thesisProposalId, thesis.title, applications.studentId, applications.date, applications.status FROM applications, (SELECT thesisProposalId, title FROM thesisProposals WHERE supervisor = ?) AS thesis WHERE applications.thesisProposalId = thesis.thesisProposalId ';
     let params = [professorId];
 
     let res = filterByStatus(filter, sql, params);
@@ -68,7 +69,8 @@ exports.getApplicationsForProfessor = function (professorId, filter) {
           thesisProposalId: r.thesisProposalId,
           thesisProposalTitle: r.title,
           studentId: r.studentId,
-          date: r.date
+          date: r.date,
+          status: r.status
         }));
 
         resolve(applicationsList);
