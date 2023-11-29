@@ -10,6 +10,7 @@ export class ProfessorPageComponent{
 
   constructor(public api: APIService ) {
     this.api.setProfessor()
+    this.api.getProfessors()
     this.api.getDegrees()
     this.api.getCoSupervisors()
   }

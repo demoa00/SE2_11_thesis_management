@@ -1,6 +1,20 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {APIService} from "../../../../shared/services/api.service";
+
+function customKeywordValidator(keywordsList: string[]): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const keywords = control.value;
+
+    // Check if the keywordList is empty
+    if (!keywords && keywordsList.length > 0) {
+      return null; // No error if the list is full
+    }
+
+    // Check if the value is required
+    return Validators.required(control);
+  };
+}
 
 @Component({
   selector: 'app-create-thesis-form',
@@ -71,7 +85,7 @@ export class CreateThesisFormComponent {
           description: ['', [Validators.required]],
           requirements: ['', [Validators.required]],
           notes: '',
-          keywords: [''],
+          keywords: ['', [customKeywordValidator(this.keywordsList)]],
           abroad:false,
           CdS: ['', [Validators.required]],
           expirationDate: ['', [Validators.required]]
@@ -80,9 +94,10 @@ export class CreateThesisFormComponent {
 
     async onSubmit() {
       if (this.myForm.valid) {
+        this.myForm.get('keywords')?.value!=''?this.keywordsList.push(this.myForm.get('keywords')?.value):''
         let submitform = {
           title: this.myForm.get('title')?.value,
-          keywords: this.keywordsList.length<1?['all']:this.keywordsList,
+          keywords: this.keywordsList,
           abroad: this.myForm.get('abroad')?.value,
           thesisType: this.myForm.get('thesisType')?.value,
           description: this.myForm.get('description')?.value,
@@ -96,7 +111,10 @@ export class CreateThesisFormComponent {
 
           }),
           coSupervisor: this.selectedCoSupervisors.map((element)=>{
-            element.externalCoSupervisorId
+            return {
+              coSupervisorId: element.externalCoSupervisorId
+            };
+
           }),
           notes: this.myForm.get('notes')?.value!=undefined?'none':this.myForm.get('notes')?.value
         }
@@ -137,6 +155,7 @@ export class CreateThesisFormComponent {
         const index = this.keywordsList.indexOf(keyword);
         if (index !== -1) {
             this.keywordsList.splice(index, 1);
+            this.myForm.get('keywords')?.setValue(keyword)
         }
     }
 

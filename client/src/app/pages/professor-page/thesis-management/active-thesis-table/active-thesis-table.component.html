@@ -1,15 +1,15 @@
-<div class=" card p-5 flex flex-col w-full gap-6 items-center ">
+<div *ngIf="!selectedProposal" class=" card p-5 flex flex-col w-full gap-6 items-center ">
 <h1 class="text-3xl flex justify-center"> List of Active Thesis</h1>
 <div class="separator"></div>
-<table class="bo-table w-full h-fit overflow-auto">
+<table *ngIf="rows" class="bo-table w-full h-fit overflow-auto">
   <tbody >
   <tr class="thead">
     <th>Title</th>
     <th>Expiration</th>
     <th></th>
   </tr>
-  <tr *ngFor="let row of rows">
-    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.title}}</td>
+  <tr *ngFor="let row of rows" >
+    <td (click)="shohDetails(row)" class="cursor-pointer py-0.5 w-24 h-6 text-sm text-gray-600">{{row.title}}</td>
     <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.expirationDate}}</td>
     <td class="py-0.5 w-12 h-6">
       <button class="dropdownButton" (click)="openCreatePopup()">Update</button>
@@ -17,6 +17,12 @@
   </tr>
   </tbody>
 </table>
+  <h3 *ngIf="!rows"> No Active Thesis Avaiable</h3>
+</div>
+<app-thesis-details *ngIf="selectedProposal" [selectedProposal]="selectedProposal"></app-thesis-details>
+<div *ngIf="selectedProposal" class="projectButtons">
+  <app-button (click)="selectedProposal=undefined">Back</app-button>
+  <app-button (click)="openCreatePopup()">Update</app-button>
 </div>
 
 <app-popup
