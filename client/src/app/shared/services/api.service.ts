@@ -134,16 +134,13 @@ export class APIService {
 
   async getProfessors() {
     await this.httpService.get('professors',false,true).then((response: any)=>{
-      localStorage.setItem('internalCoSupervisors',JSON.stringify(response))
+      localStorage.setItem('professors',JSON.stringify(response))
     })
     return await this.httpService.get('professors')
   }
 
   async getSupervisors() {
-    await this.httpService.get('professors/?cosupervisor=false',false,true).then((response: any)=>{
-      localStorage.setItem('internalCoSupervisors',JSON.stringify(response))
-    })
-    return await this.httpService.get('professors')
+    return await this.httpService.get('professors/?cosupervisor=false')
   }
 
   async insertNewApplication(body: any) {
