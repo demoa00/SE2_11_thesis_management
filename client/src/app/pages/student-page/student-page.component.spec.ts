@@ -1,162 +1,164 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-
 import { StudentPageComponent } from './student-page.component';
-import { FormsModule } from '@angular/forms';
+import { APIService } from 'src/app/shared/services/api.service';
 import { PageSkeletonComponent } from 'src/app/shared/components/page-skeleton/page-skeleton.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { MatIconModule } from '@angular/material/icon';
-import { APIService } from 'src/app/shared/services/api.service';
+import { FormsModule } from '@angular/forms';
+import { AlertComponent } from 'src/app/shared/alert/alert.component';
+import { PopupComponent } from 'src/app/shared/components/popup-conferma/popup.component';
+import { IconComponent } from 'src/app/shared/components/icon/icon.component';
 
 describe('StudentPageComponent', () => {
   let component: StudentPageComponent;
   let fixture: ComponentFixture<StudentPageComponent>;
-  let apiService: APIService;
+  let apiServiceSpy: jasmine.SpyObj<APIService>;
 
   beforeEach(() => {
+    const spy = jasmine.createSpyObj('APIService', [
+      'setStudent',
+      'getUserDetails',
+      'getAllProposals',
+      'getProfessors',
+      'getApplications',
+      'getProposal',
+      'insertNewApplication',
+      'checkAutorization'
+    ]);;
+
     TestBed.configureTestingModule({
-      imports: [FormsModule, HttpClientTestingModule, MatIconModule],
-      declarations: [StudentPageComponent, PageSkeletonComponent, ButtonComponent],
-      providers: [APIService]
-    });
+      imports: [FormsModule, MatIconModule],
+      declarations: [StudentPageComponent, PageSkeletonComponent, ButtonComponent, AlertComponent, PopupComponent, IconComponent],
+      providers: [{ provide: APIService, useValue: spy }],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(StudentPageComponent);
     component = fixture.componentInstance;
-    apiService = TestBed.inject(APIService);
-    fixture.detectChanges();
+    apiServiceSpy = TestBed.inject(APIService) as jasmine.SpyObj<APIService>;
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  
+  it('should create the component and make API calls on initialization', fakeAsync(() => {
+    apiServiceSpy.setStudent.and.returnValue(Promise.resolve());
+    apiServiceSpy.getUserDetails.and.returnValue(Promise.resolve());
+    apiServiceSpy.getAllProposals.and.returnValue(Promise.resolve());
+    apiServiceSpy.getProfessors.and.returnValue(Promise.resolve());
+    apiServiceSpy.getApplications.and.returnValue(Promise.resolve());
+    apiServiceSpy.checkAutorization.and.returnValue();
 
-  // it('should show success alert', () => {
-  //   component.showAlert('success');
+    fixture.detectChanges();
 
-  //   expect(component.showSuccessAlert).toBe(true);
-  //   expect(component.showDangerAlert).toBe(false);
-  // });
+    expect(apiServiceSpy.setStudent).toHaveBeenCalled();
+    expect(apiServiceSpy.getUserDetails).toHaveBeenCalled();
+    expect(apiServiceSpy.getAllProposals).toHaveBeenCalled();
+    expect(apiServiceSpy.getProfessors).toHaveBeenCalled();
+    expect(apiServiceSpy.getApplications).toHaveBeenCalled();
+    expect(apiServiceSpy.checkAutorization).toHaveBeenCalled();
 
-  // it('should show error alert', () => {
-  //   component.showAlert('error');
+    tick();
+  }));
 
-  //   expect(component.showSuccessAlert).toBe(false);
-  //   expect(component.showDangerAlert).toBe(true);
-  // });
+  it('should select the menu item', () => {
+    expect(component.menuItems[0].selected).toBeTruthy();
+    expect(component.menuItems[1].selected).toBeFalsy();
 
-  // it('should show and hide success alert after a certain timeout', fakeAsync(() => {
-  //   component.showAlert('success');
+    component.selectMenuItem(1);
 
-  //   expect(component.showSuccessAlert).toBe(true);
-
-  //   tick(3000);
-
-  //   expect(component.showSuccessAlert).toBe(false);
-  // }));
-
-  // it('should show and hide error alert after a certain timeout', fakeAsync(() => {
-  //   component.showAlert('error');
-
-  //   expect(component.showDangerAlert).toBe(true);
-
-  //   tick(3000);
-
-  //   expect(component.showDangerAlert).toBe(false);
-  // }));
-
-  // it('should update selectedProject when selectProject is called', () => {
-  //   const mockProject = { title: 'Mock Project', name: 'Mock Professor' };
-  
-  //   component.selectProject(mockProject);
-  
-  //   expect(component.selectedProject).toEqual(mockProject);
-  // });
-
-  it('should call updateSearchValue on ngModelChange for search input', () => {
-    const mockInputValue = 'mockSearchValue';
-  
-    component.updateSearchValue = jasmine.createSpy('updateSearchValue');  // Spy on the method
-    const searchInput = fixture.nativeElement.querySelector('#search-input');
-    searchInput.value = mockInputValue;
-    searchInput.dispatchEvent(new Event('input'));
-  
-    expect(component.updateSearchValue).toHaveBeenCalledWith(mockInputValue);
+    expect(component.menuItems[0].selected).toBeFalsy();
+    expect(component.menuItems[1].selected).toBeTruthy();
   });
 
-  // it('should update displayed projects when updateSearchValue is called', () => {
-  //   const mockProjects = [
-  //     { title: 'Project 1', name: 'Professor A', keywords: ['keyword1'] },
-  //     { title: 'Project 2', name: 'Professor B', keywords: ['keyword2'] },
-  //   ];
-  
-  //   component.projects = mockProjects;
-  
-  //   const mockSearchValue = 'keyword1';
-  //   component.updateSearchValue(mockSearchValue);
-  
-  //   expect(component.projectsToShow.size).toBe(1);
-  //   expect(component.projectsToShow.has(mockProjects[0])).toBe(true);
-  // });
+  it('should update search value', () => {
+    expect(component.searchValue).toBe('');
 
-  // it('should update displayed projects when deleteFilters is called', () => {
-  //   const mockProjects = [
-  //     { title: 'Analysis of climate data', name: 'Charlie Smith', keywords: ['climate'] },
-  //     { title: 'Development of a web application', name: 'Alice Johnson', keywords: ['web', 'application'] },
-  //     { title: 'Renewable energy research', name: 'Eva Brown', keywords: ['renewable', 'energy'] },
-  //     { title: 'Study on modern medicine', name: 'David Wilson', keywords: ['medicine'] },
-  //     { title: 'Global economic analysis', name: 'Bob Lee', keywords: ['economy'] },
-  //     { title: 'Intelligent systems design', name: 'Eva Smith', keywords: ['systems', 'IA', 'AI', 'neural'] },
-  //     { title: 'Development of new green technologies', name: 'Alice Johnson', keywords: ['green', 'development'] },
-  //     { title: 'Study of neural networks', name: 'David Lee', keywords: ['neural', 'networks'] },
-  //     { title: 'Nanotechnology research', name: 'Alice Johnson', keywords: ['nanotechnology'] },
-  //     { title: 'Analysis of public policies', name: 'David Wilson', keywords: ['policies'] }
-  //   ];
-  
-  //   component.projects = mockProjects;
-  //   component.selectedNames.add('David Wilson');
-  
-  //   component.deleteFilters();
-  
-  //   expect(component.projectsToShow.size).toBe(mockProjects.length);
-  // });
+    component.updateSearchValue('test');
 
-  // it('should update displayed projects when toggleName is called', () => {
-  //   const mockProjects = [
-  //     { title: 'Analysis of climate data', name: 'Charlie Smith', keywords: ['climate'] },
-  //     { title: 'Development of a web application', name: 'Alice Johnson', keywords: ['web', 'application'] },
-  //     { title: 'Renewable energy research', name: 'Eva Brown', keywords: ['renewable', 'energy'] },
-  //     { title: 'Study on modern medicine', name: 'David Wilson', keywords: ['medicine'] },
-  //     { title: 'Global economic analysis', name: 'Bob Lee', keywords: ['economy'] },
-  //     { title: 'Intelligent systems design', name: 'Eva Smith', keywords: ['systems', 'IA', 'AI', 'neural'] },
-  //     { title: 'Development of new green technologies', name: 'Alice Johnson', keywords: ['green', 'development'] },
-  //     { title: 'Study of neural networks', name: 'David Lee', keywords: ['neural', 'networks'] },
-  //     { title: 'Nanotechnology research', name: 'Alice Johnson', keywords: ['nanotechnology'] },
-  //     { title: 'Analysis of public policies', name: 'David Wilson', keywords: ['policies'] }
-  //   ];
-  
-  //   component.projects = mockProjects;
-  
-  //   const mockProfessorName = 'Eva Brown';
-  //   component.toggleName(mockProfessorName);
-  
-  //   expect(component.projectsToShow.size).toBe(1);
-  // });
+    expect(component.searchValue).toBe('test');
+  });
 
-  // it('should update selected menu item when selectMenuItem is called', () => {
-  //   const mockMenuItems = [
-  //     { id: 1, hover: false, selected: true },
-  //     { id: 2, hover: false, selected: false },
-  //     { id: 3, hover: false, selected: false },
-  //   ];
-  
-  //   component.menuItems = mockMenuItems;
-  
-  //   const mockMenuItemId = 2;
-  //   component.selectMenuItem(mockMenuItemId);
-  
-  //   expect(component.menuItems[0].selected).toBe(false);
-  //   expect(component.menuItems[1].selected).toBe(true);
-  //   expect(component.menuItems[2].selected).toBe(false);
-  // });
+  it('should update professorsSearchValue on calling updateProfessorsSearchValue', () => {
+    expect(component.professorsSearchValue).toBe('');
+
+    component.updateProfessorsSearchValue('prof1');
+
+    expect(component.professorsSearchValue).toBe('prof1');
+  });
+
+  it('should call getAllProposals with the correct parameters when toggleProf is called', fakeAsync(() => {
+    apiServiceSpy.getAllProposals.and.returnValue(Promise.resolve());
+
+    const testProf = { name: 'Test', surname: 'Professor' };
+    component.toggleProf(testProf);
+
+    expect(apiServiceSpy.getAllProposals).toHaveBeenCalledWith({
+      text: null,
+      supervisors: [testProf],
+      cosupervisors: null,
+      expirationDate: null,
+      abroad: null,
+    });
+
+    tick();
+  }));
+
+  it('should toggle the popup visibility', fakeAsync(() => {
+    apiServiceSpy.setStudent.and.returnValue(Promise.resolve());
+    apiServiceSpy.getUserDetails.and.returnValue(Promise.resolve());
+    apiServiceSpy.getAllProposals.and.returnValue(Promise.resolve());
+    apiServiceSpy.getProfessors.and.returnValue(Promise.resolve());
+    apiServiceSpy.getApplications.and.returnValue(Promise.resolve());
+    apiServiceSpy.getProposal.and.returnValue(Promise.resolve());
+    apiServiceSpy.checkAutorization.and.returnValue();
+
+    fixture.detectChanges(); 
+
+    spyOn(component, 'togglePopup').and.callThrough();
+
+    component.togglePopup();
+
+    expect(component.popupVisible).toBe(true);
+
+    component.togglePopup();
+
+    expect(component.popupVisible).toBe(false);
+    
+    tick();
+  }));
+
+  it('should reset filters and fetch proposals when deleteFilters is called', fakeAsync(() => {
+    apiServiceSpy.getAllProposals.and.returnValue(Promise.resolve());
+
+    component.selectedProfs = [{ name: 'Professor 1' }, { name: 'Professor 2' }];
+    component.searchValue = 'Search Term';
+
+    component.deleteFilters();
+
+    expect(component.selectedProfs).toEqual([]);
+    expect(component.searchValue).toEqual('');
+
+    expect(apiServiceSpy.getAllProposals).toHaveBeenCalledWith(null);
+
+    tick();
+  }));
+
+  it('should call search method and make API calls', fakeAsync(() => {
+    apiServiceSpy.getAllProposals.and.returnValue(Promise.resolve());
+
+    component.searchValue = 'test';
+
+    component.search();
+
+    expect(apiServiceSpy.getAllProposals).toHaveBeenCalledWith(jasmine.objectContaining({
+      text: 'test',
+      supervisors: null,
+      cosupervisors: null,
+      expirationDate: null,
+      abroad: null,
+    }));
+
+    tick();
+  }));
 });
