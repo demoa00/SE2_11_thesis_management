@@ -16,6 +16,10 @@ export class CreateThesisFormComponent {
     titleDegree: any;
     degreeId:any;
   }[] =[];
+  selectedCdS:{
+    titleDegree: any;
+    degreeId:any;
+  }[] =[];
   coSupervisors:{
     externalCoSupervisorId: any;
     name:any;
@@ -49,6 +53,7 @@ export class CreateThesisFormComponent {
 
 
 
+
   constructor(private fb: FormBuilder, private api: APIService) {
     let stringProfessor= localStorage.getItem('professor');
     let stringDegree = localStorage.getItem('degrees');
@@ -65,21 +70,42 @@ export class CreateThesisFormComponent {
           groups: [this.professor.codGroup],
           description: ['', [Validators.required]],
           requirements: ['', [Validators.required]],
-          notes: [''],
-          keywords: ['', [Validators.required]],
+          notes: '',
+          keywords: [''],
+          abroad:false,
           CdS: ['', [Validators.required]],
           expirationDate: ['', [Validators.required]]
       });
   }
 
     async onSubmit() {
-        if (this.myForm.valid) {
-          console.log(this.myForm.value);
-            const response = await this.api.insertNewThesis(this.myForm.value)
-            // Handle form submission
-            this.requestAccepted.emit(response !=undefined);
-            this.response.emit({});
+      if (this.myForm.valid) {
+        let submitform = {
+          title: this.myForm.get('title')?.value,
+          keywords: this.keywordsList,
+          abroad: this.myForm.get('abroad')?.value,
+          thesisType: this.myForm.get('thesisType')?.value,
+          description: this.myForm.get('description')?.value,
+          expirationDate: this.myForm.get('expirationDate')?.value,
+          level: this.myForm.get('level')?.value,
+          requirements: this.myForm.get('requirements')?.value,
+          CdS: this.selectedCdS.map((element)=>{
+            return {
+              degreeId: element.degreeId
+            };
+
+          }),
+          coSupervisor: this.selectedCoSupervisors.map((element)=>{
+            element.externalCoSupervisorId
+          }),
+          notes: this.myForm.get('notes')?.value!=undefined?'none':this.myForm.get('notes')?.value
         }
+        console.log(submitform);
+          const response = await this.api.insertNewThesis(submitform)
+          // Handle form submission
+          this.requestAccepted.emit(response !=undefined);
+          this.response.emit({});
+      }
     }
 
     onSelectFocus() {
@@ -136,6 +162,27 @@ export class CreateThesisFormComponent {
       self:'',
     })
 
+
+  }
+  onSelectCdSChange(event: any) {
+    console.log(event.target.value)
+    let cds = this.degrees.find(elemento => elemento.degreeId==event.target.value)
+    this.degrees = this.degrees.filter(elemento => elemento.degreeId!=event.target.value)
+    this.selectedCdS.push(cds?cds:{
+      titleDegree: '',
+      degreeId:'',
+    })
+  }
+
+  removeCdS(event: any) {
+    console.log(event.target.textContent)
+    const valoreDiv = event.target.textContent;
+    let cds = this.selectedCdS.find(elemento => elemento.degreeId==valoreDiv.split(' ')[0])
+    this.selectedCdS = this.selectedCdS.filter(elemento => elemento.degreeId!=cds?.degreeId)
+    this.degrees.push(cds?cds:{
+      titleDegree: '',
+      degreeId:'',
+    })
 
   }
 }

@@ -11,7 +11,12 @@
     <div class="">
       <label for="supervisor" class="label-field">Supervisor</label>
       <input type="text" id="supervisor" [value]= "professor.name+' '+professor.surname" class="input-field" placeholder="Supervisor" required readonly>
-
+    </div>
+    <div class="">
+      <label for="thesisType" class="label-field">Type *</label>
+      <input type="text" id="thesisType" formControlName="thesisType" class="input-field" placeholder="Type" required>
+      <div *ngIf="myForm.get('thesisType')?.hasError('required') && myForm.get('thesisType')?.touched"
+           class="text-danger text-sm mt-1">Type is required</div>
     </div>
     <div class="">
       <label for="coSupervisor" class="label-field">Co-supervisor</label>
@@ -21,6 +26,17 @@
       </select>
       <div *ngFor="let selectedCS of selectedCoSupervisors" class=" items-center flex gap-2 text-gray-700 hover:text-red-600 hover:cursor-pointer text-sm mt-1" (click)="removeCoSupervisor($event)" >{{selectedCS.name}} {{selectedCS.surname}}</div>
     </div>
+    <div class="">
+      <label for="abroad" class="label-field">Abroad</label>
+      <input type="checkbox" id="abroad" formControlName="abroad" placeholder="Abroad" readonly >
+    </div>
+    <div class="">
+      <label for="groups" class="label-field">Groups</label>
+      <input type="text" id="groups" formControlName="groups" class="input-field" placeholder="Groups" readonly >
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-6">
     <div class="">
       <label for="level" class="label-field">Level *</label>
       <select id="level" formControlName="level" class="input-field" required>
@@ -32,23 +48,12 @@
            class="text-danger text-sm mt-1">Level is required </div>
     </div>
     <div class="">
-      <label for="thesisType" class="label-field">Type *</label>
-      <input type="text" id="thesisType" formControlName="thesisType" class="input-field" placeholder="Type" required>
-      <div *ngIf="myForm.get('thesisType')?.hasError('required') && myForm.get('thesisType')?.touched"
-           class="text-danger text-sm mt-1">Type is required</div>
-    </div>
-    <div class="">
-      <label for="groups" class="label-field">Groups</label>
-      <input type="text" id="groups" formControlName="groups" class="input-field" placeholder="Groups" readonly >
-    </div>
-  </div>
-  <div class="flex flex-col gap-6">
-    <div class="">
       <label for="CdS" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cds/programmes *</label>
-      <select id="CdS" formControlName="CdS" class="input-field" (focus)="onSelectFocus()" (blur)="onSelectBlur()" [class.text-soft] = "myForm.get('courseType')?.hasError('required')  && !selectFocus">
+      <select id="CdS" formControlName="CdS" class="input-field" (change)="onSelectCdSChange($event)" (focus)="onSelectFocus()" (blur)="onSelectBlur()" [class.text-soft] = "myForm.get('courseType')?.hasError('required')  && !selectFocus">
         <option value ='' disabled selected hidden>Select a course type</option>
         <option *ngFor="let degree of degrees" value="{{degree.degreeId}}">{{degree.degreeId}} {{degree.titleDegree}}</option>
       </select>
+      <div *ngFor="let cds of selectedCdS" class=" items-center flex gap-2 text-gray-700 hover:text-red-600 hover:cursor-pointer text-sm mt-1" (click)="removeCdS($event)" >{{cds.degreeId}} {{cds.titleDegree}}</div>
       <div *ngIf="myForm.get('CdS')?.hasError('required') && myForm.get('CdS')?.touched"
            class="text-danger">Course Type is required</div>
     </div>
@@ -69,7 +74,7 @@
       <textarea type="text" id="notes" formControlName="notes" class="input-field" placeholder="Notes" rows = 3 ></textarea>
     </div>
     <div class="">
-      <label for="keywords" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Keywords *</label>
+      <label for="keywords" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Keywords</label>
       <input [class.text-gray-700] = "myForm.get('keywords')?.touched"  type="text" id="keywords" formControlName="keywords" class="input-field text-gray-300" placeholder="Keywords" (keydown.enter)="addKeyword($event)" >
       <div *ngIf="myForm.get('keywords')?.hasError('required') && myForm.get('keywords')?.touched"
            class="text-danger">At lest one keyword is required</div>
