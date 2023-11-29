@@ -29,36 +29,14 @@
   @apply bg-orange-500;
 }
 
-:host {
-  background-color: #03577A;
-  padding: 8px;
-  border-radius: 8px;
-  color: white;
-  cursor: pointer;
-  height: fit-content;
-  display: flex;
+.checkbox {
+  width: 12px;
+  height: 12px;
+  margin-right: 16px;
+  border: 1px solid #04264c;
 }
-:host.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-:host.orange {
-  @apply bg-orange-600;
-}
-:host.grey {
-  background-color: #e5e7eb;
-  color: #04264c;
-}
-:host.danger {
-  background-color: #f56565;
-  color: white;
-}
-:host.rounded {
-  border-radius: 50% !important;
-}
-:host.small {
-  font-size: 12px;
+.checkbox.checked {
+  background-color: #04264c;
 }
 
-/*# sourceMappingURL=button.component.css.map */
+/*# sourceMappingURL=checkbox.component.css.map */
