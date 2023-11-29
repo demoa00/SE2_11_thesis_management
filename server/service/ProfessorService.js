@@ -11,15 +11,15 @@ exports.getProfessors = function (user, filter) {
   let params = [];
 
   if (checkRole.isStudent(user)) {
-    if (filter != undefined) {
-      if (filter.cosupervisor != undefined) {
-        if (filter.cosupervisor === 'true') {//retrive professor that are co-supervisor
-          sql += 'WHERE professorId IN (SELECT DISTINCT internalCoSupervisorId FROM thesisProposal_cds_bridge, thesisProposal_internalCoSupervisor_bridge WHERE thesisProposal_cds_bridge.cdsId = ? AND thesisProposal_internalCoSupervisor_bridge.thesisProposalId = thesisProposal_cds_bridge.thesisProposalId) ';
-          params = [user.codDegree];
-        } else if (filter.cosupervisor === 'false') {//retrive professor that are supervisor
-          sql += 'WHERE professorId IN (SELECT DISTINCT thesisProposals.supervisor FROM thesisProposals, thesisProposal_cds_bridge WHERE thesisProposal_cds_bridge.cdsId = ? AND thesisProposals.thesisProposalId = thesisProposal_cds_bridge.thesisProposalId) ';
-          params = [user.codDegree];
-        }
+    if (filter != undefined && filter.cosupervisor != undefined) {
+      filter.cosupervisor = filter.cosupervisor instanceof Array ? filter.cosupervisor[0] : filter.cosupervisor;
+      
+      if (filter.cosupervisor === 'true') {//retrive professor that are co-supervisor
+        sql += 'WHERE professorId IN (SELECT DISTINCT internalCoSupervisorId FROM thesisProposal_cds_bridge, thesisProposal_internalCoSupervisor_bridge WHERE thesisProposal_cds_bridge.cdsId = ? AND thesisProposal_internalCoSupervisor_bridge.thesisProposalId = thesisProposal_cds_bridge.thesisProposalId) ';
+        params = [user.codDegree];
+      } else if (filter.cosupervisor === 'false') {//retrive professor that are supervisor
+        sql += 'WHERE professorId IN (SELECT DISTINCT thesisProposals.supervisor FROM thesisProposals, thesisProposal_cds_bridge WHERE thesisProposal_cds_bridge.cdsId = ? AND thesisProposals.thesisProposalId = thesisProposal_cds_bridge.thesisProposalId) ';
+        params = [user.codDegree];
       }
     }
   } else if (checkRole.isProfessor(user)) {

@@ -7,18 +7,18 @@ const checkRole = require('../utils/checkRole');
 const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
 
 const filterByStatus = (filter, sql, params) => {
-  if (filter != undefined) {
-    if (filter.status != undefined) {
-      if (filter.status === 'Rejected') {
-        sql += 'AND status = ?';
-        params.push('Rejected');
-      } else if (filter.status === 'Pending') {
-        sql += 'AND status = ?';
-        params.push('Pending');
-      } else if (filter.status === 'Accepted') {
-        sql += 'AND status = ?';
-        params.push('Accepted');
-      }
+  if (filter != undefined && filter.status != undefined) {
+    filter.status = filter.status instanceof Array ? filter.status[0] : filter.status;
+
+    if (filter.status === 'Rejected') {
+      sql += 'AND status = ?';
+      params.push('Rejected');
+    } else if (filter.status === 'Pending') {
+      sql += 'AND status = ?';
+      params.push('Pending');
+    } else if (filter.status === 'Accepted') {
+      sql += 'AND status = ?';
+      params.push('Accepted');
     }
   }
 

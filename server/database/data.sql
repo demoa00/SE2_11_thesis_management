@@ -19,41 +19,12 @@ INSERT INTO degrees (degreeId, titleDegree) VALUES ('LM-13', 'Master in Manageme
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-/* USERS DATA */
-DELETE FROM users;
-INSERT INTO users (email, salt, password, isStudent) VALUES ('s123456@studenti.polito.it', '203F19917678081A', 'd5717e5c02ae0720eacd1a30d1e238c0490ef1c495c7b6327ce5ff466e4a50a9a63619647d8006251a6d4826676b0494368dcb4d79508925944f7fa78bfc0610', true);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('s789012@studenti.polito.it', '3037C7641284CF2A', '76d4fcf68edb31d6272a2c816e722f5169f5b83ae259786b0391a93f95a199d8ff32f6f1e5821e7a79ea6fb01649f1ff76b9a9fa53122ab767e264b6881711ee', true);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('s987654@studenti.polito.it', '278E82FF52EA05FA', '6105a39666402aeaa524bd44b2e3f9874020deb167da69f3f2cacd181232b65957e9d2c25a0054b2ab28137f25aac03b70d70301c8da82663e2ac35bf57e0c80', true);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('s345678@studenti.polito.it', '8514C137765BBEDF', 'd0b32ad3fadd790de2068b48e6803763facd792dfdc2a43b52bb42c9ce7274908867fb87e157b90f36c9572944389ae850b40d18735ad4d9befd1a0320b202b3', true);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('s012345@studenti.polito.it', 'D46C1305E5281080', '27ff4f312b91e8c8eb9774b1f510470180cd30d7d14c041c7e5eb22bd536273c3600219ad8ea2879939371c8e63234181c18d2546999ba538579bac0862d451f', true);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('s654321@studenti.polito.it', '313F00E8AB91D8EC', 'bb54f71a59216922613c31dc2d1679a0160fb994d3b6eab1c066376172694b975d0e13e7d75cf9944b6760c1d8a02a50737b0079dabbe9ad1d2b2c71f1789908', true);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('s876543@studenti.polito.it', 'FAFB377B3EF74B4C', '1647708b7919f117f97de114fb04f9c2bef8a9e06404311bf2ff427de07535f15aa91da5b7a0abebb2d0e643102b176a4fe59dc7ce064320fc060244fc907876', true);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('s456789@studenti.polito.it', '2B6AA8EA2706F101', 'ceb85b6aa4eb2453e400493edbacb1725a34e34eb17ce617b62ae8b487ef9781a3f8326b525ca5a3150cb3cd5fda2aab67c22512316fa2fa9de1af45a37a2960', true);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('s234567@studenti.polito.it', 'DA5B9ADA39010EC6', 'd00d5e3a921140c38b541856caf12685aaa465952de23d7d73fc0b3b5823c020f1110cddd0872339eacc871ed779c69e0321a80284eb54772b4de396d9606a91', true);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('s098765@studenti.polito.it', 'F5ACD2A08F6A1A8E', '7027074bde5c50bf6b6ec2264ecf11a549fc397530a42eefd907ae23142a4a95d804dde15b5f7c6f127b0f07ed4c58d53a268c45948cfcf9cb6612c9c2ce5794', true);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('elizabeth.lopez@polito.it', '5B9FB70039BE3CD8', 'd95555302c6e3943e45a32543fb82b1eb8e80b1ac36dd53c2592a2f269322ff2f618ddaded8657ebf8a5e9bb54414f95ee7a3f27ac460b9a0e8dbfdbfba70b1b', false);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('james.rodriguez@polito.it', 'C0AC73EC3B84AA3A', 'b60617a33f02984edcf7506b3919ba4ce3a53816d561629deee76bf0c5e1ddd05edbb3d397bf1b0fc8922d128c31beca1edfd326d79cdf269007fd217ef26150', false);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('robert.clark@polito.it', 'BE25AF372782FF77', '2ad4754d46af761809b368c628e86cd0946a76252ef0e00645b390fe0ae444ae5bc1a19fa3f1820b7bd3fb395f4112e4ac7eacf903d5477796580566e70b0b0f', false);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('barbara.martin@polito.it', '291A661BE3EA9AA2', 'f3bfc3953c4c4dc157844b4626d59ce00952977f0296c95f09ed5320014f909d8bba44f762a3f38e17800eb966f045ee71565b3f00577246a4d854566c0095e6', false);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('susan.jackson@polito.it', '3FEB50F5639AECD2', 'e6ff7de7c5480c63e46eefcc9cfb9b2c8c8441974fb287742249d5504e9f3d831f58124becd734394885211e3153372038cbca588ec58ad8412dad5cba5d4f70', false);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('mark.wilson@polito.it', '90DB840900CB25FF', '55d5b6610b6ae78f440e2633213a26081d28dd1598ab0e36f646a4abf73d873e4de702deeae1ef253f13090d56b1da9d0f399c7289194ceae8fe5c9569faa67a', false);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('richard.davis@polito.it', '713AC2580D1D1B93', '98141c66584afa432336757bea1a9028b8df6010ad0dace9b62e33ac721b3bef148fdcc425209e9c975ab06a99973cd2deb9bcb7171bd1504b3836648fd38830', false);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('emily.johnson@polito.it', 'B634CE02FC5D1E38', '98b26b505c77750c970b55ccba721c3dfa38ebd13e5013bf7ece5f5f77decf33e74e89d2f6a815f01541aa6bc75a545356dcbd74154cec8627c3c95ad80a6083', false);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('david.miller@polito.it', '4C847F6FE8018A86', '7e8512262b45ad50b50cae5017d79fa846821e6ff452ef0e455b8e1cefde7a4b96a571c034351929fff14502f73fe26e735bdf4ae24e3f8a2ce31427d778a117', false);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('mary.brown@polito.it', '4ED46E7312302AA5', 'a4aa63e287624dea8e21488a6dc35a0d74505e5c6b27d52acf0fc58debb932f2adfe080d9b514ed5c40eb454c250ac06f2d1638df9183dfb3aa7a81f3ce50fb3', false);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('michael.williams@polito.it', 'FF6B7BD3CA7EB16C', 'e708847cbf8246710321d09e2f2d904520c0325a275371bea84088ff6dbcc19c8b708b8d750b8ed67145a20e2ec92f0077b8c3efe5f72c68c526807ea8bb8639', false);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('sandra.brown@polito.it', '40E4D1C82A93D7C6', 'dc7b9d9d185bebba8b0e2fb3ca5ab475d26ef28e2bd75d206bce1a36b866834e9aa9972e1ccbd6d1663d7cd99ed0ec2627b1d6bc228a0bbfca644685ecb24935', false);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('anthony.taylor@polito.it', '4C6B18675D243007', '81ac3e21f8021f27023115728fac3f9747193f91d3cd4eb6873014d891e220e41c2aff1676df325e5b325533e5463d4c18cc468d7c6b1828acdd8166ea5d3ac0', false);
-INSERT INTO users (email, salt, password, isStudent) VALUES ('barbara.garcia@polito.it', 'D1DF10F3E7B93FFD', '01789b4e1ccd4e363a50c9eff80befd26c080be763f1d0c490dc5cfe86fe2a114cea3f17107aea192234fc57dc084f587258c736b038b3fdf3f7a28a4e62eb3b', false);
-
-/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
-
 /* STUDENTS DATA */
 DELETE FROM students;
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s123456', 'John', 'Smith', 'male', 'Italian', 's123456@studenti.polito.it', 'L-1', 2023);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s789012', 'Jane', 'Brown', 'female', 'American', 's789012@studenti.polito.it', 'LM-13', 2022);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s987654', 'Peter', 'Williams', 'male', 'British', 's987654@studenti.polito.it', 'L-6', 2021);
-INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s345678', 'Mary', 'Johnson', 'female', 'Canadian', 's345678@studenti.polito.it', 'L-34', 2020);
+INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s345678', 'Mary', 'Johnson', 'female', 'Canadian', 's345678@studenti.polito.it', 'LM-9', 2020);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s012345', 'David', 'Davis', 'male', 'Australian', 's012345@studenti.polito.it', 'L-25', 2019);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s654321', 'Alice', 'Taylor', 'female', 'French', 's654321@studenti.polito.it', 'LM-9', 2018);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s876543', 'Bob', 'Wilson', 'male', 'German', 's876543@studenti.polito.it', 'LM-9', 2017);
@@ -170,3 +141,13 @@ INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (18, 'LM-
 INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (19, 'LM-9');
 INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (20, 'LM-9');
 INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (21, 'LM-9');
+
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
+/* THESIS PROPOSALS CDS BRIDGE */
+DELETE FROM applications;
+INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's654321', '2023-11-15','Pending');
+INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's876543', '2023-09-09','Pending');
+INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's345678', '2023-05-22','Accepted');
+INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (12, 's654321', '2023-10-30','Pending');
+INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (13, 's654321', '2023-08-15', 'Rejected');
