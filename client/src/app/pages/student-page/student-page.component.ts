@@ -223,5 +223,22 @@ export class StudentPageComponent {
     })
   }
 
+  toggleMoreFilters(){
+    if(!this.showFilters){
+      this.showFilters = true
+    }
+    else{
+      this.showFilters = false
+      this.proposalParams.cosupervisors = null
+      this.proposalParams.extCs = null
+      this.proposalParams.expirationDate = null
+      this.api.getAllProposals(this.proposalParams).then((response: any) => {
+        this.proposals = response
+      }).catch((error: any) => {
+        console.log(error)
+      })
+    }
+  }
+
 }
 

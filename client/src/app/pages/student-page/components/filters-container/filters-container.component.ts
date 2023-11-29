@@ -33,7 +33,6 @@ export class FiltersContainerComponent {
       console.log(coSupervisors)
       this.css = coSupervisors;
     })
-    console.log(this.date.value)
   }
 
   ngOnChanges(changes: any) {
@@ -56,7 +55,8 @@ export class FiltersContainerComponent {
       this.selectedDate = newParams.currentValue.expirationDate
     }
     if(changes['selectedDate'] !== undefined) {
-      console.log(changes['selectedDate'])
+      let newDate = changes['selectedDate']
+      this.selectedDate = newDate.currentValue
     }
   }
 
@@ -105,7 +105,6 @@ export class FiltersContainerComponent {
     })
   }
 
-  date = new FormControl(new Date);
   selectedDate: any = null;
   deleteDate() {
     this.selectedDate = null;

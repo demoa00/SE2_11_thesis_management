@@ -118,7 +118,7 @@ export class APIService {
         }
       }
       if(params.expirationDate !== null) {
-        url += `expirationDate=${params.expirationDate}&`
+        url += `expirationdate=${params.expirationDate}&`
       }
       if (params.text !== null) {
         url += `text=${params.text}&`
