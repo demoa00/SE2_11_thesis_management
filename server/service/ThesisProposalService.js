@@ -347,7 +347,7 @@ exports.insertNewThesisProposal = function (professorId, newThesisProposal) {
       newThesisProposal.requirements,
       newThesisProposal.thesisType,
       newThesisProposal.abroad,
-      newThesisProposal.notes,
+      newThesisProposal.notes != undefined ? newThesisProposal.notes : '',
       newThesisProposal.expirationDate,
       newThesisProposal.level,
         false
