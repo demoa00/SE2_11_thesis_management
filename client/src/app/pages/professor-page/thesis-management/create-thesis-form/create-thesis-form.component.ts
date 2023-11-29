@@ -82,7 +82,7 @@ export class CreateThesisFormComponent {
       if (this.myForm.valid) {
         let submitform = {
           title: this.myForm.get('title')?.value,
-          keywords: this.keywordsList,
+          keywords: this.keywordsList.length<1?['all']:this.keywordsList,
           abroad: this.myForm.get('abroad')?.value,
           thesisType: this.myForm.get('thesisType')?.value,
           description: this.myForm.get('description')?.value,
