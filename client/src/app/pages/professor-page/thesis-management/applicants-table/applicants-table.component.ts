@@ -34,6 +34,7 @@ export class ApplicantsTableComponent {
   async rejectApplication(){
     this.response = await this.api.putApplication(this.applicant.studentId, this.applicant.thesisProposalId, 'Rejected')
     if (this.response){
+      this.rows = await this.api.getApplications()
       this.requestAccepted = true;
     }
     this.applicant = undefined;
@@ -41,6 +42,7 @@ export class ApplicantsTableComponent {
   async acceptApplication(){
    this.response = await this.api.putApplication(this.applicant.studentId, this.applicant.thesisProposalId, 'Accepted')
     if (this.response){
+      this.rows = await this.api.getApplications()
       this.requestAccepted = true;
     }
     this.applicant = undefined;
