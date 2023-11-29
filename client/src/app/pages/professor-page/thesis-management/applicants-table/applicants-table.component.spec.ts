@@ -1,17 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { ApplicantsTableComponent } from './applicants-table.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { APIService } from 'src/app/shared/services/api.service';
 
-describe('ThesisTableComponent', () => {
+describe('ApplicantsTableComponent', () => {
   let component: ApplicantsTableComponent;
   let fixture: ComponentFixture<ApplicantsTableComponent>;
+  let apiServiceSpy: jasmine.SpyObj<APIService>;
 
   beforeEach(() => {
+    const spy = jasmine.createSpyObj('APIService', ['putApplication']);
     TestBed.configureTestingModule({
-      declarations: [ApplicantsTableComponent]
+      imports: [HttpClientTestingModule],
+      declarations: [ApplicantsTableComponent],
+      providers: [{ provide: APIService, useValue: spy }]
     });
     fixture = TestBed.createComponent(ApplicantsTableComponent);
     component = fixture.componentInstance;
+    apiServiceSpy = TestBed.inject(APIService) as jasmine.SpyObj<APIService>;
     fixture.detectChanges();
   });
 
@@ -43,19 +50,33 @@ describe('ThesisTableComponent', () => {
     expect(component.response).toBeUndefined();
   });
 
-  it('should reset applicant in rejectApplication', () => {
-    component.applicant = { nome: 'John Doe', matricola: '12345', titoloTesi: 'Thesis 1' };
+  it('should reset applicant in rejectApplication', fakeAsync(() => {
+    const mockApplicant = { studentId: '123', thesisProposalId: '456' };
+    component.applicant = mockApplicant;
+
+    apiServiceSpy.putApplication.and.returnValue(Promise.resolve({}));
 
     component.rejectApplication();
+    fixture.detectChanges();
+    tick();
 
+    expect(apiServiceSpy.putApplication).toHaveBeenCalledWith(mockApplicant.studentId, mockApplicant.thesisProposalId, 'Rejected');
+    expect(component.requestAccepted).toBe(true);
     expect(component.applicant).toBeUndefined();
-  });
+  }));
 
-  it('should reset applicant in acceptApplication', () => {
-    component.applicant = { nome: 'John Doe', matricola: '12345', titoloTesi: 'Thesis 1' };
+  it('should reset applicant in acceptApplication', fakeAsync(() => {
+    const mockApplicant = { studentId: '123', thesisProposalId: '456' };
+    component.applicant = mockApplicant;
+
+    apiServiceSpy.putApplication.and.returnValue(Promise.resolve({}));
 
     component.acceptApplication();
+    fixture.detectChanges();
+    tick();
 
+    expect(apiServiceSpy.putApplication).toHaveBeenCalledWith(mockApplicant.studentId, mockApplicant.thesisProposalId, 'Accepted');
+    expect(component.requestAccepted).toBe(true);
     expect(component.applicant).toBeUndefined();
-  });
+  }));
 });

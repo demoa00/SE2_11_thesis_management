@@ -80,9 +80,10 @@ export class CreateThesisFormComponent {
 
     async onSubmit() {
       if (this.myForm.valid) {
+        this.myForm.get('keywords')?.value!=undefined?this.keywordsList.push(this.myForm.get('keywords')?.value):''
         let submitform = {
           title: this.myForm.get('title')?.value,
-          keywords: this.keywordsList.length<1?['all']:this.keywordsList,
+          keywords: this.keywordsList.length<1?['']:this.keywordsList,
           abroad: this.myForm.get('abroad')?.value,
           thesisType: this.myForm.get('thesisType')?.value,
           description: this.myForm.get('description')?.value,
@@ -96,7 +97,10 @@ export class CreateThesisFormComponent {
 
           }),
           coSupervisor: this.selectedCoSupervisors.map((element)=>{
-            element.externalCoSupervisorId
+            return {
+              coSupervisorId: element.externalCoSupervisorId
+            };
+
           }),
           notes: this.myForm.get('notes')?.value!=undefined?'none':this.myForm.get('notes')?.value
         }

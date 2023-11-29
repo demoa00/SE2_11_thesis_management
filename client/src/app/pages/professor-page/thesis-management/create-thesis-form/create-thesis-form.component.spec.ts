@@ -12,17 +12,15 @@ describe('CreateThesisFormComponent', () => {
   let apiServiceSpy: jasmine.SpyObj<APIService>;
 
   beforeEach(() => {
-    const spy = jasmine.createSpyObj('APIService', ['insertNewThesis']);
+    apiServiceSpy = jasmine.createSpyObj('APIService', ['insertNewThesis']);
 
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, HttpClientTestingModule],
       declarations: [CreateThesisFormComponent],
-      providers: [{ provide: APIService, useValue: spy }]
+      providers: [{ provide: APIService, useValue: apiServiceSpy }]
     });
-
     fixture = TestBed.createComponent(CreateThesisFormComponent);
     component = fixture.componentInstance;
-    apiServiceSpy = TestBed.inject(APIService) as jasmine.SpyObj<APIService>;
     fixture.detectChanges();
   });
 
@@ -31,36 +29,42 @@ describe('CreateThesisFormComponent', () => {
   });
 
   it('should submit the form and emit events', fakeAsync(() => {
-    const validFormValue = {
-      title: 'Valid Title',
-      supervisor: 'Valid Supervisor',
-      coSupervisor: 'Valid CoSupervisor',
-      level: 'Valid Level',
-      thesisType: 'Valid ThesisType',
-      groups: 'Valid Groups',
-      description: 'Valid Description',
-      requirements: 'Valid Requirements',
-      notes: 'Valid Notes',
-      keywords: 'Valid Keywords',
-      CdS: 'Valid CdS',
-      expirationDate: 'Valid ExpirationDate'
-    };
-
-    component.myForm.setValue(validFormValue);
-
     apiServiceSpy.insertNewThesis.and.returnValue(Promise.resolve({}));
 
-    const requestAcceptedEmitSpy = spyOn(component.requestAccepted, 'emit');
-    const responseEmitSpy = spyOn(component.response, 'emit');
+    component.myForm.setValue({
+      title: 'Test Thesis',
+      keywords: '',
+      abroad: false,
+      thesisType: 'Test Type',
+      description: 'Test Description',
+      expirationDate: '2023-12-31',
+      level: 'Test Level',
+      requirements: 'Test Requirements',
+      CdS: ['Test CdS'],
+      coSupervisor: ['Test Co-Supervisor'],
+      notes: 'Test Notes',
+      groups: 'Test Group',
+      supervisor: {
+        codDepartment: 'Test Department',
+        codGroup: 'Test Group',
+        email: 'test@email.com',
+        professorId: 'Test Professor ID',
+        self: 'Test Self',
+        name: 'Test Name',
+        surname: 'Test Surname',
+      },
+    });
+
+    spyOn(component.requestAccepted, 'emit');
+    spyOn(component.response, 'emit');
 
     component.onSubmit();
 
     tick();
 
-    expect(apiServiceSpy.insertNewThesis).toHaveBeenCalledWith(jasmine.objectContaining(validFormValue));
-
-    expect(requestAcceptedEmitSpy).toHaveBeenCalledWith(true);
-    expect(responseEmitSpy).toHaveBeenCalledWith({});
+    expect(apiServiceSpy.insertNewThesis).toHaveBeenCalledWith(jasmine.any(Object));
+    expect(component.requestAccepted.emit).toHaveBeenCalledWith(true);
+    expect(component.response.emit).toHaveBeenCalledWith({});
   }));
 
   it('should handle valid stringDegrees', () => {

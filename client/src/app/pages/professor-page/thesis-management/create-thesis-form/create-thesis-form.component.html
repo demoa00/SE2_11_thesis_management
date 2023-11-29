@@ -1,6 +1,7 @@
+
 <form class="flex flex-col gap-4" [formGroup]="myForm" (ngSubmit)="onSubmit()" xmlns="http://www.w3.org/1999/html">
 
-  <div class="grid gap-6 md:grid-cols-2">
+  <div class="grid gap-6 lg:grid-cols-2 w-full">
     <div class="">
       <label for="title" class="label-field">Title *</label>
       <input type="text" id="title" formControlName="title" class="input-field" placeholder="Title" required>
@@ -78,7 +79,7 @@
       <input [class.text-gray-700] = "myForm.get('keywords')?.touched"  type="text" id="keywords" formControlName="keywords" class="input-field text-gray-300" placeholder="Keywords" (keydown.enter)="addKeyword($event)" >
       <div *ngIf="myForm.get('keywords')?.hasError('required') && myForm.get('keywords')?.touched"
            class="text-danger">At lest one keyword is required</div>
-      <div *ngFor="let selectedKW of keywordsList" class=" items-center flex gap-2 text-blue-600 hover:text-red-600 hover:cursor-pointer text-sm mt-1" (click)="removeKeyword($event)">{{selectedKW}}</div>
+      <div *ngFor="let selectedKW of keywordsList" class=" items-center flex gap-2 text-gray-700 hover:text-red-600 hover:cursor-pointer text-sm mt-1" (click)="removeKeyword($event)">{{selectedKW}}</div>
     </div>
     <div class="">
       <label for="expirationDate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Expiration Date *</label>
