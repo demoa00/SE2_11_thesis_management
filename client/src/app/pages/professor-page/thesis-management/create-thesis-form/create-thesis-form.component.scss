@@ -6,7 +6,12 @@
 }
 
 form{
-  min-width: 800px;
+  @media (min-width: 789px) and (max-width: 970px) {
+    min-width: 600px;
+  }
+  @media (min-width: 970px) {
+    min-width: 800px;
+  }
 }
 .text-danger{
   @apply text-red-500 text-opacity-80 text-sm
