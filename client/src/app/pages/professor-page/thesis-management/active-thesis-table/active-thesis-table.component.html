@@ -22,6 +22,7 @@
 <app-thesis-details *ngIf="selectedProposal" [selectedProposal]="selectedProposal"></app-thesis-details>
 <div *ngIf="selectedProposal" class="projectButtons">
   <app-button (click)="selectedProposal=undefined">Back</app-button>
+  <app-button (click)="openCreatePopup()">Update</app-button>
 </div>
 
 <app-popup
