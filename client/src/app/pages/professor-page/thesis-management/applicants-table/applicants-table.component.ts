@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {APIService} from "../../../../shared/services/api.service";
 
 @Component({
   selector: 'app-applicants-table',
@@ -17,6 +18,8 @@ export class ApplicantsTableComponent {
   acceptPopup= false;
   applicant:any;
 
+  constructor(private api: APIService) {
+  }
   openAcceptPopup() {
     this.acceptPopup = !this.acceptPopup;
     this.requestAccepted = false;
@@ -28,10 +31,18 @@ export class ApplicantsTableComponent {
     this.response = undefined;
   }
 
-  rejectApplication(){
+  async rejectApplication(){
+    this.response = await this.api.putApplication(this.applicant.studentId, this.applicant.thesisProposalId, 'Rejected')
+    if (this.response){
+      this.requestAccepted = true;
+    }
     this.applicant = undefined;
   }
-  acceptApplication(){
+  async acceptApplication(){
+   this.response = await this.api.putApplication(this.applicant.studentId, this.applicant.thesisProposalId, 'Accepted')
+    if (this.response){
+      this.requestAccepted = true;
+    }
     this.applicant = undefined;
   }
 

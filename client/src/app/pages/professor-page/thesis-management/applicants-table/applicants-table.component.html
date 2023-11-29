@@ -30,6 +30,7 @@
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"
+  [response] = response
   (send)="rejectApplication()">
   <div *ngIf="!requestAccepted" class="flex flex-col h-full w-full gap-4">
     <div class="p-2 w-full flex flex-col gap-2 items-center ">
@@ -38,7 +39,7 @@
     </div>
   </div>
 
-  <div *ngIf="requestAccepted" class="text-green-500 text-xl"> The application has been rejected </div>
+  <div *ngIf="requestAccepted" class="text-red-500 text-xl"> The application has been rejected </div>
 
 </app-popup>
 
@@ -48,6 +49,7 @@
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"
+  [response] = response
   (send)="acceptApplication()">
   <div *ngIf="!requestAccepted" class="flex flex-col h-full w-full gap-4">
     <div class="p-2 w-full flex flex-col gap-2 items-center ">
