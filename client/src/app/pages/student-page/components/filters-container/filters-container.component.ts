@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {APIService} from "../../../../shared/services/api.service";
-import {FormControl} from "@angular/forms";
-import {MatCalendar, MatDatepickerInputEvent} from "@angular/material/datepicker";
+import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 
 @Component({
   selector: 'app-filters-container',
@@ -18,6 +17,7 @@ export class FiltersContainerComponent {
   css: any;
   selectedCs: any[] = [];
   selectedExtCs: any[] = [];
+  abroad: boolean = false;
 
   @Input() params: any;
   @Input() checkFilters: Function = () => {};
@@ -114,9 +114,16 @@ export class FiltersContainerComponent {
 
   selectDate(date: MatDatepickerInputEvent<any, any>) {
     this.selectedDate = date
-    let dateString = `${date.value.getFullYear()}-${date.value.getMonth() + 1}-${date.value.getDate()}`
-    console.log(dateString)
-    this.params.expirationDate = dateString
+    let year = date.value.getFullYear().toString()
+    let month = date.value.getMonth() + 1 < 10 ? `0${date.value.getMonth() + 1}` : (date.value.getMonth() + 1).toString()
+    let day = date.value.getDate().toString()
+    this.params.expirationDate = `${year}-${month}-${day}`
+    this.updateProposals()
+  }
+
+  toggleAbroad() {
+    this.abroad = !this.abroad
+    this.abroad ? this.params.abroad = true : this.params.abroad = null
     this.updateProposals()
   }
 }

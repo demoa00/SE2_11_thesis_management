@@ -10,7 +10,7 @@
     <p>{{n.text}}</p>
   </div>
 
-  <div *ngIf="selectedProposal===null" main-col class="container">
+  <div *ngIf="selectedProposal===null && menuItems[0].selected" main-col class="container">
     <div class="proposalsContainer">
       <div class="searchToolsContainer">
         <div class="searchbar">
@@ -24,7 +24,8 @@
           <app-button>Professor</app-button>
           <app-dropdown-checkbox
             [hover]="professorsHover"
-            [searchValue]="professorsSearchValue">
+            [searchValue]="professorsSearchValue"
+            (searchedValue)="professorsSearchValue = $event">
             <div *ngFor="let prof of professors" (click)="toggleProf(prof)">
               <div class="itemsContainer"
                    *ngIf="prof.name.toLocaleLowerCase().includes(professorsSearchValue) || prof.surname.toLocaleLowerCase().includes(professorsSearchValue)">
@@ -55,7 +56,7 @@
     </div>
   </div>
 
-  <div *ngIf="selectedProposal!==null" class="container" main-col>
+  <div *ngIf="selectedProposal!==null && menuItems[0]" class="container" main-col>
     <div class="proposalsCard card">
       <div class="projectHeader">
         <h2 class="projectTitle">{{selectedProposal.title}}</h2>
@@ -116,4 +117,7 @@
       </app-alert>
     </div>
   </div>
+
+  <app-application-view *ngIf="menuItems[1].selected" main-col></app-application-view>
+
 </app-page-skeleton>

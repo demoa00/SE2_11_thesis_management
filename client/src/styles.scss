@@ -8,6 +8,7 @@ $poliblue: #04264c;
 $polilightblue: #03577A;
 $success: #75ce8f;
 $danger: #f56565;
+$pending: #ffdd48;
 
 .leftMenuItem {
   border-radius: 8px;
@@ -15,6 +16,7 @@ $danger: #f56565;
   text-align: center;
   margin-bottom: 8px;
   font-size: 16px;
+  background: white;
   &.selected {
     background-color: $polilightblue;
     * {color: white;}

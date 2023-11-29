@@ -8,6 +8,7 @@
   text-align: center;
   margin-bottom: 8px;
   font-size: 16px;
+  background: white;
 }
 .leftMenuItem.selected {
   background-color: #03577A;

@@ -57,6 +57,10 @@ export class APIService {
     return await this.httpService.get('applications')
   }
 
+  async getApplicationById(applicationId: any, userId: any) {
+    return await this.httpService.get(`applications/${applicationId}/${userId}`)
+  }
+
   async setProfessor() {
     let user = localStorage.getItem('user')
     await this.httpService.get(`professors/${(JSON.parse(user != null ? user : '').userId)}`, false, true).then((response: any) => {
@@ -119,6 +123,9 @@ export class APIService {
       }
       if(params.expirationDate !== null) {
         url += `expirationdate=${params.expirationDate}&`
+      }
+      if(params.abroad !== null) {
+        url += `abroad=${params.abroad}&`
       }
       if (params.text !== null) {
         url += `text=${params.text}&`

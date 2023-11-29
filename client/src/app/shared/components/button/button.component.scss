@@ -25,6 +25,10 @@
     background-color: $danger;
     color: white;
   }
+  &.success {
+    background-color: $success;
+    color: white;
+  }
   &.rounded {
     border-radius: 50% !important;
   }

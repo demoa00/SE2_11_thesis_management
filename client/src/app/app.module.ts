@@ -36,6 +36,7 @@ import {MatInputModule} from "@angular/material/input";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatNativeDateModule} from "@angular/material/core";
 import { ThesisDetailsComponent } from './pages/professor-page/thesis-management/thesis-details/thesis-details.component';
+import { ApplicationViewComponent } from './pages/student-page/components/application-view/application-view.component';
 
 
 const routes: Routes = [
@@ -66,6 +67,7 @@ const routes: Routes = [
     DropdownCheckboxComponent,
     CheckboxComponent,
     ThesisDetailsComponent,
+    ApplicationViewComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 <div class="filtersContainer card">
   <div class="relative" (mouseenter)="csHover=true" (mouseleave)="csHover=false">
-    <app-button class="grey small">Cosupervisors</app-button>
+    <app-button class="{{selectedCs.length === 0 ? 'grey' : 'orange'}} small">Cosupervisors</app-button>
     <app-dropdown-checkbox
       [hover]="csHover"
       [showSearch]="false">
@@ -13,7 +13,7 @@
     </app-dropdown-checkbox>
   </div>
   <div class="relative" (mouseenter)="extCsHover=true" (mouseleave)="extCsHover=false">
-    <app-button class="grey small">External Cosupervisors</app-button>
+    <app-button class="{{selectedExtCs.length === 0 ? 'grey' : 'orange'}} small">External Cosupervisors</app-button>
     <app-dropdown-checkbox
       [hover]="extCsHover"
       [showSearch]="false">
@@ -25,8 +25,11 @@
       </div>
     </app-dropdown-checkbox>
   </div>
+  <app-button class="small {{abroad ? 'orange' : 'grey'}}" (click)="toggleAbroad()">
+    Abroad
+  </app-button>
   <div class="relative">
-    <app-button class="grey small" (click)="picker.open()">
+    <app-button class="{{selectedDate === null ? 'grey' : 'orange'}} small" (click)="picker.open()">
       Expiration Date
     </app-button>
     <input class="w-0 h-0 absolute -bottom-1" (dateChange)="selectDate($event)" matInput [matDatepicker]="picker">

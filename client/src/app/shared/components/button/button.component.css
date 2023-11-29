@@ -8,6 +8,7 @@
   text-align: center;
   margin-bottom: 8px;
   font-size: 16px;
+  background: white;
 }
 .leftMenuItem.selected {
   background-color: #03577A;
@@ -52,6 +53,10 @@
 }
 :host.danger {
   background-color: #f56565;
+  color: white;
+}
+:host.success {
+  background-color: #75ce8f;
   color: white;
 }
 :host.rounded {
