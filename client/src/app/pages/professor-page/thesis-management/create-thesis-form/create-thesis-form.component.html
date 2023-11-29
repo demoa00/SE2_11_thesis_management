@@ -28,7 +28,7 @@
       <div *ngFor="let selectedCS of selectedCoSupervisors" class=" items-center flex gap-2 text-gray-700 hover:text-red-600 hover:cursor-pointer text-sm mt-1" (click)="removeCoSupervisor($event)" >{{selectedCS.name}} {{selectedCS.surname}}</div>
     </div>
     <div class="">
-      <label for="abroad" class="label-field">Abroad</label>
+      <label for="abroad" class="label-field">Abroad *</label>
       <input type="checkbox" id="abroad" formControlName="abroad" placeholder="Abroad" readonly >
     </div>
     <div class="">
