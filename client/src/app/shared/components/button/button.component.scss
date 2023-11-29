@@ -8,12 +8,22 @@
   cursor: pointer;
   height: fit-content;
   display: flex;
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
   &.orange {
     @apply bg-orange-600;
   }
   &.grey {
     background-color: $lightgrey;
     color: $poliblue;
+  }
+  &.danger {
+    background-color: $danger;
+    color: white;
   }
   &.rounded {
     border-radius: 50% !important;

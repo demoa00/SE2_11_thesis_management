@@ -4,6 +4,7 @@ import {Component} from '@angular/core';
 import {APIService} from "../../shared/services/api.service";
 import {User} from "../../shared/classes/user";
 import {StudentDetails} from "../../shared/classes/student/student-details";
+import * as dayjs from 'dayjs';
 
 type ProposalsParams = {
   text: string | null;
@@ -34,6 +35,7 @@ export class StudentPageComponent {
   constructor(public api: APIService) {
     this.api.setStudent()
   }
+  protected readonly dayjs = dayjs;
 
   user: User | undefined
   userDetails: StudentDetails | undefined
@@ -44,6 +46,11 @@ export class StudentPageComponent {
   professors: any;
   professorsSearchValue = "";
   selectedProfs: any[] = []
+  popupVisible = false
+  applications: any
+  canApply = true
+  showSuccessAlert = false;
+  showErrorAlert = false;
   proposalParams: ProposalsParams = {
     text: null,
     supervisors: null,
@@ -65,6 +72,7 @@ export class StudentPageComponent {
       'text': 'Applications'
     },
   ]
+  applicationMessage: string = "";
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('user') || '{}')
@@ -73,11 +81,14 @@ export class StudentPageComponent {
     })
     this.api.getAllProposals(null).then((response: any) => {
       this.proposals = response
-      console.log(this.proposals)
     })
     this.api.getProfessors().then((response: any) => {
       this.professors = response
-      console.log(this.professors)
+    })
+    this.api.getApplications().then((response: any) => {
+      this.applications = response
+    }).catch((error: any) => {
+      console.log(error)
     })
   }
 
@@ -115,9 +126,21 @@ export class StudentPageComponent {
   }
 
   selectProposal(proposalId: number) {
+    if (proposalId === -1) {
+      this.selectedProposal = null
+      return
+    }
     this.api.getProposal(proposalId).then((response: any) => {
       this.selectedProposal = response
     })
+    this.canApply = true
+    if(this.applications !== undefined){
+      this.applications.forEach((application: any) => {
+        if (application.thesisProposalId === proposalId) {
+          this.canApply = false
+        }
+      })
+    }
   }
 
   search() {
@@ -160,9 +183,44 @@ export class StudentPageComponent {
       console.log(error)
     })
   }
+
+  date(date: string) {
+    return this.dayjs(date).format('DD/MM/YYYY')
+  }
+
+  togglePopup() {
+    this.popupVisible = !this.popupVisible
+  }
+
+  apply() {
+    let body = {
+      'thesisProposalId': this.selectedProposal?.thesisProposalId,
+      'thesisProposalTitle': this.selectedProposal?.title,
+      'applicant': {
+        'studentId': this.user?.userId,
+        'name': this.userDetails?.name,
+        'surname': this.userDetails?.surname,
+        'student': `https://localhost:3000${this.userDetails?.self}`
+      },
+      'message': this.applicationMessage,
+      'date': this.dayjs().format('YYYY-MM-DD'),
+    }
+
+    this.api.insertNewApplication(body).then((response: any) => {
+      this.canApply = false
+      this.togglePopup()
+      this.showSuccessAlert = true
+      setTimeout(() => {
+        this.showSuccessAlert = false
+      }, 3000)
+    }).catch((error: any) => {
+      this.showErrorAlert = true
+      setTimeout(() => {
+        this.showErrorAlert = false
+      }, 3000)
+      console.log(error)
+    })
+  }
+
 }
 
-type Project = {
-  title: string,
-  name: string
-};

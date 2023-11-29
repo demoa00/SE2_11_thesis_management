@@ -4,6 +4,7 @@ import { ProfessorPageComponent } from './professor-page.component';
 import { ThesisManagementComponent } from './thesis-management/thesis-management.component';
 import { PageSkeletonComponent } from 'src/app/shared/components/page-skeleton/page-skeleton.component';
 import { IconComponent } from 'src/app/shared/components/icon/icon.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ProfessorPageComponent', () => {
   let component: ProfessorPageComponent;
@@ -11,6 +12,7 @@ describe('ProfessorPageComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       declarations: [ProfessorPageComponent, ThesisManagementComponent, PageSkeletonComponent, IconComponent]
     });
     fixture = TestBed.createComponent(ProfessorPageComponent);

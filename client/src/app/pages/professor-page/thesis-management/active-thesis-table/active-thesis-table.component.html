@@ -5,14 +5,12 @@
   <tbody >
   <tr class="thead">
     <th>Title</th>
-    <th>Type</th>
     <th>Expiration</th>
     <th></th>
   </tr>
   <tr *ngFor="let row of rows">
     <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.title}}</td>
-    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.type}}</td>
-    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.expiration}}</td>
+    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.expirationDate}}</td>
     <td class="py-0.5 w-12 h-6">
       <button class="dropdownButton" (click)="openCreatePopup()">Update</button>
     </td>
