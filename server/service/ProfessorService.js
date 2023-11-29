@@ -1,15 +1,27 @@
 'use strict';
 
 const sqlite = require('sqlite3');
+const checkRole = require('../utils/checkRole');
 
 const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
 
 
-exports.getProfessors = function () {
-  return new Promise(function (resolve, reject) {
-    const sql = 'SELECT * FROM professors';
+exports.getProfessors = function (user) {
+  let sql = 'SELECT * FROM professors ';
+  let params = [];
 
-    db.all(sql, [], (err, rows) => {
+  if (checkRole.isStudent(user)) {
+    sql += 'WHERE professorId IN (SELECT DISTINCT thesisProposals.supervisor FROM thesisProposals, thesisProposal_cds_bridge WHERE thesisProposal_cds_bridge.cdsId = ? AND thesisProposals.thesisProposalId = thesisProposal_cds_bridge.thesisProposalId) ';
+    params = [user.codDegree];
+  }else if(checkRole.isProfessor(user)){
+    sql += 'WHERE professorId != ? ';
+    params = [user.userId];
+  }
+
+  sql += 'ORDER BY surname';
+  
+  return new Promise(function (resolve, reject) {
+    db.all(sql, params, (err, rows) => {
       if (err) {
         reject({ code: 500, message: "Internal Server Error" });
       } else if (rows.length == 0) {

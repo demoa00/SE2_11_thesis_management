@@ -2,6 +2,7 @@
 
 const sqlite = require('sqlite3');
 const dayjs = require('dayjs');
+const checkRole = require('../utils/checkRole');
 
 const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
 
@@ -56,10 +57,10 @@ exports.getApplicationById = function (user, studentId, thesisProposalId) {
   let sql = '';
   let params = [];
 
-  if (user.role === 'professor') {//professor request
+  if (checkRole.isProfessor(user)) {//professor request
     sql = 'SELECT applications.thesisProposalId, students.studentId, students.name, students.surname, thesis.title, applications.message, applications.date, applications.status FROM applications, students, (SELECT thesisProposalId, title FROM thesisProposals WHERE thesisProposalId = ? AND supervisor = ?) AS thesis WHERE applications.studentId = ? AND applications.thesisProposalId = ? AND applications.studentId = students.studentId AND applications.thesisProposalId = thesis.thesisProposalId';
     params = [thesisProposalId, user.userId, studentId, thesisProposalId];
-  } else {//student request
+  } else if (checkRole.isStudent(user)) {//student request
     sql = 'SELECT applications.thesisProposalId, students.studentId, students.name, students.surname, thesis.title, applications.message, applications.date, applications.status FROM applications, students, (SELECT thesisProposalId, title FROM thesisProposals WHERE thesisProposalId = ?) AS thesis WHERE applications.studentId = ? AND applications.thesisProposalId = ? AND applications.studentId = students.studentId AND applications.thesisProposalId = thesis.thesisProposalId';
     params = [thesisProposalId, user.userId, thesisProposalId];
   }

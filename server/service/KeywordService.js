@@ -18,12 +18,13 @@ exports.getKeywords = function () {
         let keywordsList = [];
 
         rows.map((r) => {
-          r.keywords.split("/").forEach((k) => {
+          JSON.parse(r.keywords).forEach((k) => {
             keywordsList.push(k);
           });
         });
 
-        resolve([...new Set(keywordsList)]);
+        let set = [...new Set(keywordsList)];
+        resolve(set.sort((a, b) => a.localeCompare(b)));
       }
     });
   });

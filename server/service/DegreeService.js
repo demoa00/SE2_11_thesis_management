@@ -17,7 +17,7 @@ exports.getDegrees = function () {
       } else {
         let degreesList = rows.map((r) => ({ degreeId: r.degreeId, titleDegree: r.titleDegree }));
 
-        resolve(degreesList);
+        resolve(degreesList.sort((a, b) => a.titleDegree.localeCompare(b.titleDegree)));
       }
     })
   });

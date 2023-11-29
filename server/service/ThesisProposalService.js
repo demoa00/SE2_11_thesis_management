@@ -5,6 +5,7 @@ const sqlite = require('sqlite3');
 const Professor = require('./ProfessorService');
 const ExternalCoSupervisor = require('./ExternalCoSupervisorService');
 const Degree = require('./DegreeService');
+const checkRole = require('../utils/checkRole');
 
 const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
 
@@ -179,10 +180,10 @@ exports.getThesisProposalById = function (user, thesisProposalId) {
   let sql = '';
   let params = [];
 
-  if (user.role === 'professor') {//professor request
+  if (checkRole.isProfessor(user)) {//professor request
     sql = 'SELECT * FROM thesisProposals WHERE thesisProposalId = ? AND supervisor = ? AND isArchived = 0';
     params = [thesisProposalId, user.userId];
-  } else {//student request
+  } else if (checkRole.isStudent(user)) {//student request
     sql = 'SELECT * FROM thesisProposals WHERE thesisProposalId = ? AND thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_cds_bridge WHERE cdsId = ?) AND isArchived = 0';
     params = [thesisProposalId, user.codDegree];
   }

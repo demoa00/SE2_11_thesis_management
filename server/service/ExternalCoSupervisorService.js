@@ -7,7 +7,7 @@ const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => {
 
 exports.getExternalCoSupervisors = function () {
   return new Promise(function (resolve, reject) {
-    const sql = 'SELECT * FROM externalCoSupervisors';
+    const sql = 'SELECT * FROM externalCoSupervisors ORDER BY surname';
 
     db.all(sql, [], (err, rows) => {
       if (err) {

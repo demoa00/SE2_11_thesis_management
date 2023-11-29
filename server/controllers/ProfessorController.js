@@ -6,7 +6,7 @@ const Professor = require('../service/ProfessorService');
 
 module.exports.getProfessors = async function getProfessors(req, res, next) {
   try {
-    let professorsList = await Professor.getProfessors();
+    let professorsList = await Professor.getProfessors(req.user);
 
     utils.writeJson(res, professorsList, 200);
   } catch (error) {
