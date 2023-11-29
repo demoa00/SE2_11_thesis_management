@@ -16,6 +16,18 @@ export class CreateThesisFormComponent {
     titleDegree: any;
     degreeId:any;
   }[] =[];
+  coSupervisors:{
+    externalCoSupervisorId: any;
+    name:any;
+    surname:any;
+    self:any,
+  }[] =[];
+  selectedCoSupervisors:{
+    externalCoSupervisorId: any;
+    name:any;
+    surname:any;
+    self:any,
+  }[] =[];
   professor:{
     codDepartment:any;
     codGroup:any;
@@ -25,7 +37,7 @@ export class CreateThesisFormComponent {
     name: any;
     surname:any;
   };
-
+  selectedKWs: String[] = [];
 
   @Input()
   thesisProposal: any;
@@ -34,13 +46,16 @@ export class CreateThesisFormComponent {
   @Output()
   response= new EventEmitter<{}>();
 
+
+
+
   constructor(private fb: FormBuilder, private api: APIService) {
     let stringProfessor= localStorage.getItem('professor')
     let stringDegree = localStorage.getItem('degrees')
+    let stringCoSupervisors = localStorage.getItem('externalCoSupervisors')
     this.degrees = (JSON.parse(stringDegree!=null?stringDegree:''))
     this.professor = (JSON.parse(stringProfessor!=null?stringProfessor:''))
-    console.log(this.professor)
-    console.log(this.degrees)
+    this.coSupervisors = (JSON.parse(stringCoSupervisors!=null?stringCoSupervisors:''))
       this.myForm = this.fb.group({
           title: ['', [Validators.required]],
           supervisor: this.professor,
@@ -87,14 +102,40 @@ export class CreateThesisFormComponent {
 
         if (keywordValue) {
             this.keywordsList.push(keywordValue);
-            keywordsControl?.setValue(''); // Resetta il campo delle keywords
+            keywordsControl?.setValue(''); //Resetta il campo delle keywords
         }
     }
 
-    removeKeyword(keyword: string) {
+    removeKeyword(event:any) {
+        let keyword = event.target.textContent
         const index = this.keywordsList.indexOf(keyword);
         if (index !== -1) {
             this.keywordsList.splice(index, 1);
         }
     }
+
+  onSelectCoSupervisorChange(event: any) {
+    console.log(event.target.value)
+    let cosupervisor = this.coSupervisors.find(elemento => elemento.externalCoSupervisorId==event.target.value)
+    this.coSupervisors = this.coSupervisors.filter(elemento => elemento.externalCoSupervisorId!=event.target.value)
+    this.selectedCoSupervisors.push(cosupervisor?cosupervisor:{
+      externalCoSupervisorId: '',
+      name:'',
+      surname:'',
+      self:'',
+    })
+  }
+  removeCoSupervisor(event: any){
+    const valoreDiv = event.target.textContent;
+    let cosupervisor = this.selectedCoSupervisors.find(elemento => elemento.name==valoreDiv.split(' ')[0] && elemento.surname==valoreDiv.split(' ')[1])
+    this.selectedCoSupervisors = this.selectedCoSupervisors.filter(elemento => elemento.externalCoSupervisorId!=cosupervisor?.externalCoSupervisorId)
+    this.coSupervisors.push(cosupervisor?cosupervisor:{
+      externalCoSupervisorId: '',
+      name:'',
+      surname:'',
+      self:'',
+    })
+
+
+  }
 }

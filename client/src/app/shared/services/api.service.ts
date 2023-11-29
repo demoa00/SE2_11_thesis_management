@@ -70,6 +70,12 @@ export class APIService {
       localStorage.setItem('degrees',JSON.stringify(response))
     })
   }
+  async getCoSupervisors() {
+    await this.httpService.get('externalCoSupervisors/',false,true).then((response: any)=>{
+      localStorage.setItem('externalCoSupervisors',JSON.stringify(response))
+      console.log(response)
+    })
+  }
   async getAllActiveTheses(){
     return await this.httpService.get('thesisProposals/?cosupervisor=false')
   }
@@ -106,5 +112,6 @@ export class APIService {
   async getProfessors() {
     return await this.httpService.get('professors')
   }
+
 
 }
