@@ -13,8 +13,10 @@
   border-radius: 8px;
   z-index: 100;
   width: max-content;
+  display: none;
   &.show {
     opacity: 1;
+    display: block;
   }
   &.success {
     background-color: $success;

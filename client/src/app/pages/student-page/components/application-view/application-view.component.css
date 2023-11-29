@@ -47,6 +47,7 @@
   border-bottom: 1px solid #e5e7eb;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 .applicationsContainer .application:last-child {
   border-bottom: none;
@@ -65,6 +66,7 @@
 }
 .applicationsContainer .application .status.pending {
   background: #ffdd48;
+  color: #545454;
 }
 .applicationsContainer .application .status.accepted {
   background: #75ce8f;

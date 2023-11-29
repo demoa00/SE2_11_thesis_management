@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {APIService} from "../../../../shared/services/api.service";
 
 @Component({

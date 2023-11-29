@@ -43,9 +43,11 @@
   border-radius: 8px;
   z-index: 100;
   width: max-content;
+  display: none;
 }
 :host.show {
   opacity: 1;
+  display: block;
 }
 :host.success {
   background-color: #75ce8f;

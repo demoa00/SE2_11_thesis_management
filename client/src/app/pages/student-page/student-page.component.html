@@ -5,7 +5,7 @@
        [class.hovered]="n.hovered && !n.selected"
        (mouseenter)="n.hovered=true"
        (mouseleave)="n.hovered=false"
-       (click)="selectMenuItem(n.id)"
+       (click)="selectMenuItem(n.id); n.id == 1 ? selectedProposal=null : null"
        *ngFor="let n of menuItems">
     <p>{{n.text}}</p>
   </div>
@@ -85,7 +85,7 @@
           class="regularText">{{date(selectedProposal.expirationDate)}}</span></p>
       </div>
       <div class="projectButtons">
-        <app-button (click)="selectProposal(-1)">Back</app-button>
+        <app-button class="grey" (click)="selectProposal(-1)">Back</app-button>
         <app-button (click)="togglePopup()" [ngClass]="!canApply ? 'disabled' : ''">Apply</app-button>
       </div>
       <app-popup
@@ -102,10 +102,10 @@
           <p class="font-bold">Name: <span class="font-normal">{{userDetails?.name}} {{userDetails?.surname}}</span></p>
           <p class="font-bold">Student ID: <span class="font-normal">{{userDetails?.studentId}}</span></p>
           <p class="font-bold mb-2">Insert an application message (optional)</p>
-          <textarea class="textArea" [(ngModel)]="applicationMessage" maxlength="1000"></textarea>
+          <textarea class="textArea" rows="4" [(ngModel)]="applicationMessage" maxlength="1000"></textarea>
           <div class="flex justify-end">
             <app-button class="grey mr-2" (click)="togglePopup(); applicationMessage=''">Back</app-button>
-            <app-button class="danger" (click)="apply()">Apply</app-button>
+            <app-button class="orange" (click)="apply()">Apply</app-button>
           </div>
         </div>
       </app-popup>

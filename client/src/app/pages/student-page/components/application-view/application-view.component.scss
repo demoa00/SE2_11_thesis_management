@@ -16,6 +16,7 @@
     border-bottom: 1px solid $lightgrey;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     &:last-child {
       border-bottom: none;
       margin-bottom: 0;
@@ -35,6 +36,7 @@
       color: white;
       &.pending {
         background: $pending;
+        color: #545454;
       }
       &.accepted {
         background: $success;
