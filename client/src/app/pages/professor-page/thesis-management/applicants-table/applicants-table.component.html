@@ -14,10 +14,13 @@
     <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.thesisProposalTitle}}</td>
     <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.date}}</td>
     <td class="py-0.5 w-12 h-6">
-      <button class="dropdownButton" (click)="openAcceptPopup(); applicant = row" >Accept</button>
+      <button *ngIf="row.status =='Pending'" class="dropdownButton" (click)="openAcceptPopup(); applicant = row" >Accept</button>
     </td>
-    <td class="py-0.5 w-12 h-6">
+    <td *ngIf="row.status =='Pending'" class="py-0.5 w-12 h-6">
       <button class="dropdownButton red" (click)="openRejectPopup(); applicant = row">Reject</button>
+    </td>
+    <td *ngIf="row.status !='Pending'" [class.text-green-400] = "row.status=='Accepted'" [class.text-red-400] = "row.status=='Rejected'" class="py-0.5 w-12 h-6 text-sm">
+      {{row.status=='Accepted'?'accepted':row.status=='Rejected'?'rejected':''}}
     </td>
   </tr>
   </tbody>

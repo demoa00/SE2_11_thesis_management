@@ -50,7 +50,6 @@ export class ThesisManagementComponent {
 
   async showApplicantsTable() {
     const response = await this.api.getApplications();
-    console.log(response)
     if(response != undefined){
       this.applicantsRow = response;
       this.showApplicants = true;
