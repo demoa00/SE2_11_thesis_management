@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { CreateThesisFormComponent } from './create-thesis-form.component';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APIService } from 'src/app/shared/services/api.service';
 import { of } from 'rxjs';
@@ -15,7 +15,7 @@ describe('CreateThesisFormComponent', () => {
     const spy = jasmine.createSpyObj('APIService', ['insertNewThesis']);
 
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, HttpClientTestingModule],
       declarations: [CreateThesisFormComponent],
       providers: [{ provide: APIService, useValue: spy }]
     });
@@ -62,6 +62,76 @@ describe('CreateThesisFormComponent', () => {
     expect(requestAcceptedEmitSpy).toHaveBeenCalledWith(true);
     expect(responseEmitSpy).toHaveBeenCalledWith({});
   }));
+
+  it('should handle valid stringDegrees', () => {
+    const degreesData = '[{"titleDegree": "Degree 1", "degreeId": 1}]';
+    localStorage.setItem('degrees', degreesData);
+    component.degrees = JSON.parse(degreesData);
+    expect(component.degrees).toEqual(JSON.parse(degreesData));
+  });
+
+  it('should handle valid stringProfessor', () => {
+    const professorData = '[{"codDepartment": "123", "codGroup": "456", "email": "professor@example.it", "professorId": "789", "self": "y", "name": "Allen", "surname": "Iverson"}]';
+    localStorage.setItem('professor', professorData);
+    component.professor = JSON.parse(professorData);
+    expect(component.professor).toEqual(JSON.parse(professorData));
+  });
+
+  it('should handle valid stringCoSupervisors', () => {
+    const coSupervisorsData = '[{"externalCoSupervisorId": "123", "name": "Allen", "surname": "Iverson", "self": "y"}]';
+    localStorage.setItem('externalCoSupervisors', coSupervisorsData);
+    component.coSupervisors = JSON.parse(coSupervisorsData);
+    expect(component.coSupervisors).toEqual(JSON.parse(coSupervisorsData));
+  });
+
+  it('should return supervisor name on getSupervisorName', () => {
+    component.myForm.get('supervisor')?.setValue({ name: 'John', surname: 'Doe' });
+    const result = component.supervisorName;
+    expect(result).toBe('John');
+  });
+
+  it('should handle onSelectCoSupervisorChange', () => {
+    const coSupervisorId = 123;
+    const coSupervisorData = {
+      externalCoSupervisorId: coSupervisorId,
+      name: 'Test',
+      surname: 'CoSupervisor',
+      self: 'Some info',
+    };
+
+    component.coSupervisors = [coSupervisorData];
+    component.selectedCoSupervisors = [];
+
+    spyOn(component, 'onSelectCoSupervisorChange').and.callThrough();
+
+    const event = { target: { value: coSupervisorId } };
+    component.onSelectCoSupervisorChange(event);
+
+    expect(component.onSelectCoSupervisorChange).toHaveBeenCalledWith(event);
+    expect(component.selectedCoSupervisors).toEqual([coSupervisorData]);
+    expect(component.coSupervisors).toEqual([]);
+  });
+
+  it('should handle removeCoSupervisor', () => {
+    const coSupervisorData = {
+      externalCoSupervisorId: 123,
+      name: 'Test',
+      surname: 'CoSupervisor',
+      self: 'Some info',
+    };
+
+    component.selectedCoSupervisors = [coSupervisorData];
+    component.coSupervisors = [];
+
+    spyOn(component, 'removeCoSupervisor').and.callThrough();
+
+    const mockEvent = { target: { textContent: 'Test CoSupervisor' } };
+    component.removeCoSupervisor(mockEvent);
+
+    expect(component.removeCoSupervisor).toHaveBeenCalledWith(mockEvent);
+    expect(component.selectedCoSupervisors).toEqual([]);
+    expect(component.coSupervisors).toEqual([coSupervisorData]);
+  });
 
   it('should set and reset selectFocus correctly', () => {
     expect(component.selectFocus).toBe(false);
