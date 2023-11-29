@@ -28,6 +28,13 @@ import { AuthGuardProfessorService } from "./shared/services/auth-guard-professo
 import { ActiveThesisTableComponent } from './pages/professor-page/thesis-management/active-thesis-table/active-thesis-table.component';
 import {AuthGuardStudentService} from "./shared/services/auth-guard-student.service";
 import {MatIconModule} from "@angular/material/icon";
+import { FiltersContainerComponent } from './pages/student-page/components/filters-container/filters-container.component';
+import { DropdownCheckboxComponent } from './pages/student-page/components/dropdown-checkbox/dropdown-checkbox.component';
+import { CheckboxComponent } from './pages/student-page/components/dropdown-checkbox/checkbox/checkbox.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatInputModule} from "@angular/material/input";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatNativeDateModule} from "@angular/material/core";
 import { ThesisDetailsComponent } from './pages/professor-page/thesis-management/thesis-details/thesis-details.component';
 
 
@@ -55,6 +62,9 @@ const routes: Routes = [
     LoadingComponent,
     CreateThesisFormComponent,
     ActiveThesisTableComponent,
+    FiltersContainerComponent,
+    DropdownCheckboxComponent,
+    CheckboxComponent,
     ThesisDetailsComponent,
   ],
   imports: [
@@ -72,6 +82,10 @@ const routes: Routes = [
       }
     }),
     MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule,
+    BrowserAnimationsModule,
   ],
   providers: [AuthGuardProfessorService],
   bootstrap: [AppComponent]

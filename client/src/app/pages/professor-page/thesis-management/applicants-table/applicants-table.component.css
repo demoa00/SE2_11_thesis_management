@@ -16,6 +16,17 @@
 .bo-table.bo-striped tbody tr:nth-child(even), .bo-striped.bo-table-compact tbody tr:nth-child(even) {
   @apply bg-gray-50 hover:bg-gray-100;
 }
+.bo-table .dropdownButton, .bo-table-compact .dropdownButton {
+  background-color: #03577A;
+  color: white;
+  line-height: 16px;
+  padding: 8px;
+  border-radius: 8px;
+  @apply hover:drop-shadow-lg;
+}
+.bo-table .dropdownButton.red, .bo-table-compact .dropdownButton.red {
+  @apply bg-red-500;
+}
 
 .bo-table-compact thead th {
   @apply py-1 px-0 text-xs;

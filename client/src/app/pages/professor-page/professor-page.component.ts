@@ -12,7 +12,7 @@ export class ProfessorPageComponent{
     this.api.setProfessor()
     this.api.getProfessors()
     this.api.getDegrees()
-    this.api.getCoSupervisors()
+    this.api.getExternalCoSupervisors()
   }
 
 

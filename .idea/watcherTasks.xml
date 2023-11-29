@@ -23,7 +23,6 @@
     </TaskOptions>
     <enabled-global>
       <option value="SCSS" />
-      <option value="Sass" />
     </enabled-global>
   </component>
 </project>

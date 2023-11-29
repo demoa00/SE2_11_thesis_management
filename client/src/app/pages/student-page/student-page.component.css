@@ -4,7 +4,7 @@
 @tailwind utilities;
 .leftMenuItem {
   border-radius: 8px;
-  padding: 4px 16px;
+  padding: 8px 16px;
   text-align: center;
   margin-bottom: 8px;
 }
@@ -16,6 +16,16 @@
 }
 .leftMenuItem.hovered {
   background-color: #e5e7eb;
+}
+
+.card {
+  @apply shadow-sm rounded-md shadow-gray-400 p-4 bg-white;
+}
+
+.separator {
+  height: 1px;
+  width: 100%;
+  @apply bg-orange-500;
 }
 
 .h-1\/8 {
@@ -39,13 +49,22 @@
   cursor: pointer;
 }
 
-.searchToolsContainer {
+.container {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(87.5vh - 32px);
+}
+
+.proposalsContainer {
+  @apply flex-col items-center mb-4 gap-4 max-md:flex-col max-md:items-start;
+}
+.proposalsContainer .searchToolsContainer {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 16px;
 }
-.searchToolsContainer .searchbar {
+.proposalsContainer .searchToolsContainer .searchbar {
   width: 40%;
   height: fit-content;
   border-radius: 25px;
@@ -54,67 +73,53 @@
   outline: none;
 }
 @media (max-width: 768px) {
-  .searchToolsContainer .searchbar {
+  .proposalsContainer .searchToolsContainer .searchbar {
     width: 100%;
   }
 }
 @media (max-width: 1024px) {
-  .searchToolsContainer .searchbar {
+  .proposalsContainer .searchToolsContainer .searchbar {
     width: 80%;
   }
 }
-.searchToolsContainer .searchbar input {
+.proposalsContainer .searchToolsContainer .searchbar input {
   border: none;
   outline: none;
   width: 90%;
   margin-left: 10px;
   background-color: transparent;
 }
-.searchToolsContainer .dropdownContainer {
+.proposalsContainer .searchToolsContainer .dropdownContainer {
   position: relative;
   height: 100%;
   width: fit-content;
-  font-size: 12px;
 }
-.searchToolsContainer .dropdownContainer .dropdownButton {
-  background-color: #03577A;
-  color: white;
-  line-height: 20px;
-  padding: 8px;
-  border-radius: 8px;
-  font-size: 16px;
-}
-.searchToolsContainer .dropdownContainer .dropdownContent {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: white;
-  text-transform: capitalize;
-  width: max-content;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  z-index: 1;
-  text-align: right;
-}
-.searchToolsContainer .dropdownContainer .dropdownContent .professorsContainer {
+
+.itemsContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-bottom: 4px;
   cursor: pointer;
 }
-.searchToolsContainer .dropdownContainer .dropdownContent .professorsContainer:hover {
+.itemsContainer:hover {
   text-decoration: underline;
 }
-.searchToolsContainer .dropdownContainer .dropdownContent .professorsContainer .checkbox {
+.itemsContainer .checkbox {
   width: 12px;
   height: 12px;
   margin-right: 16px;
   border: 1px solid #04264c;
 }
-.searchToolsContainer .dropdownContainer .dropdownContent .professorsContainer .checkbox.checked {
+.itemsContainer .checkbox.checked {
   background-color: #04264c;
+}
+
+.proposalsCard {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
 }
 
 .projectLine {
@@ -157,7 +162,6 @@
 .projectHeader .regularText, .projectBody .regularText {
   font-weight: normal;
   font-size: 14px;
-  margin-bottom: 16px;
 }
 
 .projectFooter {

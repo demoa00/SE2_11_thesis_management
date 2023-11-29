@@ -20,80 +20,73 @@
   cursor: pointer;
 }
 
-.searchToolsContainer {
+.container {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 16px;
-  .searchbar {
-    width: 40%;
-    @media (max-width: 768px) {
-      width: 100%;
-    }
-    @media (max-width: 1024px) {
-      width: 80%;
-    }
-    height: fit-content;
-    border-radius: 25px;
-    border: 2px solid $lightgrey;
-    padding: 6px;
-    outline: none;
-    input {
-      border: none;
+  flex-direction: column;
+  max-height: calc(87.5vh - 32px);
+}
+
+.proposalsContainer {
+  @apply flex-col items-center mb-4 gap-4 max-md:flex-col max-md:items-start;
+  .searchToolsContainer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+    .searchbar {
+      width: 40%;
+      @media (max-width: 768px) {
+        width: 100%;
+      }
+      @media (max-width: 1024px) {
+        width: 80%;
+      }
+      height: fit-content;
+      border-radius: 25px;
+      border: 2px solid $lightgrey;
+      padding: 6px;
       outline: none;
-      width: 90%;
-      margin-left: 10px;
-      background-color: transparent;
+      input {
+        border: none;
+        outline: none;
+        width: 90%;
+        margin-left: 10px;
+        background-color: transparent;
+      }
+    }
+    .dropdownContainer {
+      position: relative;
+      height: 100%;
+      width: fit-content;
     }
   }
-  .dropdownContainer {
-    position: relative;
-    height: 100%;
-    width: fit-content;
-    font-size: 12px;
-    .dropdownButton {
-      background-color: $polilightblue;
-      color: white;
-      line-height: 20px;
-      padding: 8px;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-    .dropdownContent {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      background-color: white;
-      text-transform: capitalize;
-      width: max-content;
-      border-radius: 8px;
-      padding: 16px;
-      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-      z-index: 1;
-      text-align: right;
-      .professorsContainer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-bottom: 4px;
-        cursor: pointer;
-        &:hover {
-          text-decoration: underline;
-        }
-        .checkbox {
-          width: 12px;
-          height: 12px;
-          margin-right: 16px;
-          border: 1px solid $poliblue;
-          &.checked {
-            background-color: $poliblue;
-          }
-        }
-      }
+}
+.itemsContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 4px;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+  .checkbox {
+    width: 12px;
+    height: 12px;
+    margin-right: 16px;
+    border: 1px solid $poliblue;
+    &.checked {
+      background-color: $poliblue;
     }
   }
 }
 
+.proposalsCard {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
+}
 
 
 .projectLine {
@@ -135,7 +128,6 @@
   .regularText {
     font-weight: normal;
     font-size: 14px;
-    margin-bottom: 16px;
   }
 }
 

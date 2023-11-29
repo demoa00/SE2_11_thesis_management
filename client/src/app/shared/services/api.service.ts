@@ -5,7 +5,7 @@ import {Router} from "@angular/router";
 type ProposalsParams = {
   text: string | null;
   supervisors: any [] | null;
-  cosupervisors: {}[] | null;
+  cosupervisors: any[] | null;
   expirationDate: string | null;
   abroad: boolean | null;
 }
@@ -76,10 +76,19 @@ export class APIService {
       localStorage.setItem('degrees', JSON.stringify(response))
     })
   }
-  async getCoSupervisors() {
-    await this.httpService.get('externalCoSupervisors/',false,true).then((response: any)=>{
+  async getExternalCoSupervisors() {
+    return await this.httpService.get('externalCoSupervisors/',false,true).then((response: any)=>{
       localStorage.setItem('externalCoSupervisors',JSON.stringify(response))
       console.log(response)
+      return response
+    })
+  }
+
+  async getCoSupervisors() {
+    return await this.httpService.get('professors/?cosupervisor=true',false,true).then((response: any)=>{
+      localStorage.setItem('coSupervisors',JSON.stringify(response))
+      console.log(response)
+      return response
     })
   }
   async getAllActiveTheses() {
@@ -103,10 +112,19 @@ export class APIService {
           url += `supervisor=${s?.professorId}&`
         }
       }
+      if (params.cosupervisors !== null) {
+        for (let cs of params.cosupervisors) {
+          url += `cosupervisor=${cs?.professorId}&`
+        }
+      }
+      if(params.expirationDate !== null) {
+        url += `expirationDate=${params.expirationDate}&`
+      }
       if (params.text !== null) {
         url += `text=${params.text}&`
       }
     }
+    console.log(url)
     return await this.httpService.get(url, false, true)
   }
 
@@ -116,6 +134,13 @@ export class APIService {
 
   async getProfessors() {
     await this.httpService.get('professors',false,true).then((response: any)=>{
+      localStorage.setItem('internalCoSupervisors',JSON.stringify(response))
+    })
+    return await this.httpService.get('professors')
+  }
+
+  async getSupervisors() {
+    await this.httpService.get('professors/?cosupervisor=false',false,true).then((response: any)=>{
       localStorage.setItem('internalCoSupervisors',JSON.stringify(response))
     })
     return await this.httpService.get('professors')

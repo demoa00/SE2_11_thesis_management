@@ -11,7 +11,7 @@ $danger: #f56565;
 
 .leftMenuItem {
   border-radius: 8px;
-  padding: 4px 16px;
+  padding: 8px 16px;
   text-align: center;
   margin-bottom: 8px;
   &.selected {
@@ -22,3 +22,13 @@ $danger: #f56565;
     background-color: $lightgrey;
   }
 }
+
+.card{
+  @apply shadow-sm rounded-md shadow-gray-400 p-4 bg-white;
+}
+.separator{
+  height: 1px;
+  width: 100%;
+  @apply bg-orange-500
+}
+

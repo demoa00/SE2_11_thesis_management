@@ -1,6 +1,6 @@
 // @ts-ignore
 
-import {Component} from '@angular/core';
+import {Component, EventEmitter} from '@angular/core';
 import {APIService} from "../../shared/services/api.service";
 import {User} from "../../shared/classes/user";
 import {StudentDetails} from "../../shared/classes/student/student-details";
@@ -10,6 +10,7 @@ type ProposalsParams = {
   text: string | null;
   supervisors: {}[] | null;
   cosupervisors: {}[] | null;
+  extCs: {}[] | null;
   expirationDate: string | null;
   abroad: boolean | null;
 }
@@ -51,10 +52,12 @@ export class StudentPageComponent {
   canApply = true
   showSuccessAlert = false;
   showErrorAlert = false;
+  showFilters = false;
   proposalParams: ProposalsParams = {
     text: null,
     supervisors: null,
     cosupervisors: null,
+    extCs: null,
     expirationDate: null,
     abroad: null
   }
@@ -82,7 +85,7 @@ export class StudentPageComponent {
     this.api.getAllProposals(null).then((response: any) => {
       this.proposals = response
     })
-    this.api.getProfessors().then((response: any) => {
+    this.api.getSupervisors().then((response: any) => {
       this.professors = response
     })
     this.api.getApplications().then((response: any) => {
@@ -100,10 +103,6 @@ export class StudentPageComponent {
   }
   updateSearchValue(value: string) {
     this.searchValue = value.trim().toLowerCase();
-  }
-
-  updateProfessorsSearchValue(name: string) {
-    this.professorsSearchValue = name.trim().toLowerCase();
   }
 
   toggleProf(prof: any) {
@@ -172,6 +171,7 @@ export class StudentPageComponent {
       text: null,
       supervisors: null,
       cosupervisors: null,
+      extCs: null,
       expirationDate: null,
       abroad: null
     }
@@ -182,6 +182,7 @@ export class StudentPageComponent {
     }).catch((error: any) => {
       console.log(error)
     })
+    new EventEmitter<any>().emit(this.proposals)
   }
 
   date(date: string) {
