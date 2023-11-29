@@ -20,6 +20,8 @@ export class PopupComponent implements OnInit {
   showButton?: boolean = false;
   @Input()
   showLogo?: boolean = true;
+  @Input()
+  small?: boolean = false;
   @Output()
   close = new EventEmitter();
 

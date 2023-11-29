@@ -6,24 +6,30 @@ import { PageSkeletonComponent } from 'src/app/shared/components/page-skeleton/p
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { MatIconModule } from '@angular/material/icon';
+import { APIService } from 'src/app/shared/services/api.service';
 
 describe('StudentPageComponent', () => {
   let component: StudentPageComponent;
   let fixture: ComponentFixture<StudentPageComponent>;
+  let apiService: APIService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientTestingModule, MatIconModule],
-      declarations: [StudentPageComponent, PageSkeletonComponent, ButtonComponent]
+      declarations: [StudentPageComponent, PageSkeletonComponent, ButtonComponent],
+      providers: [APIService]
     });
     fixture = TestBed.createComponent(StudentPageComponent);
     component = fixture.componentInstance;
+    apiService = TestBed.inject(APIService);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  
 
   // it('should show success alert', () => {
   //   component.showAlert('success');

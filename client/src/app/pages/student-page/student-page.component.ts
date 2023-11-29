@@ -4,7 +4,7 @@ import {Component} from '@angular/core';
 import {APIService} from "../../shared/services/api.service";
 import {User} from "../../shared/classes/user";
 import {StudentDetails} from "../../shared/classes/student/student-details";
-import * as dayjs from 'dayjs';
+import * as dayjs from "dayjs"
 
 type ProposalsParams = {
   text: string | null;
