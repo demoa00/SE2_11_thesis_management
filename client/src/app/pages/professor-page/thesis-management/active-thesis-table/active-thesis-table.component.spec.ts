@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActiveThesisTableComponent } from './active-thesis-table.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ActiveThesisTableComponent', () => {
   let component: ActiveThesisTableComponent;
@@ -8,6 +9,7 @@ describe('ActiveThesisTableComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       declarations: [ActiveThesisTableComponent]
     });
     fixture = TestBed.createComponent(ActiveThesisTableComponent);

@@ -40,7 +40,8 @@ describe('CreateThesisFormComponent', () => {
       level: 'Test Level',
       requirements: 'Test Requirements',
       CdS: ['Test CdS'],
-      coSupervisor: ['Test Co-Supervisor'],
+      externalCoSupervisor: ['Test External-Co-Supervisor'],
+      internalCoSupervisor: ['Test Internal-Co-Supervisor'],
       notes: 'Test Notes',
       groups: 'Test Group',
       supervisor: {
