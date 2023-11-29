@@ -9,21 +9,22 @@ const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => {
 const filterByStatus = (filter, sql, params) => {
   if (filter != undefined) {
     if (filter.status != undefined) {
-      if (filter.status === 'Reject') {
+      if (filter.status === 'Rejected') {
         sql += 'AND status = ?';
-        params.push('Reject');
+        params.push('Rejected');
       } else if (filter.status === 'Pending') {
         sql += 'AND status = ?';
         params.push('Pending');
-      } else if (filter.status === 'Accept') {
+      } else if (filter.status === 'Accepted') {
         sql += 'AND status = ?';
-        params.push('Accept');
+        params.push('Accepted');
       }
     }
   }
 
   return [sql, params];
 };
+
 
 exports.getAllApplicationsForStudent = function (studentId, filter) {
   return new Promise(function (resolve, reject) {
