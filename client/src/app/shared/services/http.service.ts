@@ -76,7 +76,9 @@ export class HttpService {
 
   async put(path: string, body: any, additionalHeaders: { [h: string]: string } = {}) {
     return this.makeRequest(async () => {
-      return this.http.put(this.url(path), body, this.headerOptions(additionalHeaders)).toPromise();
+      return this.http.put(this.url(path), body, {
+        ...this.headerOptions(additionalHeaders), withCredentials:true
+      }).toPromise();
     });
   }
 

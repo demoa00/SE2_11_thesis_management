@@ -53,7 +53,7 @@ export class APIService {
     return await this.httpService.post('thesisProposals', body)
   }
 
-  async getAllApplications() {
+  async getApplications() {
     return await this.httpService.get('applications')
   }
 
@@ -122,9 +122,15 @@ export class APIService {
     return await this.httpService.post(`thesisProposals/${body.thesisProposalId}`, body)
   }
 
-  async getApplications(){
-    return await this.httpService.get('applications')
-  }
 
+  async putApplication(studentId:any, thesisProposalId:any, status:'Accepted' | 'Rejected'){
+    return await this.httpService.put(`applications/${thesisProposalId}/${studentId}`, {
+      thesisProposalId: thesisProposalId,
+      applicant: {
+        studentId: studentId
+      },
+      status: status
+    })
+  }
 
 }
