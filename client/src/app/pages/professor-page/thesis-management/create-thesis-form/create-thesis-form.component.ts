@@ -34,8 +34,20 @@ export class CreateThesisFormComponent {
     titleDegree: any;
     degreeId:any;
   }[] =[];
-  coSupervisors:{
+  externalCoSupervisors:{
     externalCoSupervisorId: any;
+    name:any;
+    surname:any;
+    self:any,
+  }[] =[];
+  professors:{
+    professorId: any,
+    name: any,
+    surname: any,
+    self: any
+  }[] =[];
+  selectedProfessors:{
+    professorId: any;
     name:any;
     surname:any;
     self:any,
@@ -72,13 +84,16 @@ export class CreateThesisFormComponent {
     let stringProfessor= localStorage.getItem('professor');
     let stringDegree = localStorage.getItem('degrees');
     let stringCoSupervisors = localStorage.getItem('externalCoSupervisors');
+    let stringInternalCoSupervisors = localStorage.getItem('internalCoSupervisors');
     this.degrees = (JSON.parse(stringDegree!=null?stringDegree:'[]'));
     this.professor = (JSON.parse(stringProfessor!=null?stringProfessor:'{}'));
-    this.coSupervisors = (JSON.parse(stringCoSupervisors!=null?stringCoSupervisors:'[]'));
+    this.externalCoSupervisors = (JSON.parse(stringCoSupervisors!=null?stringCoSupervisors:'[]'));
+    this.professors = (JSON.parse(stringInternalCoSupervisors!=null?stringInternalCoSupervisors:'[]'));
       this.myForm = this.fb.group({
           title: ['', [Validators.required]],
           supervisor: this.professor,
-          coSupervisor: [''],
+          externalCoSupervisor: [''],
+          internalCoSupervisor: [''],
           level: ['', [Validators.required]],
           thesisType: ['', [Validators.required]],
           groups: [this.professor.codGroup],
@@ -113,14 +128,18 @@ export class CreateThesisFormComponent {
           coSupervisor: this.selectedCoSupervisors.map((element)=>{
             return {
               coSupervisorId: element.externalCoSupervisorId
-            };
+            }
 
-          }),
+          }).concat(this.selectedProfessors.map((element)=>{
+            return {
+              coSupervisorId: element.professorId
+            }
+
+          })),
           notes: this.myForm.get('notes')?.value!=undefined?'none':this.myForm.get('notes')?.value
         }
         console.log(submitform);
           const response = await this.api.insertNewThesis(submitform)
-          // Handle form submission
           this.requestAccepted.emit(response !=undefined);
           this.response.emit({});
       }
@@ -161,8 +180,8 @@ export class CreateThesisFormComponent {
 
   onSelectCoSupervisorChange(event: any) {
     console.log(event.target.value)
-    let cosupervisor = this.coSupervisors.find(elemento => elemento.externalCoSupervisorId==event.target.value)
-    this.coSupervisors = this.coSupervisors.filter(elemento => elemento.externalCoSupervisorId!=event.target.value)
+    let cosupervisor = this.externalCoSupervisors.find(elemento => elemento.externalCoSupervisorId==event.target.value)
+    this.externalCoSupervisors = this.externalCoSupervisors.filter(elemento => elemento.externalCoSupervisorId!=event.target.value)
     this.selectedCoSupervisors.push(cosupervisor?cosupervisor:{
       externalCoSupervisorId: '',
       name:'',
@@ -174,14 +193,34 @@ export class CreateThesisFormComponent {
     const valoreDiv = event.target.textContent;
     let cosupervisor = this.selectedCoSupervisors.find(elemento => elemento.name==valoreDiv.split(' ')[0] && elemento.surname==valoreDiv.split(' ')[1])
     this.selectedCoSupervisors = this.selectedCoSupervisors.filter(elemento => elemento.externalCoSupervisorId!=cosupervisor?.externalCoSupervisorId)
-    this.coSupervisors.push(cosupervisor?cosupervisor:{
+    this.externalCoSupervisors.push(cosupervisor?cosupervisor:{
       externalCoSupervisorId: '',
       name:'',
       surname:'',
       self:'',
     })
-
-
+  }
+  onSelectProfessorChange(event: any) {
+    console.log(event.target.value)
+    let cosupervisor = this.professors.find(elemento => elemento.professorId==event.target.value)
+    this.professors = this.professors.filter(elemento => elemento.professorId!=event.target.value)
+    this.selectedProfessors.push(cosupervisor?cosupervisor:{
+      professorId: '',
+      name:'',
+      surname:'',
+      self:'',
+    })
+  }
+  removeProfessor(event: any){
+    const valoreDiv = event.target.textContent;
+    let cosupervisor = this.selectedProfessors.find(elemento => elemento.name==valoreDiv.split(' ')[0] && elemento.surname==valoreDiv.split(' ')[1])
+    this.selectedProfessors = this.selectedProfessors.filter(elemento => elemento.professorId!=cosupervisor?.professorId)
+    this.professors.push(cosupervisor?cosupervisor:{
+      professorId: '',
+      name:'',
+      surname:'',
+      self:'',
+    })
   }
   onSelectCdSChange(event: any) {
     console.log(event.target.value)

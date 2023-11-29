@@ -20,10 +20,10 @@
            class="text-danger text-sm mt-1">Type is required</div>
     </div>
     <div class="">
-      <label for="coSupervisor" class="label-field">Co-supervisor</label>
-      <select id="coSupervisor" formControlName="coSupervisor" class="input-field" (change)="onSelectCoSupervisorChange($event)" (focus)="onSelectFocus()" (blur)="onSelectBlur()" >
+      <label for="externalCoSupervisor" class="label-field">External Co-supervisor</label>
+      <select id="externalCoSupervisor" formControlName="externalCoSupervisor" class="input-field" (change)="onSelectCoSupervisorChange($event)" (focus)="onSelectFocus()" (blur)="onSelectBlur()" >
         <option value ='' disabled selected hidden>Select a co-supervisor</option>
-        <option *ngFor="let coSupervisor of coSupervisors" value="{{coSupervisor.externalCoSupervisorId}}">{{coSupervisor.name}} {{coSupervisor.surname}}</option>
+        <option *ngFor="let coSupervisor of externalCoSupervisors" value="{{coSupervisor.externalCoSupervisorId}}">{{coSupervisor.name}} {{coSupervisor.surname}}</option>
       </select>
       <div *ngFor="let selectedCS of selectedCoSupervisors" class=" items-center flex gap-2 text-gray-700 hover:text-red-600 hover:cursor-pointer text-sm mt-1" (click)="removeCoSupervisor($event)" >{{selectedCS.name}} {{selectedCS.surname}}</div>
     </div>
@@ -32,12 +32,20 @@
       <input type="checkbox" id="abroad" formControlName="abroad" placeholder="Abroad" readonly >
     </div>
     <div class="">
-      <label for="groups" class="label-field">Groups</label>
-      <input type="text" id="groups" formControlName="groups" class="input-field" placeholder="Groups" readonly >
+      <label for="internalCoSupervisor" class="label-field">Internal Co-supervisor</label>
+      <select id="internalCoSupervisor" formControlName="internalCoSupervisor" class="input-field" (change)="onSelectProfessorChange($event)" (focus)="onSelectFocus()" (blur)="onSelectBlur()" >
+        <option value ='' disabled selected hidden>Select a co-supervisor</option>
+        <option *ngFor="let coSupervisor of professors" value="{{coSupervisor.professorId}}">{{coSupervisor.name}} {{coSupervisor.surname}}</option>
+      </select>
+      <div *ngFor="let selectedCS of selectedProfessors" class=" items-center flex gap-2 text-gray-700 hover:text-red-600 hover:cursor-pointer text-sm mt-1" (click)="removeProfessor($event)" >{{selectedCS.name}} {{selectedCS.surname}}</div>
     </div>
   </div>
 
   <div class="flex flex-col gap-6">
+    <div class="">
+      <label for="groups" class="label-field">Groups</label>
+      <input type="text" id="groups" formControlName="groups" class="input-field" placeholder="Groups" readonly >
+    </div>
     <div class="">
       <label for="level" class="label-field">Level *</label>
       <select id="level" formControlName="level" class="input-field" required>

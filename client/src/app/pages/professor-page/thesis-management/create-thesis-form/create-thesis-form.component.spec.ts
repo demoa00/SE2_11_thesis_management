@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { CreateThesisFormComponent } from './create-thesis-form.component';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APIService } from 'src/app/shared/services/api.service';
-import { of } from 'rxjs';
 
 describe('CreateThesisFormComponent', () => {
   let component: CreateThesisFormComponent;
@@ -84,8 +83,8 @@ describe('CreateThesisFormComponent', () => {
   it('should handle valid stringCoSupervisors', () => {
     const coSupervisorsData = '[{"externalCoSupervisorId": "123", "name": "Allen", "surname": "Iverson", "self": "y"}]';
     localStorage.setItem('externalCoSupervisors', coSupervisorsData);
-    component.coSupervisors = JSON.parse(coSupervisorsData);
-    expect(component.coSupervisors).toEqual(JSON.parse(coSupervisorsData));
+    component.externalCoSupervisors = JSON.parse(coSupervisorsData);
+    expect(component.externalCoSupervisors).toEqual(JSON.parse(coSupervisorsData));
   });
 
   it('should return supervisor name on getSupervisorName', () => {
@@ -103,7 +102,7 @@ describe('CreateThesisFormComponent', () => {
       self: 'Some info',
     };
 
-    component.coSupervisors = [coSupervisorData];
+    component.externalCoSupervisors = [coSupervisorData];
     component.selectedCoSupervisors = [];
 
     spyOn(component, 'onSelectCoSupervisorChange').and.callThrough();
@@ -113,7 +112,7 @@ describe('CreateThesisFormComponent', () => {
 
     expect(component.onSelectCoSupervisorChange).toHaveBeenCalledWith(event);
     expect(component.selectedCoSupervisors).toEqual([coSupervisorData]);
-    expect(component.coSupervisors).toEqual([]);
+    expect(component.externalCoSupervisors).toEqual([]);
   });
 
   it('should handle removeCoSupervisor', () => {
@@ -125,7 +124,7 @@ describe('CreateThesisFormComponent', () => {
     };
 
     component.selectedCoSupervisors = [coSupervisorData];
-    component.coSupervisors = [];
+    component.externalCoSupervisors = [];
 
     spyOn(component, 'removeCoSupervisor').and.callThrough();
 
@@ -134,7 +133,7 @@ describe('CreateThesisFormComponent', () => {
 
     expect(component.removeCoSupervisor).toHaveBeenCalledWith(mockEvent);
     expect(component.selectedCoSupervisors).toEqual([]);
-    expect(component.coSupervisors).toEqual([coSupervisorData]);
+    expect(component.externalCoSupervisors).toEqual([coSupervisorData]);
   });
 
   it('should set and reset selectFocus correctly', () => {
