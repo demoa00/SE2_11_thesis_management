@@ -83,7 +83,6 @@ export class APIService {
   async getExternalCoSupervisors() {
     return await this.httpService.get('externalCoSupervisors/',false,true).then((response: any)=>{
       localStorage.setItem('externalCoSupervisors',JSON.stringify(response))
-      console.log(response)
       return response
     })
   }
@@ -91,7 +90,6 @@ export class APIService {
   async getCoSupervisors() {
     return await this.httpService.get('professors/?cosupervisor=true',false,true).then((response: any)=>{
       localStorage.setItem('coSupervisors',JSON.stringify(response))
-      console.log(response)
       return response
     })
   }
@@ -117,8 +115,10 @@ export class APIService {
         }
       }
       if (params.cosupervisors !== null) {
+        console.log(params.cosupervisors)
         for (let cs of params.cosupervisors) {
-          url += `cosupervisor=${cs?.professorId}&`
+          let id = cs?.professorId === undefined ? cs?.externalCoSupervisorId : cs?.professorId
+          url += `cosupervisor=${id}&`
         }
       }
       if(params.expirationDate !== null) {

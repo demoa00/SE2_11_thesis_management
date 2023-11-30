@@ -6,7 +6,7 @@
       [showSearch]="false">
       <div *ngFor="let cs of css">
         <div class="itemsContainer" (click)="toggleCs(cs)">
-          <app-checkbox [checked]="selectedCs.includes(cs)"></app-checkbox>
+          <app-checkbox [checked]="isThereCs(cs)"></app-checkbox>
           <p class="text-right">{{cs.name}} {{cs.surname}}</p>
         </div>
       </div>
@@ -19,7 +19,7 @@
       [showSearch]="false">
       <div *ngFor="let cs of extCs">
         <div class="itemsContainer" (click)="toggleExtCs(cs)">
-          <app-checkbox [checked]="selectedExtCs.includes(cs)"></app-checkbox>
+          <app-checkbox [checked]="isThereExtCs(cs)"></app-checkbox>
           <p class="text-right">{{cs.name}} {{cs.surname}}</p>
         </div>
       </div>
