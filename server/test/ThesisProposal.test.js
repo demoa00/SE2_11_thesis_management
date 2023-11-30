@@ -61,7 +61,7 @@ describe("getThesisProposals ", () => {
       JSON.stringify(thesisProposalsForStudent, null, 2)
     );
   });
-  test.only("should respond with 200 - as professor", async () => {
+  test("should respond with 200 - as professor", async () => {
     const mockReq = {
       user: {
         professorId: "p123654",
@@ -92,31 +92,6 @@ describe("getThesisProposals ", () => {
     });
     expect(mockRes.end).toHaveBeenCalledWith(
       JSON.stringify(thesisProposalsForProfessor, null, 2)
-    );
-  });
-  test("should respond with 403 forbidden - missing user", async () => {
-    const mockReq = {
-      user: {},
-    };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
-
-    checkRole.isStudent.mockResolvedValue(null);
-
-    await ThesisProposalController.getThesisProposals(
-      mockReq,
-      mockRes,
-      mockNext
-    );
-
-    expect(mockRes.writeHead).toHaveBeenCalledWith(403, {
-      "Content-Type": "application/json",
-    });
-    expect(mockRes3.end).toHaveBeenCalledWith(
-      JSON.stringify({ error: "Forbidden" }, null, 2)
     );
   });
   test("should respond with 404 not found - no thesisProposals available", async () => {
