@@ -43,16 +43,16 @@ sections:
 ## QUALITY MEASURES 
 
 - Unit Testing:
-  - Total hours estimated
-  - Total hours spent
-  - Nr of automated unit test cases 
-  - Coverage (if available)
+  - Total hours estimated : 24 h
+  - Total hours spent : 24 h 45 m
+  - Nr of automated unit test cases : 88 
+  - Coverage (if available) : 50 %
 - E2E testing:
-  - Total hours estimated
-  - Total hours spent
+  - Total hours estimated : 0
+  - Total hours spent : 0
 - Code review 
-  - Total hours estimated 
-  - Total hours spent
+  - Total hours estimated : 0 
+  - Total hours spent : 0
   
 
 
@@ -69,7 +69,8 @@ sections:
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
 >Complete Docker implementation,
 Refine mobile layout,
-Tasks to fix the tests
+Tasks to fix the tests.
+>Establish a deadline two or three days before the Demo, so we have enough time to test and ensure that everything works properly.
 
 - One thing you are proud of as a Team!!
 When we work as a team we amnage to overcome the troubles
