@@ -5,6 +5,9 @@
 //-- -- -- -- -- -- --
 
 require('dotenv').config()
+
+const configCORS = require('./config.js').config();
+console.log(configCORS)
 const http = require('http');
 const session = require('express-session');
 const passport = require('passport');
@@ -82,7 +85,7 @@ app.use(session({
 }));
 app.use(morgan('dev'));
 app.use(cors({
-    origin: 'http://localhost:4200',
+    origin: configCORS.corsConfig,
     credentials: true
 }));
 
