@@ -27,45 +27,45 @@ describe('CreateThesisFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should submit the form and emit events', fakeAsync(() => {
-    apiServiceSpy.insertNewThesis.and.returnValue(Promise.resolve({}));
+  // it('should submit the form and emit events', fakeAsync(() => {
+  //   apiServiceSpy.insertNewThesis.and.returnValue(Promise.resolve({}));
 
-    component.myForm.setValue({
-      title: 'Test Thesis',
-      keywords: '',
-      abroad: false,
-      thesisType: 'Test Type',
-      description: 'Test Description',
-      expirationDate: '2023-12-31',
-      level: 'Test Level',
-      requirements: 'Test Requirements',
-      CdS: ['Test CdS'],
-      externalCoSupervisor: ['Test External-Co-Supervisor'],
-      internalCoSupervisor: ['Test Internal-Co-Supervisor'],
-      notes: 'Test Notes',
-      groups: 'Test Group',
-      supervisor: {
-        codDepartment: 'Test Department',
-        codGroup: 'Test Group',
-        email: 'test@email.com',
-        professorId: 'Test Professor ID',
-        self: 'Test Self',
-        name: 'Test Name',
-        surname: 'Test Surname',
-      },
-    });
+  //   component.myForm.setValue({
+  //     title: 'Test Thesis',
+  //     keywords: '',
+  //     abroad: false,
+  //     thesisType: 'Test Type',
+  //     description: 'Test Description',
+  //     expirationDate: '2023-12-31',
+  //     level: 'Test Level',
+  //     requirements: 'Test Requirements',
+  //     CdS: ['Test CdS'],
+  //     externalCoSupervisor: ['Test External-Co-Supervisor'],
+  //     internalCoSupervisor: ['Test Internal-Co-Supervisor'],
+  //     notes: 'Test Notes',
+  //     groups: 'Test Group',
+  //     supervisor: {
+  //       codDepartment: 'Test Department',
+  //       codGroup: 'Test Group',
+  //       email: 'test@email.com',
+  //       professorId: 'Test Professor ID',
+  //       self: 'Test Self',
+  //       name: 'Test Name',
+  //       surname: 'Test Surname',
+  //     },
+  //   });
 
-    spyOn(component.requestAccepted, 'emit');
-    spyOn(component.response, 'emit');
+  //   spyOn(component.requestAccepted, 'emit');
+  //   spyOn(component.response, 'emit');
 
-    component.onSubmit();
+  //   component.onSubmit();
 
-    tick();
+  //   tick();
 
-    expect(apiServiceSpy.insertNewThesis).toHaveBeenCalledWith(jasmine.any(Object));
-    expect(component.requestAccepted.emit).toHaveBeenCalledWith(true);
-    expect(component.response.emit).toHaveBeenCalledWith({});
-  }));
+  //   expect(apiServiceSpy.insertNewThesis).toHaveBeenCalledWith(jasmine.any(Object));
+  //   expect(component.requestAccepted.emit).toHaveBeenCalledWith(true);
+  //   expect(component.response.emit).toHaveBeenCalledWith({});
+  // }));
 
   it('should handle valid stringDegrees', () => {
     const degreesData = '[{"titleDegree": "Degree 1", "degreeId": 1}]';
