@@ -19,10 +19,12 @@
 </table>
   <h3 *ngIf="!rows"> No Active Thesis Avaiable</h3>
 </div>
-<app-thesis-details *ngIf="selectedProposal" [selectedProposal]="selectedProposal"></app-thesis-details>
-<div *ngIf="selectedProposal" class="projectButtons">
-  <app-button (click)="selectedProposal=undefined">Back</app-button>
-  <app-button (click)="openCreatePopup()">Update</app-button>
+<div class="card flex flex-col">
+  <app-thesis-details *ngIf="selectedProposal" [selectedProposal]="selectedProposal"></app-thesis-details>
+  <div *ngIf="selectedProposal" class="projectButtons">
+    <app-button (click)="selectedProposal=undefined">Back</app-button>
+    <app-button (click)="openCreatePopup()">Update</app-button>
+  </div>
 </div>
 
 <app-popup
