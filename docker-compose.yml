@@ -1,0 +1,15 @@
+version: '3'
+services:
+  angular-app:
+    build:
+      context: ./client
+    ports:
+      - "80:80"
+    depends_on:
+      - express-server
+
+  express-server:
+    build:
+      context: ./server
+    ports:
+      - "3000:3000"

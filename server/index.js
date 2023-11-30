@@ -208,7 +208,7 @@ const isProfessor = (req, res, next) => {
 
 /* LOGIN/LOGOUT API */
 app.get('/api/app', redirectToLogin, (req, res) => {
-    res.redirect('http://localhost:4200');
+    res.redirect(configCORS.redirectUrl);
 });
 app.get('/api/authenticatedSession',
     passport.authenticate('saml', {

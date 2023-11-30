@@ -3,25 +3,30 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class HttpService {
-  private rootUrl = localStorage.getItem('apiEndpoint');
+  private rootUrl = 'http://localhost:3000/api';
   private prefix = '/';
 
   constructor(private http: HttpClient) {
+    /*
     if (!localStorage.getItem('apiEndpoint')) {
       this.loadPreferences();
     }
+
+     */
     if (window.location.hostname.indexOf('staging') >= 0 || window.location.hostname.indexOf('localhost') >= 0) {
     }
   }
-  async loadPreferences() {
+ /* async loadPreferences() {
     const preferences = await fetch('/assets/preferences.json').then((response) => response.json());
-    localStorage.setItem('urlSocket', preferences.urlSocket);
+    localStorage.setItem('urlSocket', 'http://localhost:3000/api');
     localStorage.setItem('apiEndpoint', 'http://localhost:3000/api');
     localStorage.setItem('timeRangeMs', preferences.timeRangeMs);
     localStorage.setItem('timebarStartDeltaMs', preferences.timebarStartDeltaMs);
     this.rootUrl = localStorage.getItem('apiEndpoint');
   }
 
+
+  */
   client() {
     return this.http;
   }
@@ -40,8 +45,8 @@ export class HttpService {
     usePrefix = true,
     additionalHeaders: { [h: string]: string } = {}
   ): Promise<T> {
-    return this.makeRequest(async () => {
-      return this.http
+    return await this.makeRequest(async () => {
+      return await this.http
         .get<T>(rawpath ? path : this.url(path, usePrefix),{...additionalHeaders, withCredentials:true})
         .toPromise();
     });
