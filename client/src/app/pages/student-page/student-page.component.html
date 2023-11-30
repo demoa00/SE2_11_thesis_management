@@ -5,7 +5,7 @@
        [class.hovered]="n.hovered && !n.selected"
        (mouseenter)="n.hovered=true"
        (mouseleave)="n.hovered=false"
-       (click)="selectMenuItem(n.id); n.id == 1 ? selectedProposal=null : null"
+       (click)="selectMenuItem(n.id); n.id == 1 ? selectedProposal=null : null; closeMenu()"
        *ngFor="let n of menuItems">
     <p>{{n.text}}</p>
   </div>

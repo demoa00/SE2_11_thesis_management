@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":["../../../styles.scss"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AASA;EACE;EACA;EACA;EACA;EACA;EACA;;AACA;EACE,kBAbY;;AAcZ;EAAG;;AAEL;EACE,kBAnBQ;;;AAuBZ;EACE;;;AAEF;EACE;EACA;EACA","file":"professor-page.component.css"}
+{"version":3,"sourceRoot":"","sources":["../../../styles.scss"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AAmBA;EACE;EACA;EACA;EACA;EACA;;AACA;EACE,kBAtBY;;AAuBZ;EAAG;;AAEL;EACE,kBA5BQ;;;AAgCZ;EACE;;;AAEF;EACE;EACA;EACA","file":"professor-page.component.css"}

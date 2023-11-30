@@ -6,6 +6,7 @@
 
 .title {
   height: 12.5%;
+  @apply p-4 flex items-center justify-between border-b-2 border-orange-500;
 }
 .main {
   height: 87.5%;
@@ -18,3 +19,41 @@
   object-fit: contain;
 }
 
+.left-col {
+  @apply w-1/6 border-r-2;
+  @media #{$media-mobile} {
+    @apply absolute top-0 left-0 h-full z-20 w-1/2;
+    background-color: white;
+    //width: 50vw;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    &.open {
+      transform: translateX(0);
+    }
+  }
+}
+
+.left-overlay {
+  @media #{$media-mobile} {
+    @apply absolute top-0 left-0 h-full w-full z-10;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    display: none;
+    &.open {
+      display: block;
+      opacity: 1;
+    }
+  }
+}
+
+.menu-icon {
+  display: none;
+  @media #{$media-mobile} {
+    cursor: pointer;
+    display: block;
+  }
+}
+
+.main-col {
+  @apply md:w-5/6 max-md:w-full flex flex-col;
+}
