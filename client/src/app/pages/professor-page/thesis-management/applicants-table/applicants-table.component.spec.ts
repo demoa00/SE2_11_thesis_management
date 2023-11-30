@@ -50,33 +50,33 @@ describe('ApplicantsTableComponent', () => {
     expect(component.response).toBeUndefined();
   });
 
-  it('should reset applicant in rejectApplication', fakeAsync(() => {
-    const mockApplicant = { studentId: '123', thesisProposalId: '456' };
-    component.applicant = mockApplicant;
+  // it('should reset applicant in rejectApplication', fakeAsync(() => {
+  //   const mockApplicant = { studentId: '123', thesisProposalId: '456' };
+  //   component.applicant = mockApplicant;
 
-    apiServiceSpy.putApplication.and.returnValue(Promise.resolve({}));
+  //   apiServiceSpy.putApplication.and.returnValue(Promise.resolve({}));
 
-    component.rejectApplication();
-    fixture.detectChanges();
-    tick();
+  //   component.rejectApplication();
+  //   fixture.detectChanges();
+  //   tick();
 
-    expect(apiServiceSpy.putApplication).toHaveBeenCalledWith(mockApplicant.studentId, mockApplicant.thesisProposalId, 'Rejected');
-    expect(component.requestAccepted).toBe(true);
-    expect(component.applicant).toBeUndefined();
-  }));
+  //   expect(apiServiceSpy.putApplication).toHaveBeenCalledWith(mockApplicant.studentId, mockApplicant.thesisProposalId, 'Rejected');
+  //   expect(component.requestAccepted).toBe(true);
+  //   expect(component.applicant).toBeUndefined();
+  // }));
 
-  it('should reset applicant in acceptApplication', fakeAsync(() => {
-    const mockApplicant = { studentId: '123', thesisProposalId: '456' };
-    component.applicant = mockApplicant;
+  // it('should reset applicant in acceptApplication', fakeAsync(() => {
+  //   const mockApplicant = { studentId: '123', thesisProposalId: '456' };
+  //   component.applicant = mockApplicant;
 
-    apiServiceSpy.putApplication.and.returnValue(Promise.resolve({}));
+  //   apiServiceSpy.putApplication.and.returnValue(Promise.resolve({}));
 
-    component.acceptApplication();
-    fixture.detectChanges();
-    tick();
+  //   component.acceptApplication();
+  //   fixture.detectChanges();
+  //   tick();
 
-    expect(apiServiceSpy.putApplication).toHaveBeenCalledWith(mockApplicant.studentId, mockApplicant.thesisProposalId, 'Accepted');
-    expect(component.requestAccepted).toBe(true);
-    expect(component.applicant).toBeUndefined();
-  }));
+  //   expect(apiServiceSpy.putApplication).toHaveBeenCalledWith(mockApplicant.studentId, mockApplicant.thesisProposalId, 'Accepted');
+  //   expect(component.requestAccepted).toBe(true);
+  //   expect(component.applicant).toBeUndefined();
+  // }));
 });

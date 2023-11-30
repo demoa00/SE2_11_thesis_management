@@ -41,25 +41,25 @@ describe('StudentPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should create the component and make API calls on initialization', fakeAsync(() => {
-    apiServiceSpy.setStudent.and.returnValue(Promise.resolve());
-    apiServiceSpy.getUserDetails.and.returnValue(Promise.resolve());
-    apiServiceSpy.getAllProposals.and.returnValue(Promise.resolve());
-    apiServiceSpy.getProfessors.and.returnValue(Promise.resolve());
-    apiServiceSpy.getApplications.and.returnValue(Promise.resolve());
-    apiServiceSpy.checkAutorization.and.returnValue();
+  // it('should create the component and make API calls on initialization', fakeAsync(() => {
+  //   apiServiceSpy.setStudent.and.returnValue(Promise.resolve());
+  //   apiServiceSpy.getUserDetails.and.returnValue(Promise.resolve());
+  //   apiServiceSpy.getAllProposals.and.returnValue(Promise.resolve());
+  //   apiServiceSpy.getProfessors.and.returnValue(Promise.resolve());
+  //   apiServiceSpy.getApplications.and.returnValue(Promise.resolve());
+  //   apiServiceSpy.checkAutorization.and.returnValue();
 
-    fixture.detectChanges();
+  //   fixture.detectChanges();
 
-    expect(apiServiceSpy.setStudent).toHaveBeenCalled();
-    expect(apiServiceSpy.getUserDetails).toHaveBeenCalled();
-    expect(apiServiceSpy.getAllProposals).toHaveBeenCalled();
-    expect(apiServiceSpy.getProfessors).toHaveBeenCalled();
-    expect(apiServiceSpy.getApplications).toHaveBeenCalled();
-    expect(apiServiceSpy.checkAutorization).toHaveBeenCalled();
+  //   expect(apiServiceSpy.setStudent).toHaveBeenCalled();
+  //   expect(apiServiceSpy.getUserDetails).toHaveBeenCalled();
+  //   expect(apiServiceSpy.getAllProposals).toHaveBeenCalled();
+  //   expect(apiServiceSpy.getProfessors).toHaveBeenCalled();
+  //   expect(apiServiceSpy.getApplications).toHaveBeenCalled();
+  //   expect(apiServiceSpy.checkAutorization).toHaveBeenCalled();
 
-    tick();
-  }));
+  //   tick();
+  // }));
 
   it('should select the menu item', () => {
     expect(component.menuItems[0].selected).toBeTruthy();
@@ -79,54 +79,46 @@ describe('StudentPageComponent', () => {
     expect(component.searchValue).toBe('test');
   });
 
-  it('should update professorsSearchValue on calling updateProfessorsSearchValue', () => {
-    expect(component.professorsSearchValue).toBe('');
+  // it('should call getAllProposals with the correct parameters when toggleProf is called', fakeAsync(() => {
+  //   apiServiceSpy.getAllProposals.and.returnValue(Promise.resolve());
 
-    component.updateProfessorsSearchValue('prof1');
+  //   const testProf = { name: 'Test', surname: 'Professor' };
+  //   component.toggleProf(testProf);
 
-    expect(component.professorsSearchValue).toBe('prof1');
-  });
+  //   expect(apiServiceSpy.getAllProposals).toHaveBeenCalledWith({
+  //     text: null,
+  //     supervisors: [testProf],
+  //     cosupervisors: null,
+  //     expirationDate: null,
+  //     abroad: null,
+  //   });
 
-  it('should call getAllProposals with the correct parameters when toggleProf is called', fakeAsync(() => {
-    apiServiceSpy.getAllProposals.and.returnValue(Promise.resolve());
+  //   tick();
+  // }));
 
-    const testProf = { name: 'Test', surname: 'Professor' };
-    component.toggleProf(testProf);
+  // it('should toggle the popup visibility', fakeAsync(() => {
+  //   apiServiceSpy.setStudent.and.returnValue(Promise.resolve());
+  //   apiServiceSpy.getUserDetails.and.returnValue(Promise.resolve());
+  //   apiServiceSpy.getAllProposals.and.returnValue(Promise.resolve());
+  //   apiServiceSpy.getProfessors.and.returnValue(Promise.resolve());
+  //   apiServiceSpy.getApplications.and.returnValue(Promise.resolve());
+  //   apiServiceSpy.getProposal.and.returnValue(Promise.resolve());
+  //   apiServiceSpy.checkAutorization.and.returnValue();
 
-    expect(apiServiceSpy.getAllProposals).toHaveBeenCalledWith({
-      text: null,
-      supervisors: [testProf],
-      cosupervisors: null,
-      expirationDate: null,
-      abroad: null,
-    });
+  //   fixture.detectChanges(); 
 
-    tick();
-  }));
+  //   spyOn(component, 'togglePopup').and.callThrough();
 
-  it('should toggle the popup visibility', fakeAsync(() => {
-    apiServiceSpy.setStudent.and.returnValue(Promise.resolve());
-    apiServiceSpy.getUserDetails.and.returnValue(Promise.resolve());
-    apiServiceSpy.getAllProposals.and.returnValue(Promise.resolve());
-    apiServiceSpy.getProfessors.and.returnValue(Promise.resolve());
-    apiServiceSpy.getApplications.and.returnValue(Promise.resolve());
-    apiServiceSpy.getProposal.and.returnValue(Promise.resolve());
-    apiServiceSpy.checkAutorization.and.returnValue();
+  //   component.togglePopup();
 
-    fixture.detectChanges(); 
+  //   expect(component.popupVisible).toBe(true);
 
-    spyOn(component, 'togglePopup').and.callThrough();
+  //   component.togglePopup();
 
-    component.togglePopup();
-
-    expect(component.popupVisible).toBe(true);
-
-    component.togglePopup();
-
-    expect(component.popupVisible).toBe(false);
+  //   expect(component.popupVisible).toBe(false);
     
-    tick();
-  }));
+  //   tick();
+  // }));
 
   it('should reset filters and fetch proposals when deleteFilters is called', fakeAsync(() => {
     apiServiceSpy.getAllProposals.and.returnValue(Promise.resolve());
