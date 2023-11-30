@@ -1,4 +1,4 @@
-TEMPLATE FOR RETROSPECTIVE (Team ##)
+RETROSPECTIVE 2 (Team 11)
 =====================================
 
 The retrospective should include _at least_ the following
