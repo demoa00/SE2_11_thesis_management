@@ -7,7 +7,7 @@
       <img src="assets/images/LogoPoliWhite.svg" *ngIf="theme" alt="no image found">
     </div>
     <div class="flex flex-col justify-between p-4">
-      <div class="w-full sm:hidden">
+      <div class="w-full md:hidden">
         <div class="flex items-center">
           <img alt="propic" src="https://picsum.photos/512/512" class="propic mr-4" *ngIf="currentRoute!=='/'">
           <p class="text-sm uppercase" *ngIf="currentRoute==='/student'">{{student?.name}} {{student?.surname}}, {{student?.studentId}}</p>
@@ -19,7 +19,7 @@
     </div>
   </div>
   <div class="left-overlay {{menuOpen ? 'open' : ''}}" (click)="closeMenu()"></div>
-  <div class="main-col">
+  <div class="md:w-5/6 max-md:w-full flex flex-col">
     <div class="title">
       <mat-icon class="menu-icon" (click)="menuOpen = !menuOpen">menu</mat-icon>
       <h2 class="uppercase text-3xl font-bold">thesis proposals</h2>
@@ -29,13 +29,13 @@
         <p class="text-sm uppercase" *ngIf="currentRoute==='/professor'">{{professor?.name}} {{professor?.surname}}, {{professor?.professorId}}</p>
         <app-button class="ml-4" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
       </div>
-      <mat-icon class="menu-icon" (click)="menuOpen = !menuOpen">menu</mat-icon>
+      <mat-icon class="menu-icon" (click)="menuOpen = !menuOpen">notifications</mat-icon>
     </div>
     <div class="main columns-2 flex">
-      <div class="md:w-4/5 max-md:w-full p-4">
+      <div class="main-col">
         <ng-content select="[main-col]"></ng-content>
       </div>
-      <div class="max-md:hidden w-1/5 border-l-2">
+      <div class="right-col">
         <ng-content select="[right-col]"></ng-content>
       </div>
     </div>

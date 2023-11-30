@@ -52,10 +52,9 @@
 .left-col {
   @apply w-1/6 border-r-2;
 }
-@media only screen and (max-width : 640px) {
+@media only screen and (max-width : 768px) {
   .left-col {
-    @apply absolute top-0 left-0 h-full z-20 w-1/2;
-    background-color: white;
+    @apply absolute top-0 left-0 h-full z-20 w-1/2 bg-grey-50;
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
   }
@@ -64,7 +63,7 @@
   }
 }
 
-@media only screen and (max-width : 640px) {
+@media only screen and (max-width : 768px) {
   .left-overlay {
     @apply absolute top-0 left-0 h-full w-full z-10;
     background-color: rgba(0, 0, 0, 0.5);
@@ -80,7 +79,7 @@
 .menu-icon {
   display: none;
 }
-@media only screen and (max-width : 640px) {
+@media only screen and (max-width : 768px) {
   .menu-icon {
     cursor: pointer;
     display: block;
@@ -88,7 +87,22 @@
 }
 
 .main-col {
-  @apply md:w-5/6 max-md:w-full flex flex-col;
+  @apply md:w-4/5 max-md:w-full p-4;
+}
+
+.right-col {
+  @apply max-md:hidden w-1/5 border-l-2 bg-gray-50;
+}
+@media only screen and (max-width : 768px) {
+  .right-col {
+    @apply absolute top-0 right-0 h-full z-20 w-1/2;
+    background-color: white;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  .right-col.open {
+    transform: translateX(0);
+  }
 }
 
 /*# sourceMappingURL=page-skeleton.component.css.map */
