@@ -1,10 +1,9 @@
 'use strict';
 
-const sqlite = require('sqlite3');
 const dayjs = require('dayjs');
 const checkRole = require('../utils/checkRole');
 
-const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
+const db = require('../utils/dbConnection');
 
 const filterByStatus = (filter, sql, params) => {
   if (filter != undefined && filter.status != undefined) {

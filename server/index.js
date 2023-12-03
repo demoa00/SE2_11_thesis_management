@@ -4,10 +4,9 @@
 // SERVER DEPENDENCES
 //-- -- -- -- -- -- --
 
-require('dotenv').config()
+require('dotenv').config();
 
-const configCORS = require('./config.js').config();
-console.log(configCORS)
+const configCors = require('./config.js').config();
 const http = require('http');
 const session = require('express-session');
 const passport = require('passport');
@@ -85,7 +84,7 @@ app.use(session({
 }));
 app.use(morgan('dev'));
 app.use(cors({
-    origin: configCORS.corsConfig,
+    origin: configCors.corsConfig,
     credentials: true
 }));
 
@@ -211,7 +210,7 @@ const isProfessor = (req, res, next) => {
 
 /* LOGIN/LOGOUT API */
 app.get('/api/app', redirectToLogin, (req, res) => {
-    res.redirect(configCORS.redirectUrl);
+    res.redirect(configCors.redirectUrl);
 });
 app.get('/api/authenticatedSession',
     passport.authenticate('saml', {
@@ -257,8 +256,8 @@ app.post('/saml/consume',
 app.get('/api/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposals);
 app.get('/api/thesisProposals/:thesisProposalId', isLoggedIn, thesisProposalController.getThesisProposalById);
 app.post('/api/thesisProposals', isLoggedIn, isProfessor, validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal);
-app.put('/api/thesisProposals/:thesisProposalId', isLoggedIn, isProfessor, validate({ body: thesisProposalSchema }));
-app.delete('/api/thesisProposals/:thesisProposalId', isLoggedIn, isProfessor);
+app.put('/api/thesisProposals/:thesisProposalId', isLoggedIn, isProfessor, validate({ body: thesisProposalSchema }), thesisProposalController.updateThesisProposal);
+app.delete('/api/thesisProposals/:thesisProposalId', isLoggedIn, isProfessor, thesisProposalController.deleteThesisProposal);
 
 
 /* APPLICATIONS API */

@@ -47,7 +47,7 @@ module.exports.insertNewThesisProposal = async function insertNewThesisProposal(
 
 module.exports.updateThesisProposal = async function updateThesisProposal(req, res, next) {
   try {
-    let thesisProposalUpdated = await ThesisProposal.updateThesisProposal(req.user.userId, req.body);
+    let thesisProposalUpdated = await ThesisProposal.updateThesisProposal(req.user.userId, req.body, req.params.thesisProposalId);
 
     utils.writeJson(res,  thesisProposalUpdated, 200);
   } catch (error) {
@@ -59,7 +59,7 @@ module.exports.deleteThesisProposal = async function deleteThesisProposal(req, r
   try {
     await ThesisProposal.deleteThesisProposal(req.user.userId, req.params.thesisProposalId);
 
-    utils.writeJson(res, 204);
+    utils.writeJson(res, 'No Content', 204);
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
   }

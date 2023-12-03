@@ -1,8 +1,6 @@
 'use strict';
 
-const sqlite = require('sqlite3');
-
-const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
+const db = require('../utils/dbConnection');
 
 
 exports.getStudentByEmail = function (email) {

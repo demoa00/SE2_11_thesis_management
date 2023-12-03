@@ -77,9 +77,9 @@ CREATE TABLE thesisProposals(
     notes TEXT(500),
     expirationDate DATE NOT NULL,
     level TEXT(20) NOT NULL,
-    isArchived BOLEAN DEFAULT TRUE NOT NULL,
+    isArchieved BOLEAN DEFAULT TRUE NOT NULL,
     
-    FOREIGN KEY(supervisor) REFERENCES professors(professorId) ON DELETE CASCADE
+    FOREIGN KEY(supervisor) REFERENCES professors(professorId) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
@@ -96,7 +96,7 @@ CREATE TABLE applications(
     status TEXT(20) NOT NULL DEFAULT 'Pending',
     
     PRIMARY KEY(thesisProposalId, studentId),
-    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON DELETE CASCADE, /* ON DELETE (PERFORM AUTOMATIC REJECT) ? */
+    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY(studentId) REFERENCES students(studentId)
 );
 
@@ -109,7 +109,7 @@ CREATE TABLE thesisProposal_internalCoSupervisor_bridge(
     internalCoSupervisorId TEXT(7) NOT NULL,
     
     PRIMARY KEY(thesisProposalId, internalCoSupervisorId),
-    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON DELETE CASCADE,
+    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY(internalCoSupervisorId) REFERENCES professors(professorId)
 );
 
@@ -122,7 +122,7 @@ CREATE TABLE thesisProposal_externalCoSupervisor_bridge(
     externalCoSupervisorId TEXT(7) NOT NULL,
     
     PRIMARY KEY(thesisProposalId, externalCoSupervisorId),
-    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON DELETE CASCADE,
+    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY(externalCoSupervisorId) REFERENCES externalCoSupervisors(externalCoSupervisorId)
 );
 
@@ -135,7 +135,7 @@ CREATE TABLE thesisProposal_cds_bridge(
     cdsId INTEGER NOT NULL,
     
     PRIMARY KEY(thesisProposalId, cdsId),
-    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON DELETE CASCADE,
+    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY(cdsId) REFERENCES degrees(degreeId)
 );
 

@@ -1,8 +1,6 @@
 'use strict';
 
-const sqlite = require('sqlite3');
-
-const db = new sqlite.Database('./database/thesis_management.sqlite', (err) => { if (err) throw err; });
+const db = require('../utils/dbConnection');
 
 
 exports.getDegrees = function () {
@@ -42,4 +40,22 @@ exports.getDegreeById = function (degreeId) {
       }
     });
   })
+}
+
+exports.getDegreesByThesisProposalId = function (thesisProposalId) {
+  return new Promise(function (resolve, reject) {
+    const sql = 'SELECT * FROM thesisProposal_cds_bridge WHERE thesisProposalId = ?';
+
+    db.all(sql, [thesisProposalId], (err, rows) => {
+      if (err) {
+        reject({ code: 500, message: "Internal Server Error" });
+      } else if (rows.length == 0) {
+        resolve([]);
+      } else {
+        let degreesList = rows.map((r) => r.cdsId);
+
+        resolve(degreesList);
+      }
+    })
+  });
 }
