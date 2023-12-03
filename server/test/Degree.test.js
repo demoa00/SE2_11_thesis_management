@@ -1,17 +1,17 @@
 "use strict";
 
-const KeywordController = require("../controllers/KeywordController.js");
-const { getKeywords } = require("../service/KeywordService.js");
+const DegreeControler = require("../controllers/DegreeController.js");
+const { getDegrees } = require("../service/DegreeService.js");
 
 beforeEach(() => {
   jest.clearAllMocks();
 });
 
-jest.mock("../service/KeywordService.js", () => ({
-  getKeywords: jest.fn(),
+jest.mock("../service/DegreeService.js", () => ({
+  getDegrees: jest.fn(),
 }));
 
-describe("getKeywords", () => {
+describe("getDegrees", () => {
   test("should return 200", async () => {
     const mockReq = {};
     const mockRes = {
@@ -20,18 +20,18 @@ describe("getKeywords", () => {
     };
     const mockNext = {};
 
-    getKeywords.mockResolvedValue(["keyword1", "keyword2"]);
+    getDegrees.mockResolvedValue(["degree1", "degree2"]);
 
-    await KeywordController.getKeywords(mockReq, mockRes, mockNext);
+    await DegreeControler.getDegrees(mockReq, mockRes, mockNext);
 
     expect(mockRes.writeHead).toHaveBeenCalledWith(200, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
-      JSON.stringify(["keyword1", "keyword2"], null, 2)
+      JSON.stringify(["degree1", "degree2"], null, 2)
     );
   });
-  test("should respond with 404 not found - no Keywords available", async () => {
+  test("should respond with 404 not found - no Degree available", async () => {
     const mockReq = {};
     const mockRes = {
       writeHead: jest.fn().mockReturnThis(),
@@ -39,9 +39,9 @@ describe("getKeywords", () => {
     };
     const mockNext = {};
 
-    getKeywords.mockRejectedValue({ code: 404, message: "Not Found" });
+    getDegrees.mockRejectedValue({ code: 404, message: "Not Found" });
 
-    await KeywordController.getKeywords(mockReq, mockRes, mockNext);
+    await DegreeControler.getDegrees(mockReq, mockRes, mockNext);
 
     expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
       "Content-Type": "application/json",

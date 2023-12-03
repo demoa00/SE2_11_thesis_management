@@ -127,7 +127,23 @@ exports.updateApplication = function (professorId, studentId, thesisProposalId, 
         resolve({ newApplication: `/api/applications/${newApplication.thesisProposalId}/${studentId}` })
       }
     });
-  });
+  }).then((newApplication) => {
+    return new Promise(function (resolve, reject) {
+      if (newApplication.status === "Accepted") {
+        const sql = "UPDATE applications SET status = 'Rejected' WHERE status = 'Pending' AND thesisProposalId = ? AND thesisProposalId IN (SELECT thesisProposalId FROM thesisProposals WHERE supervisor = ?)";
+        db.run(sql, [thesisProposalId, professorId], function (err) {
+          if (err) {
+            reject({ code: 500, message: "Internal Server Error" });
+          } else if (this.changes == 0) {
+            reject({ code: 404, message: "Not Found" });
+          } else {
+            resolve(newApplication);
+          }
+        })
+      }
+    })
+  }
+  );
 }
 
 exports.insertNewApplication = function (studentId, newApplication) {

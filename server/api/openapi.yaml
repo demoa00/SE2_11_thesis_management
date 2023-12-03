@@ -640,6 +640,91 @@ paths:
           description: Internal Server Error
       security:
         - cookieAuth: []
+    put:
+      tags:
+        - thesisProposal
+      operationId: updateThesisProposal
+      parameters:
+        - name: authenticatedUserId
+          in: cookie
+          required: true
+          description: >-
+            The authenticated user id corresponds to the professor that perform
+            the update
+          schema:
+            type: string
+            pattern: ^(p|P)[0-9]{6}$
+        - name: thesisProposalId
+          in: path
+          description: ID thesis proposal
+          required: true
+          schema:
+            type: integer
+        - name: isArchieved
+          in: query
+          description: flag to archieve the thesis
+          required: false
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/thesisProposal'
+        required: true
+      responses:
+        '204':
+          description: No Content
+          content: {}
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+        '409':
+          description: Conflict (attempt to make unallowed change, e.g., visibility)
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - cookieAuth: []
+    delete:
+      tags:
+        - thesisProposal
+      operationId: deleteThesisProposal
+      parameters:
+        - name: thesisProposalId
+          in: path
+          description: ID thesis proposal
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Successful operation - No Content
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+      security:
+        - cookieAuth: []
   /applications:
     get:
       tags:

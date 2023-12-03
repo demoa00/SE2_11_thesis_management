@@ -1,6 +1,6 @@
 "use strict";
 
-const ProfessorController = require("../controllers/Professor.js");
+const ProfessorController = require("../controllers/ProfessorController.js");
 const {
   getProfessors,
   getProfessorById,

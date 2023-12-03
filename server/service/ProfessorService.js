@@ -97,3 +97,16 @@ exports.getProfessorById = function (professorId) {
     });
   });
 }
+
+exports.getInternalCoSupervisorByThesisProposalId = function(thesisProposalId){
+  return new Promise( function (resolve, reject) {
+    const sql = "SELECT internalCoSupervisorId FROM thesisProposal_internalCoSupervisor_bridge WHERE thesisProposalId = ?";
+    db.all(sql, [thesisProposalId], function (err, rows) {
+      if (err) {
+        reject({ code: 500, message: "Internal Server Error" });
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+}

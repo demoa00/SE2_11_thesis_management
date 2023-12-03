@@ -445,3 +445,131 @@ exports.insertNewThesisProposal = function (professorId, newThesisProposal) {
     });
   });
 }
+
+exports.updateThesisProposal = function (professorId, thesisProposal) {
+  let promises = [];
+  let rows = [];
+
+  promises.push(new Promise(function (resolve, reject) {
+    const sql = "SELECT supervisor FROM thesisProposals WHERE thesisProposalId = ? AND supervisor = ?";
+    db.get(sql, [thesisProposal.thesisProposalId, professorId], function (err, row) {
+      if (err) {
+        reject({ code: 500, message: "Internal Server Error" });
+      } else if (row == undefined) {
+        reject({ code: 404, message: "Not Found" });
+      } else {
+        resolve();
+      }
+    })
+  })
+  );
+
+  rows = [...rows, ExternalCoSupervisor.getExternalCoSupervisorsByThesisProposalId(thesisProposal.thesisProposalId)];
+  rows = [...rows, Professor.getInternalCoSupervisorByThesisProposalId(thesisProposal.thesisProposalId)];
+  let cosupervisors = thesisProposal.coSupervisor;
+  rows.forEach(e => {
+    if (cosupervisors.find(string => string.coSupervisorId === e)) {
+      rows.remove(e);
+      cosupervisors.remove(e);
+    }
+  });
+
+  let regex = new RegExp("(p|P)[0-9]{6}");
+
+  if (rows.lenght > 0) {
+    rows.forEach((cosupervisorId) => {
+      if (regex.test(cosupervisorId)) { //Is an internal cosupervisor
+        promises.push(new Promise(function (resolve, reject) {
+          const sql = "DELETE FROM thesisProposal_internalCoSupervisor_bridge WHERE thesisProposalId = ? AND internalCoSupervisorId = ?";
+          db.run(sql, [thesisProposal.thesisProposalId, cosupervisorId], function (err) {
+            if (err) {
+              reject({ code: 500, message: "Internal Server Error" });
+            } else {
+              resolve();
+            }
+          });
+        })
+        )
+      } else {
+        promises.push(new Promise(function (resolve, reject) {
+          const sql = "DELETE FROM thesisProposal_externalCoSupervisor_bridge WHERE thesisProposalId = ? AND externalCoSupervisorId = ?";
+          db.run(sql, [thesisProposal.thesisProposalId, cosupervisorId], function (err) {
+            if (err) {
+              reject({ code: 500, message: "Internal Server Error" });
+            } else {
+              resolve();
+            }
+          });
+        })
+        )
+      }
+    })
+  }
+  if (cosupervisors.lenght > 0) {
+    cosupervisors.forEach((cosupervisorId) => {
+      if (regex.test(cosupervisorId)) { //Is an internal cosupervisor
+        promises.push(new Promise(function (resolve, reject) {
+          const sql = "INSERT INTO thesisProposal_internalCoSupervisor_bridge(thesisProposalId, internalCoSupervisorId) VALUES(?, ?)";
+          db.run(sql, [thesisProposal.thesisProposalId, cosupervisorId], function (err) {
+            if (err) {
+              reject({ code: 500, message: "Internal Server Error" });
+            } else {
+              resolve(this.lastID);
+            }
+          })
+        })
+        )
+      } else {
+        promises.push(new Promise(function (resolve, reject) {
+          const sql = "INSERT INTO thesisProposal_externalCoSupervisor_bridge(thesisProposalId, externalCoSupervisorId) VALUES(?, ?)";
+          db.run(sql, [thesisProposal.thesisProposalId, cosupervisorId], function (err) {
+            if (err) {
+              reject({ code: 500, message: "Internal Server Error" });
+            } else {
+              resolve(this.lastID);
+            }
+          })
+        })
+        )
+      }
+    })
+  }
+  //Update of the Thesis Proposal itself
+  promises.push(new Promise(function (resolve, reject) {
+    const sql = "UPDATE thesisProposals SET title=?, keywords=?, description=?, requirements=?, thesisType=?, abroad=?, notes=?, expirationDate=?, level=?, isArchieved=?  WHERE thesisProposalId = ?";
+    db.run(sql, [
+      thesisProposal.title,
+      JSON.stringify(thesisProposal.keywords),
+      thesisProposal.description,
+      thesisProposal.requirements,
+      thesisProposal.thesisType,
+      thesisProposal.abroad,
+      thesisProposal.notes,
+      thesisProposal.expirationDate,
+      thesisProposal.level,
+      thesisProposal.isArchieved,
+      thesisProposal.thesisProposalId
+    ], function (err) {
+      if (err) {
+        reject({ code: 500, message: "Internal Server Error" });
+      } else if (this.changes == 0) {
+        reject({ code: 404, message: "Not Found" });
+      } else {
+        resolve({ newThesisProposal: `/api/thesisProposals/${thesisProposal.thesisProposalId}` })
+      }
+    })
+  })
+  );
+  return Promise.all(promises);
+}
+
+exports.deleteThesisProposal = function (professorId, thesisProposalId) {
+  const sql = "DELETE * FROM thesisProposals WHERE thesisProposalId = ? AND supervisor = ?";
+  db.run(sql, [thesisProposalId, professorId], function (err) {
+    if (err) {
+      reject({ code: 500, message: "Internal Server Error" });
+    } else {
+      resolve();
+    }
+  });
+}
