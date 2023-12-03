@@ -11,7 +11,7 @@ exports.getExternalCoSupervisors = function (user) {
     let sql = 'SELECT * FROM externalCoSupervisors ';
     let params = [];
 
-    if (checkRole.isStudent(user)){
+    if (checkRole.isStudent(user)) {
       sql += 'WHERE externalCoSupervisorId IN (SELECT DISTINCT externalCoSupervisorId FROM thesisProposal_cds_bridge, thesisProposal_externalCoSupervisor_bridge WHERE thesisProposal_cds_bridge.cdsId = ? AND thesisProposal_externalCoSupervisor_bridge.thesisProposalId = thesisProposal_cds_bridge.thesisProposalId) ';
       params = [user.codDegree];
     }
@@ -55,6 +55,19 @@ exports.getExternalCoSupervisorById = function (externalCoSupervisorId) {
         };
 
         resolve(externalCoSupervisor);
+      }
+    });
+  });
+}
+
+exports.getExternalCoSupervisorsByThesisProposalId = function (thesisProposalId) {
+  return new Promise( function (resolve, reject) {
+    const sql = "SELECT externalCoSupervisorId FROM thesisProposal_externalCoSupervisor_bridge WHERE thesisProposalId = ?";
+    db.all(sql, [thesisProposalId], function (err, rows) {
+      if (err) {
+        reject({ code: 500, message: "Internal Server Error" });
+      } else {
+        resolve(rows);
       }
     });
   });
