@@ -1,15 +1,37 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from "@angular/forms";
 import {APIService} from "../../../../shared/services/api.service";
 
 function customKeywordValidator(keywordsList: string[]): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
+    console.log(keywordsList.length)
     const keywords = control.value;
 
     // Check if the keywordList is empty
     if (!keywords && keywordsList.length > 0) {
       return null; // No error if the list is full
     }
+
+    // Check if the value is required
+    return Validators.required(control);
+  };
+}
+function customCdSValidator(selectedCdS:{ titleDegree: any; degreeId:any; }[]): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+
+    console.log(selectedCdS.length)
+    // Check if the keywordList is empty
+    if (selectedCdS.length > 0) {
+      return null; // No error if the list is full
+    }
+
 
     // Check if the value is required
     return Validators.required(control);
@@ -77,7 +99,11 @@ export class CreateThesisFormComponent {
   response= new EventEmitter<{}>();
 
 
-
+  updateCdSValidator(): void {
+    const cdsValidator = customCdSValidator(this.selectedCdS);
+    this.myForm.get('CdS')?.setValidators([cdsValidator]);
+    this.myForm.get('CdS')?.updateValueAndValidity();
+  }
 
 
   constructor(private fb: FormBuilder, private api: APIService) {
@@ -102,7 +128,7 @@ export class CreateThesisFormComponent {
           notes: '',
           keywords: ['', [customKeywordValidator(this.keywordsList)]],
           abroad:false,
-          CdS: ['', [Validators.required]],
+          CdS: ['', [customCdSValidator(this.selectedCdS)]],
           expirationDate: ['', [Validators.required]]
       });
   }
@@ -188,6 +214,7 @@ export class CreateThesisFormComponent {
       surname:'',
       self:'',
     })
+    this.myForm.get('externalCoSupervisor')?.setValue( '')
   }
   removeCoSupervisor(event: any){
     const valoreDiv = event.target.textContent;
@@ -210,6 +237,7 @@ export class CreateThesisFormComponent {
       surname:'',
       self:'',
     })
+    this.myForm.get('internalCoSupervisor')?.setValue( '')
   }
   removeProfessor(event: any){
     const valoreDiv = event.target.textContent;
@@ -223,17 +251,18 @@ export class CreateThesisFormComponent {
     })
   }
   onSelectCdSChange(event: any) {
-    console.log(event.target.value)
+    const originalProfessors = [...this.degrees];
     let cds = this.degrees.find(elemento => elemento.degreeId==event.target.value)
-    this.degrees = this.degrees.filter(elemento => elemento.degreeId!=event.target.value)
+    this.degrees = [];
+    this.degrees = originalProfessors.filter(elemento => elemento.degreeId!=event.target.value)
     this.selectedCdS.push(cds?cds:{
       titleDegree: '',
       degreeId:'',
     })
+    this.myForm.get('CdS')?.setValue( '')
   }
 
   removeCdS(event: any) {
-    console.log(event.target.textContent)
     const valoreDiv = event.target.textContent;
     let cds = this.selectedCdS.find(elemento => elemento.degreeId==valoreDiv.split(' ')[0])
     this.selectedCdS = this.selectedCdS.filter(elemento => elemento.degreeId!=cds?.degreeId)
@@ -241,6 +270,9 @@ export class CreateThesisFormComponent {
       titleDegree: '',
       degreeId:'',
     })
+    console.log(this.selectedCdS)
 
+    this.myForm.get('CdS')?.setValue( '')
+    this.updateCdSValidator();
   }
 }

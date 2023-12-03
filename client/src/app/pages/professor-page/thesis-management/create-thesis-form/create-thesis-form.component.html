@@ -22,7 +22,7 @@
     <div class="">
       <label for="externalCoSupervisor" class="label-field">External Co-supervisor</label>
       <select id="externalCoSupervisor" formControlName="externalCoSupervisor" class="input-field" (change)="onSelectCoSupervisorChange($event)" (focus)="onSelectFocus()" (blur)="onSelectBlur()" >
-        <option value ='' disabled selected hidden>Select a co-supervisor</option>
+        <option value =''  selected >Select a co-supervisor</option>
         <option *ngFor="let coSupervisor of externalCoSupervisors" value="{{coSupervisor.externalCoSupervisorId}}">{{coSupervisor.name}} {{coSupervisor.surname}}</option>
       </select>
       <div *ngFor="let selectedCS of selectedCoSupervisors" class=" items-center flex gap-2 text-gray-700 hover:text-red-600 hover:cursor-pointer text-sm mt-1" (click)="removeCoSupervisor($event)" >{{selectedCS.name}} {{selectedCS.surname}}</div>
@@ -34,7 +34,7 @@
     <div class="">
       <label for="internalCoSupervisor" class="label-field">Internal Co-supervisor</label>
       <select id="internalCoSupervisor" formControlName="internalCoSupervisor" class="input-field" (change)="onSelectProfessorChange($event)" (focus)="onSelectFocus()" (blur)="onSelectBlur()" >
-        <option value ='' disabled selected hidden>Select a co-supervisor</option>
+        <option value =''  selected>Select a co-supervisor</option>
         <option *ngFor="let coSupervisor of professors" value="{{coSupervisor.professorId}}">{{coSupervisor.name}} {{coSupervisor.surname}}</option>
       </select>
       <div *ngFor="let selectedCS of selectedProfessors" class=" items-center flex gap-2 text-gray-700 hover:text-red-600 hover:cursor-pointer text-sm mt-1" (click)="removeProfessor($event)" >{{selectedCS.name}} {{selectedCS.surname}}</div>
@@ -59,7 +59,7 @@
     <div class="">
       <label for="CdS" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cds/programmes *</label>
       <select id="CdS" formControlName="CdS" class="input-field" (change)="onSelectCdSChange($event)" (focus)="onSelectFocus()" (blur)="onSelectBlur()" [class.text-soft] = "myForm.get('courseType')?.hasError('required')  && !selectFocus">
-        <option value ='' disabled selected hidden>Select a course type</option>
+        <option value =''  selected >Select a course type</option>
         <option *ngFor="let degree of degrees" value="{{degree.degreeId}}">{{degree.degreeId}} {{degree.titleDegree}}</option>
       </select>
       <div *ngFor="let cds of selectedCdS" class=" items-center flex gap-2 text-gray-700 hover:text-red-600 hover:cursor-pointer text-sm mt-1" (click)="removeCdS($event)" >{{cds.degreeId}} {{cds.titleDegree}}</div>
