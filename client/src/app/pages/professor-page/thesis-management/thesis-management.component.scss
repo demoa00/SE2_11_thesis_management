@@ -24,4 +24,52 @@ input, select {
   &.orange {
     @apply bg-orange-500;
   }
+  @media only screen and (max-width: 1000px) {
+    @apply hidden;
+  }
+}
+.button-tesi-mobile {
+  @apply dropdownButton flex gap-1 items-center justify-around hover:cursor-pointer hover:drop-shadow-lg text-lg;
+  &.orange {
+    @apply bg-orange-500;
+  }
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  width: 120px;
+  height: 60px;
+  @media only screen and (min-width: 1000px) {
+    @apply hidden;
+  }
+}
+.main-body{
+  @apply w-full flex flex-row gap-4;
+  @media only screen and (max-width: 1000px) {
+    @apply flex flex-col;
+  }
+}
+.button-body{
+  @apply w-1/6 flex flex-col gap-4 bg-white;
+  @media only screen and (max-width: 1000px) {
+    @apply w-full flex flex-row;
+  }
+}
+.show-thesis-buttons{
+  @apply  h-full w-full flex flex-col gap-2;
+}
+.show-applicants{
+  @apply  h-full w-full flex flex-col gap-2;
+}
+.show-buttons{
+  @apply  w-full flex flex-col gap-6;
+  @media only screen and (max-width: 1000px) {
+    @apply flex flex-row;
+  }
+}
+.show-body{
+  @apply  h-full p-5 w-5/6;
+  @media only screen and (max-width: 1000px) {
+    @apply w-full h-full;
+  }
+  position: relative;
 }

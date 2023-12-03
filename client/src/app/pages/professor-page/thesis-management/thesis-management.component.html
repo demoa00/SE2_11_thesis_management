@@ -1,32 +1,35 @@
 <div class="h-full w-full flex gap-2">
-  <div class="w-full flex gap-4">
-    <div class=" w-1/6 flex flex-col gap-4 bg-white card">
+  <div class="main-body">
+    <div class="button-body card">
       <div class="button-tesi orange" (click)="openCreatePopup()">
           <p class="text-center" style="margin-bottom: 0">Create new thesis </p>
           <app-icon name="add" class="w-4 h-4"></app-icon><!--Should restore this line but it gives problems-->
       </div>
       <div class="separator"></div>
-      <div class="w-full flex flex-col gap-6">
-        <div class="h-full w-full flex flex-col gap-2">
+      <div class="show-buttons">
+        <div class="show-thesis-buttons">
           <h2 class=""> Show Theses: </h2>
           <button class="dropdownButton " (click)="showActiveThesesTable()"> Active </button>
           <button class="dropdownButton " (click)="showArchivedThesesTable()"> Archived </button>
         </div>
-        <div class="h-full w-full flex flex-col gap-2">
+        <div class="show-applicants">
           <h2 class=""> Show applicants: </h2>
-          <button class="dropdownButton  items-start" (click)="showApplicantsTable()">All theses</button>
+          <button class="dropdownButton  items-start" (click)="showApplicantsTable()">All applicants</button>
         </div>
       </div>
     </div>
-    <div class="card h-full p-5 w-5/6 ">
-      <app-applicants-table [rows]="applicantsRow" *ngIf="showApplicants"></app-applicants-table>
-      <app-active-thesis-table [rows]="activeThesesRow" *ngIf="showActiveTheses"></app-active-thesis-table>
+    <div class="show-body card">
+      <app-applicants-table class="h-5/6" [rows]="applicantsRow" *ngIf="showApplicants"></app-applicants-table>
+      <app-active-thesis-table class="h-5/6" [rows]="activeThesesRow" *ngIf="showActiveTheses"></app-active-thesis-table>
       <!--
       <app-applicants-table [rows]="archivedThesesRow" *ngIf="showArchivedTheses"></app-applicants-table>
       -->
+      <div class="button-tesi-mobile orange" (click)="openCreatePopup()">
+        <p class="text-center" style="margin-bottom: 0">Create new thesis </p>
+        <app-icon name="add" class="w-4 h-4"></app-icon><!--Should restore this line but it gives problems-->
+      </div>
     </div>
   </div>
-
 </div>
 
 <app-popup
