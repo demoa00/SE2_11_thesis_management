@@ -37,7 +37,7 @@ export class FiltersContainerComponent {
     this.api.getCoSupervisors().then((coSupervisors) => {
       this.css = coSupervisors;
     })
-    if (this.params.cosupervisors !== null) {
+    if (this.params && this.params.cosupervisors !== null) {
       this.params.cosupervisors.forEach((cs: any) => {
         if (cs.professorId !== undefined) {
           this.selectedCs.push(cs)
@@ -47,7 +47,7 @@ export class FiltersContainerComponent {
       })
     }
     else {
-      this.params.cosupervisors = null
+      this.params = { cosupervisors: null };
     }
     console.log(this.params.expirationDate)
     if (this.params.expirationDate !== null) {
