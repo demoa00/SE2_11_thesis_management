@@ -11,17 +11,17 @@ exports.getCareer = function (studentId) {
             } else if (rows.length == 0) {
                 reject({ code: 404, message: "Not Found" });
             } else {
-                let response = []
-                rows.forEach(e => {
-                    response.push({
-                        codCourse: e.codCourse,
-                        titleCourse: e.titleCourse,
-                        cfu: e.cfu,
-                        grade: e.grade,
-                        date: e.date
+                let exams = []
+                rows.forEach(r => {
+                    exams.push({
+                        codCourse: r.codCourse,
+                        titleCourse: r.titleCourse,
+                        cfu: r.cfu,
+                        grade: r.grade,
+                        date: r.date
                     })
                 });
-                resolve({ studentId: studentId, exams: response });
+                resolve({ studentId: studentId, exams: exams });
             }
         });
     });

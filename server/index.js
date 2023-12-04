@@ -34,6 +34,7 @@ const externalCoSupervisorController = require(path.join(__dirname, 'controllers
 const keywordController = require(path.join(__dirname, 'controllers/KeywordController'));
 const degreeController = require(path.join(__dirname, 'controllers/DegreeController'));
 const curriculumVitaeController = require(path.join(__dirname, 'controllers/CurriculumVitaeController'));
+const careerController = require(path.join(__dirname, 'controllers/CareerController'));
 
 
 //-- -- -- -- -- -- -- -- -- --
@@ -254,9 +255,6 @@ app.post('/saml/consume',
 );
 
 
-/* CAREER API */
-app.get('/api/careers/:studentId', isLoggedIn, isProfessor, CareerController.getCareer);
-
 /* THESIS PROPOSALS API */
 app.get('/api/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposals);
 app.get('/api/thesisProposals/:thesisProposalId', isLoggedIn, thesisProposalController.getThesisProposalById);
@@ -297,6 +295,10 @@ app.get('/api/degrees', isLoggedIn, degreeController.getDegrees);
 /* CV API */
 app.post('/api/cv', isLoggedIn, isStudent, curriculumVitaeController.insertNewCV);
 app.get('/api/cv/:studentId', isLoggedIn, curriculumVitaeController.getCV);
+
+
+/* CAREER API */
+app.get('/api/careers/:studentId', isLoggedIn, isProfessor, careerController.getCareer);
 
 
 //-- -- -- -- --
