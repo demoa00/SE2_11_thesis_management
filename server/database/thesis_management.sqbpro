@@ -1,158 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/Utente/Desktop/Politecnico/Software_engineering_2/Project/SE2_11_thesis_management/server/database/thesis_management.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="125"/><column_width id="3" width="4271"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,12:mainapplications"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="applications" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="155"/><column index="2" value="95"/><column index="3" value="85"/><column index="4" value="91"/><column index="5" value="192"/><column index="6" value="178"/><column index="7" value="76"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="careers" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="95"/><column index="2" value="100"/><column index="3" value="103"/><column index="4" value="52"/><column index="5" value="59"/><column index="6" value="52"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="degrees" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="88"/><column index="2" value="300"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="externalCoSupervisors" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="213"/><column index="2" value="65"/><column index="3" value="84"/><column index="4" value="146"/><column index="5" value="237"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="professors" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="111"/><column index="2" value="57"/><column index="3" value="84"/><column index="4" value="56"/><column index="5" value="94"/><column index="6" value="143"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="sqlite_sequence" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="122"/><column index="2" value="52"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="students" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="95"/><column index="2" value="63"/><column index="3" value="84"/><column index="4" value="70"/><column index="5" value="205"/><column index="6" value="102"/><column index="7" value="102"/><column index="8" value="141"/><column index="9" value="52"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="thesisProposal_cds_bridge" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="155"/><column index="2" value="58"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="thesisProposal_externalCoSupervisor_bridge" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort><column index="1" mode="0"/></sort><column_widths><column index="1" value="155"/><column index="2" value="213"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="thesisProposal_internalCoSupervisor_bridge" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="155"/><column index="2" value="209"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="thesisProposals" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="155"/><column index="2" value="300"/><column index="3" value="100"/><column index="4" value="300"/><column index="5" value="300"/><column index="6" value="300"/><column index="7" value="104"/><column index="8" value="70"/><column index="9" value="300"/><column index="10" value="137"/><column index="11" value="52"/><column index="12" value="109"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="virtualThesisProposals" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="155"/><column index="2" value="52"/><column index="3" value="93"/><column index="4" value="106"/><column index="5" value="124"/><column index="6" value="102"/><column index="7" value="58"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="virtualThesisProposals_config" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="60"/><column index="2" value="52"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="virtualThesisProposals_content" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="52"/><column index="2" value="52"/><column index="3" value="52"/><column index="4" value="52"/><column index="5" value="52"/><column index="6" value="52"/><column index="7" value="52"/><column index="8" value="52"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="table.sql">/* TABLE TO MANAGE PROFESSORS */
-DROP TABLE professors;
-CREATE TABLE professors(
-    professorId TEXT(7) PRIMARY KEY NOT NULL,
-    name TEXT(20) NOT NULL,
-    surname TEXT(20) NOT NULL,
-    email TEXT(50) NOT NULL,
-    codGroup TEXT(20) NOT NULL,
-    codDepartment TEXT(20) NOT NULL
-);
-
-/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
-
-/* TABLE TO MANAGE STUDENTS */
-DROP TABLE students;
-CREATE TABLE students(
-    studentId TEXT(7) PRIMARY KEY NOT NULL,
-    name TEXT(20) NOT NULL,
-    surname TEXT(20) NOT NULL,
-    gender TEXT(20) NOT NULL,
-    email TEXT(50) NOT NULL,
-    nationality TEXT(20) NOT NULL,
-    codDegree TEXT(20) NOT NULL,
-    enrollmentYear INTEGER NOT NULL,
-    cv TEXT(100)
-);
-
-/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
-
-/* TABLE TO MANAGE EXTERNAL CO-SUPERVISORS */
-DROP TABLE externalCoSupervisors;
-CREATE TABLE externalCoSupervisors(
-    externalCoSupervisorId TEXT(7) PRIMARY KEY NOT NULL,
-    name TEXT(20) NOT NULL,
-    surname TEXT(20) NOT NULL,
-    company TEXT(20) NOT NULL,
-    email TEXT(50) NOT NULL
-);
-
-/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
-
-/* TABLE TO MANAGE DEGREES */
-DROP TABLE degrees;
-CREATE TABLE degrees(
-    degreeId TEXT(20) PRIMARY KEY NOT NULL,
-    titleDegree TEXT(20) NOT NULL
-);
-
-/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
-
-/* TABLE TO MANAGE STUDENT PASSED EXAMS */
-DROP TABLE careers;
-CREATE TABLE careers(
-    studentId TEXT(7) PRIMARY KEY NOT NULL,
-    codCourse TEXT(7) NOT NULL,
-    titleCourse TEXT(30) NOT NULL,
-    cfu INTEGER NOT NULL,
-    garde INTEGER NOT NULL,
-    date DATE NOT NULL,
-    
-    FOREIGN KEY(studentId) REFERENCES students(studentId)
-);
-
-/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
-
-/* TABLE TO MANAGE THESIS PROPOSALS */
-DROP TABLE thesisProposals;
-CREATE TABLE thesisProposals(
-    thesisProposalId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    title TEXT(20) NOT NULL,
-    supervisor TEXT(7) NOT NULL,
-    keywords TEXT(100) NOT NULL,
-    description TEXT(1000) NOT NULL,
-    requirements TEXT(1000) NOT NULL,
-    thesisType TEXT(20) NOT NULL,
-    abroad BOLEAN NOT NULL,
-    notes TEXT(500),
-    expirationDate DATE NOT NULL,
-    level TEXT(20) NOT NULL,
-    isArchieved BOLEAN DEFAULT TRUE NOT NULL,
-    
-    FOREIGN KEY(supervisor) REFERENCES professors(professorId) ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
-
-/* TABLE TO MANAGE STUDENT APPLICATIONS FOR THESIS PROPOSALS */
-DROP TABLE applications;
-CREATE TABLE applications(
-    thesisProposalId INTEGER NOT NULL,
-    studentId TEXT(7) NOT NULL,
-    message TEXT(1000),
-    date DATE NOT NULL,
-    isReadedByProfessor BOLEAN DEFAULT FALSE NOT NULL,
-    isReadedByStudent BOLEAN DEFAULT FALSE NOT NULL,
-    status TEXT(20) NOT NULL DEFAULT 'Pending',
-    
-    PRIMARY KEY(thesisProposalId, studentId),
-    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY(studentId) REFERENCES students(studentId)
-);
-
-/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
-
-/* TABLE TO MANAGE THE LIST OF INTERNAL CO-SUPERVISOR FOR A THESIS PROPOSAL */
-DROP TABLE thesisProposal_internalCoSupervisor_bridge;
-CREATE TABLE thesisProposal_internalCoSupervisor_bridge(
-    thesisProposalId INTEGER NOT NULL,
-    internalCoSupervisorId TEXT(7) NOT NULL,
-    
-    PRIMARY KEY(thesisProposalId, internalCoSupervisorId),
-    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY(internalCoSupervisorId) REFERENCES professors(professorId)
-);
-
-/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
-
-/* TABLE TO MANAGE THE LIST OF EXTERNAL CO-SUPERVISOR FOR A THESIS PROPOSAL */
-DROP TABLE thesisProposal_externalCoSupervisor_bridge;
-CREATE TABLE thesisProposal_externalCoSupervisor_bridge(
-    thesisProposalId INTEGER NOT NULL,
-    externalCoSupervisorId TEXT(7) NOT NULL,
-    
-    PRIMARY KEY(thesisProposalId, externalCoSupervisorId),
-    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY(externalCoSupervisorId) REFERENCES externalCoSupervisors(externalCoSupervisorId)
-);
-
-/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
-
-/* TABLE TO MANAGE THE LIST OF TITLE CDS FOR A THESIS PROPOSAL */
-DROP TABLE thesisProposal_cds_bridge;
-CREATE TABLE thesisProposal_cds_bridge(
-    thesisProposalId INTEGER NOT NULL,
-    cdsId INTEGER NOT NULL,
-    
-    PRIMARY KEY(thesisProposalId, cdsId),
-    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY(cdsId) REFERENCES degrees(degreeId)
-);
-
-/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
-
-/* TABLE TO PERFORM FULL TABLE TEXT SEARCH */
-DROP TABLE virtualThesisProposals;
-CREATE VIRTUAL TABLE virtualThesisProposals USING fts5(
-    thesisProposalId,
-    title,
-    keywords,
-    description,
-    requirements,
-    thesisType,
-    notes
-);
-</sql><sql name="data.sql">/* DEGREES DATA */
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/Utente/Desktop/Politecnico/Software_engineering_2/Project/SE2_11_thesis_management/server/database/thesis_management.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="125"/><column_width id="3" width="4271"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,7:maincareers"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="applications" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="155"/><column index="2" value="95"/><column index="3" value="85"/><column index="4" value="91"/><column index="5" value="192"/><column index="6" value="178"/><column index="7" value="76"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="careers" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="95"/><column index="2" value="111"/><column index="3" value="241"/><column index="4" value="52"/><column index="5" value="59"/><column index="6" value="91"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="data.sql">/* DEGREES DATA */
 DELETE FROM degrees;
 INSERT INTO degrees (degreeId, titleDegree) VALUES ('L-1', 'Bachelor in Mechanical Engineering');
 INSERT INTO degrees (degreeId, titleDegree) VALUES ('LM-9', 'Master in Software Engineering');
@@ -304,28 +150,171 @@ INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11,
 INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's876543', '2023-09-09','Pending');
 INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's345678', '2023-05-22','Accepted');
 INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (12, 's654321', '2023-10-30','Pending');
-INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (13, 's654321', '2023-08-15', 'Rejected');</sql><sql name="trigger.sql">/* TRIGGER TO PERFORM AUTOMATIC INSERT ON VIRTUAL TABLE AFTER INSERT ON TABLE FOR THESIS PROPOSALS */
-DROP TRIGGER insertVirtual;
-CREATE TRIGGER insertVirtual AFTER INSERT ON thesisProposals
-BEGIN
-    INSERT INTO virtualThesisProposals(thesisProposalId, title, keywords, description, requirements, thesisType, notes) VALUES(NEW.thesisProposalId, NEW.title, NEW.keywords, NEW.description, NEW.requirements, NEW.thesisType, NEW.notes);
-END;
+INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (13, 's654321', '2023-08-15', 'Rejected');
+
+/* STUDENT */
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '13PROGWEB', 'Programming for the Web', 9, 29, '2022-10-04');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '14ALGORIT', 'Algorithms and Data Structures', 12, 30, '2022-11-24');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '15SO', 'Operating Systems', 9, 28, '2022-12-01');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '16BDATI', 'Databases', 9, 27, '2022-10-11');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '17RETI', 'Computer Networks', 9, 29, '2022-11-07');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '18SICUREZ', 'Computer Security', 9, 26, '2022-11-21');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '19INTELART', 'Artificial Intelligence', 6, 30, '2022-10-18');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '20COMPGRAF', 'Computer Graphics', 6, 28, '2022-11-14');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '21HPC', 'High Performance Computing', 6, 29, '2022-12-15');
+</sql><sql name="table.sql">/* TABLE TO MANAGE PROFESSORS */
+DROP TABLE professors;
+CREATE TABLE professors(
+    professorId TEXT(7) PRIMARY KEY NOT NULL,
+    name TEXT(20) NOT NULL,
+    surname TEXT(20) NOT NULL,
+    email TEXT(50) NOT NULL,
+    codGroup TEXT(20) NOT NULL,
+    codDepartment TEXT(20) NOT NULL
+);
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-/* TRIGGER TO PERFORM AUTOMATIC UPDATE VIRTUAL TABLE AFTER UPDATE TABLE FOR THESIS PROPOSALS */
-DROP TRIGGER updateVirtual;
-CREATE TRIGGER updateVirtual AFTER UPDATE ON thesisProposals
-BEGIN
-    UPDATE virtualThesisProposals SET title = NEW.title, keywords = NEW.keywords, description = NEW.description, requirements = NEW.requirements, thesisType = NEW.thesisType, notes = NEW.notes WHERE thesisProposalId = NEW.thesisProposalId;
-END;
+/* TABLE TO MANAGE STUDENTS */
+DROP TABLE students;
+CREATE TABLE students(
+    studentId TEXT(7) PRIMARY KEY NOT NULL,
+    name TEXT(20) NOT NULL,
+    surname TEXT(20) NOT NULL,
+    gender TEXT(20) NOT NULL,
+    email TEXT(50) NOT NULL,
+    nationality TEXT(20) NOT NULL,
+    codDegree TEXT(20) NOT NULL,
+    enrollmentYear INTEGER NOT NULL,
+    cv TEXT(100)
+);
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-/* TRIGGER TO PERFORM AUTOMATIC DELETE ON VIRTUAL TABLE AFTER DELETE ON TABLE FOR THESIS PROPOSALS */
-DROP TRIGGER deleteVirtual;
-CREATE TRIGGER deleteVirtual AFTER DELETE ON thesisProposals
-BEGIN
-    DELETE FROM virtualThesisProposals WHERE thesisProposalId = OLD.thesisProposalId;
-END;
-</sql><current_tab id="2"/></tab_sql></sqlb_project>
+/* TABLE TO MANAGE EXTERNAL CO-SUPERVISORS */
+DROP TABLE externalCoSupervisors;
+CREATE TABLE externalCoSupervisors(
+    externalCoSupervisorId TEXT(7) PRIMARY KEY NOT NULL,
+    name TEXT(20) NOT NULL,
+    surname TEXT(20) NOT NULL,
+    company TEXT(20) NOT NULL,
+    email TEXT(50) NOT NULL
+);
+
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
+/* TABLE TO MANAGE DEGREES */
+DROP TABLE degrees;
+CREATE TABLE degrees(
+    degreeId TEXT(20) PRIMARY KEY NOT NULL,
+    titleDegree TEXT(20) NOT NULL
+);
+
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
+/* TABLE TO MANAGE STUDENT PASSED EXAMS */
+DROP TABLE careers;
+CREATE TABLE careers(
+    studentId TEXT(7) NOT NULL,
+    codCourse TEXT(7) NOT NULL,
+    titleCourse TEXT(30) NOT NULL,
+    cfu INTEGER NOT NULL,
+    grade INTEGER NOT NULL,
+    date DATE NOT NULL,
+    
+	PRIMARY KEY(studentId, codCourse),
+    FOREIGN KEY(studentId) REFERENCES students(studentId)
+);
+
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
+/* TABLE TO MANAGE THESIS PROPOSALS */
+DROP TABLE thesisProposals;
+CREATE TABLE thesisProposals(
+    thesisProposalId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    title TEXT(20) NOT NULL,
+    supervisor TEXT(7) NOT NULL,
+    keywords TEXT(100) NOT NULL,
+    description TEXT(1000) NOT NULL,
+    requirements TEXT(1000) NOT NULL,
+    thesisType TEXT(20) NOT NULL,
+    abroad BOLEAN NOT NULL,
+    notes TEXT(500),
+    expirationDate DATE NOT NULL,
+    level TEXT(20) NOT NULL,
+    isArchieved BOLEAN DEFAULT TRUE NOT NULL,
+    
+    FOREIGN KEY(supervisor) REFERENCES professors(professorId) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
+/* TABLE TO MANAGE STUDENT APPLICATIONS FOR THESIS PROPOSALS */
+DROP TABLE applications;
+CREATE TABLE applications(
+    thesisProposalId INTEGER NOT NULL,
+    studentId TEXT(7) NOT NULL,
+    message TEXT(1000),
+    date DATE NOT NULL,
+    isReadedByProfessor BOLEAN DEFAULT FALSE NOT NULL,
+    isReadedByStudent BOLEAN DEFAULT FALSE NOT NULL,
+    status TEXT(20) NOT NULL DEFAULT 'Pending',
+    
+    PRIMARY KEY(thesisProposalId, studentId),
+    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY(studentId) REFERENCES students(studentId)
+);
+
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
+/* TABLE TO MANAGE THE LIST OF INTERNAL CO-SUPERVISOR FOR A THESIS PROPOSAL */
+DROP TABLE thesisProposal_internalCoSupervisor_bridge;
+CREATE TABLE thesisProposal_internalCoSupervisor_bridge(
+    thesisProposalId INTEGER NOT NULL,
+    internalCoSupervisorId TEXT(7) NOT NULL,
+    
+    PRIMARY KEY(thesisProposalId, internalCoSupervisorId),
+    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY(internalCoSupervisorId) REFERENCES professors(professorId)
+);
+
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
+/* TABLE TO MANAGE THE LIST OF EXTERNAL CO-SUPERVISOR FOR A THESIS PROPOSAL */
+DROP TABLE thesisProposal_externalCoSupervisor_bridge;
+CREATE TABLE thesisProposal_externalCoSupervisor_bridge(
+    thesisProposalId INTEGER NOT NULL,
+    externalCoSupervisorId TEXT(7) NOT NULL,
+    
+    PRIMARY KEY(thesisProposalId, externalCoSupervisorId),
+    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY(externalCoSupervisorId) REFERENCES externalCoSupervisors(externalCoSupervisorId)
+);
+
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
+/* TABLE TO MANAGE THE LIST OF TITLE CDS FOR A THESIS PROPOSAL */
+DROP TABLE thesisProposal_cds_bridge;
+CREATE TABLE thesisProposal_cds_bridge(
+    thesisProposalId INTEGER NOT NULL,
+    cdsId INTEGER NOT NULL,
+    
+    PRIMARY KEY(thesisProposalId, cdsId),
+    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY(cdsId) REFERENCES degrees(degreeId)
+);
+
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
+/* TABLE TO PERFORM FULL TABLE TEXT SEARCH */
+DROP TABLE virtualThesisProposals;
+CREATE VIRTUAL TABLE virtualThesisProposals USING fts5(
+    thesisProposalId,
+    title,
+    keywords,
+    description,
+    requirements,
+    thesisType,
+    notes
+);
+</sql><current_tab id="1"/></tab_sql></sqlb_project>
