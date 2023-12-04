@@ -37,7 +37,7 @@ module.exports.getApplicationById = async function getApplicationById(req, res, 
 module.exports.insertNewApplication = async function insertNewApplication(req, res, next) {
   try {
     if (req.params.thesisProposalId == req.body.thesisProposalId && req.params.thesisProposalId != undefined) {
-      let newApplicationURI = await Application.insertNewApplication(/* req.user.userId */'s654321', req.body);
+      let newApplicationURI = await Application.insertNewApplication(req.user.userId, req.body);
       
       utils.writeJson(res, newApplicationURI, 201);
     } else {
