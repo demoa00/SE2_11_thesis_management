@@ -254,6 +254,9 @@ app.post('/saml/consume',
 );
 
 
+/* CAREER API */
+app.get('/api/careers/:studentId', isLoggedIn, isProfessor, CareerController.getCareer);
+
 /* THESIS PROPOSALS API */
 app.get('/api/thesisProposals', isLoggedIn, thesisProposalController.getThesisProposals);
 app.get('/api/thesisProposals/:thesisProposalId', isLoggedIn, thesisProposalController.getThesisProposalById);
