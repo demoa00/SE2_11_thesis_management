@@ -12,7 +12,6 @@ module.exports.insertNewCV = async function (req, res, next) {
     } catch (error) {
         utils.writeJson(res, error.message, error.code);
     }
-
 };
 
 module.exports.getCV = async function (req, res, next) {

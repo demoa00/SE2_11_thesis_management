@@ -4,10 +4,11 @@
 // SERVER DEPENDENCES
 //-- -- -- -- -- -- --
 
-require('dotenv').config();
+require('dotenv').config()
+const corsConfig = require('./config.js').config();
 
-const configCors = require('./config.js').config();
 const http = require('http');
+const { Server } = require("socket.io");
 const session = require('express-session');
 const passport = require('passport');
 const saml = require('passport-saml').Strategy;
@@ -73,23 +74,25 @@ const expressAppConfig = oas3Tools.expressAppConfig(path.join(__dirname, 'api/op
 const app = expressAppConfig.getApp();
 
 
-//-- -- -- -- -- -- -- --
-// SERVER INITIALIZATION
-//-- -- -- -- -- -- -- --
+//-- -- -- -- -- -- -- -- -- --
+// HTTP SERVER INITIALIZATION
+//-- -- -- -- -- -- -- -- -- --
 
 const PORT = 3000;
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({
+const sessionMiddleware = session({
     secret: process.env.SECRET_SESSION,
     resave: false,
     saveUninitialized: false
-}));
-app.use(morgan('dev'));
-app.use(cors({
-    origin: configCors.corsConfig,
+});
+const corsOptions = cors({
+    origin: corsConfig.corsConfig,
     credentials: true
-}));
+});
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(morgan('dev'));
+app.use(sessionMiddleware);
+app.use(corsOptions);
 
 
 //-- -- -- -- -- -- -- -- --
@@ -213,7 +216,7 @@ const isProfessor = (req, res, next) => {
 
 /* LOGIN/LOGOUT API */
 app.get('/api/app', redirectToLogin, (req, res) => {
-    res.redirect(configCors.redirectUrl);
+    res.redirect(corsConfig.redirectUrl);
 });
 app.get('/api/authenticatedSession',
     passport.authenticate('saml', {
@@ -266,7 +269,7 @@ app.delete('/api/thesisProposals/:thesisProposalId', isLoggedIn, isProfessor, th
 /* APPLICATIONS API */
 app.get('/api/applications', isLoggedIn, applicationController.getApplications);
 app.get('/api/applications/:thesisProposalId/:studentId', isLoggedIn, applicationController.getApplicationById);
-app.post('/api/thesisProposals/:thesisProposalId', isLoggedIn, isStudent, validate({ body: applicationSchema }), applicationController.insertNewApplication);
+app.post('/api/thesisProposals/:thesisProposalId', /* isLoggedIn, isStudent, */ validate({ body: applicationSchema }), applicationController.insertNewApplication);
 app.put('/api/applications/:thesisProposalId/:studentId', isLoggedIn, isProfessor, validate({ body: applicationSchema }), applicationController.updateApplication);
 
 
@@ -301,9 +304,9 @@ app.get('/api/cv/:studentId', isLoggedIn, curriculumVitaeController.getCV);
 app.get('/api/careers/:studentId', isLoggedIn, isProfessor, careerController.getCareer);
 
 
-//-- -- -- -- --
-// SERVER START
-//-- -- -- -- --
+//-- -- -- -- -- -- -- -- -- -- --
+// WEBSOCKET SERVER INITIALIZATION
+//-- -- -- -- -- -- -- -- -- -- --
 
 app.use(function (err, req, res, next) {
     if (err instanceof ValidationError) {
@@ -312,9 +315,48 @@ app.use(function (err, req, res, next) {
 });
 
 const httpServer = http.createServer(app);
-httpServer.timeout = 300000;
+
+const wrap = (middeleware) => (socket, next) => { return middeleware(socket.request, {}, next) };
+const io = new Server(httpServer, {
+    cors: {
+        origin: corsConfig.corsConfig,
+        credentials: true
+    }
+});
+
+io.use(wrap(sessionMiddleware));
+io.use(wrap(passport.initialize()));
+io.use(wrap(passport.session()));
+io.use(wrap(passport.authenticate('session')));
+io.use((socket, next) => {
+    if (socket.request.user) {
+        next();
+    } else {
+        next(new Error('Unauthorized'))
+    }
+});
+
+io.on('connection', (socket) => {
+    console.log(`New connection: \n\t- socket id: ${socket.id}\n\t- user info: ${JSON.stringify(socket.request.user)}`);
+
+    socket.join(socket.request.user.userId);
+
+    socket.on('disconnect', () => {
+        console.log(`Disconnect: \n\t- socket id: ${socket.id}\n\t- user info: ${JSON.stringify(socket.request.user)}`);
+        socket.leave(socket.request.user.userId)
+    });
+});
+
+
+//-- -- -- -- -- -- --
+// HTTP SERVER START
+//-- -- -- -- -- -- --
 
 httpServer.listen(PORT, function () {
     console.log('Your server is listening on port %d (http://localhost:%d)', PORT, PORT);
     console.log('Swagger-ui is available on http://localhost:%d/docs', PORT);
 });
+
+setInterval(() => {
+    io.to('p123654').emit('message', 'hello');
+}, 5000);

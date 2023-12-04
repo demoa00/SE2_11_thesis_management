@@ -146,13 +146,14 @@ INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (21, 'LM-
 
 /* THESIS PROPOSALS CDS BRIDGE */
 DELETE FROM applications;
-INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's654321', '2023-11-15','Pending');
-INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's876543', '2023-09-09','Pending');
-INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's345678', '2023-05-22','Accepted');
-INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (12, 's654321', '2023-10-30','Pending');
-INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (13, 's654321', '2023-08-15', 'Rejected');
+INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's654321', '2023-11-15', 'Pending');
+INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's876543', '2023-09-09', 'Pending');
+INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's345678', '2023-05-22', 'Pending');
+INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (12, 's654321', '2023-10-30', 'Pending');
+INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (13, 's654321', '2023-08-15', 'Pending');
 
 /* STUDENT */
+DELETE FROM careers;
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '13PROGWEB', 'Programming for the Web', 9, 29, '2022-10-04');
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '14ALGORIT', 'Algorithms and Data Structures', 12, 30, '2022-11-24');
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '15SO', 'Operating Systems', 9, 28, '2022-12-01');
@@ -162,3 +163,6 @@ INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '19INTELART', 'Artificial Intelligence', 6, 30, '2022-10-18');
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '20COMPGRAF', 'Computer Graphics', 6, 28, '2022-11-14');
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '21HPC', 'High Performance Computing', 6, 29, '2022-12-15');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s876543', '13PROGWEB', 'Programming for the Web', 9, 20, '2022-10-04');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s876543', '14ALGORIT', 'Algorithms and Data Structures', 12, 18, '2022-11-24');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s876543', '15SO', 'Operating Systems', 9, 24, '2022-12-01');

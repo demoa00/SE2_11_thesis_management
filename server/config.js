@@ -12,5 +12,4 @@ exports.config = ()=>{
             redirectUrl:'http://localhost:4200'
         };
     }
-
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/Utente/Desktop/Politecnico/Software_engineering_2/Project/SE2_11_thesis_management/server/database/thesis_management.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="125"/><column_width id="3" width="4271"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,7:maincareers"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="applications" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="155"/><column index="2" value="95"/><column index="3" value="85"/><column index="4" value="91"/><column index="5" value="192"/><column index="6" value="178"/><column index="7" value="76"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="careers" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="95"/><column index="2" value="111"/><column index="3" value="241"/><column index="4" value="52"/><column index="5" value="59"/><column index="6" value="91"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="data.sql">/* DEGREES DATA */
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/Utente/Desktop/Politecnico/Software_engineering_2/Project/SE2_11_thesis_management/server/database/thesis_management.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="125"/><column_width id="3" width="4271"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,12:mainapplications"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="applications" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="155"/><column index="2" value="95"/><column index="3" value="85"/><column index="4" value="91"/><column index="5" value="192"/><column index="6" value="178"/><column index="7" value="76"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="careers" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="95"/><column index="2" value="111"/><column index="3" value="241"/><column index="4" value="52"/><column index="5" value="59"/><column index="6" value="91"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="externalCoSupervisors" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="213"/><column index="2" value="65"/><column index="3" value="84"/><column index="4" value="146"/><column index="5" value="237"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="data.sql">/* DEGREES DATA */
 DELETE FROM degrees;
 INSERT INTO degrees (degreeId, titleDegree) VALUES ('L-1', 'Bachelor in Mechanical Engineering');
 INSERT INTO degrees (degreeId, titleDegree) VALUES ('LM-9', 'Master in Software Engineering');
@@ -146,13 +146,14 @@ INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (21, 'LM-
 
 /* THESIS PROPOSALS CDS BRIDGE */
 DELETE FROM applications;
-INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's654321', '2023-11-15','Pending');
-INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's876543', '2023-09-09','Pending');
-INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's345678', '2023-05-22','Accepted');
-INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (12, 's654321', '2023-10-30','Pending');
-INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (13, 's654321', '2023-08-15', 'Rejected');
+INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's654321', '2023-11-15', 'Pending');
+INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's876543', '2023-09-09', 'Pending');
+INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's345678', '2023-05-22', 'Pending');
+INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (12, 's654321', '2023-10-30', 'Pending');
+INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (13, 's654321', '2023-08-15', 'Pending');
 
 /* STUDENT */
+DELETE FROM careers;
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '13PROGWEB', 'Programming for the Web', 9, 29, '2022-10-04');
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '14ALGORIT', 'Algorithms and Data Structures', 12, 30, '2022-11-24');
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '15SO', 'Operating Systems', 9, 28, '2022-12-01');
@@ -162,6 +163,9 @@ INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '19INTELART', 'Artificial Intelligence', 6, 30, '2022-10-18');
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '20COMPGRAF', 'Computer Graphics', 6, 28, '2022-11-14');
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '21HPC', 'High Performance Computing', 6, 29, '2022-12-15');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s876543', '13PROGWEB', 'Programming for the Web', 9, 20, '2022-10-04');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s876543', '14ALGORIT', 'Algorithms and Data Structures', 12, 18, '2022-11-24');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s876543', '15SO', 'Operating Systems', 9, 24, '2022-12-01');
 </sql><sql name="table.sql">/* TABLE TO MANAGE PROFESSORS */
 DROP TABLE professors;
 CREATE TABLE professors(
@@ -185,8 +189,7 @@ CREATE TABLE students(
     email TEXT(50) NOT NULL,
     nationality TEXT(20) NOT NULL,
     codDegree TEXT(20) NOT NULL,
-    enrollmentYear INTEGER NOT NULL,
-    cv TEXT(100)
+    enrollmentYear INTEGER NOT NULL
 );
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
@@ -223,7 +226,7 @@ CREATE TABLE careers(
     date DATE NOT NULL,
     
 	PRIMARY KEY(studentId, codCourse),
-    FOREIGN KEY(studentId) REFERENCES students(studentId)
+    FOREIGN KEY(studentId) REFERENCES students(studentId) ON DELETE CASCADE
 );
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
@@ -256,8 +259,6 @@ CREATE TABLE applications(
     studentId TEXT(7) NOT NULL,
     message TEXT(1000),
     date DATE NOT NULL,
-    isReadedByProfessor BOLEAN DEFAULT FALSE NOT NULL,
-    isReadedByStudent BOLEAN DEFAULT FALSE NOT NULL,
     status TEXT(20) NOT NULL DEFAULT 'Pending',
     
     PRIMARY KEY(thesisProposalId, studentId),
@@ -317,4 +318,4 @@ CREATE VIRTUAL TABLE virtualThesisProposals USING fts5(
     thesisType,
     notes
 );
-</sql><current_tab id="1"/></tab_sql></sqlb_project>
+</sql><current_tab id="0"/></tab_sql></sqlb_project>

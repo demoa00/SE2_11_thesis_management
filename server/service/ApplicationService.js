@@ -1,7 +1,11 @@
 'use strict';
 
 const dayjs = require('dayjs');
+
+const Student = require('../service/StudentService');
+const Professor = require('../service/ProfessorService');
 const checkRole = require('../utils/checkRole');
+const smtp = require('../utils/smtp');
 
 const db = require('../utils/dbConnection');
 
@@ -115,18 +119,34 @@ exports.getApplicationById = function (user, studentId, thesisProposalId) {
 
 exports.updateApplication = function (professorId, studentId, thesisProposalId, newApplication) {
   return new Promise(function (resolve, reject) {
-    const sql = "UPDATE applications SET status = ? WHERE status = 'Pending' AND thesisProposalId = ? AND studentId = ? AND thesisProposalId IN (SELECT thesisProposalId FROM thesisProposals WHERE supervisor = ?)";
+    const sql = "SELECT applications.studentId, students.email FROM applications, students WHERE status = 'Pending' AND thesisProposalId = ? AND applications.studentId = students.studentId";
 
-    db.run(sql, [newApplication.status, thesisProposalId, studentId, professorId], function (err) {
+    db.all(sql, [thesisProposalId], (err, rows) => {
       if (err) {
         reject({ code: 500, message: "Internal Server Error" });
-      } else if (this.changes == 0) {
-        reject({ code: 404, message: "Not Found" });
+      } else if (rows.length == 0) {
+        resolve([]);
       } else {
-        resolve({ newApplication: `/api/applications/${newApplication.thesisProposalId}/${studentId}` })
+        let students = rows.map((r) => ({ studentId: r.studentId, email: r.email }));
+
+        resolve(students);
       }
     });
-  }).then((newApplication) => {
+  }).then((students) => {
+    return new Promise(function (resolve, reject) {
+      const sql = "UPDATE applications SET status = ? WHERE status = 'Pending' AND thesisProposalId = ? AND studentId = ? AND thesisProposalId IN (SELECT thesisProposalId FROM thesisProposals WHERE supervisor = ?)";
+
+      db.run(sql, [newApplication.status, thesisProposalId, studentId, professorId], function (err) {
+        if (err) {
+          reject({ code: 500, message: "Internal Server Error" });
+        } else if (this.changes == 0) {
+          reject({ code: 404, message: "Not Found" });
+        } else {
+          resolve(students)
+        }
+      });
+    })
+  }).then((students) => {
     return new Promise(function (resolve, reject) {
       if (newApplication.status === "Accepted") {
         const sql = "UPDATE applications SET status = 'Rejected' WHERE status = 'Pending' AND thesisProposalId = ? AND thesisProposalId IN (SELECT thesisProposalId FROM thesisProposals WHERE supervisor = ?)";
@@ -136,24 +156,65 @@ exports.updateApplication = function (professorId, studentId, thesisProposalId, 
           } else if (this.changes == 0) {
             reject({ code: 404, message: "Not Found" });
           } else {
-            resolve(newApplication);
+            resolve(students);
           }
         })
+      } else {
+        resolve(students);
       }
     })
-  }
-  );
+  }).then(async (students) => {
+    let promises = [];
+
+    if (newApplication.status === 'Accepted') {
+      students.forEach((s) => {
+        if (s.studentId === studentId) {
+          promises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, smtp.textAcceptApplication)));
+        } else {
+          promises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, smtp.textRejectApplication)));
+        }
+      });
+    } else {
+      students.forEach((s) => {
+        if (s.studentId === studentId) {
+          promises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, smtp.textRejectApplication)));
+        }
+      });
+    }
+
+    return await Promise.all(promises).then(() => ({ newApplication: `/api/applications/${newApplication.thesisProposalId}/${studentId}` }));
+  });
 }
 
 exports.insertNewApplication = function (studentId, newApplication) {
   return new Promise(function (resolve, reject) {
-    const sql = 'INSERT INTO applications(thesisProposalId, studentId, message, date) VALUES (?, ?, ?, ?)';
-    db.run(sql, [newApplication.thesisProposalId, studentId, newApplication.message, dayjs().format('YYYY-MM-DD')], function (err) {
+    const sql = 'SELECT professors.email FROM professors, thesisProposals WHERE thesisProposalId = ? AND supervisor = professorId';
+
+    db.get(sql, [newApplication.thesisProposalId], (err, row) => {
       if (err) {
         reject({ code: 500, message: "Internal Server Error" });
+      } else if (row === undefined) {
+        reject({ code: 404, message: "Not Found" });
       } else {
-        resolve({ newApplication: `/api/applications/${newApplication.thesisProposalId}/${studentId}` });
+        resolve(row.email);
       }
     });
+  }).then((professorEmail) => {
+    return new Promise(function (resolve, reject) {
+      const sql = 'INSERT INTO applications(thesisProposalId, studentId, message, date) VALUES (?, ?, ?, ?)';
+      db.run(sql, [newApplication.thesisProposalId, studentId, newApplication.message, dayjs().format('YYYY-MM-DD')], function (err) {
+        if (err) {console.log(err)
+          reject({ code: 500, message: "Internal Server Error" });
+        } else {
+          resolve(professorEmail);
+        }
+      });
+    })
+  }).then(async (professorEmail) => {
+    let promises = [];
+
+    promises.push(smtp.sendMail(smtp.mailConstructor(professorEmail, smtp.subjectNewApplication, smtp.textNewApplication)));
+
+    return await Promise.all(promises).then(() => ({ newApplication: `/api/applications/${newApplication.thesisProposalId}/${studentId}` }));
   });
 }
