@@ -19,6 +19,7 @@ const { Validator, ValidationError } = require('express-json-validator-middlewar
 const addFormats = require('ajv-formats').default;
 const fs = require('fs');
 const path = require('path');
+const { constants } = require('fs/promises');
 
 
 //-- -- -- -- -- -- -- -- -- --
@@ -32,6 +33,7 @@ const professorController = require(path.join(__dirname, 'controllers/ProfessorC
 const externalCoSupervisorController = require(path.join(__dirname, 'controllers/ExternalCoSupervisorController'));
 const keywordController = require(path.join(__dirname, 'controllers/KeywordController'));
 const degreeController = require(path.join(__dirname, 'controllers/DegreeController'));
+const curriculumVitaeController = require(path.join(__dirname, 'controllers/CurriculumVitaeController'));
 
 
 //-- -- -- -- -- -- -- -- -- --
@@ -199,7 +201,7 @@ const isProfessor = (req, res, next) => {
             return next();
         }
     }
-    
+
     return res.status(403).json({ error: 'Forbidden' });
 }
 
@@ -289,6 +291,11 @@ app.get('/api/keywords', isLoggedIn, keywordController.getKeywords);
 app.get('/api/degrees', isLoggedIn, degreeController.getDegrees);
 
 
+/* CV API */
+app.post('/api/cv', isLoggedIn, isStudent, curriculumVitaeController.insertNewCV);
+app.get('/api/cv/:studentId', isLoggedIn, curriculumVitaeController.getCV);
+
+
 //-- -- -- -- --
 // SERVER START
 //-- -- -- -- --
@@ -299,7 +306,10 @@ app.use(function (err, req, res, next) {
     } else next(err);
 });
 
-http.createServer(app).listen(PORT, function () {
+const httpServer = http.createServer(app);
+httpServer.timeout = 300000;
+
+httpServer.listen(PORT, function () {
     console.log('Your server is listening on port %d (http://localhost:%d)', PORT, PORT);
     console.log('Swagger-ui is available on http://localhost:%d/docs', PORT);
 });

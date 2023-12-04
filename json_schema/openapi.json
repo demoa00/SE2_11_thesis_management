@@ -525,6 +525,9 @@
         },
         {
             "name": "keyword"
+        },
+        {
+            "name": "curriculumVitae"
         }
     ],
     "paths": {
@@ -975,7 +978,7 @@
                         "required": false,
                         "schema": {
                             "type": "integer"
-                        } 
+                        }
                     }
                 ],
                 "requestBody": {
@@ -1426,6 +1429,114 @@
                                     "$ref": "#/components/schemas/keywords"
                                 }
                             }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
+            }
+        },
+        "/cv": {
+            "post": {
+                "tags": [
+                    "curriculumVitae"
+                ],
+                "operationId": "insertNewCV",
+                "parameters": [
+                    {
+                        "name": "authenticatedUserId",
+                        "in": "cookie",
+                        "required": true,
+                        "description": "The authenticated user id corresponds to the student that perform this request",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^(s|S)[0-9]{6}$"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "image": {
+                                    "contentType": "application/pdf"
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
+            }
+        },
+        "/cv/{studentId}": {
+            "get": {
+                "tags": [
+                    "curriculumVitae"
+                ],
+                "operationId": "getCV",
+                "parameters": [
+                    {
+                        "name": "authenticatedUserId",
+                        "in": "cookie",
+                        "required": true,
+                        "description": "The authenticated user id corresponds to the student that perform this request",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^(s|S)[0-9]{6}$"
+                        }
+                    },
+                    {
+                        "name": "studentId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^(s|S)[0-9]{6}$"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/pdf": {}
                         }
                     },
                     "401": {
