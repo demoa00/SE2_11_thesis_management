@@ -100,7 +100,7 @@ describe('HTTPService', () => {
     it('should construct URL without prefix', () => {
         const path = 'sample-path';
         const constructedUrl = httpService.url(path, false);
-        expect(constructedUrl).toBe(localStorage.getItem('apiEndpoint') + path);
+        expect(constructedUrl).toBe('http://localhost:3000/api' +  path);
     });
 
     it('should construct and send form data for POST request', () => {
@@ -109,7 +109,7 @@ describe('HTTPService', () => {
     
         httpService.formPost(path, formData);
     
-        const req = httpTestingController.expectOne(localStorage.getItem('apiEndpoint') + '/' + path);
+        const req = httpTestingController.expectOne('http://localhost:3000/api/' + path);
     
         expect(req.request.method).toBe('POST');
         expect(req.request.headers.get('Content-Type')).toBe('application/x-www-form-urlencoded');

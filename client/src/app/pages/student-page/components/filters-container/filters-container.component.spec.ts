@@ -6,6 +6,7 @@ import { ButtonComponent } from 'src/app/shared/components/button/button.compone
 import { DropdownCheckboxComponent } from '../dropdown-checkbox/dropdown-checkbox.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('FiltersContainerComponent', () => {
   let component: FiltersContainerComponent;
@@ -13,7 +14,7 @@ describe('FiltersContainerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatDatepickerModule, MatNativeDateModule],
+      imports: [HttpClientTestingModule, MatDatepickerModule, MatNativeDateModule, MatIconModule],
       declarations: [FiltersContainerComponent, ButtonComponent, DropdownCheckboxComponent]
     });
     fixture = TestBed.createComponent(FiltersContainerComponent);
