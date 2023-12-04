@@ -51,13 +51,14 @@ CREATE TABLE degrees(
 /* TABLE TO MANAGE STUDENT PASSED EXAMS */
 DROP TABLE careers;
 CREATE TABLE careers(
-    studentId TEXT(7) PRIMARY KEY NOT NULL,
+    studentId TEXT(7) NOT NULL,
     codCourse TEXT(7) NOT NULL,
     titleCourse TEXT(30) NOT NULL,
     cfu INTEGER NOT NULL,
-    garde INTEGER NOT NULL,
+    grade INTEGER NOT NULL,
     date DATE NOT NULL,
     
+	PRIMARY KEY(studentId, codCourse),
     FOREIGN KEY(studentId) REFERENCES students(studentId)
 );
 
