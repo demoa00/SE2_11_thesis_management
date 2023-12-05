@@ -62,12 +62,14 @@ exports.getExternalCoSupervisorById = function (externalCoSupervisorId) {
 
 exports.getExternalCoSupervisorsByThesisProposalId = function (thesisProposalId) {
   return new Promise(function (resolve, reject) {
-    const sql = "SELECT externalCoSupervisorId FROM thesisProposal_externalCoSupervisor_bridge WHERE thesisProposalId = ?";
+    const sql = "SELECT thesisProposal_externalCoSupervisor_bridge.externalCoSupervisorId, email FROM thesisProposal_externalCoSupervisor_bridge, externalCoSupervisors WHERE thesisProposalId = ? AND thesisProposal_externalCoSupervisor_bridge.externalCoSupervisorId = externalCoSupervisors.externalCoSupervisorId";
     db.all(sql, [thesisProposalId], function (err, rows) {
       if (err) {
         reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else {
-        resolve(rows);
+        let cosupervisors = rows.map((r) => ({ coSupervisorId: r.externalCoSupervisorId, email: r.email }));
+
+        resolve(cosupervisors);
       }
     });
   });

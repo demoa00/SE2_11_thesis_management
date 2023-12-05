@@ -9,6 +9,12 @@ const transporter = nodemailer.createTransport({
     port: 2525
 });
 
+exports.subjectInsertCoSupervisor = 'Added as co-supervisor';
+exports.textInsertCoSupervisor = 'You are added as a co-supervisor';
+
+exports.subjectRemoveCoSupervisor = 'Removed as co-supervisor';
+exports.textRemoveCoSupervisor = 'You are removed as a co-supervisor';
+
 exports.subjectDecisionApplication = 'Application decision';
 exports.textAcceptApplication = 'Your application has been accepted';
 exports.textRejectApplication = 'Your application has been rejected';

@@ -3,6 +3,7 @@
 const utils = require('../utils/writer.js');
 const ThesisProposal = require('../service/ThesisProposalService');
 const checkRole = require('../utils/checkRole.js');
+const { PromiseError } = require('../utils/error.js');
 
 
 module.exports.getThesisProposals = async function getThesisProposals(req, res, next) {
@@ -39,7 +40,11 @@ module.exports.insertNewThesisProposal = async function insertNewThesisProposal(
   try {
     let newThesisProposalURI = await ThesisProposal.insertNewThesisProposal(req.user.userId, req.body);
 
-    utils.writeJson(res, newThesisProposalURI, 201);
+    if (newThesisProposalURI instanceof PromiseError) {
+      utils.writeJson(res, { error: newThesisProposalURI.message }, newThesisProposalURI.code);
+    } else {
+      utils.writeJson(res, newThesisProposalURI, 201);
+    }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
   }
@@ -49,7 +54,11 @@ module.exports.updateThesisProposal = async function updateThesisProposal(req, r
   try {
     let thesisProposalUpdated = await ThesisProposal.updateThesisProposal(req.user.userId, req.body, req.params.thesisProposalId);
 
-    utils.writeJson(res,  thesisProposalUpdated, 200);
+    if (thesisProposalUpdated instanceof PromiseError) {
+      utils.writeJson(res, { error: thesisProposalUpdated.message }, thesisProposalUpdated.code);
+    } else {
+      utils.writeJson(res, thesisProposalUpdated, 200);
+    }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
   }

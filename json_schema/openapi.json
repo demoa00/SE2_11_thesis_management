@@ -793,7 +793,27 @@
                         "name": "cosupervisor",
                         "in": "query",
                         "required": false,
-                        "description": "Respresent the filter for the professor",
+                        "schema": {
+                            "oneOf": [
+                                {
+                                    "type": "boolean",
+                                    "description": "This variant is for professor request"
+                                },
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "description": "This variant is for student request"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "isArchieved",
+                        "in": "query",
+                        "required": false,
+                        "description": "Respresent a filter for the professor",
                         "schema": {
                             "type": "boolean"
                         }
@@ -808,7 +828,17 @@
                         }
                     },
                     {
-                        "name": "keywords",
+                        "name": "text",
+                        "description": "Respresent a filter for the student",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "supervisor",
+                        "description": "Respresent a filter for the student",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -819,31 +849,8 @@
                         }
                     },
                     {
-                        "name": "supervisor",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "title",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "thesisType",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "name": "abroad",
+                        "description": "Respresent a filter for the student",
                         "in": "query",
                         "required": false,
                         "schema": {
@@ -852,6 +859,7 @@
                     },
                     {
                         "name": "expirationDate",
+                        "description": "Respresent a filter for the student",
                         "in": "query",
                         "required": false,
                         "schema": {

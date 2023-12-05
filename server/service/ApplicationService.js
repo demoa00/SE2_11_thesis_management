@@ -2,8 +2,6 @@
 
 const dayjs = require('dayjs');
 
-const Student = require('../service/StudentService');
-const Professor = require('../service/ProfessorService');
 const checkRole = require('../utils/checkRole');
 const smtp = require('../utils/smtp');
 const { PromiseError } = require('../utils/error');
