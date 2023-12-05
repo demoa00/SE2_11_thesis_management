@@ -1,0 +1,52 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.leftMenuItem {
+  border-radius: 8px;
+  padding: 8px 16px;
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 16px;
+  background: white;
+}
+.leftMenuItem.selected {
+  background-color: #03577A;
+}
+.leftMenuItem.selected * {
+  color: white;
+}
+.leftMenuItem.hovered {
+  background-color: #e5e7eb;
+}
+
+.card {
+  @apply shadow-sm rounded-md shadow-gray-400 p-4 bg-white;
+}
+
+.separator {
+  height: 1px;
+  width: 100%;
+  @apply bg-orange-500;
+}
+
+* {
+  color: #04264c;
+}
+
+.title {
+  height: 12.5%;
+}
+
+.main {
+  height: 87.5%;
+}
+
+.propic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+/*# sourceMappingURL=page-skeleton.component.css.map */

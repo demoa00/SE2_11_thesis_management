@@ -1,0 +1,33 @@
+.dropdownButton {
+  background-color: #03577A;
+  color: white;
+  line-height: 16px;
+  padding: 8px;
+  border-radius: 8px;
+  @apply hover:drop-shadow-lg;
+}
+
+input, select {
+  padding: 5px;
+  margin-bottom: 30px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #eee;
+}
+
+.data {
+  margin-bottom: 0;
+}
+
+.info {
+  @apply flex flex-col p-3;
+}
+
+.button-tesi {
+  @apply dropdownButton flex gap-1 items-center justify-around hover:cursor-pointer hover:drop-shadow-lg;
+}
+.button-tesi.orange {
+  @apply bg-orange-500;
+}
+
+/*# sourceMappingURL=thesis-management.component.css.map */

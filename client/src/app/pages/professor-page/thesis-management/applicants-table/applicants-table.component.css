@@ -1,0 +1,38 @@
+.bo-table, .bo-table-compact {
+  @apply divide-y divide-gray-200 p-4 bg-white;
+}
+.bo-table thead th, .bo-table-compact thead th {
+  @apply py-2 px-1 text-center text-sm font-medium tracking-wider;
+}
+.bo-table tbody, .bo-table-compact tbody {
+  @apply bg-white text-xs divide-y divide-gray-200;
+}
+.bo-table tbody tr, .bo-table-compact tbody tr {
+  @apply hover:bg-gray-100;
+}
+.bo-table td, .bo-table-compact td {
+  @apply py-2 px-1 mx-1 text-center;
+}
+.bo-table.bo-striped tbody tr:nth-child(even), .bo-striped.bo-table-compact tbody tr:nth-child(even) {
+  @apply bg-gray-50 hover:bg-gray-100;
+}
+.bo-table .dropdownButton, .bo-table-compact .dropdownButton {
+  background-color: #03577A;
+  color: white;
+  line-height: 16px;
+  padding: 8px;
+  border-radius: 8px;
+  @apply hover:drop-shadow-lg;
+}
+.bo-table .dropdownButton.red, .bo-table-compact .dropdownButton.red {
+  @apply bg-red-500;
+}
+
+.bo-table-compact thead th {
+  @apply py-1 px-0 text-xs;
+}
+.bo-table-compact tbody td {
+  @apply py-1 px-0 text-xs;
+}
+
+/*# sourceMappingURL=applicants-table.component.css.map */

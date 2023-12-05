@@ -1,0 +1,78 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.leftMenuItem {
+  border-radius: 8px;
+  padding: 8px 16px;
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 16px;
+  background: white;
+}
+.leftMenuItem.selected {
+  background-color: #03577A;
+}
+.leftMenuItem.selected * {
+  color: white;
+}
+.leftMenuItem.hovered {
+  background-color: #e5e7eb;
+}
+
+.card {
+  @apply shadow-sm rounded-md shadow-gray-400 p-4 bg-white;
+}
+
+.separator {
+  height: 1px;
+  width: 100%;
+  @apply bg-orange-500;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(87.5vh - 32px);
+}
+
+.applicationsContainer {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+.applicationsContainer .application {
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.applicationsContainer .application:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.applicationsContainer .application .title {
+  margin-right: 32px;
+}
+.applicationsContainer .application .status {
+  padding: 8px;
+  border-radius: 200px;
+  line-height: normal;
+  height: fit-content;
+  color: white;
+}
+.applicationsContainer .application .status.pending {
+  background: #ffdd48;
+  color: #545454;
+}
+.applicationsContainer .application .status.accepted {
+  background: #75ce8f;
+}
+.applicationsContainer .application .status.rejected {
+  background: #f56565;
+}
+
+/*# sourceMappingURL=application-view.component.css.map */

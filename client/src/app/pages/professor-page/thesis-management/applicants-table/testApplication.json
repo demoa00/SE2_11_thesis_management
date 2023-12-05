@@ -1,0 +1,8 @@
+{
+    "$schema":"../../../../../../../json_schema/application.json",
+    "thesisProposalId": 11,
+    "applicant": {
+        "studentId": "s123456"
+    },
+    "status": "Accepted"
+}

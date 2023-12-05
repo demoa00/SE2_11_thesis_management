@@ -1,0 +1,39 @@
+@import '../../../../styles';
+
+:host {
+  background-color: $polilightblue;
+  padding: 8px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  height: fit-content;
+  display: flex;
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &.orange {
+    @apply bg-orange-600;
+  }
+  &.grey {
+    background-color: $lightgrey;
+    color: $poliblue;
+  }
+  &.danger {
+    background-color: $danger;
+    color: white;
+  }
+  &.success {
+    background-color: $success;
+    color: white;
+  }
+  &.rounded {
+    border-radius: 50% !important;
+  }
+  &.small {
+    //padding: 4px;
+    font-size: 12px;
+  }
+}

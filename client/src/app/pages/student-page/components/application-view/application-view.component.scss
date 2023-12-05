@@ -1,0 +1,53 @@
+@import '../../../../../styles';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(87.5vh - 32px);
+}
+
+.applicationsContainer {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  .application {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid $lightgrey;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .title {
+      margin-right: 32px;
+      //&:hover {
+      //  text-decoration: underline;
+      //}
+    }
+    .status {
+      padding: 8px;
+      border-radius: 200px;
+      line-height: normal;
+      height: fit-content;
+      color: white;
+      &.pending {
+        background: $pending;
+        color: #545454;
+      }
+      &.accepted {
+        background: $success;
+      }
+      &.rejected {
+        background: $danger;
+      }
+    }
+  }
+}
+
+.applicationDetailsContainer {
+
+}

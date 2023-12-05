@@ -1,0 +1,59 @@
+.bo-table {
+  @apply divide-y divide-gray-200 p-4 bg-white;
+  thead {
+    th {
+      @apply py-2 px-1 text-center text-sm font-medium tracking-wider;
+    }
+  }
+
+  tbody {
+    @apply bg-white text-xs divide-y divide-gray-200;
+    tr {
+      @apply hover:bg-gray-100
+    }
+  }
+
+  td {
+    @apply py-2 px-1 mx-1 text-center;
+  }
+
+  &.bo-striped {
+    tbody {
+      tr:nth-child(even) {
+        @apply bg-gray-50 hover:bg-gray-100
+      }
+    }
+  }
+  .dropdownButton {
+    background-color: #03577A;
+    color: white;
+    line-height: 16px;
+    padding: 8px;
+    border-radius: 8px;
+    @apply hover:drop-shadow-lg;
+    &.red {
+      @apply bg-red-500;
+    }
+  }
+}
+
+.bo-table-compact {
+  @extend .bo-table;
+
+  thead {
+    th {
+      @apply py-1 px-0 text-xs;
+    }
+  }
+
+  tbody {
+    td {
+      @apply py-1 px-0 text-xs;
+    }
+  }
+}
+.projectButtons {
+  display: flex;
+  gap: 8px;
+  @apply pl-4;
+}

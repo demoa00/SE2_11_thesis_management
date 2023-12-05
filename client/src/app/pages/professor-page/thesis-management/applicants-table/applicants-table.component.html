@@ -1,0 +1,68 @@
+<div class=" card p-5 flex flex-col w-full gap-6 items-center">
+  <h1 class="text-3xl flex justify-center"> List of Thesis Applicants</h1>
+  <div class="separator"></div>
+  <table  *ngIf="rows" class="bo-table w-full h-fit overflow-auto">
+  <tbody >
+  <tr class="thead">
+    <th>Student ID</th>
+    <th>Thesis Title</th>
+    <th>Expiration Date</th>
+    <th></th>
+  </tr>
+  <tr *ngFor="let row of rows">
+    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.studentId}}</td>
+    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.thesisProposalTitle}}</td>
+    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.date}}</td>
+    <td class="py-0.5 w-12 h-6">
+      <button *ngIf="row.status =='Pending'" class="dropdownButton" (click)="openAcceptPopup(); applicant = row" >Accept</button>
+    </td>
+    <td *ngIf="row.status =='Pending'" class="py-0.5 w-12 h-6">
+      <button class="dropdownButton red" (click)="openRejectPopup(); applicant = row">Reject</button>
+    </td>
+    <td *ngIf="row.status !='Pending'" [class.text-green-400] = "row.status=='Accepted'" [class.text-red-400] = "row.status=='Rejected'" class="py-0.5 w-12 h-6 text-sm">
+      {{row.status=='Accepted'?'accepted':row.status=='Rejected'?'rejected':''}}
+    </td>
+  </tr>
+  </tbody>
+  </table>
+  <h3 *ngIf="!rows"> No Applicants Avaiable</h3>
+</div>
+
+<app-popup
+  *ngIf="rejectPopup"
+  (close)="openRejectPopup()"
+  [closeClickOutside]="false"
+  [showSlider] = "false"
+  [showButton] = "true"
+  [response] = response
+  (send)="rejectApplication()">
+  <div *ngIf="!requestAccepted" class="flex flex-col h-full w-full gap-4">
+    <div class="p-2 w-full flex flex-col gap-2 items-center ">
+      <div style="width: 90%; height: 1px" class="bg-orange-500"></div>
+      <div class=" font-bold">Are you sure to reject the application?</div>
+    </div>
+  </div>
+
+  <div *ngIf="requestAccepted" class="text-red-500 text-xl"> The application has been rejected </div>
+
+</app-popup>
+
+<app-popup
+  *ngIf="acceptPopup"
+  (close)="openAcceptPopup()"
+  [closeClickOutside]="false"
+  [showSlider] = "false"
+  [showButton] = "true"
+  [response] = response
+  (send)="acceptApplication()">
+  <div *ngIf="!requestAccepted" class="flex flex-col h-full w-full gap-4">
+    <div class="p-2 w-full flex flex-col gap-2 items-center ">
+      <div style="width: 90%; height: 1px" class="bg-orange-500"></div>
+      <div class="font-bold">Are you sure to accept the application?</div>
+    </div>
+  </div>
+
+  <div *ngIf="requestAccepted" class="text-green-500 text-xl"> The application has been accepted </div>
+
+</app-popup>
+

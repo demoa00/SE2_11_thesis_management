@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.leftMenuItem {
+  border-radius: 8px;
+  padding: 8px 16px;
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 16px;
+  background: white;
+}
+.leftMenuItem.selected {
+  background-color: #03577A;
+}
+.leftMenuItem.selected * {
+  color: white;
+}
+.leftMenuItem.hovered {
+  background-color: #e5e7eb;
+}
+
+.card {
+  @apply shadow-sm rounded-md shadow-gray-400 p-4 bg-white;
+}
+
+.separator {
+  height: 1px;
+  width: 100%;
+  @apply bg-orange-500;
+}
+
+.dropdownContent {
+  font-size: 12px;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  text-transform: capitalize;
+  width: max-content;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  z-index: 1;
+  text-align: right;
+}
+
+/*# sourceMappingURL=dropdown-checkbox.component.css.map */

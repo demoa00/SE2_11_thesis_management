@@ -1,0 +1,31 @@
+.loading-container{
+  @apply h-full w-full flex items-center justify-center
+}
+.loading-container-transparent{
+  @apply bg-transparent
+}
+.loading{
+  @apply w-20 h-20 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-gray-300
+}
+.loading-green{
+  @apply fill-green-300
+}
+.loading-red{
+  @apply fill-red-300
+}
+.loading-blue{
+  @apply fill-blue-300
+}
+.loading-orange{
+  @apply fill-orange-400
+}
+.loading-size40{
+  @apply w-40 h-40
+}
+.loading-size10{
+  @apply w-10 h-10
+}
+.loading-size6{
+  @apply w-6 h-6
+}
+

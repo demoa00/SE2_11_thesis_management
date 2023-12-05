@@ -1,0 +1,35 @@
+<div class="bo-popup" (click)="closeClickOutside ? close.emit() : ''">
+  <div class="flex flex-col bo-popup-content {{small? 'small' : ''}} p-4 justify-between" (click)="$event.stopPropagation()">
+    <div class="flex items-center justify-around gap-2 w-160 mb-4">
+      <img *ngIf="showLogo" alt="logo" src="../../../assets/images/LogoPoli.svg" class="w-48" >
+      <h1 *ngIf="title" class="font-bold text-3xl">{{ title }}</h1>
+      <app-icon
+        *ngIf="showCloseButton"
+        name="cross"
+        title="Chiudi Finestra"
+        class="bo-popup-close-1 h-6 w-6 flex justify-center items-center"
+        (click)="close.emit()"></app-icon>
+      <!--<div *ngIf="showCloseButton" class="bo-popup-close-1" (click)="close.emit()"></div>-->
+    </div>
+    <div class="flex flex-col w-full items-center gap-4 mb-4">
+      <ng-content></ng-content>
+      <app-button-slider
+        *ngIf="showSlider && showSliderAfterResponse"
+        class="place-content-center"
+        (buttonSliderSubmit)="send.emit()"
+        (requestAccepted)="requestAccepted.emit($event); toggleButton()"
+        [responseFromServer]="response">
+        {{ title == 'Annulla Operazione' ? 'Cancel' : 'Insert' }}
+      </app-button-slider>
+      <div *ngIf="showButton" >
+        <button
+          *ngIf="showButton && showSliderAfterResponse && !sending"
+          class="place-content-center dropdownButton "
+          (click)="send.emit() ;sending = true; requestAccepted.emit(true)">
+          {{ title == 'Annulla Operazione' ? 'Cancel' : 'Confirm' }}
+        </button>
+        <app-loading *ngIf="!response && sending"></app-loading>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="filtersContainer card">
+  <div class="relative" (mouseenter)="csHover=true" (mouseleave)="csHover=false">
+    <app-button class="{{selectedCs.length === 0 ? 'grey' : 'orange'}} small">Cosupervisors</app-button>
+    <app-dropdown-checkbox
+      [hover]="csHover"
+      [showSearch]="false">
+      <div *ngFor="let cs of css">
+        <div class="itemsContainer" (click)="toggleCs(cs)">
+          <app-checkbox [checked]="isThereCs(cs)"></app-checkbox>
+          <p class="text-right">{{cs.name}} {{cs.surname}}</p>
+        </div>
+      </div>
+    </app-dropdown-checkbox>
+  </div>
+  <div class="relative" (mouseenter)="extCsHover=true" (mouseleave)="extCsHover=false">
+    <app-button class="{{selectedExtCs.length === 0 ? 'grey' : 'orange'}} small">External Cosupervisors</app-button>
+    <app-dropdown-checkbox
+      [hover]="extCsHover"
+      [showSearch]="false">
+      <div *ngFor="let cs of extCs">
+        <div class="itemsContainer" (click)="toggleExtCs(cs)">
+          <app-checkbox [checked]="isThereExtCs(cs)"></app-checkbox>
+          <p class="text-right">{{cs.name}} {{cs.surname}}</p>
+        </div>
+      </div>
+    </app-dropdown-checkbox>
+  </div>
+  <app-button class="small {{abroad ? 'orange' : 'grey'}}" (click)="toggleAbroad()">
+    Abroad
+  </app-button>
+  <div class="relative">
+    <app-button class="{{selectedDate === null ? 'grey' : 'orange'}} small" (click)="picker.open()">
+      Expiration Date
+    </app-button>
+    <input class="w-0 h-0 absolute -bottom-1" (dateChange)="selectDate($event)" matInput [matDatepicker]="picker">
+    <mat-datepicker #picker></mat-datepicker>
+  </div>
+  <div *ngIf="selectedDate !== undefined && selectedDate!== null" class="flex items-center">
+    <p style="line-height: normal;">{{selectedDate.value.toLocaleDateString()}}</p>
+    <mat-icon class="cursor-pointer close-icon" (click)="deleteDate()">close</mat-icon>
+  </div>
+
+
+</div>

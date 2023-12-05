@@ -1,0 +1,22 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*# sourceMappingURL=styles.css.map */
+
+
+.card{
+  @apply shadow-sm rounded-md shadow-gray-400 p-4 bg-white;
+}
+.separator{
+  height: 1px;
+  width: 100%;
+  @apply bg-orange-500;
+  @media only screen and (max-width: 1000px) {
+    display: none;
+  }
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

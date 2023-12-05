@@ -1,0 +1,22 @@
+<div>
+  <div class="projectDetails">
+    <div class="projectHeader">
+      <h2 class="projectTitle">{{selectedProposal.title}}</h2>
+      <h3 class="font-bold">Supervisor: <span class="regularText">{{selectedProposal.supervisor.name}} {{selectedProposal.supervisor.surname}}</span></h3>
+      <h3 class="font-bold">Cosupervisors: <span class="regularText" *ngFor="let cs of selectedProposal.coSupervisor; let last = last">{{cs.name}} {{cs.surname}}{{last ? '' : ', '}}</span></h3>
+    </div>
+    <div class="projectBody">
+      <h3 class="font-bold">Description</h3>
+      <div class="regularText">
+        <p>{{selectedProposal.description}}</p>
+      </div>
+    </div>
+    <div class="projectFooter">
+      <h3 class="font-bold">Type: <span class="regularText">{{selectedProposal.thesisType}}</span></h3>
+      <h3 class="font-bold">Abroad: <span class="regularText">{{selectedProposal.abroad ? 'Yes' : 'No'}}</span></h3>
+      <h3 class="font-bold">Groups: <span class="regularText" *ngFor="let g of selectedProposal.groups; let last = last">{{g}}{{last ? '' : ', '}}</span></h3>
+      <h3 class="font-bold">Study Courses: <span class="regularText" *ngFor="let cs of selectedProposal.CdS; let last = last">{{cs.titleDegree}} ({{cs.degreeId}}){{last ? '' : ', '}}</span></h3>
+      <h3 class="font-bold">Expiration date: <span class="regularText">{{selectedProposal.expirationDate}}</span></h3>
+    </div>
+  </div>
+</div>

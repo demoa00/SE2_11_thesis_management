@@ -1,0 +1,43 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.leftMenuItem {
+  border-radius: 8px;
+  padding: 8px 16px;
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 16px;
+  background: white;
+}
+.leftMenuItem.selected {
+  background-color: #03577A;
+}
+.leftMenuItem.selected * {
+  color: white;
+}
+.leftMenuItem.hovered {
+  background-color: #e5e7eb;
+}
+
+.card {
+  @apply shadow-sm rounded-md shadow-gray-400 p-4 bg-white;
+}
+
+.separator {
+  height: 1px;
+  width: 100%;
+  @apply bg-orange-500;
+}
+
+.checkbox {
+  width: 12px;
+  height: 12px;
+  margin-right: 16px;
+  border: 1px solid #04264c;
+}
+.checkbox.checked {
+  background-color: #04264c;
+}
+
+/*# sourceMappingURL=checkbox.component.css.map */

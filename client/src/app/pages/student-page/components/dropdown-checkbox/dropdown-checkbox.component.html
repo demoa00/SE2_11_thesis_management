@@ -1,0 +1,9 @@
+<div class="dropdownContent" *ngIf="hover">
+  <div *ngIf="showSearch" class="border-b-2 mb-2 flex justify-between">
+    <input id="professorsSearch-input" class="outline-0 w-24" type="text" placeholder="Search..."
+           [(ngModel)]="searchValue" (ngModelChange)="updateSearch($event)"/>
+    <img class="cursor-pointer" alt="delete" style="color: red" src="assets/images/close_grey.svg" width="12"
+         height="12" (click)="updateSearch('')"/>
+  </div>
+  <ng-content></ng-content>
+</div>
