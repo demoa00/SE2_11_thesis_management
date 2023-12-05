@@ -326,14 +326,14 @@ exports.insertNewThesisProposal = async function (professorId, newThesisProposal
   let regex = new RegExp("(p|P)[0-9]{6}");
 
   if (newThesisProposal?.coSupervisor) {
-    for (let coSupervisorId of newThesisProposal.coSupervisor) {
+    for (let c of newThesisProposal.coSupervisor) {
       try {
-        if (regex.test(coSupervisorId)) {
-          let internalCoSupervisor = await Professor.getProfessorById(coSupervisorId);
+        if (regex.test(c.coSupervisorId)) {
+          let internalCoSupervisor = await Professor.getProfessorById(c.coSupervisorId);
 
           internalCosupervisors.push({ coSupervisorId: internalCoSupervisor.professorId, email: internalCoSupervisor.email });
         } else {
-          let externalCoSupervisor = await ExternalCoSupervisor.getExternalCoSupervisorById(coSupervisorId);
+          let externalCoSupervisor = await ExternalCoSupervisor.getExternalCoSupervisorById(c.coSupervisorId);
 
           externalCosupervisors.push({ coSupervisorId: externalCoSupervisor.externalCoSupervisorId, email: externalCoSupervisor.email });
         }
@@ -497,14 +497,14 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
   oldDegrees = await Degree.getDegreesByThesisProposalId(thesisProposalId);
 
   if (thesisProposal?.coSupervisor) {
-    for (let coSupervisorId of thesisProposal.coSupervisor) {
+    for (let c of thesisProposal.coSupervisor) {
       try {
-        if (regex.test(coSupervisorId)) {
-          let internalCoSupervisor = await Professor.getProfessorById(coSupervisorId);
+        if (regex.test(c.coSupervisorId)) {
+          let internalCoSupervisor = await Professor.getProfessorById(c.coSupervisorId);
 
           newCoSupervisors.push({ coSupervisorId: internalCoSupervisor.professorId, email: internalCoSupervisor.email });
         } else {
-          let externalCoSupervisor = await ExternalCoSupervisor.getExternalCoSupervisorById(coSupervisorId);
+          let externalCoSupervisor = await ExternalCoSupervisor.getExternalCoSupervisorById(c.coSupervisorId);
 
           newCoSupervisors.push({ coSupervisorId: externalCoSupervisor.externalCoSupervisorId, email: externalCoSupervisor.email });
         }
