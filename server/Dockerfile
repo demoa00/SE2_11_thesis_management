@@ -8,7 +8,7 @@ WORKDIR /usr/src/server
 COPY package*.json ./
 
 # Installa le dipendenze
-RUN npm install
+RUN npm install --ignore-scripts
 
 # Copia il resto del codice sorgente
 COPY . .

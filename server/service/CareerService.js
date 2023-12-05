@@ -1,15 +1,18 @@
 'use strict';
 
+const { PromiseError } = require('../utils/error');
+
 const db = require('../utils/dbConnection');
+
 
 exports.getCareer = function (studentId) {
     return new Promise(function (resolve, reject) {
         const sql = "SELECT * FROM careers WHERE studentId = ?";
         db.all(sql, [studentId], (err, rows) => {
             if (err) {
-                reject({ code: 500, message: "Internal Server Error" });
+                reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
             } else if (rows.length == 0) {
-                reject({ code: 404, message: "Not Found" });
+                reject(new PromiseError({ code: 404, message: "Not Found" }));
             } else {
                 let exams = []
                 rows.forEach(r => {
@@ -26,4 +29,3 @@ exports.getCareer = function (studentId) {
         });
     });
 }
-

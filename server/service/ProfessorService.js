@@ -1,6 +1,7 @@
 'use strict';
 
 const checkRole = require('../utils/checkRole');
+const { PromiseError } = require('../utils/error');
 
 const db = require('../utils/dbConnection');
 
@@ -10,9 +11,9 @@ exports.getProfessors = function (user, filter) {
   let params = [];
 
   if (checkRole.isStudent(user)) {
-    if (filter != undefined && filter.cosupervisor != undefined) {
+    if (filter?.cosupervisor) {
       filter.cosupervisor = filter.cosupervisor instanceof Array ? filter.cosupervisor[0] : filter.cosupervisor;
-      
+
       if (filter.cosupervisor === 'true') {//retrive professor that are co-supervisor
         sql += 'WHERE professorId IN (SELECT DISTINCT internalCoSupervisorId FROM thesisProposal_cds_bridge, thesisProposal_internalCoSupervisor_bridge WHERE thesisProposal_cds_bridge.cdsId = ? AND thesisProposal_internalCoSupervisor_bridge.thesisProposalId = thesisProposal_cds_bridge.thesisProposalId) ';
         params = [user.codDegree];
@@ -31,9 +32,9 @@ exports.getProfessors = function (user, filter) {
   return new Promise(function (resolve, reject) {
     db.all(sql, params, (err, rows) => {
       if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (rows.length == 0) {
-        reject({ code: 404, message: "Not Found" });
+        reject(new PromiseError({ code: 404, message: "Not Found" }));
       } else {
         let professorsList = rows.map((r) => ({
           professorId: r.professorId,
@@ -54,9 +55,9 @@ exports.getProfessorByEmail = function (email) {
 
     db.get(sql, [email], (err, row) => {
       if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (row === undefined) {
-        reject({ code: 404, message: "Not Found" });
+        reject(new PromiseError({ code: 404, message: "Not Found" }));
       } else {
         let professor = {
           userId: row.professorId,
@@ -77,9 +78,9 @@ exports.getProfessorById = function (professorId) {
 
     db.get(sql, [professorId], (err, row) => {
       if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (row === undefined) {
-        reject({ code: 404, message: "Not Found" });
+        reject(new PromiseError({ code: 404, message: "Not Found" }));
       } else {
         let professor = {
           professorId: row.professorId,
@@ -97,12 +98,12 @@ exports.getProfessorById = function (professorId) {
   });
 }
 
-exports.getInternalCoSupervisorByThesisProposalId = function(thesisProposalId){
-  return new Promise( function (resolve, reject) {
+exports.getInternalCoSupervisorByThesisProposalId = function (thesisProposalId) {
+  return new Promise(function (resolve, reject) {
     const sql = "SELECT internalCoSupervisorId FROM thesisProposal_internalCoSupervisor_bridge WHERE thesisProposalId = ?";
     db.all(sql, [thesisProposalId], function (err, rows) {
       if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else {
         resolve(rows);
       }

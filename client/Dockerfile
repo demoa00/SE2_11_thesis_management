@@ -1,5 +1,5 @@
 # Usa un'immagine Node.js come base
-FROM node:20 as builder
+FROM node:20 AS builder
 
 # Imposta la directory di lavoro nell'app
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Installa le dipendenze
-RUN npm install
+RUN npm install --ignore-scripts
 
 # Copia il resto dell'app
 COPY .. .

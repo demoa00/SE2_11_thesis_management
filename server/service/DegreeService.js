@@ -1,5 +1,7 @@
 'use strict';
 
+const { PromiseError } = require('../utils/error');
+
 const db = require('../utils/dbConnection');
 
 
@@ -9,9 +11,9 @@ exports.getDegrees = function () {
 
     db.all(sql, [], (err, rows) => {
       if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (rows.length == 0) {
-        reject({ code: 404, message: "Not Found" });
+        reject(new PromiseError({ code: 404, message: "Not Found" }));
       } else {
         let degreesList = rows.map((r) => ({ degreeId: r.degreeId, titleDegree: r.titleDegree }));
 
@@ -27,9 +29,9 @@ exports.getDegreeById = function (degreeId) {
 
     db.get(sql, [degreeId], (err, row) => {
       if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (row == undefined) {
-        reject({ code: 404, message: "Not Found" });
+        reject(new PromiseError({ code: 404, message: "Not Found" }));
       } else {
         let degree = {
           degreeId: row.degreeId,
@@ -48,7 +50,7 @@ exports.getDegreesByThesisProposalId = function (thesisProposalId) {
 
     db.all(sql, [thesisProposalId], (err, rows) => {
       if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (rows.length == 0) {
         resolve([]);
       } else {

@@ -6,11 +6,13 @@ const Student = require('../service/StudentService');
 const Professor = require('../service/ProfessorService');
 const checkRole = require('../utils/checkRole');
 const smtp = require('../utils/smtp');
+const { PromiseError } = require('../utils/error');
 
 const db = require('../utils/dbConnection');
 
+
 const filterByStatus = (filter, sql, params) => {
-  if (filter != undefined && filter.status != undefined) {
+  if (filter?.status) {
     filter.status = filter.status instanceof Array ? filter.status[0] : filter.status;
 
     if (filter.status === 'Rejected') {
@@ -38,9 +40,9 @@ exports.getAllApplicationsForStudent = function (studentId, filter) {
 
     db.all(res[0], res[1], (err, rows) => {
       if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (rows.length == 0) {
-        reject({ code: 404, message: "Not Found" });
+        reject(new PromiseError({ code: 404, message: "Not Found" }));
       } else {
         let applicationsList = rows.map((r) => ({
           thesisProposalId: r.thesisProposalId,
@@ -65,9 +67,9 @@ exports.getApplicationsForProfessor = function (professorId, filter) {
 
     db.all(res[0], res[1], (err, rows) => {
       if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (rows.length == 0) {
-        reject({ code: 404, message: "Not Found" });
+        reject(new PromiseError({ code: 404, message: "Not Found" }));
       } else {
         let applicationsList = rows.map((r) => ({
           thesisProposalId: r.thesisProposalId,
@@ -99,9 +101,9 @@ exports.getApplicationById = function (user, studentId, thesisProposalId) {
     db.get(sql, params, function (err, row) {
       if (err) {
         console.log(err)
-        reject({ code: 500, message: "Internal Server Error" });
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (row === undefined) {
-        reject({ code: 404, message: "Not Found" });
+        reject(new PromiseError({ code: 404, message: "Not Found" }));
       } else {
         let application = {
           thesisProposalId: thesisProposalId,
@@ -123,7 +125,7 @@ exports.updateApplication = function (professorId, studentId, thesisProposalId, 
 
     db.all(sql, [thesisProposalId], (err, rows) => {
       if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (rows.length == 0) {
         resolve([]);
       } else {
@@ -138,9 +140,9 @@ exports.updateApplication = function (professorId, studentId, thesisProposalId, 
 
       db.run(sql, [newApplication.status, thesisProposalId, studentId, professorId], function (err) {
         if (err) {
-          reject({ code: 500, message: "Internal Server Error" });
+          reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
         } else if (this.changes == 0) {
-          reject({ code: 404, message: "Not Found" });
+          reject(new PromiseError({ code: 404, message: "Not Found" }));
         } else {
           resolve(students)
         }
@@ -152,9 +154,9 @@ exports.updateApplication = function (professorId, studentId, thesisProposalId, 
         const sql = "UPDATE applications SET status = 'Rejected' WHERE status = 'Pending' AND thesisProposalId = ? AND thesisProposalId IN (SELECT thesisProposalId FROM thesisProposals WHERE supervisor = ?)";
         db.run(sql, [thesisProposalId, professorId], function (err) {
           if (err) {
-            reject({ code: 500, message: "Internal Server Error" });
+            reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
           } else if (this.changes == 0) {
-            reject({ code: 404, message: "Not Found" });
+            reject(new PromiseError({ code: 404, message: "Not Found" }));
           } else {
             resolve(students);
           }
@@ -192,9 +194,9 @@ exports.insertNewApplication = function (studentId, newApplication) {
 
     db.get(sql, [newApplication.thesisProposalId], (err, row) => {
       if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (row === undefined) {
-        reject({ code: 404, message: "Not Found" });
+        reject(new PromiseError({ code: 404, message: "Not Found" }));
       } else {
         resolve(row.email);
       }
@@ -203,8 +205,9 @@ exports.insertNewApplication = function (studentId, newApplication) {
     return new Promise(function (resolve, reject) {
       const sql = 'INSERT INTO applications(thesisProposalId, studentId, message, date) VALUES (?, ?, ?, ?)';
       db.run(sql, [newApplication.thesisProposalId, studentId, newApplication.message, dayjs().format('YYYY-MM-DD')], function (err) {
-        if (err) {console.log(err)
-          reject({ code: 500, message: "Internal Server Error" });
+        if (err) {
+          console.log(err)
+          reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
         } else {
           resolve(professorEmail);
         }

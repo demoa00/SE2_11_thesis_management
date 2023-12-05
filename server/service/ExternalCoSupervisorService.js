@@ -1,6 +1,7 @@
 'use strict';
 
 const checkRole = require('../utils/checkRole');
+const { PromiseError } = require('../utils/error');
 
 const db = require('../utils/dbConnection');
 
@@ -19,7 +20,7 @@ exports.getExternalCoSupervisors = function (user) {
 
     db.all(sql, params, (err, rows) => {
       if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else {
         let externalCoSupervisorsList = rows.map((r) => ({
           externalCoSupervisorId: r.externalCoSupervisorId,
@@ -40,9 +41,9 @@ exports.getExternalCoSupervisorById = function (externalCoSupervisorId) {
 
     db.get(sql, [externalCoSupervisorId], (err, row) => {
       if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (row === undefined) {
-        reject({ code: 404, message: "Not Found" });
+        reject(new PromiseError({ code: 404, message: "Not Found" }));
       } else {
         let externalCoSupervisor = {
           externalCoSupervisorId: row.externalCoSupervisorId,
@@ -60,11 +61,11 @@ exports.getExternalCoSupervisorById = function (externalCoSupervisorId) {
 }
 
 exports.getExternalCoSupervisorsByThesisProposalId = function (thesisProposalId) {
-  return new Promise( function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     const sql = "SELECT externalCoSupervisorId FROM thesisProposal_externalCoSupervisor_bridge WHERE thesisProposalId = ?";
     db.all(sql, [thesisProposalId], function (err, rows) {
       if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else {
         resolve(rows);
       }

@@ -1,6 +1,8 @@
 'use strict';
 
 const nodemailer = require("nodemailer");
+const { PromiseError } = require('../utils/error');
+
 
 const transporter = nodemailer.createTransport({
     host: 'localhost',
@@ -28,7 +30,7 @@ exports.sendMail = function (mailOptions) {
         transporter.sendMail(mailOptions, (err, data) => {
             if (err) {
                 console.log(`Unable to send email to ${mailOptions.to} from ${mailOptions.from}`);
-                reject({ code: 500, message: 'Internal Server Error' });
+                reject(new PromiseError({ code: 500, message: 'Internal Server Error' }));
             } else {
                 console.log(`Correctly send email to ${mailOptions.to} from ${mailOptions.from}`);
                 resolve();

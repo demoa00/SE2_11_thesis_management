@@ -1,5 +1,7 @@
 'use strict';
 
+const { PromiseError } = require('../utils/error');
+
 const db = require('../utils/dbConnection');
 
 
@@ -9,9 +11,9 @@ exports.getStudentByEmail = function (email) {
 
     db.get(sql, [email], (err, row) => {
       if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (row == undefined) {
-        reject({ code: 404, message: "Not Found" });
+        reject(new PromiseError({ code: 404, message: "Not Found" }));
       } else {
         let student = {
           userId: row.studentId,
@@ -32,9 +34,9 @@ exports.getStudentById = function (studentId) {
 
     db.get(sql, [studentId], (err, row) => {
       if (err) {
-        reject({ code: 500, message: "Internal Server Error" });
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (row == undefined) {
-        reject({ code: 404, message: "Not Found" });
+        reject(new PromiseError({ code: 404, message: "Not Found" }));
       } else {
         let student = {
           studentId: row.studentId,
