@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {APIService} from "../../../../shared/services/api.service";
 
 @Component({
@@ -6,20 +6,32 @@ import {APIService} from "../../../../shared/services/api.service";
   templateUrl: './applicants-table.component.html',
   styleUrls: ['./applicants-table.component.scss']
 })
-export class ApplicantsTableComponent {
+export class ApplicantsTableComponent implements OnChanges{
 
   @Input()
   rows:any;
 
+  filteredRows: any[] = [];
 
+  // Filtri
+  studentFilter: string = '';
+  titleFilter: string = '';
+  dateFilter: string = '';
+  statusFilter: string = '';
   response :any;
   requestAccepted: boolean = false;
   rejectPopup= false;
   acceptPopup= false;
   applicant:any;
+  openFilter: boolean = false;
 
   constructor(private api: APIService) {
   }
+  ngOnChanges(changes: SimpleChanges) {
+    this.filteredRows = this.rows;
+    this.openFilter = false;
+  }
+
   openAcceptPopup() {
     this.acceptPopup = !this.acceptPopup;
     this.requestAccepted = false;
@@ -48,4 +60,19 @@ export class ApplicantsTableComponent {
     this.applicant = undefined;
   }
 
+  applyFilters() {
+    const dateToCheck = this.dateFilter ? new Date(this.dateFilter) : null
+    this.filteredRows = this.rows.filter((row:any) =>
+
+      row.studentId.toLowerCase().includes(this.studentFilter.toLowerCase()) &&
+      row.thesisProposalTitle.toLowerCase().includes(this.titleFilter.toLowerCase()) &&
+      (dateToCheck === null || new Date(row.date).toDateString() === dateToCheck.toDateString()) &&
+      (this.statusFilter === '' || row.status.toLowerCase() === this.statusFilter.toLowerCase())
+    );
+  }
+
+  resetFilter() {
+    this.filteredRows = this.rows
+    this.openFilter = !this.openFilter
+  }
 }

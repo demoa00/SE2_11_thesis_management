@@ -114,6 +114,7 @@ const strategy = new saml(
         issuer: process.env.SAML_ISSUER,
         protocol: process.env.SAML_PROTOCOL,
         logoutUrl: process.env.SAML_LOGOUT_URL,
+        acceptedClockSkewMs: 30000,
         cert: fs.readFileSync('./certs/idp_cert.pem', 'utf-8')
     },
     async (profile, done) => {

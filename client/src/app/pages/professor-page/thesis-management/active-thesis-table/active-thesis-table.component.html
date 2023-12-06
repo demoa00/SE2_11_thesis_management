@@ -6,24 +6,44 @@
   <tr class="thead">
     <th>Title</th>
     <th>Expiration</th>
-    <th></th>
   </tr>
   <tr *ngFor="let row of rows" >
     <td (click)="shohDetails(row)" class="cursor-pointer py-0.5 w-24 h-6 text-sm text-gray-600">{{row.title}}</td>
     <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.expirationDate}}</td>
-    <td class="py-0.5 w-12 h-6">
-      <button class="dropdownButton" (click)="openCreatePopup()">Update</button>
+    <td class="py-0.5 w-6 h-6 hover:cursor-pointer">
+      <app-icon name="pencil" class="text-blue-900 h-6 w-6" (click)="openCreatePopup()">Update</app-icon>
+    </td>
+    <td class="py-0.5 w-6 h-6 hover:cursor-pointer">
+      <app-icon name="archive" class="text-yellow-700  h-6 w-6" (click)="''">Archive</app-icon>
+    </td>
+    <td class="py-0.5 w-6 h-6 hover:cursor-pointer">
+      <app-icon name="delete" class="text-red-700  h-6 w-6" (click)="''">Delete</app-icon>
     </td>
   </tr>
   </tbody>
 </table>
   <h3 *ngIf="!rows"> No Active Thesis Avaiable</h3>
 </div>
-<div *ngIf="selectedProposal" class="card flex flex-col">
+<div *ngIf="selectedProposal" class="card flex gap-4 flex-col">
+  <!--
+  <div class="flex gap-1 items-center hover:cursor-pointer" (click)="selectedProposal=undefined">
+    <app-icon name="arrowLeft" class="text-gray-500 h-6 w-6" >Archive</app-icon>
+    <div class="text-gray-500">Back</div>
+  </div>
+  -->
   <app-thesis-details [selectedProposal]="selectedProposal"></app-thesis-details>
   <div *ngIf="selectedProposal" class="projectButtons">
-    <app-button (click)="selectedProposal=undefined">Back</app-button>
-    <app-button (click)="openCreatePopup()">Update</app-button>
+
+    <div class="flex gap-1 items-center hover:cursor-pointer" (click)="selectedProposal=undefined">
+      <app-icon name="arrowLeft" class="text-gray-500 h-6 w-6" >Archive</app-icon>
+      <div class="text-gray-500">Back</div>
+    </div>
+
+    <div class="flex gap-6">
+      <app-icon name="pencil" class="text-blue-900 h-6 w-6 hover:cursor-pointer" (click)="openCreatePopup()">Update</app-icon>
+      <app-icon name="archive" class="text-yellow-700 h-6 w-6 hover:cursor-pointer" (click)="''">Archive</app-icon>
+      <app-icon name="delete" class="text-red-700 h-6 w-6 hover:cursor-pointer" (click)="''">Delete</app-icon>
+    </div>
   </div>
 </div>
 

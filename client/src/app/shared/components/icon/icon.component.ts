@@ -11,8 +11,8 @@ export class IconComponent implements OnInit {
 
   @Input() name!: OrIcon;
 
-  @HostBinding('class') @Input('class') classList = 'w-4 h-4';
-  
+  @HostBinding('class') @Input('class') classList = '';
+
   ngOnInit() {
   if (!this.classList.includes('icon-') && !this.classList.includes('w-') && !this.classList.includes('h-')) {
       this.classList += ' w-4 h-4';

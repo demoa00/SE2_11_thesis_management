@@ -55,5 +55,5 @@
 .projectButtons {
   display: flex;
   gap: 8px;
-  @apply pl-4;
+  @apply h-full justify-between;
 }
