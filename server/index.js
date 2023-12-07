@@ -114,6 +114,7 @@ const strategy = new saml(
         issuer: process.env.SAML_ISSUER,
         protocol: process.env.SAML_PROTOCOL,
         logoutUrl: process.env.SAML_LOGOUT_URL,
+        acceptedClockSkewMs: 30000,
         cert: fs.readFileSync('./certs/idp_cert.pem', 'utf-8')
     },
     async (profile, done) => {
@@ -357,6 +358,11 @@ httpServer.listen(PORT, function () {
     console.log('Swagger-ui is available on http://localhost:%d/docs', PORT);
 });
 
+//generate random messages for notifications
+const genRand = (len) => {
+  return Math.random().toString(36).substring(2,len+2);
+}
+
 setInterval(() => {
-    io.to('s654321').emit('message', 'new notification');
+    io.emit('message', genRand(10));
 }, 1000);

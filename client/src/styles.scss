@@ -4,11 +4,22 @@
 @tailwind utilities;
 
 $lightgrey: #e5e7eb;
+$lightgreyHover: #d1d5db;
 $poliblue: #04264c;
 $polilightblue: #03577A;
 $success: #75ce8f;
 $danger: #f56565;
 $pending: #ffdd48;
+
+$sm: 640px;
+$md: 768px;
+$lg: 1024px;
+$xl: 1280px;
+
+$media-desktop: "only screen and (max-width : 1024px)";
+$media-tablet: "only screen and (max-width : 768px)";
+$media-mobile: "only screen and (max-width : 640px)";
+$media-mobile-sm: "only screen and (max-width : 480px)";
 
 .leftMenuItem {
   border-radius: 8px;
@@ -16,13 +27,15 @@ $pending: #ffdd48;
   text-align: center;
   margin-bottom: 8px;
   font-size: 16px;
-  background: white;
+  background-color: $lightgrey;
+  cursor: pointer;
+
   &.selected {
     background-color: $polilightblue;
     * {color: white;}
   }
   &.hovered {
-    background-color: $lightgrey;
+    background-color: $lightgreyHover;
   }
 }
 

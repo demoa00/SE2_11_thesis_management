@@ -1,31 +1,41 @@
-<div class="columns-2 min-h-screen flex bg-gray-50" [ngClass]="theme ? 'dark' : ''">
+<div class="columns-2 min-h-screen flex bg-gray-50 relative" [ngClass]="theme ? 'dark' : ''">
   <ng-content></ng-content>
-  <div class="max-md:hidden w-1/6 border-r-2 dark:bg-gray-900">
-    <div class="md:p-4 border-b-2">
+  <div class="left-col {{menuOpen ? 'open' : ''}}">
+    <div class="p-4 border-b-2">
       <img src="assets/images/LogoPoli.svg" *ngIf="!theme" alt="no image found">
 <!--      <img src="assets/images/LogoPoli.svg" alt="no image found">-->
       <img src="assets/images/LogoPoliWhite.svg" *ngIf="theme" alt="no image found">
     </div>
-    <div class="md:p-4">
+    <div class="flex flex-col justify-between p-4">
+      <div class="w-full md:hidden">
+        <div class="flex items-center">
+          <img alt="propic" src="https://picsum.photos/512/512" class="propic mr-4" *ngIf="currentRoute!=='/'">
+          <p class="text-sm uppercase" *ngIf="currentRoute==='/student'">{{student?.name}} {{student?.surname}}, {{student?.studentId}}</p>
+          <p class="text-sm uppercase" *ngIf="currentRoute==='/professor'">{{professor?.name}} {{professor?.surname}}, {{professor?.professorId}}</p>
+        </div>
+        <app-button class="w-fit mb-4 mt-2" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
+      </div>
       <ng-content select="[left-col]"></ng-content>
     </div>
-
   </div>
-  <div class="md:w-5/6 max-md:w-full flex flex-col">
-    <div class="title p-4 flex items-center justify-between border-b-2 border-orange-500">
+  <div class="left-overlay {{menuOpen ? 'open' : ''}}" (click)="closeMenu()"></div>
+  <div class="right-side">
+    <div class="title">
+      <mat-icon class="menu-icon" (click)="menuOpen = !menuOpen">menu</mat-icon>
       <h2 class="uppercase text-3xl font-bold">thesis proposals</h2>
-      <div class="flex items-center">
+      <div class="md:flex items-center max-md:hidden">
         <img alt="propic" src="https://picsum.photos/512/512" class="propic mr-4" *ngIf="currentRoute!=='/'">
         <p class="text-sm uppercase" *ngIf="currentRoute==='/student'">{{student?.name}} {{student?.surname}}, {{student?.studentId}}</p>
         <p class="text-sm uppercase" *ngIf="currentRoute==='/professor'">{{professor?.name}} {{professor?.surname}}, {{professor?.professorId}}</p>
         <app-button class="ml-4" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
       </div>
+      <mat-icon class="menu-icon" (click)="menuOpen = !menuOpen">notifications</mat-icon>
     </div>
     <div class="main columns-2 flex">
-      <div class="md:w-4/5 max-md:w-full p-4">
+      <div class="main-col">
         <ng-content select="[main-col]"></ng-content>
       </div>
-      <div class="max-md:hidden w-1/5 border-l-2">
+      <div class="right-col">
         <ng-content select="[right-col]"></ng-content>
       </div>
     </div>

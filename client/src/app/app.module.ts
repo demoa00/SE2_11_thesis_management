@@ -12,7 +12,7 @@ import {PopupComponent} from "./shared/components/popup-conferma/popup.component
 import {ButtonSliderComponent} from "./shared/components/button-slider/button-slider.component";
 import {IconComponent} from "./shared/components/icon/icon.component";
 import {CdkDrag} from "@angular/cdk/drag-drop";
-import {NotificationComponent} from './shared/components/notification/notification.component';
+import {NotificationComponent} from './shared/components/notification/notification/notification.component';
 import {ButtonComponent} from './shared/components/button/button.component';
 import {HomePageComponent} from './pages/home-page/home-page.component';
 import {PageSkeletonComponent} from './shared/components/page-skeleton/page-skeleton.component';
@@ -37,6 +37,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatNativeDateModule} from "@angular/material/core";
 import { ThesisDetailsComponent } from './pages/professor-page/thesis-management/thesis-details/thesis-details.component';
 import { ApplicationViewComponent } from './pages/student-page/components/application-view/application-view.component';
+import { NotificationsContainerComponent } from './shared/components/notification/container/notifications-container/notifications-container.component';
+import {SocketIoModule} from "ngx-socket-io";
 
 
 const routes: Routes = [
@@ -68,6 +70,7 @@ const routes: Routes = [
     CheckboxComponent,
     ThesisDetailsComponent,
     ApplicationViewComponent,
+    NotificationsContainerComponent,
   ],
   imports: [
     BrowserModule,
@@ -88,6 +91,7 @@ const routes: Routes = [
     MatNativeDateModule,
     MatInputModule,
     BrowserAnimationsModule,
+    SocketIoModule.forRoot({url: 'http://localhost:3000', options: {withCredentials: true, autoConnect: true}})
   ],
   providers: [AuthGuardProfessorService],
   bootstrap: [AppComponent]

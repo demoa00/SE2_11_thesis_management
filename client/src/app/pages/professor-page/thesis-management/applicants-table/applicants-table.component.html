@@ -1,26 +1,59 @@
-<div class=" card p-5 flex flex-col w-full gap-6 items-center">
+<div class=" card p-5 flex flex-col w-full gap-6">
   <h1 class="text-3xl flex justify-center"> List of Thesis Applicants</h1>
   <div class="separator"></div>
+
   <table  *ngIf="rows" class="bo-table w-full h-fit overflow-auto">
   <tbody >
   <tr class="thead">
     <th>Student ID</th>
     <th>Thesis Title</th>
     <th>Expiration Date</th>
-    <th></th>
+    <th class="flex justify-between">
+      <div></div>
+      Status
+      <app-icon name="filter" class="h-4 w-4 text-gray-400 hover:cursor-pointer hover:text-gray-700" (click)="resetFilter()" ></app-icon>
+    </th>
   </tr>
-  <tr *ngFor="let row of rows">
-    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.studentId}}</td>
-    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.thesisProposalTitle}}</td>
-    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.date}}</td>
-    <td class="py-0.5 w-12 h-6">
-      <button *ngIf="row.status =='Pending'" class="dropdownButton" (click)="openAcceptPopup(); applicant = row" >Accept</button>
+  <tr *ngIf="openFilter">
+    <td>
+      <div class="input-div">
+        <input class="input-date" id="student-input" type="text" placeholder="Type to filter..." [(ngModel)]="studentFilter" (input)="applyFilters()"/>
+      </div>
     </td>
-    <td *ngIf="row.status =='Pending'" class="py-0.5 w-12 h-6">
+    <td>
+      <div class="input-div">
+        <input class="input-date" id="title-input" type="text" placeholder="Type to filter..." [(ngModel)]="titleFilter" (input)="applyFilters()"/>
+      </div>
+    </td>
+    <td>
+      <div class="input-div">
+        <input class="input-date" id="date-input" type="date" [(ngModel)]="dateFilter" (input)="applyFilters()"/>
+      </div>
+    </td>
+    <td>
+      <div class="input-div">
+        <select class="input-filter hover:cursor-pointer" id="status-input" [(ngModel)]="statusFilter" (change)="applyFilters()">
+          <option value =''  disabled hidden selected >Select a status</option>
+          <option value =''>None</option>
+          <option value="Pending">Pending</option>
+          <option value="Accepted">Accepted</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+    </td>
+  </tr>
+  <tr *ngFor="let row of filteredRows">
+    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row?.studentId}}</td>
+    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row?.thesisProposalTitle}}</td>
+    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row?.date}}</td>
+    <td *ngIf="row?.status =='Pending'" class="py-0.5 w-12 h-6">
+      <button  class="dropdownButton" (click)="openAcceptPopup(); applicant = row" >Accept</button>
+    </td>
+    <td *ngIf="row?.status =='Pending'" class="py-0.5 w-12 h-6">
       <button class="dropdownButton red" (click)="openRejectPopup(); applicant = row">Reject</button>
     </td>
-    <td *ngIf="row.status !='Pending'" [class.text-green-400] = "row.status=='Accepted'" [class.text-red-400] = "row.status=='Rejected'" class="py-0.5 w-12 h-6 text-sm">
-      {{row.status=='Accepted'?'accepted':row.status=='Rejected'?'rejected':''}}
+    <td *ngIf="row?.status !='Pending'" [class.text-green-400] = "row?.status=='Accepted'" [class.text-red-400] = "row?.status=='Rejected'" class="py-0.5 w-12 h-6 text-sm">
+      {{row?.status=='Accepted'?'accepted':row?.status=='Rejected'?'rejected':''}}
     </td>
   </tr>
   </tbody>

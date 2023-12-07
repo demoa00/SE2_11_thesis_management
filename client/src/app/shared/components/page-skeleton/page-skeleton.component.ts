@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ContentChild, Injectable, Input} from '@angular/core';
 import {Router} from "@angular/router";
 import {APIService} from "../../services/api.service";
 import {User} from "../../classes/user";
@@ -13,6 +13,10 @@ import {ProfessorDetails} from "../../classes/professor/professor-details";
 })
 
 
+@Injectable({
+  providedIn: 'root'
+})
+
 
 export class PageSkeletonComponent {
 
@@ -20,12 +24,14 @@ export class PageSkeletonComponent {
 
   currentRoute = this._router.url;
 
+  @Input() trigger: boolean = false
+
   user: User | undefined;
   student: StudentDetails | undefined;
   professor: ProfessorDetails | undefined;
 
   theme = false
-
+  menuOpen = false
   logout() {
     let user= localStorage.getItem('user')
     localStorage.removeItem('user')
@@ -50,6 +56,17 @@ export class PageSkeletonComponent {
     }
   }
 
- //sta cosa da errore se loggo come professore, perchè fai la richiesta su studente, dato che la skeleton la uso anche come professore
+  ngOnChanges() {
+
+    this.closeMenu()
+  }
+
+  openMenu() {
+    this.menuOpen = true
+  }
+
+  closeMenu() {
+    this.menuOpen = false
+  }
 
 }

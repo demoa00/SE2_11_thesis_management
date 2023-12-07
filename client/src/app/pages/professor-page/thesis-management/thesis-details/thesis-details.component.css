@@ -8,7 +8,8 @@
   text-align: center;
   margin-bottom: 8px;
   font-size: 16px;
-  background: white;
+  background-color: #e5e7eb;
+  cursor: pointer;
 }
 .leftMenuItem.selected {
   background-color: #03577A;
@@ -17,7 +18,7 @@
   color: white;
 }
 .leftMenuItem.hovered {
-  background-color: #e5e7eb;
+  background-color: #d1d5db;
 }
 
 .card {
@@ -28,6 +29,11 @@
   height: 1px;
   width: 100%;
   @apply bg-orange-500;
+}
+@media only screen and (max-width: 1000px) {
+  .separator {
+    display: none;
+  }
 }
 
 .projectLine {
