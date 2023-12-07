@@ -81,9 +81,9 @@ export class StudentPageComponent {
   ]
   applicationMessage: string = "";
 
+  trigger: boolean = false
   closeMenu() {
-    console.log("close menu")
-    this.parent.closeMenu()
+    this.trigger = !this.trigger
   }
 
   ngOnInit() {

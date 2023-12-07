@@ -48,6 +48,10 @@ export class ThesisManagementComponent {
     this.response = undefined;
   }
 
+  ngOnInit() {
+    this.showActiveThesesTable();
+  }
+
   async showApplicantsTable() {
     const response = await this.api.getApplications();
     if(response != undefined){

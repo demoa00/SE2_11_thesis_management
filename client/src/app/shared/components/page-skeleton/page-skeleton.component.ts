@@ -1,4 +1,4 @@
-import {Component, ContentChild, Injectable} from '@angular/core';
+import {Component, ContentChild, Injectable, Input} from '@angular/core';
 import {Router} from "@angular/router";
 import {APIService} from "../../services/api.service";
 import {User} from "../../classes/user";
@@ -23,6 +23,8 @@ export class PageSkeletonComponent {
   constructor(private _router: Router, private api: APIService, private darkMode: DarkModeService) {}
 
   currentRoute = this._router.url;
+
+  @Input() trigger: boolean = false
 
   user: User | undefined;
   student: StudentDetails | undefined;
@@ -52,6 +54,11 @@ export class PageSkeletonComponent {
     }
     else {
     }
+  }
+
+  ngOnChanges() {
+
+    this.closeMenu()
   }
 
   openMenu() {
