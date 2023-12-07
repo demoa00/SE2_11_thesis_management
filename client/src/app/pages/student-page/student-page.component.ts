@@ -1,10 +1,13 @@
 // @ts-ignore
 
-import {Component, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, Injectable} from '@angular/core';
 import {APIService} from "../../shared/services/api.service";
 import {User} from "../../shared/classes/user";
 import {StudentDetails} from "../../shared/classes/student/student-details";
 import * as dayjs from "dayjs"
+import {
+  PageSkeletonComponent,
+} from "../../shared/components/page-skeleton/page-skeleton.component";
 
 type ProposalsParams = {
   text: string | null;
@@ -31,9 +34,10 @@ type Proposal = {
   styleUrls: ['./student-page.component.css']
 })
 
+
 export class StudentPageComponent {
 
-  constructor(public api: APIService) {
+  constructor(public api: APIService, private parent: PageSkeletonComponent) {
     this.api.setStudent()
   }
   protected readonly dayjs = dayjs;
@@ -76,6 +80,11 @@ export class StudentPageComponent {
     },
   ]
   applicationMessage: string = "";
+
+  trigger: boolean = false
+  closeMenu() {
+    this.trigger = !this.trigger
+  }
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('user') || '{}')
