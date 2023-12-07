@@ -38,7 +38,7 @@
         <app-button class="grey" (click)="toggleMoreFilters()">More...</app-button>
         <div class="deleteFilters" (click)="deleteFilters()"
              *ngIf="checkFilters()">
-          <img alt="close" src="assets/images/close_blue.svg" width="16" height="16">
+          <mat-icon class="closeIcon">close</mat-icon>
           <p class="underline">Delete filters</p>
         </div>
       </div>
@@ -118,5 +118,6 @@
   </div>
 
   <app-application-view *ngIf="menuItems[1].selected" main-col></app-application-view>
+  <app-notifications-container right-col/>
 
 </app-page-skeleton>

@@ -37,7 +37,7 @@
   </div>
   <div *ngIf="selectedDate !== undefined && selectedDate!== null" class="flex items-center">
     <p style="line-height: normal;">{{selectedDate.value.toLocaleDateString()}}</p>
-    <mat-icon class="cursor-pointer close-icon" (click)="deleteDate()">close</mat-icon>
+    <mat-icon class="cursor-pointer closeIcon" (click)="deleteDate()">close</mat-icon>
   </div>
 
 

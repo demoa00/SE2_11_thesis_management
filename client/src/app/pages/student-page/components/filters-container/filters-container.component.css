@@ -8,6 +8,8 @@
   text-align: center;
   margin-bottom: 8px;
   font-size: 16px;
+  background-color: #e5e7eb;
+  cursor: pointer;
 }
 .leftMenuItem.selected {
   background-color: #03577A;
@@ -16,7 +18,7 @@
   color: white;
 }
 .leftMenuItem.hovered {
-  background-color: #e5e7eb;
+  background-color: #d1d5db;
 }
 
 .card {
@@ -28,6 +30,11 @@
   width: 100%;
   @apply bg-orange-500;
 }
+@media only screen and (max-width: 1000px) {
+  .separator {
+    display: none;
+  }
+}
 
 .filtersContainer {
   width: 100%;
@@ -37,6 +44,15 @@
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
+}
+.filtersContainer .closeIcon {
+  font-size: 20px;
+  line-height: 20px;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .itemsContainer {
@@ -57,14 +73,6 @@
 }
 .itemsContainer .checkbox.checked {
   background-color: #04264c;
-}
-
-.close-icon {
-  font-size: 20px;
-  line-height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /*# sourceMappingURL=filters-container.component.css.map */

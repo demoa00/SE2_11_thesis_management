@@ -8,6 +8,8 @@
   text-align: center;
   margin-bottom: 8px;
   font-size: 16px;
+  background-color: #e5e7eb;
+  cursor: pointer;
 }
 .leftMenuItem.selected {
   background-color: #03577A;
@@ -16,7 +18,7 @@
   color: white;
 }
 .leftMenuItem.hovered {
-  background-color: #e5e7eb;
+  background-color: #d1d5db;
 }
 
 .card {
@@ -27,6 +29,11 @@
   height: 1px;
   width: 100%;
   @apply bg-orange-500;
+}
+@media only screen and (max-width: 1000px) {
+  .separator {
+    display: none;
+  }
 }
 
 * {
@@ -47,20 +54,6 @@
   height: 50px;
   border-radius: 50%;
   object-fit: contain;
-}
-
-.left-col {
-  @apply w-1/6 border-r-2;
-}
-@media only screen and (max-width : 768px) {
-  .left-col {
-    @apply absolute top-0 left-0 h-full z-20 w-1/2 bg-gray-50;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease-in-out;
-  }
-  .left-col.open {
-    transform: translateX(0);
-  }
 }
 
 @media only screen and (max-width : 768px) {
@@ -86,21 +79,57 @@
   }
 }
 
-.main-col {
-  @apply md:w-4/5 max-md:w-full p-4;
+.left-col {
+  @apply w-1/6 border-r-2;
 }
-
-.right-col {
-  @apply max-md:hidden w-1/5 border-l-2 bg-gray-50;
+@media only screen and (max-width : 1024px) {
+  .left-col {
+    @apply w-1/5;
+  }
 }
 @media only screen and (max-width : 768px) {
-  .right-col {
+  .left-col {
+    @apply absolute top-0 left-0 h-full z-20 w-1/2 bg-gray-50;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  .left-col.open {
+    transform: translateX(0);
+  }
+}
+
+.right-side {
+  @apply md:w-5/6 max-md:w-full flex flex-col;
+}
+@media only screen and (max-width : 1024px) {
+  .right-side {
+    @apply w-4/5;
+  }
+}
+.right-side .main-col {
+  @apply md:w-4/5 max-md:w-full p-4;
+}
+@media only screen and (max-width : 1024px) {
+  .right-side .main-col {
+    @apply w-2/3;
+  }
+}
+.right-side .right-col {
+  @apply max-md:hidden w-1/5 border-l-2 bg-gray-50;
+}
+@media only screen and (max-width : 1024px) {
+  .right-side .right-col {
+    @apply w-1/3;
+  }
+}
+@media only screen and (max-width : 768px) {
+  .right-side .right-col {
     @apply absolute top-0 right-0 h-full z-20 w-1/2;
     background-color: red;
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
   }
-  .right-col.open {
+  .right-side .right-col.open {
     transform: translateX(0);
   }
 }

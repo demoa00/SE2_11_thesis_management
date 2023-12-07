@@ -1,3 +1,41 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.leftMenuItem {
+  border-radius: 8px;
+  padding: 8px 16px;
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 16px;
+  background-color: #e5e7eb;
+  cursor: pointer;
+}
+.leftMenuItem.selected {
+  background-color: #03577A;
+}
+.leftMenuItem.selected * {
+  color: white;
+}
+.leftMenuItem.hovered {
+  background-color: #d1d5db;
+}
+
+.card {
+  @apply shadow-sm rounded-md shadow-gray-400 p-4 bg-white;
+}
+
+.separator {
+  height: 1px;
+  width: 100%;
+  @apply bg-orange-500;
+}
+@media only screen and (max-width: 1000px) {
+  .separator {
+    display: none;
+  }
+}
+
 .bo-table, .bo-table-compact {
   @apply divide-y divide-gray-200 p-4 bg-white;
 }
@@ -33,6 +71,48 @@
 }
 .bo-table-compact tbody td {
   @apply py-1 px-0 text-xs;
+}
+
+ul.dropdown {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+/* Style each datalist option */
+ul.dropdown li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* Style the hover effect on datalist options */
+ul.dropdown li:hover {
+  background-color: #f0f0f0;
+}
+
+.input-div {
+  @apply w-full flex justify-center;
+  border-radius: 25px;
+  outline: none;
+}
+
+.input-filter {
+  border: none;
+  outline: none;
+  width: 90%;
+  background-color: transparent;
+}
+
+.input-date {
+  @apply w-1/2 text-center;
+  border: none;
+  outline: none;
+  background-color: transparent;
 }
 
 /*# sourceMappingURL=applicants-table.component.css.map */
