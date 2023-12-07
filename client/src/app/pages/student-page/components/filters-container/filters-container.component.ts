@@ -47,7 +47,7 @@ export class FiltersContainerComponent {
       })
     }
     else {
-      this.params = { cosupervisors: null };
+      this.params.cosupervisors = null;
     }
     console.log(this.params.expirationDate)
     if (this.params.expirationDate !== null) {
