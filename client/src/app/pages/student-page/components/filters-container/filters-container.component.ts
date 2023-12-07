@@ -65,6 +65,7 @@ export class FiltersContainerComponent {
         this.selectedCs = []
         this.selectedExtCs = []
       }
+      this.abroad = this.params.abroad
     }
     if (changes['selectedDate'] === null) {
       this.selectedDate = null
