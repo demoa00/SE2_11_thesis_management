@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-notification',
@@ -7,4 +7,10 @@ import {Component, Input} from '@angular/core';
 })
 export class NotificationComponent {
   @Input() notification: any
+  @Output() delete = new EventEmitter<number>();
+
+  deleteNotification(id: number) {
+    this.delete.emit(id);
+  }
+
 }

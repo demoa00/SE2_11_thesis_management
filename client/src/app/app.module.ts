@@ -38,6 +38,7 @@ import {MatNativeDateModule} from "@angular/material/core";
 import { ThesisDetailsComponent } from './pages/professor-page/thesis-management/thesis-details/thesis-details.component';
 import { ApplicationViewComponent } from './pages/student-page/components/application-view/application-view.component';
 import { NotificationsContainerComponent } from './shared/components/notification/container/notifications-container/notifications-container.component';
+import {SocketIoModule} from "ngx-socket-io";
 
 
 const routes: Routes = [
@@ -90,6 +91,7 @@ const routes: Routes = [
     MatNativeDateModule,
     MatInputModule,
     BrowserAnimationsModule,
+    SocketIoModule.forRoot({url: 'http://localhost:3000', options: {withCredentials: true, autoConnect: true}})
   ],
   providers: [AuthGuardProfessorService],
   bootstrap: [AppComponent]

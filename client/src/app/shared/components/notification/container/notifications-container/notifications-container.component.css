@@ -38,11 +38,26 @@
 
 .container {
   padding: 16px;
+  height: 87.5vh;
+  display: flex;
+  flex-direction: column;
 }
 .container .title {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 8px;
+}
+.container .notifications {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
+  padding-right: 8px;
+  padding-top: 8px;
+  scrollbar-width: none;
+}
+.container .notifications::-webkit-scrollbar {
+  display: none;
 }
 
 /*# sourceMappingURL=notifications-container.component.css.map */

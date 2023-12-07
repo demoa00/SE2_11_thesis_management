@@ -67,6 +67,9 @@
   }
 
   .right-col {
+    height: 100%;
+    max-height: 87.5vh;
+    overflow: auto;
     @apply max-md:hidden w-1/5 border-l-2 bg-gray-50;
     @media #{$media-desktop} {
       @apply w-1/3

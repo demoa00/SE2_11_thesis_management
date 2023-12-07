@@ -1,4 +1,11 @@
 <div class="container">
   <p class="title">Your notifications</p>
-  <app-notification></app-notification>
+  <div class="notifications">
+    <app-notification
+      (delete)="delete($event)"
+      (click)="read(n.id)"
+      [notification]="n"
+      *ngFor="let n of notifications">
+    </app-notification>
+  </div>
 </div>
