@@ -635,7 +635,7 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
 
   return Promise.all(promises).then(() => {
     return new Promise(function (resolve, reject) {
-      const sql = 'UPDATE thesisProposals SET title=?, keywords=?, description=?, requirements=?, thesisType=?, abroad=?, notes=?, expirationDate=?, level=?, isArchieved=? WHERE thesisProposalId = ? AND isArchieved = 0';
+      const sql = 'UPDATE thesisProposals SET title=?, keywords=?, description=?, requirements=?, thesisType=?, abroad=?, notes=?, expirationDate=?, level=? WHERE thesisProposalId = ? AND isArchieved = 0';
       db.run(sql, [
         thesisProposal.title,
         JSON.stringify(thesisProposal.keywords),
@@ -668,7 +668,7 @@ exports.deleteThesisProposal = async function (professorId, thesisProposalId) {
   //let externalCoSupervisors = await ExternalCoSupervisor.getExternalCoSupervisorsByThesisProposalId(thesisProposalId);
 
   return new Promise(function (resolve, reject) {
-    const sql = "DELETE FROM thesisProposals WHERE thesisProposalId = ? AND supervisor = ?";
+    const sql = "DELETE FROM thesisProposals WHERE thesisProposalId = ? AND supervisor = ? AND isArchieved = 0";
     db.run(sql, [thesisProposalId, professorId], function (err) {
       if (err) {
         reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
