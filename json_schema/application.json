@@ -59,7 +59,8 @@
             "enum": [
                 "Rejected",
                 "Pending",
-                "Accepted"
+                "Accepted",
+                "Cancelled"
             ],
             "default": "Pending"
         }

@@ -19,6 +19,9 @@ exports.subjectDecisionApplication = 'Application decision';
 exports.textAcceptApplication = 'Your application has been accepted';
 exports.textRejectApplication = 'Your application has been rejected';
 
+exports.subjectCancelApplication = 'Application canceled';
+exports.textCancelApplication = 'Your application has been canceled';
+
 exports.subjectNewApplication = 'New application';
 exports.textNewApplication = 'You have received new application';
 

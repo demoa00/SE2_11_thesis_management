@@ -173,6 +173,7 @@ components:
             - Rejected
             - Pending
             - Accepted
+            - Cancelled
           default: Pending
       additionalProperties: false
       required:

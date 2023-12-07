@@ -55,3 +55,21 @@ exports.getStudentById = function (studentId) {
     });
   });
 }
+
+exports.getStudentsByThesisProposalId = function (thesisProposalId) {
+  return new Promise(function (resolve, reject) {
+    const sql = "SELECT applications.studentId, students.email FROM applications, students WHERE applications.thesisProposalId = ? AND applications.status = 'Pending' AND applications.studentId = students.studentId";
+
+    db.all(sql, [thesisProposalId], (err, rows) => {
+      if (err) {
+        reject(new PromiseError({ message: "Internal Server Error", code: 500 }));
+      } else if (rows.length == 0) {
+        resolve([]);
+      } else {
+        let students = rows.map((r) => ({ studentId: r.studentId, email: r.email }));
+
+        resolve(students);
+      }
+    });
+  });
+}

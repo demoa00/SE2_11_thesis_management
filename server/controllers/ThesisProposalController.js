@@ -62,7 +62,7 @@ module.exports.updateThesisProposal = async function updateThesisProposal(req, r
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
   }
-}
+};
 
 module.exports.deleteThesisProposal = async function deleteThesisProposal(req, res, next) {
   try {
@@ -72,4 +72,4 @@ module.exports.deleteThesisProposal = async function deleteThesisProposal(req, r
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
   }
-}
+};

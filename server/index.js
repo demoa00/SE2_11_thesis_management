@@ -337,12 +337,12 @@ io.use((socket, next) => {
 });
 
 io.on('connection', (socket) => {
-    console.log(`New connection: \n\t- socket id: ${socket.id}\n\t- user info: ${JSON.stringify(socket.request.user)}`);
+    console.log(`New connection: \n\t- socket id: ${socket.id}\n\t- user info: ${JSON.stringify(socket.request.user.userId)}`);
 
     socket.join(socket.request.user.userId);
 
     socket.on('disconnect', () => {
-        console.log(`Disconnect: \n\t- socket id: ${socket.id}\n\t- user info: ${JSON.stringify(socket.request.user)}`);
+        console.log(`Disconnect: \n\t- socket id: ${socket.id}\n\t- user info: ${JSON.stringify(socket.request.user.userId)}`);
         socket.leave(socket.request.user.userId)
     });
 });
@@ -358,5 +358,5 @@ httpServer.listen(PORT, function () {
 });
 
 setInterval(() => {
-    io.to('p123654').emit('message', 'hello');
-}, 5000);
+    io.to('s654321').emit('message', 'new notification');
+}, 1000);

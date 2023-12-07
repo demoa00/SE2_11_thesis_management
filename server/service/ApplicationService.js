@@ -162,7 +162,7 @@ exports.updateApplication = function (professorId, studentId, thesisProposalId, 
       } else {
         resolve(students);
       }
-    })
+    });
   }).then(async (students) => {
     let promises = [];
 

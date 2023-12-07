@@ -1,6 +1,9 @@
 'use strict';
 
+const dayjs = require('dayjs');
+
 const Professor = require('./ProfessorService');
+const Student = require('./StudentService');
 const ExternalCoSupervisor = require('./ExternalCoSupervisorService');
 const Degree = require('./DegreeService');
 const checkRole = require('../utils/checkRole');
@@ -325,6 +328,10 @@ exports.insertNewThesisProposal = async function (professorId, newThesisProposal
 
   let regex = new RegExp("(p|P)[0-9]{6}");
 
+  if (dayjs(newThesisProposal.expirationDate).diff() <= 0) {
+    return new PromiseError({ code: 400, message: "Bad Request" });
+  }
+
   if (newThesisProposal?.coSupervisor) {
     for (let c of newThesisProposal.coSupervisor) {
       try {
@@ -476,6 +483,10 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
 
   let regex = new RegExp("(p|P)[0-9]{6}");
 
+  if (dayjs(thesisProposal.expirationDate).diff() <= 0) {
+    return new PromiseError({ code: 400, message: "Bad Request" });
+  }
+
   promises.push(new Promise(function (resolve, reject) {
     const sql = "SELECT supervisor FROM thesisProposals WHERE thesisProposalId = ? AND supervisor = ?";
     db.get(sql, [thesisProposalId, professorId], function (err, row) {
@@ -624,7 +635,7 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
 
   return Promise.all(promises).then(() => {
     return new Promise(function (resolve, reject) {
-      const sql = 'UPDATE thesisProposals SET title=?, keywords=?, description=?, requirements=?, thesisType=?, abroad=?, notes=?, expirationDate=?, level=?, isArchieved=? WHERE thesisProposalId = ?';
+      const sql = 'UPDATE thesisProposals SET title=?, keywords=?, description=?, requirements=?, thesisType=?, abroad=?, notes=?, expirationDate=?, level=?, isArchieved=? WHERE thesisProposalId = ? AND isArchieved = 0';
       db.run(sql, [
         thesisProposal.title,
         JSON.stringify(thesisProposal.keywords),
@@ -635,7 +646,6 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
         thesisProposal.notes,
         thesisProposal.expirationDate,
         thesisProposal.level,
-        thesisProposal.isArchieved == null ? 0 : 1,
         thesisProposalId
       ], function (err) {
         if (err) {
@@ -654,6 +664,7 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
 
 exports.deleteThesisProposal = async function (professorId, thesisProposalId) {
   let internalCosupervisors = await Professor.getInternalCoSupervisorByThesisProposalId(thesisProposalId);
+  let students = await Student.getStudentsByThesisProposalId(thesisProposalId);
   //let externalCoSupervisors = await ExternalCoSupervisor.getExternalCoSupervisorsByThesisProposalId(thesisProposalId);
 
   return new Promise(function (resolve, reject) {
@@ -668,11 +679,71 @@ exports.deleteThesisProposal = async function (professorId, thesisProposalId) {
         resolve();
       }
     });
+  }).then(() => {
+    return new Promise(function (resolve, reject) {
+      if (students.length != 0) {
+        const sql = "UPDATE applications SET status = 'Cancelled' WHERE thesisProposalId = ?";
+
+        db.run(sql, [thesisProposalId], function (err) {
+          if (err) {
+            reject(new PromiseError({ message: "Internal Server Error", code: 500 }));
+          }
+        });
+      }
+
+      resolve();
+    });
   }).then(async () => {
     let notificationPromises = [];
 
     internalCosupervisors.forEach((i) => {
       notificationPromises.push(smtp.sendMail(smtp.mailConstructor(i.email, smtp.subjectRemoveCoSupervisor, smtp.textRemoveCoSupervisor)));
+    });
+
+    students.forEach((s) => {
+      notificationPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, smtp.textCancelApplication)))
+    });
+
+
+    return await Promise.all(notificationPromises);
+  });
+}
+
+exports.archiveThesisProposal = async function (professorId, thesisProposalId) {
+  let students = await Student.getStudentsByThesisProposalId(thesisProposalId);
+
+  return new Promise(function (resolve, reject) {
+    const sql = 'UPDATE thesisProposals SET isArchieved = 1 WHERE thesisProposalId = ? AND supervisor = ?';
+
+    db.run(sql, [thesisProposalId, professorId], function (err) {
+      if (err) {
+        reject(new PromiseError({ message: "Internal Server Error", code: 500 }));
+      } else if (this.changes == 0) {
+        reject(new PromiseError({ message: "Bad Request", code: 400 }));
+      } else {
+        resolve();
+      }
+    });
+  }).then(() => {
+    return new Promise(function (resolve, reject) {
+      if (students.length != 0) {
+        const sql = "UPDATE applications SET status = 'Cancelled' WHERE thesisProposalId = ?";
+
+        db.run(sql, [thesisProposalId], function (err) {
+          if (err) {
+            reject(new PromiseError({ message: "Internal Server Error", code: 500 }));
+          }
+        });
+      }
+
+      resolve();
+    });
+  }).then(async () => {
+    let notificationPromises = [];
+
+
+    students.forEach((s) => {
+      notificationPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, smtp.textCancelApplication)))
     });
 
     return await Promise.all(notificationPromises);
