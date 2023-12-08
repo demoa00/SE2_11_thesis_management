@@ -10,6 +10,10 @@
   flex-wrap: wrap;
   overflow: hidden;
 
+  &.ng-trigger-open {
+    overflow: visible;
+  }
+
   .closeIcon {
     font-size: 20px;
     line-height: 20px;

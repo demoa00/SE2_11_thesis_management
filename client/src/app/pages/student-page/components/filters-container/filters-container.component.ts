@@ -15,12 +15,12 @@ import {animate, style, transition, trigger} from "@angular/animations";
         style({
           height: '0',
           'padding-top': '0',
-          'padding-bottom': 0
+          'padding-bottom': 0,
         }),
         animate(200, style({
           height: '*',
           'padding-top': '*',
-          'padding-bottom': '*'
+          'padding-bottom': '*',
         }))
       ])
     ]),
