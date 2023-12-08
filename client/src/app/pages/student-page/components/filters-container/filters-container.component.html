@@ -1,4 +1,4 @@
-<div class="filtersContainer card">
+<div class="filtersContainer card" @open @close>
   <div class="relative" (mouseenter)="csHover=true" (mouseleave)="csHover=false">
     <app-button class="{{selectedCs.length === 0 ? 'grey' : 'orange'}} small">Cosupervisors</app-button>
     <app-dropdown-checkbox

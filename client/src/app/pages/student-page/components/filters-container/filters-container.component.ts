@@ -3,11 +3,42 @@ import {APIService} from "../../../../shared/services/api.service";
 import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 import * as dayjs from "dayjs";
 import {FormControl} from "@angular/forms";
+import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-filters-container',
   templateUrl: './filters-container.component.html',
-  styleUrls: ['./filters-container.component.scss']
+  styleUrls: ['./filters-container.component.scss'],
+  animations: [
+    trigger('open', [
+      transition(':enter', [
+        style({
+          height: '0',
+          'padding-top': '0',
+          'padding-bottom': 0
+        }),
+        animate(200, style({
+          height: '*',
+          'padding-top': '*',
+          'padding-bottom': '*'
+        }))
+      ])
+    ]),
+    trigger('close', [
+      transition(':leave', [
+        style({
+          height: '*',
+          'padding-top': '*',
+          'padding-bottom': '*'
+        }),
+        animate(200, style({
+          height: '0',
+          'padding-top': '0',
+          'padding-bottom': '0',
+        }))
+      ])
+    ]),
+  ]
 })
 
 
@@ -29,6 +60,7 @@ export class FiltersContainerComponent {
   };
   @Input() proposals: any;
   @Output() newProposals: EventEmitter<any> = new EventEmitter<any>();
+  @Input() showFilters: boolean = false;
 
   ngOnInit(): void {
     this.api.getExternalCoSupervisors().then((coSupervisors) => {

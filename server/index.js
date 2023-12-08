@@ -371,4 +371,4 @@ const genRand = (len) => {
 
 setInterval(() => {
     io.emit('message', genRand(10));
-}, 1000);
+}, 2000);

@@ -42,7 +42,7 @@
           <p class="underline">Delete filters</p>
         </div>
       </div>
-      <app-filters-container *ngIf="showFilters" (newProposals)="proposals = $event" [proposals]="proposals" [params]="proposalParams" [checkFilters]="checkFilters"></app-filters-container>
+      <app-filters-container *ngIf="showFilters" [showFilters]="showFilters" (newProposals)="proposals = $event" [proposals]="proposals" [params]="proposalParams" [checkFilters]="checkFilters"></app-filters-container>
     </div>
     <div class="proposalsCard card">
       <div *ngFor="let proposal of proposals" (click)="selectProposal(proposal.thesisProposalId)">

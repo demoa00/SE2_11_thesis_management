@@ -1,11 +1,15 @@
 <div class="container">
-  <p class="title">Your notifications</p>
+  <div class="flex justify-between items-center w-full">
+    <p class="title">Your notifications</p>
+    <mat-icon class="cursor-pointer" (click)="deleteAll()">delete_sweep</mat-icon>
+  </div>
   <div class="notifications">
     <app-notification
       (delete)="delete($event)"
       (click)="read(n.id)"
       [notification]="n"
-      *ngFor="let n of notifications">
+      *ngFor="let n of notifications" @slide @fade
+    >
     </app-notification>
   </div>
 </div>
