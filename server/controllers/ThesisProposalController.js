@@ -40,11 +40,7 @@ module.exports.insertNewThesisProposal = async function insertNewThesisProposal(
   try {
     let newThesisProposalURI = await ThesisProposal.insertNewThesisProposal(req.user.userId, req.body);
 
-    if (newThesisProposalURI instanceof PromiseError) {
-      utils.writeJson(res, { error: newThesisProposalURI.message }, newThesisProposalURI.code);
-    } else {
-      utils.writeJson(res, newThesisProposalURI, 201);
-    }
+    utils.writeJson(res, newThesisProposalURI, 201);
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
   }
@@ -54,11 +50,7 @@ module.exports.updateThesisProposal = async function updateThesisProposal(req, r
   try {
     let thesisProposalUpdated = await ThesisProposal.updateThesisProposal(req.user.userId, req.body, req.params.thesisProposalId);
 
-    if (thesisProposalUpdated instanceof PromiseError) {
-      utils.writeJson(res, { error: thesisProposalUpdated.message }, thesisProposalUpdated.code);
-    } else {
-      utils.writeJson(res, thesisProposalUpdated, 200);
-    }
+    utils.writeJson(res, thesisProposalUpdated, 200);
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
   }

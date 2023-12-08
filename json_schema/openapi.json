@@ -1636,10 +1636,10 @@
                         "name": "authenticatedUserId",
                         "in": "cookie",
                         "required": true,
-                        "description": "The authenticated user id corresponds to the student that perform this request",
+                        "description": "The authenticated user id corresponds to the student or professor that perform this request",
                         "schema": {
                             "type": "string",
-                            "pattern": "^(s|S)[0-9]{6}$"
+                            "pattern": "^((s|S)|(p|P))[0-9]{6}$"
                         }
                     },
                     {
@@ -1661,6 +1661,55 @@
                     },
                     "401": {
                         "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "curriculumVitae"
+                ],
+                "operationId": "deleteCV",
+                "parameters": [
+                    {
+                        "name": "authenticatedUserId",
+                        "in": "cookie",
+                        "required": true,
+                        "description": "The authenticated user id corresponds to the student that perform this request",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^(s|S)[0-9]{6}$"
+                        }
+                    },
+                    {
+                        "name": "studentId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^(s|S)[0-9]{6}$"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
                     },
                     "500": {
                         "description": "Internal Server Error"

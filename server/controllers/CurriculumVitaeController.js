@@ -24,3 +24,17 @@ module.exports.getCV = async function (req, res, next) {
         utils.writeJson(res, error.message, error.code);
     }
 };
+
+module.exports.deleteCV = async function (req, res, next) {
+    try {
+        if (req.params.studentId == req.user.userId && req.params.studentId != undefined) {
+            await CurriculumVitae.deleteCV(req.params.studentId);
+
+            utils.writeJson(res, 'No Content', 204);
+        } else {
+            utils.writeJson(res, { error: "Bad Request" }, 404);
+        }
+    } catch (error) {
+        utils.writeJson(res, error.message, error.code);
+    }
+};

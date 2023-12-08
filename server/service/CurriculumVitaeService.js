@@ -12,9 +12,9 @@ exports.insertNewCV = function (req, res) {
             if (err) {
                 reject(new PromiseError({ code: 500, message: err.message }));
             } else if (req.file === undefined) {
-                reject(new PromiseError({ code: 500, message: "Unable to upload file: empty file" }));
+                reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
             } else {
-                resolve({ code: 200, message: "File uploaded successfully" });
+                resolve({ code: 200, message: "OK" });
             }
         });
     });
@@ -24,12 +24,34 @@ exports.getCV = function (studentId) {
     return new Promise((resolve, reject) => {
         const filepath = './uploads/' + studentId + '.pdf';
 
-        fs.readFile(filepath, (err, data) => {
-            if (err) {
-                reject(new PromiseError({ code: 404, message: 'File not Found' }));
-            } else {
-                resolve(data);
-            }
-        });
+        if (fs.existsSync(filepath)) {
+            fs.readFile(filepath, (err, data) => {
+                if (err) {
+                    reject(new PromiseError({ code: 500, message: 'Internal Server Error' }));
+                } else {
+                    resolve(data);
+                }
+            });
+        } else {
+            reject(new PromiseError({ message: "Not Found", code: 404 }));
+        }
+    });
+}
+
+exports.deleteCV = function (studentId) {
+    return new Promise((resolve, reject) => {
+        const filepath = './uploads/' + studentId + '.pdf';
+
+        if (fs.existsSync(filepath)) {
+            fs.unlink(filepath, (err) => {
+                if (err) {
+                    reject(new PromiseError({ message: "Internal Server Error", code: 500 }));
+                } else {
+                    resolve();
+                }
+            });
+        } else {
+            reject(new PromiseError({ message: "Not Found", code: 404 }));
+        }
     });
 }

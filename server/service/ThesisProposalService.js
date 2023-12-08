@@ -329,7 +329,7 @@ exports.insertNewThesisProposal = async function (professorId, newThesisProposal
   let regex = new RegExp("(p|P)[0-9]{6}");
 
   if (dayjs(newThesisProposal.expirationDate).diff() <= 0) {
-    return new PromiseError({ code: 400, message: "Bad Request" });
+    throw new PromiseError({ code: 400, message: "Bad Request" });
   }
 
   if (newThesisProposal?.coSupervisor) {
@@ -345,7 +345,7 @@ exports.insertNewThesisProposal = async function (professorId, newThesisProposal
           externalCosupervisors.push({ coSupervisorId: externalCoSupervisor.externalCoSupervisorId, email: externalCoSupervisor.email });
         }
       } catch (error) {
-        return error;
+        throw error;
       }
     }
   }
@@ -484,7 +484,7 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
   let regex = new RegExp("(p|P)[0-9]{6}");
 
   if (dayjs(thesisProposal.expirationDate).diff() <= 0) {
-    return new PromiseError({ code: 400, message: "Bad Request" });
+    throw new PromiseError({ code: 400, message: "Bad Request" });
   }
 
   promises.push(new Promise(function (resolve, reject) {
@@ -520,7 +520,7 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
           newCoSupervisors.push({ coSupervisorId: externalCoSupervisor.externalCoSupervisorId, email: externalCoSupervisor.email });
         }
       } catch (error) {
-        return error;
+        throw error;
       }
     }
   }
@@ -704,7 +704,6 @@ exports.deleteThesisProposal = async function (professorId, thesisProposalId) {
       notificationPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, smtp.textCancelApplication)))
     });
 
-
     return await Promise.all(notificationPromises);
   });
 }
@@ -743,7 +742,7 @@ exports.archiveThesisProposal = async function (professorId, thesisProposalId) {
 
 
     students.forEach((s) => {
-      notificationPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, smtp.textCancelApplication)))
+      notificationPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, smtp.textCancelApplication)));
     });
 
     return await Promise.all(notificationPromises);

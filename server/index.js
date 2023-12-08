@@ -299,6 +299,7 @@ app.get('/api/degrees', isLoggedIn, degreeController.getDegrees);
 /* CV API */
 app.post('/api/cv', isLoggedIn, isStudent, curriculumVitaeController.insertNewCV);
 app.get('/api/cv/:studentId', isLoggedIn, curriculumVitaeController.getCV);
+app.delete('/api/cv/:studentId', isLoggedIn, isStudent, curriculumVitaeController.deleteCV);
 
 
 /* CAREER API */
