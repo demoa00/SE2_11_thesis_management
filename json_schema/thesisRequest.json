@@ -1,0 +1,107 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "thesisRequest_schema",
+    "title": "Thesis Request Schema",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "thesisRequestId": {
+            "type": "integer",
+            "minimum": 1
+        },
+        "thesisProposalId": {
+            "type": "integer",
+            "minimum": 1
+        },
+        "requester": {
+            "type": "object",
+            "properties": {
+                "studentId": {
+                    "type": "string",
+                    "pattern": "^(s|S)[0-9]{6}$"
+                },
+                "name": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "surname": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "student": {
+                    "type": "string",
+                    "format": "uri"
+                }
+            },
+            "additionalProperties": false
+        },
+        "supervisor": {
+            "type": "string",
+            "pattern": "^(p|P)[0-9]{6}$"
+        },
+        "coSupervisors": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "coSupervisorId": {
+                        "type": "string",
+                        "pattern": "^(p|P)[0-9]{6}$"
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "surname": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "coSupervisor": {
+                        "type": "string",
+                        "format": "uri"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "coSupervisorId"
+                ]
+            }
+        },
+        "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+        },
+        "secretaryStatus": {
+            "enum": [
+                "Pending",
+                "Accepted",
+                "Rejected"
+            ]
+        },
+        "professorStatus": {
+            "enum": [
+                "Pending",
+                "Change",
+                "Accepted",
+                "Rejected"
+            ]
+        },
+        "approvalDate": {
+            "type": "string",
+            "format": "date"
+        },
+        "self": {
+            "type": "string",
+            "format": "uri"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "supervisor",
+        "description",
+        "title"
+    ]
+}

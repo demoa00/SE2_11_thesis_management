@@ -36,7 +36,7 @@ const keywordController = require(path.join(__dirname, 'controllers/KeywordContr
 const degreeController = require(path.join(__dirname, 'controllers/DegreeController'));
 const curriculumVitaeController = require(path.join(__dirname, 'controllers/CurriculumVitaeController'));
 const careerController = require(path.join(__dirname, 'controllers/CareerController'));
-
+const thesisRequestController = require(path.join(__dirname, 'controllers/ThesisRequestController'));
 
 //-- -- -- -- -- -- -- -- -- --
 // IMPORT RESOURCE SERVICES
@@ -52,6 +52,7 @@ const professorService = require(path.join(__dirname, 'service/ProfessorService'
 
 const applicationSchema = JSON.parse(fs.readFileSync(path.join('.', 'json_schema_validator', 'application.json')).toString());
 const thesisProposalSchema = JSON.parse(fs.readFileSync(path.join('.', 'json_schema_validator', 'thesisProposal.json')).toString());
+const thesisRequestSchema = JSON.parse(fs.readFileSync(path.join('.', 'json_schema_validator', 'thesisRequest.json')).toString());
 
 const validator = new Validator({ allErrors: true });
 validator.ajv.addSchema([applicationSchema, thesisProposalSchema]);
@@ -305,6 +306,11 @@ app.delete('/api/cv/:studentId', isLoggedIn, isStudent, curriculumVitaeControlle
 /* CAREER API */
 app.get('/api/careers/:studentId', isLoggedIn, isProfessor, careerController.getCareer);
 
+/* THESIS REQUEST API */
+app.get('/api/thesisRequests', isLoggedIn, thesisRequestController.getThesisRequests);
+app.post('/api/thesisRequests', isLoggedIn, isStudent, validate({ body: thesisRequestSchema }),  thesisRequestController.insertNewThesisRequest);
+app.get('/api/thesisRequests/:thesisRequestId', isLoggedIn, thesisRequestController.getThesisRequestById);
+app.put('/api/thesisRequests/:thesisRequestId', isLoggedIn, validate({ body: thesisRequestSchema }), thesisRequestController.updateThesisRequest);
 
 //-- -- -- -- -- -- -- -- -- -- --
 // WEBSOCKET SERVER INITIALIZATION
@@ -366,4 +372,4 @@ const genRand = (len) => {
 
 setInterval(() => {
     io.emit('message', genRand(10));
-}, 1000);
+}, 2000);

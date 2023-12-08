@@ -17,3 +17,12 @@ exports.isProfessor = (user) => {
 
     return false;
 }
+
+exports.isSecretaryClerck = (user) => {
+    if (user.userId != undefined && user.role != undefined) {
+        if (user.role === 'secretary') {
+            return true;
+        }
+    }
+    return false;
+}

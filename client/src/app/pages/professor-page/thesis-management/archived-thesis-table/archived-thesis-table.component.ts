@@ -2,17 +2,14 @@ import {Component, Input} from '@angular/core';
 import {APIService} from "../../../../shared/services/api.service";
 
 @Component({
-  selector: 'app-active-thesis-table',
-  templateUrl: './active-thesis-table.component.html',
-  styleUrls: ['./active-thesis-table.component.scss']
+  selector: 'app-archived-thesis-table',
+  templateUrl: './archived-thesis-table.component.html',
+  styleUrl: './archived-thesis-table.component.scss'
 })
-export class ActiveThesisTableComponent {
+export class ArchivedThesisTableComponent {
 
   @Input()
   rows:any;
-
-  createPopup: boolean = false;
-  archivePopup: boolean = false;
   deletePopup: boolean = false;
   response :any;
   requestAccepted: boolean = false;
@@ -24,35 +21,16 @@ export class ActiveThesisTableComponent {
   constructor(private api:APIService) {
   }
 
-  openCreatePopup() {
-    this.createPopup = !this.createPopup;
-    this.requestAccepted = false;
-    this.response = undefined;
-  }
-
   shohDetails(row: any) {
     this.api.getProposal(row.thesisProposalId).then((response: any) => {
       this.selectedProposal = response
     })
   }
 
-  archiveThesisPopup() {
-    this.archivePopup = !this.archivePopup;
-    this.requestAccepted = false;
-    this.response = undefined;
-  }
-
   deleteThesisPopup() {
     this.deletePopup = !this.deletePopup;
     this.requestAccepted = false;
     this.response = undefined;
-  }
-
-  async archiveThesis() {
-    this.response = await this.api.archiveThesis(this.selectedThesisId)
-    if (this.response){
-      this.requestAccepted = true;
-    }
   }
 
   async deleteThesis() {

@@ -2,7 +2,7 @@
   <h1 class="text-3xl flex justify-center"> List of Thesis Applicants</h1>
   <div class="separator"></div>
 
-  <table  *ngIf="rows" class="bo-table w-full h-fit overflow-auto">
+  <table  *ngIf="rows!=''" class="bo-table w-full h-fit overflow-auto">
   <tbody >
   <tr class="thead">
     <th>Student ID</th>
@@ -58,7 +58,7 @@
   </tr>
   </tbody>
   </table>
-  <h3 *ngIf="!rows"> No Applicants Avaiable</h3>
+  <h3 *ngIf="rows==''"> No Applicants Avaiable</h3>
 </div>
 
 <app-popup
