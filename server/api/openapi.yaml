@@ -41,6 +41,82 @@ components:
       required:
         - studentId
         - exams
+    thesisRequest:
+      type: object
+      properties:
+        $schema:
+          type: string
+        thesisRequestId:
+          type: integer
+          minimum: 1
+        thesisProposalId:
+          type: integer
+          minimum: 1
+        requester:
+          type: object
+          properties:
+            studentId:
+              type: string
+              pattern: ^(s|S)[0-9]{6}$
+            name:
+              type: string
+              minLength: 1
+            surname:
+              type: string
+              minLength: 1
+            student:
+              type: string
+              format: uri
+          additionalProperties: false
+        supervisor:
+          type: string
+          pattern: ^(p|P)[0-9]{6}$
+        coSupervisors:
+          type: array
+          items:
+            type: object
+            properties:
+              coSupervisorId:
+                type: string
+                pattern: ^(p|P)[0-9]{6}$
+              name:
+                type: string
+                minLength: 1
+              surname:
+                type: string
+                minLength: 1
+              coSupervisor:
+                type: string
+                format: uri
+            additionalProperties: false
+            required:
+              - coSupervisorId
+        description:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        secretaryStatus:
+          enum:
+            - Pending
+            - Accepted
+            - Rejected
+        professorStatus:
+          enum:
+            - Pending
+            - Change
+            - Accepted
+            - Rejected
+        approvalDate:
+          type: string
+          format: date
+        self:
+          type: string
+          format: uri
+      additionalProperties: false
+      required:
+        - supervisor
+        - description
+        - title
     professor:
       type: object
       properties:
@@ -409,6 +485,7 @@ components:
 tags:
   - name: user
   - name: career
+  - name: thesisRequest
   - name: professor
   - name: student
   - name: thesisProposal
@@ -437,20 +514,159 @@ paths:
             type: string
             pattern: ^(s|S)[0-9]{6}$
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/career"
-        "400":
+                $ref: '#/components/schemas/career'
+        '400':
           description: Bad Request
-        "401":
+        '401':
           description: Unauthorized
-        "404":
+        '404':
           description: Not Found
-        "500":
+        '500':
           description: Internal Server Error
+      security:
+        - cookieAuth: []
+  /thesisRequests:
+    get:
+      tags:
+        - thesisRequest
+      operationId: getThesisRequests
+      parameters:
+        - name: professorId
+          in: cookie
+          required: true
+          schema:
+            type: string
+            pattern: ^(p|P)[0-9]{6}$
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/thesisRequest'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      security:
+        - cookieAuth: []
+    post:
+      tags:
+        - thesisRequest
+      operationId: insertNewThesisRequest
+      parameters:
+        - name: studentId
+          in: cookie
+          required: true
+          schema:
+            type: string
+            pattern: ^(s|S)[0-9]{6}$
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/thesisRequest'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      security:
+        - cookieAuth: []
+  /thesisRequest/{thesisRequestId}:
+    get:
+      tags:
+        - thesisRequest
+      operationId: getThesisRequestById
+      parameters:
+        - name: userId
+          in: cookie
+          required: true
+          schema:
+            type: string
+            pattern: ^((s|S)|(p|P))[0-9]{6}$
+        - name: thesisRequestId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/thesisRequest'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      security:
+        - cookieAuth: []
+    put:
+      tags:
+        - thesisRequest
+      operationId: updateThesisRequest
+      parameters:
+        - name: studentId
+          in: cookie
+          required: true
+          schema:
+            type: string
+            pattern: ^(s|S)[0-9]{6}$
+        - name: thesisRequestId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/thesisRequest'
+        required: true
+      responses:
+        '204':
+          description: No Content
+          content: {}
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+        '409':
+          description: Conflict (attempt to make unallowed change)
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
       security:
         - cookieAuth: []
   /professors:
@@ -459,17 +675,17 @@ paths:
         - professor
       operationId: getProfessors
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/professors"
-        "400":
+                $ref: '#/components/schemas/professors'
+        '400':
           description: Bad Request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
+        '500':
           description: Internal Server Error
       security:
         - cookieAuth: []
@@ -486,19 +702,19 @@ paths:
             type: string
             pattern: ^(p|P)[0-9]{6}$
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/professor"
-        "400":
+                $ref: '#/components/schemas/professor'
+        '400':
           description: Bad Request
-        "401":
+        '401':
           description: Unauthorized
-        "404":
+        '404':
           description: Not Found
-        "500":
+        '500':
           description: Internal Server Error
       security:
         - cookieAuth: []
@@ -515,19 +731,19 @@ paths:
             type: string
             pattern: ^(s|S)[0-9]{6}$
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/student"
-        "400":
+                $ref: '#/components/schemas/student'
+        '400':
           description: Bad Request
-        "401":
+        '401':
           description: Unauthorized
-        "404":
+        '404':
           description: Not Found
-        "500":
+        '500':
           description: Internal Server Error
       security:
         - cookieAuth: []
@@ -599,19 +815,19 @@ paths:
             type: string
             format: date
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/thesisProposals"
-        "400":
+                $ref: '#/components/schemas/thesisProposals'
+        '400':
           description: Bad Request
-        "401":
+        '401':
           description: Unauthorized
-        "404":
+        '404':
           description: Not Found
-        "500":
+        '500':
           description: Internal Server Error
       security:
         - cookieAuth: []
@@ -633,21 +849,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/thesisProposal"
+              $ref: '#/components/schemas/thesisProposal'
       responses:
-        "201":
+        '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/thesisProposal"
-        "400":
+                $ref: '#/components/schemas/thesisProposal'
+        '400':
           description: Bad Request
-        "401":
+        '401':
           description: Unauthorized
-        "404":
+        '404':
           description: Not Found
-        "500":
+        '500':
           description: Internal Server Error
       security:
         - cookieAuth: []
@@ -663,19 +879,19 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/thesisProposal"
-        "400":
+                $ref: '#/components/schemas/thesisProposal'
+        '400':
           description: Bad Request
-        "401":
+        '401':
           description: Unauthorized
-        "404":
+        '404':
           description: Not Found
-        "500":
+        '500':
           description: Internal Server Error
       security:
         - cookieAuth: []
@@ -702,21 +918,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/application"
+              $ref: '#/components/schemas/application'
       responses:
-        "201":
+        '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/application"
-        "400":
+                $ref: '#/components/schemas/application'
+        '400':
           description: Bad Request
-        "401":
+        '401':
           description: Unauthorized
-        "404":
+        '404':
           description: Not Found
-        "500":
+        '500':
           description: Internal Server Error
       security:
         - cookieAuth: []
@@ -750,28 +966,28 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/thesisProposal"
+              $ref: '#/components/schemas/thesisProposal'
         required: true
       responses:
-        "204":
+        '204':
           description: No Content
           content: {}
-        "400":
+        '400':
           description: Bad Request
           content: {}
-        "401":
+        '401':
           description: Unauthorized
           content: {}
-        "403":
+        '403':
           description: Forbidden
           content: {}
-        "404":
+        '404':
           description: Not Found
           content: {}
-        "409":
+        '409':
           description: Conflict (attempt to make unallowed change, e.g., visibility)
           content: {}
-        "500":
+        '500':
           description: Internal Server Error
           content: {}
       security:
@@ -788,19 +1004,19 @@ paths:
           schema:
             type: integer
       responses:
-        "204":
+        '204':
           description: Successful operation - No Content
           content: {}
-        "401":
+        '401':
           description: Unauthorized
           content: {}
-        "403":
+        '403':
           description: Forbidden
           content: {}
-        "404":
+        '404':
           description: Not Found
           content: {}
-        "500":
+        '500':
           description: Internal Server Error
           content: {}
       security:
@@ -821,19 +1037,19 @@ paths:
             type: string
             pattern: ^((p|P)[0-9]{6})|((s|S)[0-9]{6})$
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/applications"
-        "400":
+                $ref: '#/components/schemas/applications'
+        '400':
           description: Bad Request
-        "401":
+        '401':
           description: Unauthorized
-        "404":
+        '404':
           description: Not Found
-        "500":
+        '500':
           description: Internal Server Error
       security:
         - cookieAuth: []
@@ -863,19 +1079,19 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/application"
-        "400":
+                $ref: '#/components/schemas/application'
+        '400':
           description: Bad Request
-        "401":
+        '401':
           description: Unauthorized
-        "404":
+        '404':
           description: Not Found
-        "500":
+        '500':
           description: Internal Server Error
       security:
         - cookieAuth: []
@@ -907,21 +1123,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/application"
+              $ref: '#/components/schemas/application'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/application"
-        "400":
+                $ref: '#/components/schemas/application'
+        '400':
           description: Bad Request
-        "401":
+        '401':
           description: Unauthorized
-        "404":
+        '404':
           description: Not Found
-        "500":
+        '500':
           description: Internal Server Error
       security:
         - cookieAuth: []
@@ -941,15 +1157,15 @@ paths:
             type: string
             pattern: ^(p|P)[0-9]{6}$
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/externalCoSupervisors"
-        "401":
+                $ref: '#/components/schemas/externalCoSupervisors'
+        '401':
           description: Unauthorized
-        "500":
+        '500':
           description: Internal Server Error
       security:
         - cookieAuth: []
@@ -975,19 +1191,19 @@ paths:
             type: string
             pattern: ^(e|E)[0-9]{6}$
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/externalCoSupervisor"
-        "400":
+                $ref: '#/components/schemas/externalCoSupervisor'
+        '400':
           description: Bad Request
-        "401":
+        '401':
           description: Unauthorized
-        "404":
+        '404':
           description: Not Found
-        "500":
+        '500':
           description: Internal Server Error
       security:
         - cookieAuth: []
@@ -1007,15 +1223,15 @@ paths:
             type: string
             pattern: ^(p|P)[0-9]{6}$
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/degrees"
-        "401":
+                $ref: '#/components/schemas/degrees'
+        '401':
           description: Unauthorized
-        "500":
+        '500':
           description: Internal Server Error
       security:
         - cookieAuth: []
@@ -1035,15 +1251,15 @@ paths:
             type: string
             pattern: ^(p|P)[0-9]{6}$
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/keywords"
-        "401":
+                $ref: '#/components/schemas/keywords'
+        '401':
           description: Unauthorized
-        "500":
+        '500':
           description: Internal Server Error
       security:
         - cookieAuth: []
@@ -1076,13 +1292,13 @@ paths:
                 contentType: application/pdf
         required: true
       responses:
-        "200":
+        '200':
           description: OK
-        "400":
+        '400':
           description: Bad Request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
+        '500':
           description: Internal Server Error
       security:
         - cookieAuth: []
@@ -1108,13 +1324,13 @@ paths:
             type: string
             pattern: ^(s|S)[0-9]{6}$
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/pdf: {}
-        "401":
+        '401':
           description: Unauthorized
-        "500":
+        '500':
           description: Internal Server Error
       security:
         - cookieAuth: []
@@ -1123,11 +1339,11 @@ paths:
       tags:
         - user
       responses:
-        "200":
+        '200':
           description: OK
-        "400":
+        '400':
           description: Bad Request
-        "500":
+        '500':
           description: Internal Server Error
   /authenticatedSession/{userId}:
     get:
@@ -1153,17 +1369,17 @@ paths:
             type: string
             pattern: ^((p|P)|(s|S))[0-9]{6}$
       responses:
-        "200":
+        '200':
           description: OK
-        "400":
+        '400':
           description: Bad Request
-        "401":
+        '401':
           description: Unauthorized
-        "403":
+        '403':
           description: Forbidden
-        "404":
+        '404':
           description: Not Found
-        "500":
+        '500':
           description: Internal Server Error
       security:
         - cookieAuth: []
