@@ -541,7 +541,7 @@ paths:
           required: true
           schema:
             type: string
-            pattern: ^(p|P)[0-9]{6}$
+            pattern: ^((sc|SC)|(p|P))[0-9]{6}$
       responses:
         '200':
           description: OK
@@ -628,12 +628,12 @@ paths:
         - thesisRequest
       operationId: updateThesisRequest
       parameters:
-        - name: studentId
+        - name: userId
           in: cookie
           required: true
           schema:
             type: string
-            pattern: ^(s|S)[0-9]{6}$
+            pattern: ^((s|S)|(p|P)|(sc|SC))[0-9]{6}$
         - name: thesisRequestId
           in: path
           required: true

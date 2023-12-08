@@ -758,12 +758,12 @@
                 "operationId": "getThesisRequests",
                 "parameters": [
                     {
-                        "name": "professorId",
+                        "name": "userId",
                         "in": "cookie",
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "pattern": "^(p|P)[0-9]{6}$"
+                            "pattern": "^((sc|SC)|(p|P))[0-9]{6}$"
                         }
                     }
                 ],
@@ -909,12 +909,12 @@
                 "operationId": "updateThesisRequest",
                 "parameters": [
                     {
-                        "name": "studentId",
+                        "name": "userId",
                         "in": "cookie",
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "pattern": "^(s|S)[0-9]{6}$"
+                            "pattern": "^((s|S)|(p|P)|(sc|SC))[0-9]{6}$"
                         }
                     },
                     {
