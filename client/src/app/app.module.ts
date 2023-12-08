@@ -39,6 +39,9 @@ import { ThesisDetailsComponent } from './pages/professor-page/thesis-management
 import { ApplicationViewComponent } from './pages/student-page/components/application-view/application-view.component';
 import { NotificationsContainerComponent } from './shared/components/notification/container/notifications-container/notifications-container.component';
 import {SocketIoModule} from "ngx-socket-io";
+import {
+  ArchivedThesisTableComponent
+} from "./pages/professor-page/thesis-management/archived-thesis-table/archived-thesis-table.component";
 
 
 const routes: Routes = [
@@ -48,53 +51,54 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    StudentPageComponent,
-    ProfessorPageComponent,
-    ThesisManagementComponent,
-    ApplicantsTableComponent,
-    PopupComponent,
-    ButtonSliderComponent,
-    IconComponent,
-    NotificationComponent,
-    ButtonComponent,
-    HomePageComponent,
-    PageSkeletonComponent,
-    AlertComponent,
-    LoadingComponent,
-    CreateThesisFormComponent,
-    ActiveThesisTableComponent,
-    FiltersContainerComponent,
-    DropdownCheckboxComponent,
-    CheckboxComponent,
-    ThesisDetailsComponent,
-    ApplicationViewComponent,
-    NotificationsContainerComponent,
-  ],
-  imports: [
-    BrowserModule,
-    RouterModule.forRoot(routes),
-    FormsModule,
-    CdkDrag,
-    ReactiveFormsModule,
-    HttpClientModule,
-    AuthModule.forRoot({
-      domain: 'dev-qzcvobvfrndn6b3g.us.auth0.com',
-      clientId: 'OmyzHGjNrO1FRlu3umd3xv1ZMMHyEYq6',
-      authorizationParams: {
-        redirect_uri: window.location.origin
-      }
-    }),
-    MatIconModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatInputModule,
-    BrowserAnimationsModule,
-    SocketIoModule.forRoot({url: 'http://localhost:3000', options: {withCredentials: true, autoConnect: true}})
-  ],
-  providers: [AuthGuardProfessorService],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        StudentPageComponent,
+        ProfessorPageComponent,
+        ThesisManagementComponent,
+        ApplicantsTableComponent,
+        PopupComponent,
+        ButtonSliderComponent,
+        IconComponent,
+        NotificationComponent,
+        ButtonComponent,
+        HomePageComponent,
+        PageSkeletonComponent,
+        AlertComponent,
+        LoadingComponent,
+        CreateThesisFormComponent,
+        ActiveThesisTableComponent,
+        ArchivedThesisTableComponent,
+        FiltersContainerComponent,
+        DropdownCheckboxComponent,
+        CheckboxComponent,
+        ThesisDetailsComponent,
+        ApplicationViewComponent,
+        NotificationsContainerComponent,
+    ],
+    imports: [
+        BrowserModule,
+        RouterModule.forRoot(routes),
+        FormsModule,
+        CdkDrag,
+        ReactiveFormsModule,
+        HttpClientModule,
+        AuthModule.forRoot({
+            domain: 'dev-qzcvobvfrndn6b3g.us.auth0.com',
+            clientId: 'OmyzHGjNrO1FRlu3umd3xv1ZMMHyEYq6',
+            authorizationParams: {
+                redirect_uri: window.location.origin
+            }
+        }),
+        MatIconModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatInputModule,
+        BrowserAnimationsModule,
+        SocketIoModule.forRoot({url: 'http://localhost:3000', options: {withCredentials: true, autoConnect: true}})
+    ],
+    providers: [AuthGuardProfessorService],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

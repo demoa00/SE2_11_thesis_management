@@ -54,7 +54,11 @@ export class APIService {
   }
 
   async getApplications() {
-    return await this.httpService.get('applications')
+    try{
+      return await this.httpService.get('applications')
+    } catch (errore){
+      return undefined
+    }
   }
 
   async getApplicationById(applicationId: any, userId: any) {
@@ -94,7 +98,19 @@ export class APIService {
     })
   }
   async getAllActiveTheses() {
-    return await this.httpService.get('thesisProposals/?cosupervisor=false')
+    try {
+      return await this.httpService.get('thesisProposals/?cosupervisor=false&isArchieved=false')
+    } catch (errore){
+      return undefined
+    }
+  }
+  async getAllArchivedTheses() {
+    try {
+      return await this.httpService.get('thesisProposals/?cosupervisor=false&isArchieved=true')
+    } catch (errore){
+      return undefined
+    }
+
   }
 
   async getUserDetails(userId: any) {
@@ -139,6 +155,19 @@ export class APIService {
     return await this.httpService.get(`thesisProposals/${proposalId}`, false, true)
   }
 
+  async deleteThesis(proposalId: number | undefined) {
+    return await this.httpService.delete(`thesisProposals/${proposalId}`, true)
+  }
+
+  async archiveThesis(proposalId: number | undefined) {
+    const thesisBody: any = await this.httpService.get(`thesisProposals/${proposalId}`, false, true)
+    delete thesisBody.self
+    delete thesisBody.supervisor
+    thesisBody.requirements = ' '
+    console.log(thesisBody)
+    return await this.httpService.put(`thesisProposals/${proposalId}/?isArchived=true`, thesisBody)
+  }
+
   async getProfessors() {
     await this.httpService.get('professors',false,true).then((response: any)=>{
       localStorage.setItem('professors',JSON.stringify(response))
@@ -164,5 +193,6 @@ export class APIService {
       status: status
     })
   }
+
 
 }

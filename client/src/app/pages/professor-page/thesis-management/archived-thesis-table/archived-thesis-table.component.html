@@ -1,0 +1,64 @@
+<div *ngIf="!selectedProposal" class=" card p-5 flex flex-col w-full gap-6 items-center ">
+  <h1 class="text-3xl flex justify-center"> List of Archived Thesis</h1>
+  <div class="separator"></div>
+  <table *ngIf="rows!=''" class="bo-table w-full h-fit overflow-auto">
+    <tbody >
+    <tr class="thead">
+      <th>Title</th>
+      <th>Expiration</th>
+    </tr>
+    <tr *ngFor="let row of rows" >
+      <td (click)="shohDetails(row)" class="cursor-pointer py-0.5 w-24 h-6 text-sm text-gray-600">{{row.title}}</td>
+      <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row.expirationDate}}</td>
+      <!--
+      <td class="py-0.5 w-6 h-6 hover:cursor-pointer">
+        <app-icon name="pencil" class="text-blue-900 h-6 w-6" (click)="openCreatePopup()">Update</app-icon>
+      </td>
+      -->
+      <td class="py-0.5 w-6 h-6 hover:cursor-pointer">
+        <app-icon name="delete" class="text-red-700  h-6 w-6" (click)="deleteThesisPopup(); selectedThesisId = row.thesisProposalId">Delete</app-icon>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <h3 *ngIf="rows==''"> No Archived Thesis Avaiable</h3>
+</div>
+<div *ngIf="selectedProposal" class="card flex gap-4 flex-col">
+  <!--
+  <div class="flex gap-1 items-center hover:cursor-pointer" (click)="selectedProposal=undefined">
+    <app-icon name="arrowLeft" class="text-gray-500 h-6 w-6" >Archive</app-icon>
+    <div class="text-gray-500">Back</div>
+  </div>
+  -->
+  <app-thesis-details [selectedProposal]="selectedProposal"></app-thesis-details>
+  <div *ngIf="selectedProposal" class="projectButtons">
+
+    <div class="flex gap-1 items-center hover:cursor-pointer" (click)="selectedProposal=undefined">
+      <div class="text-gray-500">Back</div>
+    </div>
+
+    <div class="flex gap-6">
+      <app-icon name="delete" class="text-red-700 h-6 w-6 hover:cursor-pointer" (click)="''">Delete</app-icon>
+    </div>
+  </div>
+</div>
+
+<app-popup
+  *ngIf="deletePopup"
+  (close)="deleteThesisPopup()"
+  [closeClickOutside]="false"
+  [showSlider] = "false"
+  [showButton] = "true"
+  [response] = response
+  (send)="deleteThesis()">
+  <div *ngIf="!requestAccepted" class="flex flex-col h-full w-full gap-4">
+    <div class="p-2 w-full flex flex-col gap-2 items-center ">
+      <div style="width: 90%; height: 1px" class="bg-orange-500"></div>
+      <div class="font-bold">Are you sure to delete the thesis?</div>
+    </div>
+  </div>
+
+  <div *ngIf="requestAccepted" class="text-green-500 text-xl"> The thesis has been deleted </div>
+
+</app-popup>
+
