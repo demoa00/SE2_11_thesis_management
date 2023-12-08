@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { ApplicantsTableComponent } from './applicants-table.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APIService } from 'src/app/shared/services/api.service';
+import { IconComponent } from 'src/app/shared/components/icon/icon.component';
 
 describe('ApplicantsTableComponent', () => {
   let component: ApplicantsTableComponent;
@@ -13,7 +14,7 @@ describe('ApplicantsTableComponent', () => {
     const spy = jasmine.createSpyObj('APIService', ['putApplication']);
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      declarations: [ApplicantsTableComponent],
+      declarations: [ApplicantsTableComponent, IconComponent],
       providers: [{ provide: APIService, useValue: spy }]
     });
     fixture = TestBed.createComponent(ApplicantsTableComponent);

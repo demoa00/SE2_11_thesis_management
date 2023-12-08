@@ -9,6 +9,7 @@ import { IconComponent } from 'src/app/shared/components/icon/icon.component';
 import { DropdownCheckboxComponent } from './components/dropdown-checkbox/dropdown-checkbox.component';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { NotificationsContainerComponent } from 'src/app/shared/components/notification/container/notifications-container/notifications-container.component';
 
 describe('StudentPageComponent', () => {
   let component: StudentPageComponent;
@@ -30,7 +31,7 @@ describe('StudentPageComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [FormsModule, MatIconModule],
-      declarations: [StudentPageComponent, PageSkeletonComponent, ButtonComponent, AlertComponent, PopupComponent, IconComponent, DropdownCheckboxComponent],
+      declarations: [StudentPageComponent, PageSkeletonComponent, ButtonComponent, AlertComponent, PopupComponent, IconComponent, DropdownCheckboxComponent, NotificationsContainerComponent],
       providers: [{ provide: APIService, useValue: apiService }]
     }).compileComponents();
 

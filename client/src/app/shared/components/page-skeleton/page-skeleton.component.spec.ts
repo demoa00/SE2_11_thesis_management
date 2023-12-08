@@ -4,6 +4,7 @@ import { PageSkeletonComponent } from './page-skeleton.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ButtonComponent } from '../button/button.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('PageSkeletonComponent', () => {
   let component: PageSkeletonComponent;
@@ -11,7 +12,7 @@ describe('PageSkeletonComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, MatIconModule],
       declarations: [PageSkeletonComponent, ButtonComponent],
     });
     fixture = TestBed.createComponent(PageSkeletonComponent);

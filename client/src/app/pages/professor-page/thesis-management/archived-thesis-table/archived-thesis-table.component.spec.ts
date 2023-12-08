@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ArchivedThesisTableComponent } from './archived-thesis-table.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ArchivedThesisTableComponent', () => {
   let component: ArchivedThesisTableComponent;
@@ -8,7 +9,8 @@ describe('ArchivedThesisTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ArchivedThesisTableComponent]
+      imports: [HttpClientTestingModule],
+      declarations: [ArchivedThesisTableComponent]
     })
     .compileComponents();
     
