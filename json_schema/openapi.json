@@ -201,14 +201,6 @@
                             "type": "string",
                             "pattern": "^(s|S)[0-9]{6}$"
                         },
-                        "name": {
-                            "type": "string",
-                            "minLength": 1
-                        },
-                        "surname": {
-                            "type": "string",
-                            "minLength": 1
-                        },
                         "self": {
                             "type": "string",
                             "format": "uri"

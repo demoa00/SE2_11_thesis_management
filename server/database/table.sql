@@ -155,6 +155,7 @@ DROP TABLE thesisRequests;
 CREATE TABLE thesisRequests(
     thesisRequestId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     thesisProposalId INTEGER NOT NULL,
+    studentId TEXT(7) NOT NULL,
 	title TEXT(20) NOT NULL,
     supervisor TEXT(7) NOT NULL,
     description TEXT(1000) NOT NULL,
