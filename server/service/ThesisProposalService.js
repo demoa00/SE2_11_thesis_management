@@ -48,6 +48,8 @@ exports.getThesisProposalsForStudent = function (codDegree, filter) {
     const regex = new RegExp("p.*");
     let i = 0;
     let j = 0;
+    let internal_params = [];
+    let external_params = [];
 
     filter.cosupervisor = filter.cosupervisor instanceof Array ? filter.cosupervisor : [filter.cosupervisor];
 
@@ -60,8 +62,7 @@ exports.getThesisProposalsForStudent = function (codDegree, filter) {
           sql_filter_internal_cosupervisor += ' OR internalCoSupervisorId = ? ';
         }
 
-        sql_filter_internal_cosupervisor += ') ';
-        params.push(c);
+        internal_params.push(c);
       } else {
         if (j == 0) {
           sql_filter_external_cosupervisor += '(SELECT thesisProposalId FROM thesisProposal_externalCoSupervisor_bridge WHERE externalCoSupervisorId = ? ';
@@ -70,10 +71,18 @@ exports.getThesisProposalsForStudent = function (codDegree, filter) {
           sql_filter_external_cosupervisor += ' OR externalCoSupervisorId = ? ';
         }
 
-        sql_filter_external_cosupervisor += ')';
-        params.push(c);
+        external_params.push(c);
       }
     });
+
+    if (sql_filter_internal_cosupervisor != '') {
+      sql_filter_internal_cosupervisor += ') ';
+    }
+    if (sql_filter_external_cosupervisor != '') {
+      sql_filter_external_cosupervisor += ')';
+    }
+
+    params = [...params, internal_params, external_params].flat(Infinity);
   }
   if (filter?.expirationdate) {
     filter.expirationdate = filter.expirationdate instanceof Array ? filter.expirationdate[0] : filter.expirationdate;
@@ -109,7 +118,7 @@ exports.getThesisProposalsForStudent = function (codDegree, filter) {
   sql += 'AND supervisor = professorId';
 
   return new Promise(function (resolve, reject) {
-    db.all(sql, params, function (err, rows) {
+    db.all(sql, params, (err, rows) => {
       if (err) {
         reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (rows.length == 0) {

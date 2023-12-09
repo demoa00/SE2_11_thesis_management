@@ -21,23 +21,21 @@ module.exports.getThesisRequests = async function getThesisRequests(req, res, ne
     }
 };
 
-module.exports.insertNewThesisRequest = async function insertNewThesisRequest(req, res, next) {
+module.exports.getThesisRequestById = async function getThesisRequestById(req, res, next) {
     try {
-        let newThesisRequest = await ThesisRequest.insertNewThesisRequest(req.user.userId, req.body);
-        if (newThesisRequest instanceof PromiseError) {
-            utils.writeJson(res, { error: newThesisRequest.message }, newThesisRequest.code);
-        } else {
-            utils.writeJson(res, newThesisRequest, 200);
-        }
+        let thesisRequest = await ThesisRequest.getThesisRequestById(req.user, req.params.thesisRequestId);
+
+        utils.writeJson(res, thesisRequest, 200);
     } catch (error) {
         utils.writeJson(res, { error: error.message }, error.code);
     }
 };
 
-module.exports.getThesisRequestById = async function getThesisRequestById(req, res, next) {
+module.exports.insertNewThesisRequest = async function insertNewThesisRequest(req, res, next) {
     try {
-        let thesisRequest = await ThesisRequest.getThesisRequestById(req.user, req.params.thesisRequestId);
-        utils.writeJson(res, thesisRequest, 200);
+        let newThesisRequest = await ThesisRequest.insertNewThesisRequest(req.user.userId, req.body);
+
+        utils.writeJson(res, newThesisRequest, 200);
     } catch (error) {
         utils.writeJson(res, { error: error.message }, error.code);
     }
@@ -46,11 +44,8 @@ module.exports.getThesisRequestById = async function getThesisRequestById(req, r
 module.exports.updateThesisRequest = async function updateThesisRequest(req, res, next) {
     try {
         let thesisRequestUpdated = await ThesisRequest.updateThesisRequest(req.user.userId, req.body, req.params.thesisRequestId);
-        if (thesisRequestUpdated instanceof PromiseError) {
-            utils.writeJson(res, { error: thesisRequestUpdated.message }, thesisRequestUpdated.code);
-        } else {
-            utils.writeJson(res, thesisRequestUpdated, 200);
-        }
+
+        utils.writeJson(res, thesisRequestUpdated, 200);
     } catch (error) {
         utils.writeJson(res, { error: error.message }, error.code);
     }

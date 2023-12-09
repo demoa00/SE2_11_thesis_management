@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Thesis Proposal
+  title: Thesis Proposal Management
   version: 1.0.0
 components:
   schemas:
@@ -44,8 +44,6 @@ components:
     thesisRequest:
       type: object
       properties:
-        $schema:
-          type: string
         thesisRequestId:
           type: integer
           minimum: 1
@@ -68,9 +66,28 @@ components:
               type: string
               format: uri
           additionalProperties: false
-        supervisor:
+        title:
           type: string
-          pattern: ^(p|P)[0-9]{6}$
+          minLength: 1
+          maxLength: 20
+        supervisor:
+          type: object
+          properties:
+            professorId:
+              type: string
+              pattern: ^(p|P)[0-9]{6}$
+            name:
+              type: string
+              minLength: 1
+            surname:
+              type: string
+              minLength: 1
+            professor:
+              type: string
+              format: uri
+          additionalProperties: false
+          required:
+            - professorId
         coSupervisors:
           type: array
           items:
@@ -114,9 +131,33 @@ components:
           format: uri
       additionalProperties: false
       required:
+        - title
         - supervisor
         - description
-        - title
+    thesisRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          thesisRequestId:
+            type: integer
+            minimum: 1
+          title:
+            type: string
+            minLength: 1
+          studentId:
+            type: string
+            pattern: ^(s|S)[0-9]{6}$
+          name:
+            type: string
+            minLength: 1
+          surname:
+            type: string
+            minLength: 1
+          self:
+            type: string
+            format: uri
+        additionalProperties: false
     professor:
       type: object
       properties:
@@ -476,6 +517,35 @@ components:
         type: string
         minLength: 1
         additionalProperties: false
+    notifications:
+      type: array
+      items:
+        type: object
+        properties:
+          notificationId:
+            type: integer
+            minimum: 1
+          userId:
+            description: Is the id of the user that has to receive this notification
+            type: string
+            oneOf:
+              - description: Professor id
+                pattern: ^(p|P)[0-9]{6}$
+              - description: Student id
+                pattern: ^(s|S)[0-9]{6}$
+              - description: Secretary Clerk id
+                pattern: ^(c|C)[0-9]{6}$
+          message:
+            type: string
+            minLength: 1
+            maxLength: 100
+          date:
+            type: string
+            format: date
+          isRead:
+            type: boolean
+            default: false
+        additionalProperties: false
   securitySchemes:
     cookieAuth:
       description: JWT to identify the authenticated user.
@@ -494,11 +564,12 @@ tags:
   - name: degree
   - name: keyword
   - name: curriculumVitae
+  - name: notification
 paths:
   /careers/{studentId}:
     get:
       tags:
-        - careeer
+        - career
       operationId: getCareer
       parameters:
         - name: userId
@@ -536,12 +607,12 @@ paths:
         - thesisRequest
       operationId: getThesisRequests
       parameters:
-        - name: professorId
+        - name: userId
           in: cookie
           required: true
           schema:
             type: string
-            pattern: ^((sc|SC)|(p|P))[0-9]{6}$
+            pattern: ^((c|C)|(p|P))[0-9]{6}$
       responses:
         '200':
           description: OK
@@ -550,7 +621,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/thesisRequest'
+                  $ref: '#/components/schemas/thesisRequests'
         '400':
           description: Bad Request
         '401':
@@ -572,6 +643,12 @@ paths:
           schema:
             type: string
             pattern: ^(s|S)[0-9]{6}$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/thesisRequest'
+        required: true
       responses:
         '201':
           description: Created
@@ -600,7 +677,7 @@ paths:
           required: true
           schema:
             type: string
-            pattern: ^((s|S)|(p|P))[0-9]{6}$
+            pattern: ^([cps]|[CPS])[0-9]{6}$
         - name: thesisRequestId
           in: path
           required: true
@@ -633,7 +710,7 @@ paths:
           required: true
           schema:
             type: string
-            pattern: ^((s|S)|(p|P)|(sc|SC))[0-9]{6}$
+            pattern: ^([cps]|[CPS])[0-9]{6}$
         - name: thesisRequestId
           in: path
           required: true
@@ -660,9 +737,6 @@ paths:
           content: {}
         '404':
           description: Not Found
-          content: {}
-        '409':
-          description: Conflict (attempt to make unallowed change)
           content: {}
         '500':
           description: Internal Server Error
@@ -850,6 +924,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/thesisProposal'
+        required: true
       responses:
         '201':
           description: Created
@@ -983,9 +1058,6 @@ paths:
           content: {}
         '404':
           description: Not Found
-          content: {}
-        '409':
-          description: Conflict (attempt to make unallowed change, e.g., visibility)
           content: {}
         '500':
           description: Internal Server Error
@@ -1367,6 +1439,66 @@ paths:
           description: Internal Server Error
       security:
         - cookieAuth: []
+  /notifications:
+    get:
+      tags:
+        - notification
+      operationId: getNotifications
+      parameters:
+        - name: authenticatedUserId
+          in: cookie
+          required: true
+          description: >-
+            The authenticated user id corresponds to the student or professor or
+            secretary that perform this request
+          schema:
+            type: string
+            pattern: ^([cps]|[CPS])[0-9]{6}$
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notifications'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      security:
+        - cookieAuth: []
+  /notifications/{notificationId}:
+    put:
+      tags:
+        - notification
+      description: Set the notification with notificationId to status 'read'
+      operationId: updateNotification
+      parameters:
+        - name: authenticatedUserId
+          in: cookie
+          required: true
+          description: >-
+            The authenticated user id corresponds to the student or professor or
+            secretary that perform this request
+          schema:
+            type: string
+            pattern: ^([cps]|[CPS])[0-9]{6}$
+        - name: notificationId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      security:
+        - cookieAuth: []
   /authenticatedSession:
     get:
       tags:
@@ -1391,7 +1523,7 @@ paths:
           required: true
           schema:
             type: string
-            pattern: ^((p|P)|(s|S))[0-9]{6}$
+            pattern: ^([cps]|[CPS])[0-9]{6}$
         - name: userId
           in: path
           description: >-
@@ -1400,7 +1532,7 @@ paths:
           required: true
           schema:
             type: string
-            pattern: ^((p|P)|(s|S))[0-9]{6}$
+            pattern: ^([cps]|[CPS])[0-9]{6}$
       responses:
         '200':
           description: OK

@@ -4,9 +4,6 @@
     "title": "Thesis Request Schema",
     "type": "object",
     "properties": {
-        "$schema": {
-            "type": "string"
-        },
         "thesisRequestId": {
             "type": "integer",
             "minimum": 1
@@ -37,9 +34,35 @@
             },
             "additionalProperties": false
         },
-        "supervisor": {
+        "title": {
             "type": "string",
-            "pattern": "^(p|P)[0-9]{6}$"
+            "minLength": 1,
+            "maxLength": 20
+        },
+        "supervisor": {
+            "type": "object",
+            "properties": {
+                "professorId": {
+                    "type": "string",
+                    "pattern": "^(p|P)[0-9]{6}$"
+                },
+                "name": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "surname": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "professor": {
+                    "type": "string",
+                    "format": "uri"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "professorId"
+            ]
         },
         "coSupervisors": {
             "type": "array",
@@ -100,8 +123,8 @@
     },
     "additionalProperties": false,
     "required": [
+        "title",
         "supervisor",
-        "description",
-        "title"
+        "description"
     ]
 }

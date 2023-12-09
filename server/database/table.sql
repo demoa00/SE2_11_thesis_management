@@ -77,7 +77,7 @@ CREATE TABLE thesisProposals(
     notes TEXT(500),
     expirationDate DATE NOT NULL,
     level TEXT(20) NOT NULL,
-    isArchieved BOLEAN DEFAULT TRUE NOT NULL,
+    isArchieved BOLEAN DEFAULT FALSE NOT NULL,
     
     FOREIGN KEY(supervisor) REFERENCES professors(professorId) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -94,8 +94,7 @@ CREATE TABLE applications(
     status TEXT(20) NOT NULL DEFAULT 'Pending',
     
     PRIMARY KEY(thesisProposalId, studentId),
-    FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY(studentId) REFERENCES students(studentId)
+    FOREIGN KEY(studentId) REFERENCES students(studentId) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
@@ -149,4 +148,32 @@ CREATE VIRTUAL TABLE virtualThesisProposals USING fts5(
     requirements,
     thesisType,
     notes
+);
+
+/* TABLE TO MANAGE THESIS REQUESTS */
+DROP TABLE thesisRequests;
+CREATE TABLE thesisRequests(
+    thesisRequestId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    thesisProposalId INTEGER,
+	title TEXT(20) NOT NULL,
+    supervisor TEXT(7) NOT NULL,
+    description TEXT(1000) NOT NULL,
+    expirationDate DATE NOT NULL,
+    secretaryStatus TEXT(20) NOT NULL DEFAULT 'Pending',
+	professorStatus TEXT(20) NOT NULL DEFAULT 'Pending',
+	approvalDate DATE NOT NULL,
+    
+    FOREIGN KEY(supervisor) REFERENCES professors(professorId) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
+/* TABLE TO MANAGE THE NOTIFICATIONS */
+DROP TABLE notifications;
+CREATE TABLE notifications(
+	notificationId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+	userId TEXT(7) NOT NULL,
+	message TEXT(100) NOT NULL,
+	date DATE NOT NULL,
+	isRead BOLEAN DEFAULT FALSE NOT NULL
 );

@@ -1,0 +1,52 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "notification_schema",
+    "title": "Notification Schema",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "notificationId": {
+            "type": "integer",
+            "minimum": 1
+        },
+        "userId": {
+            "description": "Is the id of the user that has to receive this notification",
+            "type": "string",
+            "oneOf": [
+                {
+                    "description": "Professor id",
+                    "pattern": "^(p|P)[0-9]{6}$"
+                },
+                {
+                    "description": "Student id",
+                    "pattern": "^(s|S)[0-9]{6}$"
+                },
+                {
+                    "description": "Secretary Clerk id",
+                    "pattern": "^(c|C)[0-9]{6}$"
+                }
+            ]
+        },
+        "message": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+        },
+        "date":{
+            "type":"string",
+            "format": "date"
+        },
+        "isRead": {
+            "type":"boolean",
+            "default": false
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "userId",
+        "message",
+        "isRead"
+    ]
+}

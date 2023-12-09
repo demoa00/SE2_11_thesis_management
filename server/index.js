@@ -37,6 +37,7 @@ const degreeController = require(path.join(__dirname, 'controllers/DegreeControl
 const curriculumVitaeController = require(path.join(__dirname, 'controllers/CurriculumVitaeController'));
 const careerController = require(path.join(__dirname, 'controllers/CareerController'));
 const thesisRequestController = require(path.join(__dirname, 'controllers/ThesisRequestController'));
+const notificationController = require(path.join(__dirname, 'controllers/NotificationController'));
 
 //-- -- -- -- -- -- -- -- -- --
 // IMPORT RESOURCE SERVICES
@@ -303,14 +304,21 @@ app.get('/api/cv/:studentId', isLoggedIn, curriculumVitaeController.getCV);
 app.delete('/api/cv/:studentId', isLoggedIn, isStudent, curriculumVitaeController.deleteCV);
 
 
-/* CAREER API */
+/* CAREERS API */
 app.get('/api/careers/:studentId', isLoggedIn, isProfessor, careerController.getCareer);
 
-/* THESIS REQUEST API */
+
+/* THESIS REQUESTS API */
 app.get('/api/thesisRequests', isLoggedIn, thesisRequestController.getThesisRequests);
-app.post('/api/thesisRequests', isLoggedIn, isStudent, validate({ body: thesisRequestSchema }),  thesisRequestController.insertNewThesisRequest);
 app.get('/api/thesisRequests/:thesisRequestId', isLoggedIn, thesisRequestController.getThesisRequestById);
+app.post('/api/thesisRequests', isLoggedIn, isStudent, validate({ body: thesisRequestSchema }), thesisRequestController.insertNewThesisRequest);
 app.put('/api/thesisRequests/:thesisRequestId', isLoggedIn, validate({ body: thesisRequestSchema }), thesisRequestController.updateThesisRequest);
+
+
+/* NOTIFICATIONS API */
+app.get('/api/notifications', isLoggedIn, notificationController.getNotifications);
+app.put('/api/notifications/:notificationsId', isLoggedIn, notificationController.updateNotification);
+
 
 //-- -- -- -- -- -- -- -- -- -- --
 // WEBSOCKET SERVER INITIALIZATION
@@ -367,7 +375,7 @@ httpServer.listen(PORT, function () {
 
 //generate random messages for notifications
 const genRand = (len) => {
-  return Math.random().toString(36).substring(2,len+2);
+    return Math.random().toString(36).substring(2, len + 2);
 }
 
 setInterval(() => {
