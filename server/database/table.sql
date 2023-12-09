@@ -154,14 +154,13 @@ CREATE VIRTUAL TABLE virtualThesisProposals USING fts5(
 DROP TABLE thesisRequests;
 CREATE TABLE thesisRequests(
     thesisRequestId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    thesisProposalId INTEGER,
+    thesisProposalId INTEGER NOT NULL,
 	title TEXT(20) NOT NULL,
     supervisor TEXT(7) NOT NULL,
     description TEXT(1000) NOT NULL,
-    expirationDate DATE NOT NULL,
     secretaryStatus TEXT(20) NOT NULL DEFAULT 'Pending',
 	professorStatus TEXT(20) NOT NULL DEFAULT 'Pending',
-	approvalDate DATE NOT NULL,
+	approvalDate DATE,
     
     FOREIGN KEY(supervisor) REFERENCES professors(professorId) ON UPDATE CASCADE ON DELETE CASCADE
 );
