@@ -38,6 +38,7 @@ const curriculumVitaeController = require(path.join(__dirname, 'controllers/Curr
 const careerController = require(path.join(__dirname, 'controllers/CareerController'));
 const thesisRequestController = require(path.join(__dirname, 'controllers/ThesisRequestController'));
 const notificationController = require(path.join(__dirname, 'controllers/NotificationController'));
+const virtualClockController = require(path.join(__dirname, 'controllers/VirtualClockController'));
 
 //-- -- -- -- -- -- -- -- -- --
 // IMPORT RESOURCE SERVICES
@@ -266,6 +267,7 @@ app.get('/api/thesisProposals', isLoggedIn, thesisProposalController.getThesisPr
 app.get('/api/thesisProposals/:thesisProposalId', isLoggedIn, thesisProposalController.getThesisProposalById);
 app.post('/api/thesisProposals', isLoggedIn, isProfessor, validate({ body: thesisProposalSchema }), thesisProposalController.insertNewThesisProposal);
 app.put('/api/thesisProposals/:thesisProposalId', isLoggedIn, isProfessor, validate({ body: thesisProposalSchema }), thesisProposalController.updateThesisProposal);
+app.put('/api/thesisProposals/:thesisProposalId/archive', isLoggedIn, isProfessor, thesisProposalController.archiveThesisProposal);
 app.delete('/api/thesisProposals/:thesisProposalId', isLoggedIn, isProfessor, thesisProposalController.deleteThesisProposal);
 
 
@@ -318,6 +320,10 @@ app.put('/api/thesisRequests/:thesisRequestId', isLoggedIn, validate({ body: the
 /* NOTIFICATIONS API */
 app.get('/api/notifications', isLoggedIn, notificationController.getNotifications);
 app.put('/api/notifications/:notificationsId', isLoggedIn, notificationController.updateNotification);
+
+
+/* VIRTUAL CLOCK */
+app.put('/api/virtualClock', isLoggedIn, virtualClockController.updateVirtualClock);
 
 
 //-- -- -- -- -- -- -- -- -- -- --
