@@ -1082,6 +1082,48 @@
                 ]
             }
         },
+        "/virtualClock" : {
+            "put" : {
+                "tags": [
+                    "virtualClock"            
+                ],
+                "operationId": "updateVirtualClock",
+                "requestBody" : {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string",
+                                "format": "date"
+                            }
+                        }
+                    },
+                    "required": true
+                },                
+                "responses": {
+                    "204": {
+                        "description": "No Content",
+                        "content": {}
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {}
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {}
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
+            }
+        },
         "/professors": {
             "get": {
                 "tags": [
