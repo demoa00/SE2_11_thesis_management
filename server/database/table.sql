@@ -154,7 +154,6 @@ CREATE VIRTUAL TABLE virtualThesisProposals USING fts5(
 DROP TABLE thesisRequests;
 CREATE TABLE thesisRequests(
     thesisRequestId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    thesisProposalId INTEGER NOT NULL,
     studentId TEXT(7) NOT NULL,
 	title TEXT(20) NOT NULL,
     supervisor TEXT(7) NOT NULL,
@@ -176,4 +175,14 @@ CREATE TABLE notifications(
 	message TEXT(100) NOT NULL,
 	date DATE NOT NULL,
 	isRead BOLEAN DEFAULT FALSE NOT NULL
+);
+
+DROP TABLE thesisRequest_internalCoSupervisor_bridge;
+CREATE TABLE thesisRequest_internalCoSupervisor_bridge(
+    thesisRequestId INTEGER NOT NULL,
+    internalCoSupervisorId TEXT(7) NOT NULL,
+    
+    PRIMARY KEY(thesisRequestId, internalCoSupervisorId),
+    FOREIGN KEY(thesisRequestId) REFERENCES thesisRequests(thesisRequestId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY(internalCoSupervisorId) REFERENCES professors(professorId)
 );

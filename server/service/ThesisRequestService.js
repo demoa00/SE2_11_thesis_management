@@ -74,29 +74,49 @@ exports.getThesisRequestById = function () {
 
 exports.insertNewThesisRequest = function (studentId, thesisRequest) {
     return new Promise(function (resolve, reject) {
-        const sql = "SELECT supervisor FROM thesisProposals WHERE thesisProposalId = ?";
-        db.get(sql, [thesisRequest.thesisProposalId], function (err, row) {
+        const sql = "SELECT professorId FROM professors WHERE professorId = ?";
+        db.get(sql, [thesisRequest.supervisor.professorId], function (err, row) {
             if (err) {
                 reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
             } else if (row == undefined) {
                 reject(new PromiseError({ code: 404, message: "Not Found" }));
             } else {
-                resolve(row.supervisor);
+                resolve(row.professorId);
             }
         })
     }).then((professorId) => {
         return new Promise(function (resolve, reject) {
-            const sql = "INSERT INTO thesisRequests(thesisProposalId, studentId, title, supervisor, description) VALUES(?,?,?,?,?)";
-            db.run(sql, [thesisRequest.thesisProposalId, studentId, thesisRequest.title, professorId, thesisRequest.description], function (err) {
+            const sql = "INSERT INTO thesisRequests(studentId, title, supervisor, description) VALUES(?,?,?,?)";
+            db.run(sql, [studentId, thesisRequest.title, professorId, thesisRequest.description], function (err) {
                 if (err) {
                     reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
                 } else {
-                    resolve({ newThesisRequest: `/api/thesisrequests/${lastID}` });
+                    resolve();
                 }
             })
-        });
-    })
-
+        })
+    }).then(async () => {
+        let promises = []
+        if (thesisRequest?.cosupervisors) {
+            thesisRequest.cosupervisor.forEach((c) => {
+                promises.push(
+                    new Promise(function (resolve, reject) {
+                        const sql = "INSERT INTO thesisRequest_internalCoSupervisor_bridge(?, ?)";
+                        db.run(sql, [thesisRequest.thesisRequestId, c.cosupervisorId], function (err) {
+                            if (err) {
+                                reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+                            } else {
+                                resolve();
+                            }
+                        });
+                    })
+                )
+            })
+        }
+        return await Promise.all(promises).then(() =>
+            ({ newThesisRequest: `/api/thesisrequests/${lastID}` })
+        );
+    });
 }
 
 exports.updateThesisRequest = function () {
