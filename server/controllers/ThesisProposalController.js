@@ -3,7 +3,6 @@
 const utils = require('../utils/writer.js');
 const ThesisProposal = require('../service/ThesisProposalService');
 const checkRole = require('../utils/checkRole.js');
-const { PromiseError } = require('../utils/error.js');
 
 
 module.exports.getThesisProposals = async function getThesisProposals(req, res, next) {
@@ -51,6 +50,16 @@ module.exports.updateThesisProposal = async function updateThesisProposal(req, r
     let thesisProposalUpdated = await ThesisProposal.updateThesisProposal(req.user.userId, req.body, req.params.thesisProposalId);
 
     utils.writeJson(res, thesisProposalUpdated, 200);
+  } catch (error) {
+    utils.writeJson(res, { error: error.message }, error.code);
+  }
+};
+
+module.exports.archiveThesisProposal = async function archiveThesisProposal(req, res, next) {
+  try {
+    await ThesisProposal.archiveThesisProposal(req.params.thesisProposalId, req.user.userId);
+
+    utils.writeJson(res, 'No Content', 204);
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
   }

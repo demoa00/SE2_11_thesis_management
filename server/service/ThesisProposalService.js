@@ -717,13 +717,22 @@ exports.deleteThesisProposal = async function (professorId, thesisProposalId) {
   });
 }
 
-exports.archiveThesisProposal = async function (professorId, thesisProposalId) {
+exports.archiveThesisProposal = async function (thesisProposalId, professorId) {
+  let sql = '';
+  let params = [];
+
   let students = await Student.getStudentsByThesisProposalId(thesisProposalId);
 
-  return new Promise(function (resolve, reject) {
-    const sql = 'UPDATE thesisProposals SET isArchieved = 1 WHERE thesisProposalId = ? AND supervisor = ?';
+  if (professorId != undefined) {
+    sql = 'UPDATE thesisProposals SET isArchieved = 1 WHERE thesisProposalId = ? AND supervisor = ?';
+    params = [thesisProposalId, professorId];
+  } else {
+    sql = 'UPDATE thesisProposals SET isArchieved = 1 WHERE thesisProposalId = ?';
+    params = [thesisProposalId];
+  }
 
-    db.run(sql, [thesisProposalId, professorId], function (err) {
+  return new Promise(function (resolve, reject) {
+    db.run(sql, params, function (err) {
       if (err) {
         reject(new PromiseError({ message: "Internal Server Error", code: 500 }));
       } else if (this.changes == 0) {
@@ -748,7 +757,6 @@ exports.archiveThesisProposal = async function (professorId, thesisProposalId) {
     });
   }).then(async () => {
     let notificationPromises = [];
-
 
     students.forEach((s) => {
       notificationPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, smtp.textCancelApplication)));
