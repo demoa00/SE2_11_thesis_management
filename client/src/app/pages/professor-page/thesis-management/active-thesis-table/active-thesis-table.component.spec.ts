@@ -1,19 +1,34 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { ActiveThesisTableComponent } from './active-thesis-table.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { APIService } from 'src/app/shared/services/api.service';
 
 describe('ActiveThesisTableComponent', () => {
   let component: ActiveThesisTableComponent;
   let fixture: ComponentFixture<ActiveThesisTableComponent>;
+  let apiService: jasmine.SpyObj<APIService>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      declarations: [ActiveThesisTableComponent]
+  beforeEach(async () => {
+    apiService = jasmine.createSpyObj('APIService', {
+      'getProposal': Promise.resolve([]),
+      'archiveThesis': Promise.resolve([]),
+      'deleteThesis': Promise.resolve([])
     });
+
+    await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      declarations: [ActiveThesisTableComponent],
+      providers: [
+        { provide: APIService, useValue: apiService }
+      ]
+    }).compileComponents();
+
     fixture = TestBed.createComponent(ActiveThesisTableComponent);
     component = fixture.componentInstance;
+    
+    await fixture.whenStable();
+    
     fixture.detectChanges();
   });
 
@@ -32,4 +47,69 @@ describe('ActiveThesisTableComponent', () => {
     expect(component.requestAccepted).toBe(false);
     expect(component.response).toBeUndefined();
   });
+
+  it('should fetch proposal details on shohDetails', fakeAsync(() => {
+    const mockRow = { thesisProposalId: 123 };
+    const mockResponse = {};
+
+    apiService.getProposal.and.returnValue(Promise.resolve(mockResponse));
+
+    component.shohDetails(mockRow);
+    tick();
+
+    expect(apiService.getProposal).toHaveBeenCalledWith(mockRow.thesisProposalId);
+    expect(component.selectedProposal).toEqual(mockResponse);
+  }));
+
+  it('should toggle archivePopup and reset state', () => {
+    component.archivePopup = false;
+    component.requestAccepted = true;
+    component.response = { someData: 'test data' };
+
+    component.archiveThesisPopup();
+
+    expect(component.archivePopup).toBe(true);
+    expect(component.requestAccepted).toBe(false);
+    expect(component.response).toBeUndefined();
+  });
+
+  it('should toggle deletePopup and reset state on deleteThesisPopup', () => {
+    component.deletePopup = false;
+    component.requestAccepted = true;
+    component.response = { someData: 'test data' };
+
+    component.deleteThesisPopup();
+
+    expect(component.deletePopup).toBe(true);
+    expect(component.requestAccepted).toBe(false);
+    expect(component.response).toBeUndefined();
+  });
+  
+  it('should call archiveThesis and set requestAccepted to true on success', fakeAsync(() => {
+    const mockReponse = {};
+
+    apiService.archiveThesis.and.returnValue(Promise.resolve(mockReponse));
+
+    component.selectedThesisId = 123;
+    component.archiveThesis();
+    tick();
+
+    expect(apiService.archiveThesis).toHaveBeenCalledWith(component.selectedThesisId);
+    expect(component.response).toEqual(mockReponse);
+    expect(component.requestAccepted).toBeTruthy();
+  }));
+
+  it('should call deleteThesis and set requestAccepted to true', fakeAsync(() => {
+    const mockReponse = {};
+
+    apiService.deleteThesis.and.returnValue(Promise.resolve(mockReponse));
+
+    component.selectedThesisId = 123;
+    component.deleteThesis();
+    tick();
+
+    expect(apiService.deleteThesis).toHaveBeenCalledWith(component.selectedThesisId);
+    expect(component.response).toEqual(mockReponse);
+    expect(component.requestAccepted).toBeTruthy();
+  }));
 });
