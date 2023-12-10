@@ -60,10 +60,12 @@ describe('ThesisManagementComponent', () => {
     expect(component.showArchivedTheses).toBe(false);
   }));
 
-  it('should set showArchivedThesis to true and others to false on showArchivedThesesTable', () => {
+  it('should set showArchivedThesis to true and others to false on showArchivedThesesTable', fakeAsync(() => {
+    spyOn(apiService, 'getAllArchivedTheses').and.returnValue(of({}).toPromise());
     component.showArchivedThesesTable();
+    tick();
     expect(component.showApplicants).toBe(false);
     expect(component.showActiveTheses).toBe(false);
     expect(component.showArchivedTheses).toBe(true);
-  });
+  }));
 });

@@ -69,24 +69,26 @@ export class FiltersContainerComponent {
     this.api.getCoSupervisors().then((coSupervisors) => {
       this.css = coSupervisors;
     })
-    if (this.params && this.params.cosupervisors !== null) {
-      this.params.cosupervisors.forEach((cs: any) => {
-        if (cs.professorId !== undefined) {
-          this.selectedCs.push(cs)
-        } else {
-          this.selectedExtCs.push(cs)
-        }
-      })
+    if(this.params) {
+      if (this.params.cosupervisors !== null) {
+        this.params.cosupervisors.forEach((cs: any) => {
+          if (cs.professorId !== undefined) {
+            this.selectedCs.push(cs)
+          } else {
+            this.selectedExtCs.push(cs)
+          }
+        })
+      }
+      else {
+        this.params.cosupervisors = null;
+      }
+      console.log(this.params.expirationDate)
+      if (this.params.expirationDate !== null) {
+        this.selectedDate = new FormControl(dayjs(this.params.expirationDate).toDate())
+        console.log(this.selectedDate)
+      }
+      this.abroad = this.params.abroad
     }
-    else {
-      this.params.cosupervisors = null;
-    }
-    console.log(this.params.expirationDate)
-    if (this.params.expirationDate !== null) {
-      this.selectedDate = new FormControl(dayjs(this.params.expirationDate).toDate())
-      console.log(this.selectedDate)
-    }
-    this.abroad = this.params.abroad
   }
 
   ngOnChanges(changes: any) {
@@ -115,6 +117,9 @@ export class FiltersContainerComponent {
   }
 
   toggleCs(cs: any) {
+    if(!this.params) {
+      this.params = {};
+    }
     let found = false
     this.selectedCs.forEach((c) => {
       if (c.professorId === cs.professorId) {
@@ -149,6 +154,9 @@ export class FiltersContainerComponent {
   }
 
   toggleExtCs(cs: any) {
+    if(!this.params) {
+      this.params = {};
+    }
     let found = false
     this.selectedExtCs.forEach((c) => {
       if (c.externalCoSupervisorId === cs.externalCoSupervisorId) {
@@ -191,6 +199,9 @@ export class FiltersContainerComponent {
   }
 
   selectDate(date: MatDatepickerInputEvent<any, any>) {
+    if(!this.params) {
+      this.params = {};
+    }
     this.selectedDate = date
     let year = date.value.getFullYear().toString()
     let month = date.value.getMonth() + 1 < 10 ? `0${date.value.getMonth() + 1}` : (date.value.getMonth() + 1).toString()

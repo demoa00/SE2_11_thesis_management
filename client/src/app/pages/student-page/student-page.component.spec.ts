@@ -10,6 +10,14 @@ import { DropdownCheckboxComponent } from './components/dropdown-checkbox/dropdo
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { NotificationsContainerComponent } from 'src/app/shared/components/notification/container/notifications-container/notifications-container.component';
+import { Socket } from 'ngx-socket-io';
+import { Observable } from 'rxjs';
+
+class mockSocket {
+  on(event: String): Observable<any> {
+    return new Observable();
+  }
+}
 
 describe('StudentPageComponent', () => {
   let component: StudentPageComponent;
@@ -32,7 +40,10 @@ describe('StudentPageComponent', () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, MatIconModule],
       declarations: [StudentPageComponent, PageSkeletonComponent, ButtonComponent, AlertComponent, PopupComponent, IconComponent, DropdownCheckboxComponent, NotificationsContainerComponent],
-      providers: [{ provide: APIService, useValue: apiService }]
+      providers: [
+        { provide: APIService, useValue: apiService },
+        { provide: Socket, useClass: mockSocket }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(StudentPageComponent);
