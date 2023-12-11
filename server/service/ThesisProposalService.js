@@ -219,7 +219,7 @@ exports.getThesisProposalById = function (user, thesisProposalId) {
           coSupervisor: [],
           keywords: JSON.parse(row.keywords),
           description: row.description,
-          reqirements: row.reqirements,
+          requirements: row.requirements,
           thesisType: row.thesisType,
           abroad: row.abroad == 0 ? false : true,
           groups: [],
@@ -683,8 +683,7 @@ exports.deleteThesisProposal = async function (professorId, thesisProposalId) {
         reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (this.changes == 0) {
         reject(new PromiseError({ code: 404, message: "Not Found" }));
-      }
-      else {
+      } else {
         resolve();
       }
     });
