@@ -54,7 +54,7 @@ export class HttpService {
 
   async delete(path: string, usePrefix = true) {
     return this.makeRequest(async () => {
-      return this.http.delete(this.url(path, usePrefix), {withCredentials:true})
+      return this.http.delete(this.url(path, usePrefix), {withCredentials:true}).toPromise();
     });
   }
 
