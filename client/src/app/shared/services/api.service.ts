@@ -163,9 +163,9 @@ export class APIService {
     const thesisBody: any = await this.httpService.get(`thesisProposals/${proposalId}`, false, true)
     delete thesisBody.self
     delete thesisBody.supervisor
-    thesisBody.requirements = ' '
+    //thesisBody.requirements = ' '
     console.log(thesisBody)
-    return await this.httpService.put(`thesisProposals/${proposalId}/?isArchived=true`, thesisBody)
+    return await this.httpService.put(`thesisProposals/${proposalId}/archive`, thesisBody)
   }
 
   async getProfessors() {
