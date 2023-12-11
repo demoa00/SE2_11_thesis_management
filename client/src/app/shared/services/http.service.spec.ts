@@ -1,6 +1,7 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpService } from './http.service';
+import { HttpClient } from '@angular/common/http';
 
 describe('HTTPService', () => {
     let httpService: HttpService;
@@ -82,20 +83,21 @@ describe('HTTPService', () => {
         expect(result).toEqual(testData);
     }));
 
-    // it('should make a DELETE request', fakeAsync(() => {
-    //     httpService.delete('sample-path');
-    
-    //     const req = httpTestingController.expectOne(request => {
-    //       return (
-    //         request.method === 'DELETE' &&
-    //         request.urlWithParams === 'http://localhost:3000/api/sample-path'
-    //       );
-    //     });
-    
-    //     req.flush(null, { status: 204, statusText: 'No Content' });
-    
-    //     tick();
-    // }));
+    it('should make a DELETE request', fakeAsync(() => {
+        const path = 'sample-path';
+
+        httpService.delete(path).then(response => {
+            expect(response).toBeTruthy();
+        })
+
+        const req = httpTestingController.expectOne('http://localhost:3000/api/sample-path');
+
+        expect(req.request.method).toBe('DELETE');
+
+        req.flush(null, { status: 204, statusText: 'No Content' });
+
+        tick();
+    }));
 
     it('should construct URL without prefix', () => {
         const path = 'sample-path';
@@ -115,5 +117,19 @@ describe('HTTPService', () => {
         expect(req.request.headers.get('Content-Type')).toBe('application/x-www-form-urlencoded');
     
         req.flush(null, { status: 200, statusText: 'OK' });
+    });
+
+    it('should return the HttpClient instance', () => {
+        const HttpClientInstance = TestBed.inject(HttpClient);
+        const result = httpService.client();
+
+        expect(result).toBe(HttpClientInstance);
+    });
+
+    it('should return the path directly if it starts with "http"', () => {
+        const path = 'http://example.com/api/data';
+        const result = httpService.url(path);
+
+        expect(result).toEqual(path);
     });
 });
