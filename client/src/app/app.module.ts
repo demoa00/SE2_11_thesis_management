@@ -43,7 +43,6 @@ import {
   ArchivedThesisTableComponent
 } from "./pages/professor-page/thesis-management/archived-thesis-table/archived-thesis-table.component";
 
-
 const routes: Routes = [
   {path: '', component: HomePageComponent},
   {path: 'student', canActivate : [AuthGuardStudentService],component: StudentPageComponent},

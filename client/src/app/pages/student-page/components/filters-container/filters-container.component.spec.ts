@@ -9,6 +9,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { APIService } from 'src/app/shared/services/api.service';
 import { FormControl } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('FiltersContainerComponent', () => {
   let component: FiltersContainerComponent;
@@ -23,7 +24,7 @@ describe('FiltersContainerComponent', () => {
     });
     
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatDatepickerModule, MatNativeDateModule, MatIconModule],
+      imports: [HttpClientTestingModule, MatDatepickerModule, MatNativeDateModule, MatIconModule, BrowserAnimationsModule],
       declarations: [FiltersContainerComponent, ButtonComponent, DropdownCheckboxComponent],
       providers: [{ provide: APIService, useValue: apiService }]
     }).compileComponents();
@@ -226,6 +227,9 @@ describe('FiltersContainerComponent', () => {
   }));
 
   it('should toggle abroad property, update params.abroad, and call updateProposals', fakeAsync(() => {
+    if(!component.params) {
+      component.params = {};
+    }
     component.abroad = false;
     component.params.abroad = null;
 
@@ -242,6 +246,9 @@ describe('FiltersContainerComponent', () => {
   }));
 
   it('should toggle abroad property, update params.abroad, and call updateProposals', fakeAsync(() => {
+    if(!component.params) {
+      component.params = {};
+    }
     component.abroad = true;
     component.params.abroad = true;
 
