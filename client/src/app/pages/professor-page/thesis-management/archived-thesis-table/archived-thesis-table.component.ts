@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {APIService} from "../../../../shared/services/api.service";
 
 @Component({
@@ -10,6 +10,9 @@ export class ArchivedThesisTableComponent {
 
   @Input()
   rows:any;
+  @Output()
+  triggerUpdate: EventEmitter<void> = new EventEmitter<void>();
+
   deletePopup: boolean = false;
   response :any;
   requestAccepted: boolean = false;

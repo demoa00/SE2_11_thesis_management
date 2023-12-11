@@ -52,11 +52,6 @@ export class HttpService {
     });
   }
 
-  async delete(path: string, usePrefix = true) {
-    return this.makeRequest(async () => {
-      return this.http.delete(this.url(path, usePrefix), {withCredentials:true}).toPromise();
-    });
-  }
 
   formPost<T>(path: string, params: { [p: string]: string } = {}, usePrefix = true) {
     const body = new URLSearchParams();
@@ -79,6 +74,13 @@ export class HttpService {
     });
   }
 
+  async delete(path: string, usePrefix = true) {
+    return this.makeRequest(async () => {
+      return this.http.delete(this.url(path, usePrefix), {withCredentials:true}).toPromise();
+    });
+  }
+
+
   async put(path: string, body: any, additionalHeaders: { [h: string]: string } = {}) {
     return this.makeRequest(async () => {
       return this.http.put(this.url(path), body, {
@@ -97,9 +99,12 @@ export class HttpService {
   private async makeRequest(r: () => Promise<any>) {
     try {
       const rawResult = await r();
-
       const result = rawResult;
-      if (rawResult.status < 200 || rawResult.status >= 400) {
+      if (rawResult === null || rawResult === undefined) {
+        // La risposta è null o undefined, che è accettabile in caso di stato 204
+        return { success: true, data: null}
+      }
+      else if (rawResult.status < 200 || rawResult.status >= 400) {
         console.log(result);
         throw new Error();
       } else {

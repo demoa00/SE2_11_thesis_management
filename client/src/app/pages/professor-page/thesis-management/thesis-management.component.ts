@@ -68,6 +68,7 @@ export class ThesisManagementComponent {
     }
   }
   async showActiveThesesTable() {
+    console.log('qua')
     const response = await this.api.getAllActiveTheses();
     if (response != undefined) {
       this.activeThesesRow = response;
@@ -95,6 +96,30 @@ export class ThesisManagementComponent {
       this.showApplicants = false;
       this.showActiveTheses = false;
       this.showArchivedTheses = true
+    }
+  }
+
+  async updateAll() {
+    const archived = await this.api.getAllArchivedTheses();
+    if (archived != undefined) {
+      this.archivedThesesRow = archived;
+    }
+    else {
+      this.archivedThesesRow = [];
+    }
+    const active =  await this.api.getAllActiveTheses();
+    if (active != undefined) {
+      this.activeThesesRow = active;
+    }
+    else {
+      this.activeThesesRow = [];
+    }
+    const app = await this.api.getApplications();
+    if(app != undefined){
+      this.applicantsRow = app;
+    }
+    else {
+      this.applicantsRow = [];
     }
   }
 }

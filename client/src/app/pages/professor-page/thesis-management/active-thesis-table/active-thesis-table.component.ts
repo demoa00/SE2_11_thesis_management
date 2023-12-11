@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {APIService} from "../../../../shared/services/api.service";
 
 @Component({
@@ -9,19 +9,20 @@ import {APIService} from "../../../../shared/services/api.service";
 export class ActiveThesisTableComponent {
 
   @Input()
-  rows:any;
+  rows: any;
+  @Output()
+  triggerUpdate: EventEmitter<void> = new EventEmitter<void>();
 
   createPopup: boolean = false;
   archivePopup: boolean = false;
   deletePopup: boolean = false;
-  response :any;
+  response: any;
   requestAccepted: boolean = false;
   selectedProposal: any;
   selectedThesisId: any;
 
 
-
-  constructor(private api:APIService) {
+  constructor(private api: APIService) {
   }
 
   openCreatePopup() {
@@ -52,7 +53,7 @@ export class ActiveThesisTableComponent {
     this.response = await this.api.archiveThesis(this.selectedThesisId)
     if (this.response){
       this.requestAccepted = true;
-    }
+      }
   }
 
   async deleteThesis() {

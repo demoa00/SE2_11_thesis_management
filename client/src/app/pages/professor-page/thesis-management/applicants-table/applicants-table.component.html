@@ -63,7 +63,7 @@
 
 <app-popup
   *ngIf="rejectPopup"
-  (close)="openRejectPopup()"
+  (close)="openRejectPopup(); this.triggerUpdate.emit();"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"
@@ -82,7 +82,7 @@
 
 <app-popup
   *ngIf="acceptPopup"
-  (close)="openAcceptPopup()"
+  (close)="openAcceptPopup() ; this.triggerUpdate.emit();"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"

@@ -45,7 +45,7 @@
 
 <app-popup
   *ngIf="deletePopup"
-  (close)="deleteThesisPopup()"
+  (close)="deleteThesisPopup(); this.triggerUpdate.emit();"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"

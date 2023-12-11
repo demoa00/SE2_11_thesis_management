@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {APIService} from "../../../../shared/services/api.service";
 
 @Component({
@@ -10,6 +10,8 @@ export class ApplicantsTableComponent implements OnChanges{
 
   @Input()
   rows:any;
+  @Output()
+  triggerUpdate: EventEmitter<void> = new EventEmitter<void>();
 
   filteredRows: any[] = [];
 

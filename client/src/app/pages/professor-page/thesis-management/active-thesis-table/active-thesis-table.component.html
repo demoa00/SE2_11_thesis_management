@@ -51,7 +51,7 @@
 
 <app-popup
   *ngIf="createPopup"
-  (close)="openCreatePopup()"
+  (close)="openCreatePopup(); this.triggerUpdate.emit();"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "false">
@@ -68,7 +68,7 @@
 
 <app-popup
   *ngIf="archivePopup"
-  (close)="archiveThesisPopup()"
+  (close)="archiveThesisPopup(); this.triggerUpdate.emit();"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"
@@ -87,7 +87,7 @@
 
 <app-popup
   *ngIf="deletePopup"
-  (close)="deleteThesisPopup()"
+  (close)="deleteThesisPopup(); this.triggerUpdate.emit();"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"
