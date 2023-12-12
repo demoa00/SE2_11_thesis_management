@@ -10,7 +10,7 @@ import {
 import {APIService} from "../../../../shared/services/api.service";
 
 
-function customKeywordValidator(keywordsList: string[]): ValidatorFn {
+export function customKeywordValidator(keywordsList: string[]): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     console.log(keywordsList.length)
     const keywords = control.value;
@@ -99,6 +99,7 @@ export class UpdateThesisFormComponent implements OnInit{
 
 
   ngOnInit(): void {
+    if(this.thesisProposal) {
       console.log(this.thesisProposal)
       this.myForm.get('title')?.setValue(this.thesisProposal.title)
       this.myForm.get('level')?.setValue(this.thesisProposal.level)
@@ -133,6 +134,9 @@ export class UpdateThesisFormComponent implements OnInit{
       this.updateCdSValidator()
       console.log(this.selectedCoSupervisors)
       console.log(this.selectedProfessors)
+    } else {
+      console.error('thesisProposal is not defined');
+    }
   }
   updateCdSValidator(): void {
     const cdsValidator = customCdSValidator(this.selectedCdS);
