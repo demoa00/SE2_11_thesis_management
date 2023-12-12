@@ -24,6 +24,9 @@ const filterByStatus = (filter, sql, params) => {
     } else if (filter.status === 'Accepted') {
       sql += 'AND status = ?';
       params.push('Accepted');
+    } else if (filter.status === 'Cancelled') {
+      sql += 'AND status = ?';
+      params.push('Cancelled');
     }
   }
 
@@ -119,6 +122,51 @@ exports.getApplicationById = function (user, studentId, thesisProposalId) {
   });
 }
 
+exports.insertNewApplication = function (studentId, newApplication) {
+  return new Promise(function (resolve, reject) {
+    const sql = 'SELECT professors.professorId, professors.email FROM professors, thesisProposals WHERE thesisProposalId = ? AND supervisor = professorId';
+
+    db.get(sql, [newApplication.thesisProposalId], (err, row) => {
+      if (err) {
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+      } else if (row === undefined) {
+        reject(new PromiseError({ code: 404, message: "Not Found" }));
+      } else {
+        let professor = { professorId: row.professorId, email: row.email };
+
+        resolve(professor);
+      }
+    });
+  }).then((professor) => {
+    return new Promise(function (resolve, reject) {
+      const sql = 'INSERT INTO applications(thesisProposalId, studentId, message, date) VALUES (?, ?, ?, ?)';
+      db.run(sql, [newApplication.thesisProposalId, studentId, newApplication.message, dayjs().format('YYYY-MM-DD')], function (err) {
+        if (err) {
+          console.log(err)
+          reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+        } else {
+          resolve(professor);
+        }
+      });
+    })
+  }).then(async (professor) => {
+    let emailPromises = [];
+    let notificationPromises = [];
+
+    try {
+      emailPromises.push(smtp.sendMail(smtp.mailConstructor(professor.email, smtp.subjectNewApplication, smtp.textNewApplication)));
+      notificationPromises.push(Notification.insertNewNotification(professor.professorId, smtp.subjectNewApplication));
+
+      await Promise.all(emailPromises);
+      await Promise.all(notificationPromises);
+
+      return { newApplication: `/api/applications/${newApplication.thesisProposalId}/${studentId}` };
+    } catch (error) {
+      throw error;
+    }
+  });
+}
+
 exports.updateApplication = function (professorId, studentId, thesisProposalId, newApplication) {
   return new Promise(function (resolve, reject) {
     const sql = "SELECT applications.studentId, students.email FROM applications, students WHERE status = 'Pending' AND thesisProposalId = ? AND applications.studentId = students.studentId";
@@ -199,39 +247,5 @@ exports.updateApplication = function (professorId, studentId, thesisProposalId, 
     } catch (error) {
       throw error;
     }
-  });
-}
-
-exports.insertNewApplication = function (studentId, newApplication) {
-  return new Promise(function (resolve, reject) {
-    const sql = 'SELECT professors.email FROM professors, thesisProposals WHERE thesisProposalId = ? AND supervisor = professorId';
-
-    db.get(sql, [newApplication.thesisProposalId], (err, row) => {
-      if (err) {
-        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
-      } else if (row === undefined) {
-        reject(new PromiseError({ code: 404, message: "Not Found" }));
-      } else {
-        resolve(row.email);
-      }
-    });
-  }).then((professorEmail) => {
-    return new Promise(function (resolve, reject) {
-      const sql = 'INSERT INTO applications(thesisProposalId, studentId, message, date) VALUES (?, ?, ?, ?)';
-      db.run(sql, [newApplication.thesisProposalId, studentId, newApplication.message, dayjs().format('YYYY-MM-DD')], function (err) {
-        if (err) {
-          console.log(err)
-          reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
-        } else {
-          resolve(professorEmail);
-        }
-      });
-    })
-  }).then(async (professorEmail) => {
-    let promises = [];
-
-    promises.push(smtp.sendMail(smtp.mailConstructor(professorEmail, smtp.subjectNewApplication, smtp.textNewApplication)));
-
-    return await Promise.all(promises).then(() => ({ newApplication: `/api/applications/${newApplication.thesisProposalId}/${studentId}` }));
   });
 }
