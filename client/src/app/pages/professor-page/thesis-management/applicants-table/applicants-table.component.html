@@ -8,9 +8,10 @@
     <th>Student ID</th>
     <th>Thesis Title</th>
     <th>Expiration Date</th>
+    <th>Status</th>
     <th class="flex justify-between">
       <div></div>
-      Status
+      Download CV
       <app-icon name="filter" class="h-4 w-4 text-gray-400 hover:cursor-pointer hover:text-gray-700" (click)="resetFilter()" ></app-icon>
     </th>
   </tr>
@@ -41,6 +42,7 @@
         </select>
       </div>
     </td>
+    <td></td>
   </tr>
   <tr *ngFor="let row of filteredRows">
     <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row?.studentId}}</td>
@@ -54,6 +56,11 @@
     </td>
     <td *ngIf="row?.status !='Pending'" [class.text-green-400] = "row?.status=='Accepted'" [class.text-red-400] = "row?.status=='Rejected'" class="py-0.5 w-12 h-6 text-sm">
       {{row?.status=='Accepted'?'accepted':row?.status=='Rejected'?'rejected':''}}
+    </td>
+    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">
+      <div class="w-full h-full flex items-center justify-center">
+        <app-icon name="pdf" class="text-blue-900 h-6 w-6 hover:cursor-pointer" (click)="getStudentCV(row?.studentId)">CV</app-icon>
+      </div>
     </td>
   </tr>
   </tbody>

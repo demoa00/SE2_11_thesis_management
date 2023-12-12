@@ -77,4 +77,8 @@ export class ApplicantsTableComponent implements OnChanges{
     this.filteredRows = this.rows
     this.openFilter = !this.openFilter
   }
+
+  getStudentCV(studentId:any) {
+    this.api.getCv(studentId)
+  }
 }

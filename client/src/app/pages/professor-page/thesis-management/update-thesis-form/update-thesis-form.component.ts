@@ -12,7 +12,6 @@ import {APIService} from "../../../../shared/services/api.service";
 
 export function customKeywordValidator(keywordsList: string[]): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    console.log(keywordsList.length)
     const keywords = control.value;
 
     // Check if the keywordList is empty
@@ -26,8 +25,6 @@ export function customKeywordValidator(keywordsList: string[]): ValidatorFn {
 }
 function customCdSValidator(selectedCdS:{ titleDegree: any; degreeId:any; }[]): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-
-    console.log(selectedCdS.length)
     // Check if the keywordList is empty
     if (selectedCdS.length > 0) {
       return null; // No error if the list is full
@@ -126,14 +123,11 @@ export class UpdateThesisFormComponent implements OnInit{
             }
         })
       }
-      console.log(this.selectedCoSupervisors , this.selectedProfessors)
       if(this.thesisProposal.notes){
           this.myForm.get('notes')?.setValue(this.thesisProposal.notes)
       }
       this.keywordsList = [...this.thesisProposal.keywords]
       this.updateCdSValidator()
-      console.log(this.selectedCoSupervisors)
-      console.log(this.selectedProfessors)
     } else {
       console.error('thesisProposal is not defined');
     }

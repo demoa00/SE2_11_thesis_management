@@ -26,9 +26,9 @@ describe('ActiveThesisTableComponent', () => {
 
     fixture = TestBed.createComponent(ActiveThesisTableComponent);
     component = fixture.componentInstance;
-    
+
     await fixture.whenStable();
-    
+
     fixture.detectChanges();
   });
 
@@ -37,13 +37,13 @@ describe('ActiveThesisTableComponent', () => {
   });
 
   it('should open create popup and reset state', () => {
-    component.createPopup = false;
+    component.updatePopup = false;
     component.requestAccepted = true;
     component.response = { someData: 'test data' };
 
-    component.openCreatePopup();
+    component.openUpdatePopup();
 
-    expect(component.createPopup).toBe(true);
+    expect(component.updatePopup).toBe(true);
     expect(component.requestAccepted).toBe(false);
     expect(component.response).toBeUndefined();
   });
@@ -84,7 +84,7 @@ describe('ActiveThesisTableComponent', () => {
     expect(component.requestAccepted).toBe(false);
     expect(component.response).toBeUndefined();
   });
-  
+
   it('should call archiveThesis and set requestAccepted to true on success', fakeAsync(() => {
     const mockReponse = {};
 

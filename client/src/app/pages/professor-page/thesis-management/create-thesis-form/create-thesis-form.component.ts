@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -43,7 +43,7 @@ function customCdSValidator(selectedCdS:{ titleDegree: any; degreeId:any; }[]): 
   templateUrl: './create-thesis-form.component.html',
   styleUrls: ['./create-thesis-form.component.scss']
 })
-export class CreateThesisFormComponent {
+export class CreateThesisFormComponent implements OnInit{
   myForm: FormGroup;
   error = false;
   selectFocus: boolean = false;
@@ -103,6 +103,44 @@ export class CreateThesisFormComponent {
     const cdsValidator = customCdSValidator(this.selectedCdS);
     this.myForm.get('CdS')?.setValidators([cdsValidator]);
     this.myForm.get('CdS')?.updateValueAndValidity();
+  }
+
+  ngOnInit(): void {
+    if(this.thesisProposal) {
+      console.log(this.thesisProposal)
+      this.myForm.get('title')?.setValue(this.thesisProposal.title)
+      this.myForm.get('level')?.setValue(this.thesisProposal.level)
+      this.myForm.get('thesisType')?.setValue(this.thesisProposal.thesisType)
+      this.myForm.get('description')?.setValue(this.thesisProposal.description)
+      this.myForm.get('requirements')?.setValue(this.thesisProposal.requirements)
+      this.myForm.get('expirationDate')?.setValue(this.thesisProposal.expirationDate)
+      this.myForm.get('abroad')?.setValue(this.thesisProposal.abroad)
+      this.myForm.get('keywords')?.setValue(this.thesisProposal.keywords.shift())
+      this.selectedCdS = [...this.thesisProposal.CdS]
+      if(this.thesisProposal.coSupervisor){
+        this.thesisProposal.coSupervisor?.forEach((element:any)=>{
+          if(element.coSupervisorId.includes('e')) {
+            const cS = this.externalCoSupervisors.find((el) => el.externalCoSupervisorId === element.coSupervisorId)
+            if (cS!=undefined){
+              this.selectedCoSupervisors.push(cS)
+            }
+          }
+          else if (element.coSupervisorId.includes('p')){
+            const cS = this.professors.find((el) => el.professorId === element.coSupervisorId)
+            if (cS!=undefined){
+              this.selectedProfessors.push(cS)
+            }
+          }
+        })
+      }
+      if(this.thesisProposal.notes){
+        this.myForm.get('notes')?.setValue(this.thesisProposal.notes)
+      }
+      this.keywordsList = [...this.thesisProposal.keywords]
+      this.updateCdSValidator()
+    } else {
+      console.log('thesisProposal is not defined');
+    }
   }
 
 

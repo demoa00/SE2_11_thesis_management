@@ -14,6 +14,7 @@ export class ArchivedThesisTableComponent {
   triggerUpdate: EventEmitter<void> = new EventEmitter<void>();
 
   deletePopup: boolean = false;
+  createPopup: boolean = false;
   response :any;
   requestAccepted: boolean = false;
   selectedProposal: any;
@@ -36,6 +37,11 @@ export class ArchivedThesisTableComponent {
     this.response = undefined;
   }
 
+  openCreatePopup() {
+    this.createPopup = !this.createPopup;
+    this.requestAccepted = false;
+    this.response = undefined;
+  }
   async deleteThesis() {
     this.response = await this.api.deleteThesis(this.selectedThesisId)
     if (this.response){

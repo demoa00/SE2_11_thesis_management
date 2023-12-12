@@ -68,7 +68,6 @@ export class ThesisManagementComponent {
     }
   }
   async showActiveThesesTable() {
-    console.log('qua')
     const response = await this.api.getAllActiveTheses();
     if (response != undefined) {
       this.activeThesesRow = response;

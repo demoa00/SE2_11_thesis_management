@@ -13,6 +13,7 @@ export class ActiveThesisTableComponent {
   @Output()
   triggerUpdate: EventEmitter<void> = new EventEmitter<void>();
 
+  updatePopup: boolean = false;
   createPopup: boolean = false;
   archivePopup: boolean = false;
   deletePopup: boolean = false;
@@ -23,6 +24,12 @@ export class ActiveThesisTableComponent {
 
 
   constructor(private api: APIService) {
+  }
+
+  openUpdatePopup() {
+    this.updatePopup = !this.updatePopup;
+    this.requestAccepted = false;
+    this.response = undefined;
   }
 
   openCreatePopup() {
