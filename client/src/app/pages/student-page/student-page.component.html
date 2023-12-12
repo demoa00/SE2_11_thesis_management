@@ -1,4 +1,4 @@
-<app-page-skeleton [trigger] = "trigger">
+<app-page-skeleton [trigger] = "trigger" (profilePage) = "profilePage = $event">
 
   <div class="leftMenuItem" left-col
        [class.selected]="n.selected"
@@ -69,6 +69,12 @@
         <p class="font-bold">Description</p>
         <div class="regularText">
           <p>{{selectedProposal.description}}</p>
+        </div>
+      </div>
+      <div class="projectBody">
+        <p class="font-bold">Requirements</p>
+        <div class="regularText">
+          <p>{{selectedProposal.requirements}}</p>
         </div>
       </div>
       <div class="projectFooter">

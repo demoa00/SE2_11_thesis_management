@@ -1,4 +1,4 @@
-import {Component, ContentChild, Injectable, Input} from '@angular/core';
+import {Component, ContentChild, EventEmitter, Injectable, Input, Output} from '@angular/core';
 import {Router} from "@angular/router";
 import {APIService} from "../../services/api.service";
 import {User} from "../../classes/user";
@@ -25,6 +25,7 @@ export class PageSkeletonComponent {
   currentRoute = this._router.url;
 
   @Input() trigger: boolean = false
+  @Output() profilePage = new EventEmitter<boolean>();
 
   user: User | undefined;
   student: StudentDetails | undefined;
@@ -57,7 +58,6 @@ export class PageSkeletonComponent {
   }
 
   ngOnChanges() {
-
     this.closeMenu()
   }
 
@@ -67,6 +67,10 @@ export class PageSkeletonComponent {
 
   closeMenu() {
     this.menuOpen = false
+  }
+
+  goToProfile() {
+    this.profilePage.emit(true)
   }
 
 }

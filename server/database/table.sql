@@ -174,6 +174,7 @@ CREATE TABLE notifications(
 	userId TEXT(7) NOT NULL,
 	message TEXT(100) NOT NULL,
 	date DATE NOT NULL,
+	type INTEGER NOT NULL,
 	isRead BOLEAN DEFAULT FALSE NOT NULL
 );
 

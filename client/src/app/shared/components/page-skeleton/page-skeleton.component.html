@@ -10,8 +10,8 @@
       <div class="w-full md:hidden">
         <div class="flex items-center">
           <img alt="propic" src="https://picsum.photos/512/512" class="propic mr-4" *ngIf="currentRoute!=='/'">
-          <p class="text-sm uppercase" *ngIf="currentRoute==='/student'">{{student?.name}} {{student?.surname}}, {{student?.studentId}}</p>
-          <p class="text-sm uppercase" *ngIf="currentRoute==='/professor'">{{professor?.name}} {{professor?.surname}}, {{professor?.professorId}}</p>
+          <p (click)="goToProfile()" class="text-sm uppercase" *ngIf="currentRoute==='/student'">{{student?.name}} {{student?.surname}}, {{student?.studentId}}</p>
+          <p (click)="goToProfile()" class="text-sm uppercase" *ngIf="currentRoute==='/professor'">{{professor?.name}} {{professor?.surname}}, {{professor?.professorId}}</p>
         </div>
         <app-button class="w-fit mb-4 mt-2" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
       </div>
@@ -25,8 +25,8 @@
       <h2 class="uppercase text-3xl font-bold">thesis proposals</h2>
       <div class="md:flex items-center max-md:hidden">
         <img alt="propic" src="https://picsum.photos/512/512" class="propic mr-4" *ngIf="currentRoute!=='/'">
-        <p class="text-sm uppercase" *ngIf="currentRoute==='/student'">{{student?.name}} {{student?.surname}}, {{student?.studentId}}</p>
-        <p class="text-sm uppercase" *ngIf="currentRoute==='/professor'">{{professor?.name}} {{professor?.surname}}, {{professor?.professorId}}</p>
+        <p class="text-sm uppercase cursor-pointer hover:underline" (click)="goToProfile()" *ngIf="currentRoute==='/student'">{{student?.name}} {{student?.surname}}, {{student?.studentId}}</p>
+        <p class="text-sm uppercase cursor-pointer hover:underline" (click)="goToProfile()" *ngIf="currentRoute==='/professor'">{{professor?.name}} {{professor?.surname}}, {{professor?.professorId}}</p>
         <app-button class="ml-4" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
       </div>
       <mat-icon class="menu-icon" (click)="menuOpen = !menuOpen">notifications</mat-icon>

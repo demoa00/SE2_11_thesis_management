@@ -44,7 +44,7 @@ export class NotificationsContainerComponent {
         id: this.counter++,
         message: data,
       }
-      // this.notifications.unshift(n);
+      this.notifications.unshift(n);
       console.log(this.notifications);
     });
   }

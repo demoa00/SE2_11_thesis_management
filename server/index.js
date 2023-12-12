@@ -8,7 +8,7 @@ require('dotenv').config()
 const corsConfig = require('./config.js').config();
 
 const http = require('http');
-const { Server } = require("socket.io");
+
 const session = require('express-session');
 const passport = require('passport');
 const saml = require('passport-saml').Strategy;
@@ -20,7 +20,6 @@ const { Validator, ValidationError } = require('express-json-validator-middlewar
 const addFormats = require('ajv-formats').default;
 const fs = require('fs');
 const path = require('path');
-const { constants } = require('fs/promises');
 
 
 //-- -- -- -- -- -- -- -- -- --
@@ -339,13 +338,14 @@ app.use(function (err, req, res, next) {
 
 const httpServer = http.createServer(app);
 
-const wrap = (middeleware) => (socket, next) => { return middeleware(socket.request, {}, next) };
-const io = new Server(httpServer, {
+global.io = require("socket.io")(httpServer, {
     cors: {
         origin: corsConfig.corsConfig,
         credentials: true
     }
 });
+
+const wrap = (middeleware) => (socket, next) => { return middeleware(socket.request, {}, next) };
 
 io.use(wrap(sessionMiddleware));
 io.use(wrap(passport.initialize()));
@@ -380,13 +380,11 @@ httpServer.listen(PORT, function () {
     console.log('Swagger-ui is available on http://localhost:%d/docs', PORT);
 });
 
-exports.websocketServer = io;
-
 //generate random messages for notifications
-const genRand = (len) => {
+/* const genRand = (len) => {
     return Math.random().toString(36).substring(2, len + 2);
 }
 
 setInterval(() => {
     io.emit('message', genRand(10));
-}, 2000);
+}, 2000); */

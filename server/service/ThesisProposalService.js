@@ -221,6 +221,7 @@ exports.getThesisProposalById = function (user, thesisProposalId) {
           keywords: JSON.parse(row.keywords),
           description: row.description,
           requirements: row.requirements,
+          note: row.note,
           thesisType: row.thesisType,
           abroad: row.abroad == 0 ? false : true,
           groups: [],
