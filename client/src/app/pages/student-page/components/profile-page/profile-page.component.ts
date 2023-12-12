@@ -28,7 +28,14 @@ export class ProfilePageComponent {
 
   loadFile(file:any) {
     this.cv = file.target.files[0]
-    console.log(this.cv)
+    let body = {
+      file: this.cv
+    }
+    this.api.postCv(body).then(r => {
+      console.log(r)
+    }).catch(e => {
+      console.log(e)
+    })
   }
 
 }

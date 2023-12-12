@@ -1,4 +1,14 @@
-import {Component, ContentChild, EventEmitter, Injectable, Input, Output} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ContentChild,
+  ElementRef,
+  EventEmitter,
+  Injectable,
+  Input,
+  Output,
+  ViewChild
+} from '@angular/core';
 import {Router} from "@angular/router";
 import {APIService} from "../../services/api.service";
 import {User} from "../../classes/user";
@@ -52,8 +62,6 @@ export class PageSkeletonComponent {
         console.log(response)
         this.professor = response
       })
-    }
-    else {
     }
   }
 

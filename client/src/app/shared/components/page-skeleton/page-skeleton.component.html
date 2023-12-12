@@ -1,6 +1,6 @@
 <div class="columns-2 min-h-screen flex bg-gray-50 relative" [ngClass]="theme ? 'dark' : ''">
   <ng-content></ng-content>
-  <div class="left-col {{menuOpen ? 'open' : ''}}">
+  <div #leftColMobile class="left-col-mobile {{menuOpen ? 'open' : ''}}">
     <div class="p-4 border-b-2">
       <img src="assets/images/LogoPoli.svg" *ngIf="!theme" alt="no image found">
 <!--      <img src="assets/images/LogoPoli.svg" alt="no image found">-->

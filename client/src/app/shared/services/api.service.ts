@@ -54,9 +54,9 @@ export class APIService {
   }
 
   async getApplications() {
-    try{
+    try {
       return await this.httpService.get('applications')
-    } catch (errore){
+    } catch (errore) {
       return undefined
     }
   }
@@ -84,30 +84,33 @@ export class APIService {
       localStorage.setItem('degrees', JSON.stringify(response))
     })
   }
+
   async getExternalCoSupervisors() {
-    return await this.httpService.get('externalCoSupervisors/',false,true).then((response: any)=>{
-      localStorage.setItem('externalCoSupervisors',JSON.stringify(response))
+    return await this.httpService.get('externalCoSupervisors/', false, true).then((response: any) => {
+      localStorage.setItem('externalCoSupervisors', JSON.stringify(response))
       return response
     })
   }
 
   async getCoSupervisors() {
-    return await this.httpService.get('professors/?cosupervisor=true',false,true).then((response: any)=>{
-      localStorage.setItem('coSupervisors',JSON.stringify(response))
+    return await this.httpService.get('professors/?cosupervisor=true', false, true).then((response: any) => {
+      localStorage.setItem('coSupervisors', JSON.stringify(response))
       return response
     })
   }
+
   async getAllActiveTheses() {
     try {
       return await this.httpService.get('thesisProposals/?cosupervisor=false&isArchieved=false')
-    } catch (errore){
+    } catch (errore) {
       return undefined
     }
   }
+
   async getAllArchivedTheses() {
     try {
       return await this.httpService.get('thesisProposals/?cosupervisor=false&isArchieved=true')
-    } catch (errore){
+    } catch (errore) {
       return undefined
     }
 
@@ -137,10 +140,10 @@ export class APIService {
           url += `cosupervisor=${id}&`
         }
       }
-      if(params.expirationDate !== null) {
+      if (params.expirationDate !== null) {
         url += `expirationdate=${params.expirationDate}&`
       }
-      if(params.abroad !== null) {
+      if (params.abroad !== null) {
         url += `abroad=${params.abroad}&`
       }
       if (params.text !== null) {
@@ -169,8 +172,8 @@ export class APIService {
   }
 
   async getProfessors() {
-    await this.httpService.get('professors',false,true).then((response: any)=>{
-      localStorage.setItem('professors',JSON.stringify(response))
+    await this.httpService.get('professors', false, true).then((response: any) => {
+      localStorage.setItem('professors', JSON.stringify(response))
     })
     return await this.httpService.get('professors')
   }
@@ -184,7 +187,7 @@ export class APIService {
   }
 
 
-  async putApplication(studentId:any, thesisProposalId:any, status:'Accepted' | 'Rejected'){
+  async putApplication(studentId: any, thesisProposalId: any, status: 'Accepted' | 'Rejected') {
     return await this.httpService.put(`applications/${thesisProposalId}/${studentId}`, {
       thesisProposalId: thesisProposalId,
       applicant: {
@@ -202,7 +205,24 @@ export class APIService {
     return await this.httpService.get('notifications', false, true)
   }
 
-    async updateThesis(thesisProposalId:any, submitform: { coSupervisor: { coSupervisorId: any }[]; abroad: any; requirements: any; CdS: { degreeId: any }[]; notes: any; keywords: string[]; level: any; thesisType: any; description: any; title: any; expirationDate: any }) {
-      return await this.httpService.put(`thesisProposals/${thesisProposalId}`, submitform)
-    }
+  async updateThesis(thesisProposalId: any, submitform: {
+    coSupervisor: { coSupervisorId: any }[];
+    abroad: any;
+    requirements: any;
+    CdS: { degreeId: any }[];
+    notes: any;
+    keywords: string[];
+    level: any;
+    thesisType: any;
+    description: any;
+    title: any;
+    expirationDate: any
+  }) {
+    return await this.httpService.put(`thesisProposals/${thesisProposalId}`, submitform)
+  }
+
+  async postCv(body: any) {
+    console.log(body)
+    return await this.httpService.post('cv', body)
+  }
 }
