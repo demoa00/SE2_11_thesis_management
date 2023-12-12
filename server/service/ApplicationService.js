@@ -155,7 +155,7 @@ exports.insertNewApplication = function (studentId, newApplication) {
 
     try {
       emailPromises.push(smtp.sendMail(smtp.mailConstructor(professor.email, smtp.subjectNewApplication, smtp.textNewApplication)));
-      notificationPromises.push(Notification.insertNewNotification(professor.professorId, smtp.subjectNewApplication));
+      notificationPromises.push(Notification.insertNewNotification(professor.professorId, smtp.subjectNewApplication, 1));
 
       await Promise.all(emailPromises);
       await Promise.all(notificationPromises);
@@ -228,14 +228,14 @@ exports.updateApplication = function (professorId, studentId, thesisProposalId, 
             emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, smtp.textRejectApplication)));
           }
 
-          notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectDecisionApplication));
+          notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectDecisionApplication, 2));
         });
       } else {
         students.forEach((s) => {
           if (s.studentId === studentId) {
             emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, smtp.textRejectApplication)));
 
-            notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectDecisionApplication));
+            notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectDecisionApplication, 2));
           }
         });
       }

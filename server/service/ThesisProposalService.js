@@ -478,7 +478,7 @@ exports.insertNewThesisProposal = async function (professorId, newThesisProposal
     try {
       internalCosupervisors.forEach((i) => {
         emailPromises.push(smtp.sendMail(smtp.mailConstructor(i.email, smtp.subjectInsertCoSupervisor, smtp.textInsertCoSupervisor)));
-        notificationPromises.push(Notification.insertNewNotification(i.coSupervisorId, smtp.subjectInsertCoSupervisor));
+        notificationPromises.push(Notification.insertNewNotification(i.coSupervisorId, smtp.subjectInsertCoSupervisor, 3));
       });
 
       await Promise.all(notificationPromises);
@@ -575,7 +575,7 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
         }));
 
         emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectRemoveCoSupervisor, smtp.textRemoveCoSupervisor)));
-        notificationPromises.push(Notification.insertNewNotification(c.coSupervisorId, smtp.subjectRemoveCoSupervisor));
+        notificationPromises.push(Notification.insertNewNotification(c.coSupervisorId, smtp.subjectRemoveCoSupervisor, 4));
       } else { //Is an external cosupervisor
         promises.push(new Promise(function (resolve, reject) {
           const sql = "DELETE FROM thesisProposal_externalCoSupervisor_bridge WHERE thesisProposalId = ? AND externalCoSupervisorId = ?";
@@ -606,7 +606,7 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
         }));
 
         emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectInsertCoSupervisor, smtp.textInsertCoSupervisor)));
-        notificationPromises.push(Notification.insertNewNotification(c.coSupervisorId, smtp.subjectInsertCoSupervisor));
+        notificationPromises.push(Notification.insertNewNotification(c.coSupervisorId, smtp.subjectInsertCoSupervisor, 3));
       } else { //Is an external cosupervisor
         promises.push(new Promise(function (resolve, reject) {
           const sql = "INSERT INTO thesisProposal_externalCoSupervisor_bridge(thesisProposalId, externalCoSupervisorId) VALUES(?, ?)";
@@ -729,13 +729,13 @@ exports.deleteThesisProposal = async function (professorId, thesisProposalId) {
       internalCosupervisors.forEach((i) => {
         emailPromises.push(smtp.sendMail(smtp.mailConstructor(i.email, smtp.subjectRemoveCoSupervisor, smtp.textRemoveCoSupervisor)));
 
-        notificationPromises.push(Notification.insertNewNotification(i.coSupervisorId, smtp.subjectCancelApplication));
+        notificationPromises.push(Notification.insertNewNotification(i.coSupervisorId, smtp.subjectRemoveCoSupervisor, 4));
       });
 
       students.forEach((s) => {
         emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, smtp.textCancelApplication)));
 
-        notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectCancelApplication));
+        notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectCancelApplication, 5));
       });
 
       await Promise.all(notificationPromises);
@@ -791,7 +791,7 @@ exports.archiveThesisProposal = async function (thesisProposalId, professorId) {
     try {
       students.forEach((s) => {
         emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, smtp.textCancelApplication)));
-        notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectCancelApplication));
+        notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectCancelApplication, 5));
       });
 
       await Promise.all(notificationPromises);

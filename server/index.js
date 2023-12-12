@@ -380,6 +380,8 @@ httpServer.listen(PORT, function () {
     console.log('Swagger-ui is available on http://localhost:%d/docs', PORT);
 });
 
+exports.websocketServer = io;
+
 //generate random messages for notifications
 const genRand = (len) => {
     return Math.random().toString(36).substring(2, len + 2);

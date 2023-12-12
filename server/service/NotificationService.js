@@ -3,6 +3,7 @@
 const dayjs = require('dayjs');
 
 const { PromiseError } = require('../utils/error');
+const io = require('../index').websocketServer;
 
 const db = require('../utils/dbConnection');
 
@@ -25,53 +26,19 @@ exports.getNotifications = function (userId) {
     });
 }
 
-exports.insertNewNotification = function (userId, message) {
+exports.insertNewNotification = function (userId, message, type) {
     return new Promise(function (resolve, reject) {
-        const sql = 'SELECT notificationId FROM notifications WHERE userId = ? ORDER BY DATE';
+        const sql = 'INSERT INTO notifications(userId, message, date, type) VALUES (?, ?, ?, ?)';
 
-        db.all(sql, [userId], (err, rows) => {
+        db.run(sql, [userId, message, dayjs().format('YYYY-MM-DD'), type], function (err) {
             if (err) {
                 reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
-            } else if (rows.length == 0) {
-                resolve(undefined);
             } else {
-                let notification = undefined;
-
-                if (rows.length >= 5) {
-                    notification = rows.pop();
-                }
-
-                resolve(notification.notificationId);
+                resolve();
             }
-        });
-    }).then((notificationId) => {
-        return new Promise(function (resolve, reject) {
-            if (notificationId != undefined) {
-                const sql = 'DELETE FROM notifications WHERE notificationId = ?';
-
-                db.run(sql, [notificationId], function (err) {
-                    if (err) {
-                        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
-                    } else if (this.changes == 0) {
-                        reject(new PromiseError({ code: 404, message: "Not Found" }));
-                    }
-                });
-            }
-
-            resolve();
         });
     }).then(() => {
-        return new Promise(function (resolve, reject) {
-            const sql = 'INSERT INTO notifications(userId, message, date) VALUES (?, ?, ?)';
-
-            db.run(sql, [userId, message, dayjs().format('YYYY-MM-DD')], function (err) {
-                if (err) {
-                    reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
-                } else {
-                    resolve();
-                }
-            });
-        });
+        io.to(userId).emit('message', 'New Notification');
     });
 }
 
