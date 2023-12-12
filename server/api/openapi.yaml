@@ -148,12 +148,6 @@ components:
           studentId:
             type: string
             pattern: ^(s|S)[0-9]{6}$
-          name:
-            type: string
-            minLength: 1
-          surname:
-            type: string
-            minLength: 1
           self:
             type: string
             format: uri
@@ -1528,6 +1522,29 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+        '500':
+          description: Internal Server Error
+      security:
+        - cookieAuth: []
+    delete:
+      tags:
+        - notification
+      operationId: deleteAllNotifications
+      parameters:
+        - name: authenticatedUserId
+          in: cookie
+          required: true
+          description: >-
+            The authenticated user id corresponds to the student or professor or
+            secretary that perform this request
+          schema:
+            type: string
+            pattern: ^([cps]|[CPS])[0-9]{6}$
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
         '500':
           description: Internal Server Error
       security:

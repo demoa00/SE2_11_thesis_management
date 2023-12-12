@@ -8,7 +8,7 @@ const db = require('../utils/dbConnection');
 
 
 exports.getNotifications = function (userId) {
-    return Promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
         const sql = 'SELECT * FROM notifications WHERE userId = ?';
 
         db.all(sql, [userId], (err, rows) => {
@@ -35,7 +35,11 @@ exports.insertNewNotification = function (userId, message) {
             } else if (rows.length == 0) {
                 resolve(undefined);
             } else {
-                let notification = rows.pop();
+                let notification = undefined;
+
+                if (rows.length >= 5) {
+                    notification = rows.pop();
+                }
 
                 resolve(notification.notificationId);
             }
@@ -60,7 +64,7 @@ exports.insertNewNotification = function (userId, message) {
         return new Promise(function (resolve, reject) {
             const sql = 'INSERT INTO notifications(userId, message, date) VALUES (?, ?, ?)';
 
-            db.run(sql, [userId, message, dayjs()], function (err) {
+            db.run(sql, [userId, message, dayjs().format('YYYY-MM-DD')], function (err) {
                 if (err) {
                     reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
                 } else {
@@ -78,6 +82,20 @@ exports.updateNotification = function (userId, notificationId) {
         db.run(sql, [notificationId, userId], function (err) {
             if (err) {
                 reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
+exports.deleteAllNotifications = function (userId) {
+    return new Promise(function (resolve, reject) {
+        const sql = 'DELETE FROM notifications WHERE userId = ?';
+
+        db.run(sql, [userId], function (err) {
+            if (err) {
+                reject(new PromiseError({ message: 'Internal Server Error', code: 500 }));
             } else {
                 resolve();
             }

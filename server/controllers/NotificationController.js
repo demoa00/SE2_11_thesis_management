@@ -23,3 +23,13 @@ module.exports.updateNotification = async function updateNotification(req, res, 
         utils.writeJson(res, { error: error.message }, error.code);
     }
 };
+
+module.exports.deleteAllNotifications = async function deleteAllNotifications(req, res, next) {
+    try {
+        await Notification.deleteAllNotifications(req.user.userId);
+
+        utils.writeJson(res, 'No Content', 204);
+    } catch (error) {
+        utils.writeJson(res, { error: error.message }, error.code);
+    }
+};

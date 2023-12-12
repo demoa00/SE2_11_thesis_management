@@ -6,6 +6,7 @@ const Professor = require('./ProfessorService');
 const Student = require('./StudentService');
 const ExternalCoSupervisor = require('./ExternalCoSupervisorService');
 const Degree = require('./DegreeService');
+const Notification = require('./NotificationService');
 const checkRole = require('../utils/checkRole');
 const smtp = require('../utils/smtp');
 const { PromiseError } = require('../utils/error');
@@ -471,18 +472,28 @@ exports.insertNewThesisProposal = async function (professorId, newThesisProposal
       }
     });
   }).then(async (lastID) => {
+    let emailPromises = [];
     let notificationPromises = [];
 
-    internalCosupervisors.forEach((i) => {
-      notificationPromises.push(smtp.sendMail(smtp.mailConstructor(i.email, smtp.subjectInsertCoSupervisor, smtp.textInsertCoSupervisor)));
-    });
+    try {
+      internalCosupervisors.forEach((i) => {
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(i.email, smtp.subjectInsertCoSupervisor, smtp.textInsertCoSupervisor)));
+        notificationPromises.push(Notification.insertNewNotification(i.coSupervisorId, smtp.subjectInsertCoSupervisor));
+      });
 
-    return await Promise.all(notificationPromises).then(() => ({ newThesisProposal: `/api/thesisProposals/${lastID}` }));
+      await Promise.all(notificationPromises);
+      await Promise.all(emailPromises);
+
+      return { newThesisProposal: `/api/thesisProposals/${lastID}` };
+    } catch (error) {
+      throw error;
+    }
   });
 }
 
 exports.updateThesisProposal = async function (professorId, thesisProposal, thesisProposalId) {
   let promises = [];
+  let emailPromises = [];
   let notificationPromises = [];
 
   let newCoSupervisors = [];
@@ -563,7 +574,8 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
           });
         }));
 
-        notificationPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectRemoveCoSupervisor, smtp.textRemoveCoSupervisor)));
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectRemoveCoSupervisor, smtp.textRemoveCoSupervisor)));
+        notificationPromises.push(Notification.insertNewNotification(c.coSupervisorId, smtp.subjectRemoveCoSupervisor));
       } else { //Is an external cosupervisor
         promises.push(new Promise(function (resolve, reject) {
           const sql = "DELETE FROM thesisProposal_externalCoSupervisor_bridge WHERE thesisProposalId = ? AND externalCoSupervisorId = ?";
@@ -593,7 +605,8 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
           })
         }));
 
-        notificationPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectInsertCoSupervisor, smtp.textInsertCoSupervisor)));
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectInsertCoSupervisor, smtp.textInsertCoSupervisor)));
+        notificationPromises.push(Notification.insertNewNotification(c.coSupervisorId, smtp.subjectInsertCoSupervisor));
       } else { //Is an external cosupervisor
         promises.push(new Promise(function (resolve, reject) {
           const sql = "INSERT INTO thesisProposal_externalCoSupervisor_bridge(thesisProposalId, externalCoSupervisorId) VALUES(?, ?)";
@@ -667,7 +680,14 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
       })
     });
   }).then(async () => {
-    return await Promise.all(notificationPromises).then(() => ({ newThesisProposal: `/api/thesisProposals/${thesisProposalId}` }));
+    try {
+      await Promise.all(notificationPromises);
+      await Promise.all(emailPromises);
+
+      return { newThesisProposal: `/api/thesisProposals/${thesisProposalId}` };
+    } catch (error) {
+      throw error;
+    }
   });
 }
 
@@ -702,17 +722,27 @@ exports.deleteThesisProposal = async function (professorId, thesisProposalId) {
       resolve();
     });
   }).then(async () => {
+    let emailPromises = [];
     let notificationPromises = [];
 
-    internalCosupervisors.forEach((i) => {
-      notificationPromises.push(smtp.sendMail(smtp.mailConstructor(i.email, smtp.subjectRemoveCoSupervisor, smtp.textRemoveCoSupervisor)));
-    });
+    try {
+      internalCosupervisors.forEach((i) => {
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(i.email, smtp.subjectRemoveCoSupervisor, smtp.textRemoveCoSupervisor)));
 
-    students.forEach((s) => {
-      notificationPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, smtp.textCancelApplication)))
-    });
+        notificationPromises.push(Notification.insertNewNotification(i.coSupervisorId, smtp.subjectCancelApplication));
+      });
 
-    return await Promise.all(notificationPromises);
+      students.forEach((s) => {
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, smtp.textCancelApplication)));
+
+        notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectCancelApplication));
+      });
+
+      await Promise.all(notificationPromises);
+      await Promise.all(emailPromises);
+    } catch (error) {
+      throw error;
+    }
   });
 }
 
@@ -755,12 +785,19 @@ exports.archiveThesisProposal = async function (thesisProposalId, professorId) {
       resolve();
     });
   }).then(async () => {
+    let emailPromises = [];
     let notificationPromises = [];
 
-    students.forEach((s) => {
-      notificationPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, smtp.textCancelApplication)));
-    });
+    try {
+      students.forEach((s) => {
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, smtp.textCancelApplication)));
+        notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectCancelApplication));
+      });
 
-    return await Promise.all(notificationPromises);
+      await Promise.all(notificationPromises);
+      await Promise.all(emailPromises);
+    } catch (error) {
+      throw error;
+    }
   });
 }

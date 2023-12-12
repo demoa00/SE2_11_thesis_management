@@ -2,6 +2,8 @@
 
 const dayjs = require('dayjs');
 
+const ThesisProposal = require('./ThesisProposalService');
+const Notification = require('./NotificationService');
 const checkRole = require('../utils/checkRole');
 const smtp = require('../utils/smtp');
 const { PromiseError } = require('../utils/error');
@@ -164,25 +166,39 @@ exports.updateApplication = function (professorId, studentId, thesisProposalId, 
       }
     });
   }).then(async (students) => {
-    let promises = [];
+    let emailPromises = [];
+    let notificationPromises = [];
 
-    if (newApplication.status === 'Accepted') {
-      students.forEach((s) => {
-        if (s.studentId === studentId) {
-          promises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, smtp.textAcceptApplication)));
-        } else {
-          promises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, smtp.textRejectApplication)));
-        }
-      });
-    } else {
-      students.forEach((s) => {
-        if (s.studentId === studentId) {
-          promises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, smtp.textRejectApplication)));
-        }
-      });
+    try {
+      if (newApplication.status === 'Accepted') {
+        await ThesisProposal.archiveThesisProposal(thesisProposalId);
+
+        students.forEach((s) => {
+          if (s.studentId === studentId) {
+            emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, smtp.textAcceptApplication)));
+          } else {
+            emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, smtp.textRejectApplication)));
+          }
+
+          notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectDecisionApplication));
+        });
+      } else {
+        students.forEach((s) => {
+          if (s.studentId === studentId) {
+            emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, smtp.textRejectApplication)));
+
+            notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectDecisionApplication));
+          }
+        });
+      }
+
+      await Promise.all(notificationPromises);
+      await Promise.all(emailPromises);
+
+      return { newApplication: `/api/applications/${newApplication.thesisProposalId}/${studentId}` };
+    } catch (error) {
+      throw error;
     }
-
-    return await Promise.all(promises).then(() => ({ newApplication: `/api/applications/${newApplication.thesisProposalId}/${studentId}` }));
   });
 }
 

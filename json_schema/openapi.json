@@ -1074,13 +1074,13 @@
                 ]
             }
         },
-        "/virtualClock" : {
-            "put" : {
+        "/virtualClock": {
+            "put": {
                 "tags": [
-                    "virtualClock"            
+                    "virtualClock"
                 ],
                 "operationId": "updateVirtualClock",
-                "requestBody" : {
+                "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
@@ -1090,7 +1090,7 @@
                         }
                     },
                     "required": true
-                },                
+                },
                 "responses": {
                     "204": {
                         "description": "No Content",
@@ -1653,7 +1653,7 @@
                 ]
             }
         },
-        "/thesisProposals/{thesisProposalId}/archive":{
+        "/thesisProposals/{thesisProposalId}/archive": {
             "put": {
                 "tags": [
                     "thesisProposal"
@@ -2277,6 +2277,40 @@
                     },
                     "404": {
                         "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "notification"
+                ],
+                "operationId": "deleteAllNotifications",
+                "parameters": [
+                    {
+                        "name": "authenticatedUserId",
+                        "in": "cookie",
+                        "required": true,
+                        "description": "The authenticated user id corresponds to the student or professor or secretary that perform this request",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^([cps]|[CPS])[0-9]{6}$"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
                     },
                     "500": {
                         "description": "Internal Server Error"
