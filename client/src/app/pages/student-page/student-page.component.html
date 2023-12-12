@@ -5,12 +5,12 @@
        [class.hovered]="n.hovered && !n.selected"
        (mouseenter)="n.hovered=true"
        (mouseleave)="n.hovered=false"
-       (click)="selectMenuItem(n.id); n.id == 1 ? selectedProposal=null : null; closeMenu()"
+       (click)="selectMenuItem(n.id); n.id == 1 ? selectedProposal=null : null; closeMenu(); profilePage = false;"
        *ngFor="let n of menuItems">
     <p>{{n.text}}</p>
   </div>
 
-  <div *ngIf="selectedProposal===null && menuItems[0].selected" main-col class="container">
+  <div *ngIf="selectedProposal===null && menuItems[0].selected &&!profilePage" main-col class="container">
     <div class="proposalsContainer">
       <div class="searchToolsContainer">
         <div class="searchbar">
@@ -55,7 +55,7 @@
     </div>
   </div>
 
-  <div *ngIf="selectedProposal!==null && menuItems[0]" class="container" main-col>
+  <div *ngIf="selectedProposal!==null && menuItems[0] &&!profilePage" class="container" main-col>
     <div class="proposalsCard card">
       <div class="projectHeader">
         <h2 class="projectTitle">{{selectedProposal.title}}</h2>
@@ -123,7 +123,8 @@
     </div>
   </div>
 
-  <app-application-view *ngIf="menuItems[1].selected" main-col></app-application-view>
+  <app-application-view *ngIf="menuItems[1].selected && !profilePage" main-col></app-application-view>
+  <app-profile-page *ngIf="profilePage" main-col></app-profile-page>
   <app-notifications-container right-col/>
 
 </app-page-skeleton>

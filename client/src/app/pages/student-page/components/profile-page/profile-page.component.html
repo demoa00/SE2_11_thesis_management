@@ -1,0 +1,33 @@
+<div class="container">
+  <h1 class="title">Your Profile</h1>
+  <div class="card profileDataContainer">
+    <p class="name">{{user.name}} {{user.surname}}, {{userId}}</p>
+    <p class="name">Your exams</p>
+    <table class="mb-4">
+      <thead>
+        <tr>
+          <th class="text-left">Course</th>
+          <th>CFU</th>
+          <th>Grade</th>
+        </tr>
+      </thead>
+      <tbody class="tableBody">
+        <tr class="tableRow" *ngFor="let exam of career.exams">
+          <td class="text-left">{{exam.titleCourse}}</td>
+          <td class="text-center">{{exam.cfu}}</td>
+          <td class="text-center">{{exam.grade}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="flex items-center" *ngIf="cv.name">
+      <p class="mr-4 font-medium">Your CV: <span class="font-normal">{{cv.name}}</span></p>
+    </div>
+    <div class="flex items-center">
+      <p class="mr-4 font-medium">Upload your CV (PDF document)</p>
+      <app-button class="orange mr-4">
+        <label for="upload-file" class="cursor-pointer">Upload</label>
+        <input class="hidden" type="file" id="upload-file" name="upload-file" accept=".pdf" (change)="loadFile($event)">
+      </app-button>
+    </div>
+  </div>
+</div>

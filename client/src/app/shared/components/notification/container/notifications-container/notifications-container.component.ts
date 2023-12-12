@@ -1,6 +1,7 @@
 import {Component, Injectable} from '@angular/core';
 import {Socket} from "ngx-socket-io";
 import {animate, style, transition, trigger} from "@angular/animations";
+import {APIService} from "../../../../services/api.service";
 
 @Component({
   selector: 'app-notifications-container',
@@ -32,13 +33,17 @@ import {animate, style, transition, trigger} from "@angular/animations";
 })
 
 export class NotificationsContainerComponent {
-  constructor(private socket: Socket) {
+  constructor(private socket: Socket, private api: APIService) {
   }
 
   notifications: any[] = []
   counter = 0;
 
   ngOnInit() {
+    this.api.getNotifications().then((response: any) => {
+      console.log(response);
+      this.notifications = response;
+    })
     this.socket.on('message', (data: any) => {
       let n = {
         id: this.counter++,
