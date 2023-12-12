@@ -45,7 +45,13 @@ export class ProfilePageComponent {
       console.log(r)
       let url = window.URL;
       let link = url.createObjectURL(r)
-      window.open(link)
+      let cv = document.createElement('a')
+      cv.setAttribute("download", `cv_${this.userId}.pdf`)
+      cv.setAttribute("href", link)
+      document.body.appendChild(cv)
+      cv.click()
+      document.body.removeChild(cv)
+      // window.open(link)
     }).catch(e => {
       console.log(e)
     })
