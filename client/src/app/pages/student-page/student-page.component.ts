@@ -82,6 +82,7 @@ export class StudentPageComponent {
   applicationMessage: string = "";
 
   trigger: boolean = false
+  profilePage: boolean = false;
   closeMenu() {
     this.trigger = !this.trigger
   }
