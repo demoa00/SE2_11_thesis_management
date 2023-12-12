@@ -223,6 +223,13 @@ export class APIService {
 
   async postCv(body: any) {
     console.log(body)
-    return await this.httpService.post('cv', body)
+    return await this.httpService.postBlob('cv', body, {
+      enctype: 'multipart/form-data',
+      accept: 'application/pdf',
+    })
+  }
+
+  async getCv(userId: any):Promise<Blob> {
+    return await this.httpService.getBlob(`cv/${userId}`, false, true)
   }
 }

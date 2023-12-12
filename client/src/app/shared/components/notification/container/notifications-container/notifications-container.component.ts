@@ -19,7 +19,7 @@ import {APIService} from "../../../../services/api.service";
     trigger('fade', [
       transition(':leave', [
         style({height: '*'}),
-        animate('300ms ease-in', style({
+        animate('200ms ease-in', style({
           transform: 'translateX(100%)',
           opacity: 0
         }))

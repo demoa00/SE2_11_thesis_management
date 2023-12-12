@@ -48,7 +48,20 @@ export class HttpService {
     return await this.makeRequest(async () => {
       return await this.http
         .get<T>(rawpath ? path : this.url(path, usePrefix),{...additionalHeaders, withCredentials:true})
-        .toPromise();
+        .toPromise()
+    });
+  }
+
+  async getBlob<T>(
+    path: string,
+    rawpath = false,
+    usePrefix = true,
+    additionalHeaders: { [h: string]: string } = {}
+  ): Promise<T> {
+    return await this.makeRequest(async () => {
+      return await this.http
+        .get(rawpath ? path : this.url(path, usePrefix),{...additionalHeaders, withCredentials:true, responseType: 'blob'})
+        .toPromise()
     });
   }
 
@@ -69,6 +82,16 @@ export class HttpService {
       return this.http
         .post(this.url(path, usePrefix), body, {
           ...this.headerOptions(additionalHeaders), withCredentials:true
+        })
+        .toPromise();
+    });
+  }
+
+  async postBlob<T>(path: string, body: any, additionalHeaders: { [h: string]: string } = {}, usePrefix = true): Promise<any> {
+    return this.makeRequest(async () => {
+      return this.http
+        .post(this.url(path, usePrefix), body, {
+          ...this.headerOptions(additionalHeaders), withCredentials:true, responseType: 'blob'
         })
         .toPromise();
     });

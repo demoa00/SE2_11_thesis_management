@@ -42,7 +42,13 @@
 
 .title {
   height: 12.5%;
+  gap: 8px;
   @apply p-4 flex items-center justify-between border-b-2 border-orange-500;
+}
+@media only screen and (max-width : 768px) {
+  .title {
+    @apply text-center;
+  }
 }
 
 .propic {

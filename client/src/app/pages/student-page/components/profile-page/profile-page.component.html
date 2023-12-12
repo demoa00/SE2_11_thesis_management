@@ -20,7 +20,7 @@
       </tbody>
     </table>
     <div class="flex items-center" *ngIf="cv.name">
-      <p class="mr-4 font-medium">Your CV: <span class="font-normal">{{cv.name}}</span></p>
+      <p class="mr-4 font-medium hover:underline cursor-pointer" (click)="getCv()">Your CV: <span class="font-normal">{{cv.name}}</span></p>
     </div>
     <div class="flex items-center">
       <p class="mr-4 font-medium">Upload your CV (PDF document)</p>

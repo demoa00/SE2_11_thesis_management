@@ -28,14 +28,29 @@ export class ProfilePageComponent {
 
   loadFile(file:any) {
     this.cv = file.target.files[0]
-    let body = {
-      file: this.cv
-    }
-    this.api.postCv(body).then(r => {
+    const formData = new FormData();
+    formData.append('file', this.cv);
+
+    console.log(formData.get('file'))
+
+    this.api.postCv(formData).then(r => {
       console.log(r)
     }).catch(e => {
       console.log(e)
     })
+  }
+
+  getCv(){
+    this.api.getCv(this.userId).then(r => {
+      console.log(r)
+      let url = window.URL;
+      let link = url.createObjectURL(r)
+      window.open(link)
+    }).catch(e => {
+      console.log(e)
+    })
+
+
   }
 
 }
