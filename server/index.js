@@ -306,7 +306,7 @@ app.delete('/api/cv/:studentId', isLoggedIn, isStudent, curriculumVitaeControlle
 
 
 /* CAREERS API */
-app.get('/api/careers/:studentId', isLoggedIn, isProfessor, careerController.getCareer);
+app.get('/api/careers/:studentId', isLoggedIn, careerController.getCareer);
 
 
 /* THESIS REQUESTS API */

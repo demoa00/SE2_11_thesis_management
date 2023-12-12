@@ -1,0 +1,28 @@
+.input-field {
+  @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
+}
+
+.label-field {
+  @apply block mb-2 text-sm font-medium text-gray-900 dark:text-white;
+}
+
+@media (min-width: 789px) and (max-width: 970px) {
+  form {
+    min-width: 600px;
+  }
+}
+@media (min-width: 970px) {
+  form {
+    min-width: 800px;
+  }
+}
+
+.text-danger {
+  @apply text-red-500 text-opacity-80 text-sm;
+}
+
+.text-soft {
+  @apply text-gray-500 text-opacity-80 text-sm;
+}
+
+/*# sourceMappingURL=update-thesis-form.component.css.map */

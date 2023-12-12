@@ -38,7 +38,7 @@
 
 .container {
   background-color: #e5e7eb;
-  padding: 8px;
+  padding: 12px 8px;
   margin-bottom: 8px;
   font-size: 14px;
   border-radius: 8px;
@@ -55,7 +55,6 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 500;
-  margin-bottom: 8px;
 }
 
 .closeButton {
