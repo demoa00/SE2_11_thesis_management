@@ -51,6 +51,7 @@ export class ActiveThesisTableComponent {
   }
 
   deleteThesisPopup() {
+    console.log(this.selectedProposal)
     this.deletePopup = !this.deletePopup;
     this.requestAccepted = false;
     this.response = undefined;

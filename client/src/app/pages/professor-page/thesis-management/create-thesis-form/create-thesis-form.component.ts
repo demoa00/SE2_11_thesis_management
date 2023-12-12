@@ -11,7 +11,6 @@ import {APIService} from "../../../../shared/services/api.service";
 
 function customKeywordValidator(keywordsList: string[]): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    console.log(keywordsList.length)
     const keywords = control.value;
 
     // Check if the keywordList is empty
@@ -25,8 +24,6 @@ function customKeywordValidator(keywordsList: string[]): ValidatorFn {
 }
 function customCdSValidator(selectedCdS:{ titleDegree: any; degreeId:any; }[]): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-
-    console.log(selectedCdS.length)
     // Check if the keywordList is empty
     if (selectedCdS.length > 0) {
       return null; // No error if the list is full

@@ -44,8 +44,8 @@
     <div class="flex gap-6">
       <app-icon name="pencil" class="text-blue-900 h-6 w-6 hover:cursor-pointer" (click)="openUpdatePopup()">Update</app-icon>
       <app-icon name="newFile" class="text-green-900 h-6 w-6 hover:cursor-pointer" (click)="openCreatePopup()">New</app-icon>
-      <app-icon name="archive" class="text-yellow-700 h-6 w-6 hover:cursor-pointer" (click)="archiveThesisPopup()">Archive</app-icon>
-      <app-icon name="delete" class="text-red-700 h-6 w-6 hover:cursor-pointer" (click)="deleteThesisPopup()">Delete</app-icon>
+      <app-icon name="archive" class="text-yellow-700 h-6 w-6 hover:cursor-pointer" (click)="archiveThesisPopup(); selectedThesisId = selectedProposal.thesisProposalId">Archive</app-icon>
+      <app-icon name="delete" class="text-red-700 h-6 w-6 hover:cursor-pointer" (click)="deleteThesisPopup(); selectedThesisId = selectedProposal.thesisProposalId">Delete</app-icon>
     </div>
   </div>
 </div>
@@ -76,7 +76,7 @@
   <div *ngIf="!requestAccepted" class="flex flex-col h-full w-full gap-4">
     <div class="p-2 w-full flex flex-col gap-2 items-center ">
       <div style="width: 90%; height: 1px" class="bg-orange-500"></div>
-      <div class="text-3xl font-bold">Create thesis proposal</div>
+      <div class="text-3xl font-bold">Insert new thesis proposal</div>
     </div>
     <app-create-thesis-form [thesisProposal] = "selectedProposal" (requestAccepted)="requestAccepted = $event; triggerUpdate.emit(); selectedProposal=undefined"></app-create-thesis-form>
   </div>
@@ -86,7 +86,7 @@
 
 <app-popup
   *ngIf="archivePopup"
-  (close)="archiveThesisPopup(); this.triggerUpdate.emit();"
+  (close)="requestAccepted?selectedProposal = undefined:''; archiveThesisPopup(); this.triggerUpdate.emit() "
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"
@@ -105,7 +105,7 @@
 
 <app-popup
   *ngIf="deletePopup"
-  (close)="deleteThesisPopup(); this.triggerUpdate.emit();"
+  (close)="requestAccepted?selectedProposal = undefined:''; deleteThesisPopup(); this.triggerUpdate.emit();"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"
