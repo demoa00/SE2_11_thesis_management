@@ -195,4 +195,7 @@ export class APIService {
   }
 
 
+    async updateThesis(thesisProposalId:any, submitform: { coSupervisor: { coSupervisorId: any }[]; abroad: any; requirements: any; CdS: { degreeId: any }[]; notes: any; keywords: string[]; level: any; thesisType: any; description: any; title: any; expirationDate: any }) {
+      return await this.httpService.put(`thesisProposals/${thesisProposalId}`, submitform)
+    }
 }

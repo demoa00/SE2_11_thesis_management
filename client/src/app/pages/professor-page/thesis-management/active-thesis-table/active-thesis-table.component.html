@@ -51,7 +51,7 @@
 
 <app-popup
   *ngIf="createPopup"
-  (close)="openCreatePopup(); this.triggerUpdate.emit();"
+  (close)="openCreatePopup(); triggerUpdate.emit();"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "false">
@@ -60,7 +60,7 @@
       <div style="width: 90%; height: 1px" class="bg-orange-500"></div>
       <div class="text-3xl font-bold">Update thesis proposal</div>
     </div>
-    <app-create-thesis-form [thesisProposal] = "" (requestAccepted)="requestAccepted = $event"></app-create-thesis-form>
+    <app-update-thesis-form [thesisProposal] = "selectedProposal" (requestAccepted)="requestAccepted = $event; triggerUpdate.emit(); selectedProposal=undefined"></app-update-thesis-form>
   </div>
 
   <div *ngIf="requestAccepted" class="text-green-500 text-xl"> The update of the thesis was successful </div>
