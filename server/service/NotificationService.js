@@ -3,7 +3,6 @@
 const dayjs = require('dayjs');
 
 const { PromiseError } = require('../utils/error');
-const io = require('../index').websocketServer;
 
 const db = require('../utils/dbConnection');
 
