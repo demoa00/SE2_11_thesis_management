@@ -13,7 +13,7 @@ export class ArchivedThesisTableComponent {
   @Output()
   triggerUpdate: EventEmitter<void> = new EventEmitter<void>();
 
-  deletePopup: boolean = false;
+  // deletePopup: boolean = false;
   createPopup: boolean = false;
   response :any;
   requestAccepted: boolean = false;
@@ -31,21 +31,21 @@ export class ArchivedThesisTableComponent {
     })
   }
 
-  deleteThesisPopup() {
-    this.deletePopup = !this.deletePopup;
-    this.requestAccepted = false;
-    this.response = undefined;
-  }
+  // deleteThesisPopup() {
+  //   this.deletePopup = !this.deletePopup;
+  //   this.requestAccepted = false;
+  //   this.response = undefined;
+  // }
 
   openCreatePopup() {
     this.createPopup = !this.createPopup;
     this.requestAccepted = false;
     this.response = undefined;
   }
-  async deleteThesis() {
-    this.response = await this.api.deleteThesis(this.selectedThesisId)
-    if (this.response){
-      this.requestAccepted = true;
-    }
-  }
+  // async deleteThesis() {
+  //   this.response = await this.api.deleteThesis(this.selectedThesisId)
+  //   if (this.response){
+  //     this.requestAccepted = true;
+  //   }
+  // }
 }

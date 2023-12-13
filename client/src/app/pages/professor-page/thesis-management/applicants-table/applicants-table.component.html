@@ -1,4 +1,4 @@
-<div class=" card p-5 flex flex-col w-full gap-6">
+<div *ngIf="!selectedApplicant" class=" card p-5 flex flex-col w-full gap-6">
   <h1 class="text-3xl flex justify-center"> List of Thesis Applicants</h1>
   <div class="separator"></div>
 
@@ -8,10 +8,9 @@
     <th>Student ID</th>
     <th>Thesis Title</th>
     <th>Expiration Date</th>
-    <th>Status</th>
     <th class="flex justify-between">
       <div></div>
-      Consult CV
+      Status
       <app-icon name="filter" class="h-4 w-4 text-gray-400 hover:cursor-pointer hover:text-gray-700" (click)="resetFilter()" ></app-icon>
     </th>
   </tr>
@@ -42,9 +41,9 @@
         </select>
       </div>
     </td>
-    <td></td>
+<!--    <td></td>-->
   </tr>
-  <tr *ngFor="let row of filteredRows">
+  <tr *ngFor="let row of filteredRows" class="hover:cursor-pointer" (click)="selectedApplicant = row" >
     <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row?.studentId}}</td>
     <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row?.thesisProposalTitle}}</td>
     <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row?.date}}</td>
@@ -57,16 +56,18 @@
     <td *ngIf="row?.status !='Pending'" [class.text-green-400] = "row?.status=='Accepted'" [class.text-red-400] = "row?.status=='Rejected'" class="py-0.5 w-12 h-6 text-sm">
       {{row?.status=='Accepted'?'accepted':row?.status=='Rejected'?'rejected':''}}
     </td>
-    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">
-      <div class="w-full h-full flex items-center justify-center">
-        <app-icon name="pdf" class="text-blue-900 h-6 w-6 hover:cursor-pointer" (click)="getStudentCV(row?.studentId)">CV</app-icon>
-      </div>
-    </td>
+<!--    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">-->
+<!--      <div class="w-full h-full flex items-center justify-center">-->
+<!--        <app-icon name="pdf" class="text-blue-900 h-6 w-6 hover:cursor-pointer" (click)="getStudentCV(row?.studentId)">CV</app-icon>-->
+<!--      </div>-->
+<!--    </td>-->
   </tr>
   </tbody>
   </table>
   <h3 *ngIf="rows==''"> No Applicants Avaiable</h3>
 </div>
+
+<app-apllicant-details *ngIf="selectedApplicant" [userId]="selectedApplicant.studentId" (triggerBack)="selectedApplicant = undefined" ></app-apllicant-details>
 
 <app-popup
   *ngIf="rejectPopup"
