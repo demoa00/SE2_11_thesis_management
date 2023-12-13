@@ -67,7 +67,7 @@
   <h3 *ngIf="rows==''"> No Applicants Avaiable</h3>
 </div>
 
-<app-apllicant-details *ngIf="selectedApplicant" [userId]="selectedApplicant.studentId" (triggerBack)="selectedApplicant = undefined" ></app-apllicant-details>
+<app-apllicant-details *ngIf="selectedApplicant" [thesisId]="selectedApplicant.thesisProposalId" [userId]="selectedApplicant.studentId" (triggerBack)="selectedApplicant = undefined" ></app-apllicant-details>
 
 <app-popup
   *ngIf="rejectPopup"

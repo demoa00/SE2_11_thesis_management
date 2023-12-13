@@ -14,15 +14,19 @@ export class ApllicantDetailsComponent {
 
   @Input()
   userId:any
+  @Input()
+  thesisId:any
   @Output()
   triggerBack: EventEmitter<void> = new EventEmitter<void>();
 
+  application:any;
   user: StudentDetails = new StudentDetails()
   career: { userId: number, exams: any[] } = {userId: 0, exams: []}
   cv: File = new File([], '')
 
-  ngOnInit() {
-
+  async ngOnInit() {
+    this.application = await this.api.getApplicationById(this.thesisId, this.userId)
+    console.log(this.application)
     this.api.getUserDetails(this.userId).then((response: any) => {
       this.user = response
       this.cv = new File([], response.cv)

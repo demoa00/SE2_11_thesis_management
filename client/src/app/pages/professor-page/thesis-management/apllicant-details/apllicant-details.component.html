@@ -2,6 +2,10 @@
   <h1 class="title">Applicant's Profile</h1>
   <div class="card profileDataContainer">
     <p class="name">{{user.name}} {{user.surname}}, {{userId}}</p>
+    <div *ngIf="application && application.message!=null" class="flex items-center gap-2">
+      <p class="name"> Message from applicant:</p>
+      {{'application.message'}}
+    </div>
     <p class="name">Passed exams</p>
     <table class="mb-4">
       <thead>
