@@ -35,12 +35,18 @@ export class ApplicantsTableComponent implements OnChanges{
     this.openFilter = false;
   }
 
-  openAcceptPopup() {
+  openAcceptPopup(selectedApplicant?:any) {
+    if (selectedApplicant){
+      this.applicant = selectedApplicant
+    }
     this.acceptPopup = !this.acceptPopup;
     this.requestAccepted = false;
     this.response = undefined;
   }
-  openRejectPopup() {
+  openRejectPopup(selectedApplicant?:any) {
+    if (selectedApplicant){
+      this.applicant = selectedApplicant
+    }
     this.rejectPopup = !this.rejectPopup;
     this.requestAccepted = false;
     this.response = undefined;
