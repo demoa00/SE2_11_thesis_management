@@ -123,6 +123,7 @@
 }
 
 .right-side {
+  max-height: 100vh;
   @apply w-5/6 flex flex-col;
   @media #{$media-desktop} {
     @apply w-4/5

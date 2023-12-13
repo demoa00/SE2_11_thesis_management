@@ -36,6 +36,7 @@ type Proposal = {
 
 
 export class StudentPageComponent {
+  notificationsOpen: boolean = false;
 
   constructor(public api: APIService, private parent: PageSkeletonComponent) {
     this.api.setStudent()
@@ -267,6 +268,11 @@ export class StudentPageComponent {
       })
       this.profilePage = true
     }
+  }
+
+  closeNotifications($event: boolean) {
+    console.log($event)
+    this.notificationsOpen = false
   }
 }
 
