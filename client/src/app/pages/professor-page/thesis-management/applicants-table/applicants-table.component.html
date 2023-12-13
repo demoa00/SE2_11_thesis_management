@@ -1,72 +1,73 @@
-<div *ngIf="!selectedApplicant" class=" card p-5 flex flex-col w-full gap-6">
+<div *ngIf="!selectedApplicant" class=" card p-5 flex flex-col w-full gap-6 h-full">
   <h1 class="text-3xl flex justify-center"> List of Thesis Applicants</h1>
   <div class="separator"></div>
-
-  <table  *ngIf="rows!=''" class="bo-table w-full h-fit overflow-auto">
-  <tbody >
-  <tr class="thead">
-    <th>Student ID</th>
-    <th>Thesis Title</th>
-    <th>Expiration Date</th>
-    <th class="flex justify-between">
-      <div></div>
-      Status
-      <app-icon name="filter" class="h-4 w-4 text-gray-400 hover:cursor-pointer hover:text-gray-700" (click)="resetFilter()" ></app-icon>
-    </th>
-  </tr>
-  <tr *ngIf="openFilter">
-    <td>
-      <div class="input-div">
-        <input class="input-date" id="student-input" type="text" placeholder="Type to filter..." [(ngModel)]="studentFilter" (input)="applyFilters()"/>
-      </div>
-    </td>
-    <td>
-      <div class="input-div">
-        <input class="input-date" id="title-input" type="text" placeholder="Type to filter..." [(ngModel)]="titleFilter" (input)="applyFilters()"/>
-      </div>
-    </td>
-    <td>
-      <div class="input-div">
-        <input class="input-date" id="date-input" type="date" [(ngModel)]="dateFilter" (input)="applyFilters()"/>
-      </div>
-    </td>
-    <td>
-      <div class="input-div">
-        <select class="input-filter hover:cursor-pointer" id="status-input" [(ngModel)]="statusFilter" (change)="applyFilters()">
-          <option value =''  disabled hidden selected >Select a status</option>
-          <option value =''>All</option>
-          <option value="Pending">Pending</option>
-          <option value="Accepted">Accepted</option>
-          <option value="Rejected">Rejected</option>
-          <option value="Cancelled">Cancelled</option>
-        </select>
-      </div>
-    </td>
-<!--    <td></td>-->
-  </tr>
-  <tr *ngFor="let row of filteredRows">
-    <td class="py-0.5 w-24 h-6 text-sm text-gray-600 hover:cursor-pointer" (click)="selectedApplicant = row" >{{row?.studentId}}</td>
-    <td class="py-0.5 w-24 h-6 text-sm text-gray-600 hover:cursor-pointer" (click)="selectedApplicant = row" >{{row?.thesisProposalTitle}}</td>
-    <td class="py-0.5 w-24 h-6 text-sm text-gray-600 hover:cursor-pointer" (click)="selectedApplicant = row" >{{row?.date}}</td>
-    <td *ngIf="row?.status =='Pending'" class="py-0.5 w-12 h-6">
-      <button  class="dropdownButton mr-2" (click)="openAcceptPopup(); applicant = row" >Accept</button>
-      <button class="dropdownButton red ml-2" (click)="openRejectPopup(); applicant = row">Reject</button>
-    </td>
-    <td *ngIf="row?.status !='Pending'" [class.text-gray-400] = "row?.status=='Cancelled'"  [class.text-green-400] = "row?.status=='Accepted'" [class.text-red-400] = "row?.status=='Rejected'" class="py-0.5 w-12 h-6 text-sm">
-      {{row?.status=='Accepted'?'accepted':row?.status=='Rejected'?'rejected':row?.status=='Cancelled'?'cancelled':''}}
-    </td>
-<!--    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">-->
-<!--      <div class="w-full h-full flex items-center justify-center">-->
-<!--        <app-icon name="pdf" class="text-blue-900 h-6 w-6 hover:cursor-pointer" (click)="getStudentCV(row?.studentId)">CV</app-icon>-->
-<!--      </div>-->
-<!--    </td>-->
-  </tr>
-  </tbody>
-  </table>
+  <div class=" overflow-auto">
+    <table  *ngIf="rows!=''" class="bo-table w-full h-fit">
+      <tbody >
+      <tr class="thead">
+        <th>Student ID</th>
+        <th>Thesis Title</th>
+        <th>Expiration Date</th>
+        <th class="flex justify-between">
+          <div></div>
+          Status
+          <app-icon name="filter" class="h-4 w-4 text-gray-400 hover:cursor-pointer hover:text-gray-700" (click)="resetFilter()" ></app-icon>
+        </th>
+      </tr>
+      <tr *ngIf="openFilter">
+        <td>
+          <div class="input-div">
+            <input class="input-date" id="student-input" type="text" placeholder="Type to filter..." [(ngModel)]="studentFilter" (input)="applyFilters()"/>
+          </div>
+        </td>
+        <td>
+          <div class="input-div">
+            <input class="input-date" id="title-input" type="text" placeholder="Type to filter..." [(ngModel)]="titleFilter" (input)="applyFilters()"/>
+          </div>
+        </td>
+        <td>
+          <div class="input-div">
+            <input class="input-date" id="date-input" type="date" [(ngModel)]="dateFilter" (input)="applyFilters()"/>
+          </div>
+        </td>
+        <td>
+          <div class="input-div">
+            <select class="input-filter hover:cursor-pointer" id="status-input" [(ngModel)]="statusFilter" (change)="applyFilters()">
+              <option value =''  disabled hidden selected >Select a status</option>
+              <option value =''>All</option>
+              <option value="Pending">Pending</option>
+              <option value="Accepted">Accepted</option>
+              <option value="Rejected">Rejected</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+        </td>
+        <!--    <td></td>-->
+      </tr>
+      <tr *ngFor="let row of filteredRows">
+        <td class="py-0.5 w-24 h-6 text-sm text-gray-600 hover:cursor-pointer" (click)="selectedApplicant = row" >{{row?.studentId}}</td>
+        <td class="py-0.5 w-24 h-6 text-sm text-gray-600 hover:cursor-pointer overflow-auto" (click)="selectedApplicant = row" >{{row?.thesisProposalTitle}}</td>
+        <td class="py-0.5 w-24 h-6 text-sm text-gray-600 hover:cursor-pointer" (click)="selectedApplicant = row" >{{row?.date}}</td>
+        <td *ngIf="row?.status =='Pending'" class="py-0.5 w-12 h-6">
+          <button  class="dropdownButton mr-2" (click)="openAcceptPopup(); applicant = row" >Accept</button>
+          <button class="dropdownButton red ml-2" (click)="openRejectPopup(); applicant = row">Reject</button>
+        </td>
+        <td *ngIf="row?.status !='Pending'" [class.text-gray-400] = "row?.status=='Cancelled'"  [class.text-green-400] = "row?.status=='Accepted'" [class.text-red-400] = "row?.status=='Rejected'" class="py-0.5 w-12 h-6 text-sm">
+          {{row?.status=='Accepted'?'accepted':row?.status=='Rejected'?'rejected':row?.status=='Cancelled'?'cancelled':''}}
+        </td>
+        <!--    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">-->
+        <!--      <div class="w-full h-full flex items-center justify-center">-->
+        <!--        <app-icon name="pdf" class="text-blue-900 h-6 w-6 hover:cursor-pointer" (click)="getStudentCV(row?.studentId)">CV</app-icon>-->
+        <!--      </div>-->
+        <!--    </td>-->
+      </tr>
+      </tbody>
+    </table>
+  </div>
   <h3 *ngIf="rows==''"> No Applicants Avaiable</h3>
 </div>
 
-<app-apllicant-details *ngIf="selectedApplicant" [thesisId]="selectedApplicant.thesisProposalId" [userId]="selectedApplicant.studentId" (triggerBack)="selectedApplicant = undefined" (triggerAccept)="openAcceptPopup(selectedApplicant)" (triggerReject)="openRejectPopup(selectedApplicant)"></app-apllicant-details>
+<app-apllicant-details class=" overflow-auto" *ngIf="selectedApplicant" [thesisId]="selectedApplicant.thesisProposalId" [userId]="selectedApplicant.studentId" (triggerBack)="selectedApplicant = undefined" (triggerAccept)="openAcceptPopup(selectedApplicant)" (triggerReject)="openRejectPopup(selectedApplicant)"></app-apllicant-details>
 
 <app-popup
   *ngIf="rejectPopup"
