@@ -49,7 +49,7 @@
 .titleContainer {
   height: 12.5%;
   gap: 8px;
-  @apply p-4 flex items-center justify-between border-b-2 border-orange-500;
+  @apply p-4 flex items-center justify-between border-b-2 border-orange-600;
 }
 @media only screen and (max-width : 768px) {
   .titleContainer {
@@ -63,6 +63,30 @@
   .titleContainer .title {
     @apply text-2xl;
   }
+}
+.titleContainer .notIconContainer {
+  display: none;
+  position: relative;
+}
+@media only screen and (max-width : 768px) {
+  .titleContainer .notIconContainer {
+    display: flex;
+  }
+}
+.titleContainer .notIconContainer .counter {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #EA580C;
+  padding: 4px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 12px;
+  color: white;
 }
 
 .propic {

@@ -51,7 +51,7 @@
   pointer-events: none;
 }
 :host.orange {
-  @apply bg-orange-600;
+  background: #EA580C;
 }
 :host.grey {
   background-color: #e5e7eb;

@@ -29,7 +29,12 @@
         <p class="text-sm uppercase cursor-pointer hover:underline" (click)="goToProfile()" *ngIf="currentRoute==='/professor'">{{professor?.name}} {{professor?.surname}}, {{professor?.professorId}}</p>
         <app-button class="ml-4" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
       </div>
-      <mat-icon class="menu-icon" (click)="notificationsOpen = !notificationsOpen">notifications</mat-icon>
+      <div class="notIconContainer">
+        <mat-icon class="menu-icon" (click)="notificationsOpen = !notificationsOpen">notifications</mat-icon>
+        <div class="counter" *ngIf="unreadCounter > 0">
+          {{unreadCounter}}
+        </div>
+      </div>
     </div>
     <div class="main columns-2 flex">
       <div class="main-col">

@@ -1,6 +1,6 @@
 <div class="relative">
   <div class="container">
-    <p class="title">{{notification.message}}</p>
+    <p class="title {{notification.isRead ? 'read' : ''}}">{{notification.message}}</p>
     <p class="description"></p>
   </div>
   <div class="closeButton">

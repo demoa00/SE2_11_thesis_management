@@ -38,8 +38,11 @@ export class NotificationsContainerComponent {
 
   notifications: any[] = []
   notificationsToShow: any[] = []
+  showReadNotifications: boolean = false;
+
   counter = 0;
   @Output() applicationsPage = new EventEmitter<boolean>();
+  @Output() counterChange = new EventEmitter<number>();
 
   ngOnInit() {
     this.api.getNotifications().then((response: any) => {
@@ -47,16 +50,12 @@ export class NotificationsContainerComponent {
       this.notifications = response;
     })
     this.socket.on('message', (data: any) => {
-      // let n = {
-      //   id: this.counter++,
-      //   message: data,
-      // }
-      // this.notifications.unshift(n);
-      // console.log(this.notifications);
       this.api.getNotifications().then((response: any) => {
         console.log(response);
         this.notifications = response;
         this.notificationsToShow = this.notifications.filter((n: any) => n.isRead === 0)
+        this.counter = this.notificationsToShow.length;
+        this.counterChange.emit(this.counter);
       })
     });
   }
@@ -86,4 +85,15 @@ export class NotificationsContainerComponent {
   deleteAll() {
     this.notifications = [];
   }
+
+  toggleReadNotifications() {
+    if(this.showReadNotifications) {
+      this.notificationsToShow = this.notifications.filter((n: any) => n.isRead === 0)
+    }
+    else {
+      this.notificationsToShow = this.notifications;
+    }
+    this.showReadNotifications = !this.showReadNotifications;
+  }
+
 }

@@ -44,6 +44,8 @@ export class PageSkeletonComponent {
   theme = false
   menuOpen = false
   notificationsOpen = false
+  @Input() unreadCounter = 0
+
   logout() {
     let user= localStorage.getItem('user')
     localStorage.removeItem('user')
