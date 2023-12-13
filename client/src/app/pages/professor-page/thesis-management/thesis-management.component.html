@@ -1,4 +1,4 @@
-<div class="h-full w-full flex gap-2">
+<div class="h-full w-full flex gap-2 overflow-auto">
   <div class="main-body">
     <div class="button-body card">
       <div class="button-tesi orange" (click)="openCreatePopup()">
@@ -20,13 +20,15 @@
     </div>
     <div class="show-body card">
       <div class="body-height">
-        <app-applicants-table class="h-full" [rows]="applicantsRow" (triggerUpdate)="updateAll()"  *ngIf="showApplicants" ></app-applicants-table>
-        <app-active-thesis-table class="h-full" [rows]="activeThesesRow" (triggerUpdate)="updateAll()" *ngIf="showActiveTheses"></app-active-thesis-table>
-        <app-archived-thesis-table class="h-full" [rows]="archivedThesesRow" (triggerUpdate)="updateAll()" *ngIf="showArchivedTheses"></app-archived-thesis-table>
+        <app-applicants-table [rows]="applicantsRow" (triggerUpdate)="updateAll()"  *ngIf="showApplicants" ></app-applicants-table>
+        <app-active-thesis-table [rows]="activeThesesRow" (triggerUpdate)="updateAll()" *ngIf="showActiveTheses"></app-active-thesis-table>
+        <app-archived-thesis-table [rows]="archivedThesesRow" (triggerUpdate)="updateAll()" *ngIf="showArchivedTheses"></app-archived-thesis-table>
       </div>
-      <div class="button-tesi-mobile orange" (click)="openCreatePopup()">
-        <p class="text-center" style="margin-bottom: 0">Create new thesis </p>
-        <app-icon name="add" class="w-4 h-4"></app-icon><!--Should restore this line but it gives problems-->
+      <div class="w-full flex justify-end">
+        <div class="button-tesi-mobile orange" (click)="openCreatePopup()">
+          <p class="text-center" style="margin-bottom: 0">Create new thesis </p>
+          <app-icon name="add" class="w-4 h-4"></app-icon><!--Should restore this line but it gives problems-->
+        </div>
       </div>
     </div>
   </div>
