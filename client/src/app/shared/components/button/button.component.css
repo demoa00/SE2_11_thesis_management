@@ -43,6 +43,7 @@
   color: white;
   cursor: pointer;
   height: fit-content;
+  width: fit-content;
   display: flex;
 }
 :host.disabled {
