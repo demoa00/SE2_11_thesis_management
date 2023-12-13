@@ -33,7 +33,7 @@
       Expiration Date
     </app-button>
     <input class="w-0 h-0 absolute -bottom-1" (dateChange)="selectDate($event)" matInput [matDatepicker]="picker">
-    <mat-datepicker #picker></mat-datepicker>
+    <mat-datepicker [touchUi]="width < 768" #picker></mat-datepicker>
   </div>
   <div *ngIf="selectedDate !== undefined && selectedDate!== null" class="flex items-center">
     <p style="line-height: normal;">{{selectedDate.value.toLocaleDateString()}}</p>

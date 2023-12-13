@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, Output} from '@angular/core';
 import {APIService} from "../../../../shared/services/api.service";
 import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 import * as dayjs from "dayjs";
@@ -54,6 +54,7 @@ export class FiltersContainerComponent {
   selectedExtCs: any[] = [];
   abroad: boolean = false;
   selectedDate: any = null;
+  width = window.innerWidth;
 
   @Input() params: any;
   @Input() checkFilters: Function = () => {
@@ -62,6 +63,11 @@ export class FiltersContainerComponent {
   @Output() newProposals: EventEmitter<any> = new EventEmitter<any>();
   @Input() showFilters: boolean = false;
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.width = window.innerWidth;
+  }
+
   ngOnInit(): void {
     this.api.getExternalCoSupervisors().then((coSupervisors) => {
       this.extCs = coSupervisors;
@@ -69,7 +75,7 @@ export class FiltersContainerComponent {
     this.api.getCoSupervisors().then((coSupervisors) => {
       this.css = coSupervisors;
     })
-    if(this.params) {
+    if (this.params) {
       if (this.params.cosupervisors !== null) {
         this.params.cosupervisors.forEach((cs: any) => {
           if (cs.professorId !== undefined) {
@@ -78,8 +84,7 @@ export class FiltersContainerComponent {
             this.selectedExtCs.push(cs)
           }
         })
-      }
-      else {
+      } else {
         this.params.cosupervisors = null;
       }
       console.log(this.params.expirationDate)
@@ -95,7 +100,7 @@ export class FiltersContainerComponent {
     if (changes['params'] !== undefined) {
       let newParams = changes['params']
       this.params = newParams.currentValue
-      if(newParams.currentValue.cosupervisors === null){
+      if (newParams.currentValue.cosupervisors === null) {
         this.selectedCs = []
         this.selectedExtCs = []
       }
@@ -117,7 +122,7 @@ export class FiltersContainerComponent {
   }
 
   toggleCs(cs: any) {
-    if(!this.params) {
+    if (!this.params) {
       this.params = {};
     }
     let found = false
@@ -154,7 +159,7 @@ export class FiltersContainerComponent {
   }
 
   toggleExtCs(cs: any) {
-    if(!this.params) {
+    if (!this.params) {
       this.params = {};
     }
     let found = false
@@ -199,7 +204,7 @@ export class FiltersContainerComponent {
   }
 
   selectDate(date: MatDatepickerInputEvent<any, any>) {
-    if(!this.params) {
+    if (!this.params) {
       this.params = {};
     }
     this.selectedDate = date
