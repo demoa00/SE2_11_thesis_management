@@ -43,6 +43,7 @@ export class PageSkeletonComponent {
 
   theme = false
   menuOpen = false
+  notificationsOpen = false
   logout() {
     let user= localStorage.getItem('user')
     localStorage.removeItem('user')
@@ -79,6 +80,11 @@ export class PageSkeletonComponent {
 
   goToProfile() {
     this.profilePage.emit(true)
+    this.menuOpen = false
+  }
+
+  closeNotifications() {
+    this.notificationsOpen = false
   }
 
 }

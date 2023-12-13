@@ -40,14 +40,28 @@
   color: #04264c;
 }
 
-.title {
+.container {
+  @apply columns-2 min-h-screen flex bg-gray-50 relative overflow-hidden;
+  width: 100vw;
+  max-width: 100vw;
+}
+
+.titleContainer {
   height: 12.5%;
   gap: 8px;
   @apply p-4 flex items-center justify-between border-b-2 border-orange-500;
 }
 @media only screen and (max-width : 768px) {
-  .title {
+  .titleContainer {
     @apply text-center;
+  }
+}
+.titleContainer .title {
+  @apply uppercase text-3xl font-bold;
+}
+@media only screen and (max-width : 768px) {
+  .titleContainer .title {
+    @apply text-2xl;
   }
 }
 
@@ -59,15 +73,17 @@
 }
 
 @media only screen and (max-width : 768px) {
-  .left-overlay {
+  .overlay {
     @apply absolute top-0 left-0 h-full w-full z-10;
     background-color: rgba(0, 0, 0, 0.5);
     opacity: 0;
-    display: none;
+    z-index: -1;
+    transition: all 0.3s ease-in-out;
   }
-  .left-overlay.open {
+  .overlay.open {
     display: block;
     opacity: 1;
+    z-index: 10;
   }
 }
 
@@ -79,6 +95,24 @@
     cursor: pointer;
     display: block;
   }
+}
+
+.closeIcon {
+  display: none;
+}
+.closeIcon.open {
+  display: block;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  z-index: 15;
+  color: white;
+}
+.closeIcon.open.left {
+  left: 10px;
+}
+.closeIcon.open.right {
+  right: 10px;
 }
 
 .left-col-mobile {
@@ -97,6 +131,19 @@
   }
   .left-col-mobile.open {
     transform: translateX(0);
+  }
+}
+@media only screen and (max-width : 640px) {
+  .left-col-mobile {
+    width: 70%;
+  }
+}
+.left-col-mobile .nameContainer {
+  @apply w-full mb-4 hidden;
+}
+@media only screen and (max-width : 768px) {
+  .left-col-mobile .nameContainer {
+    display: block;
   }
 }
 
@@ -151,14 +198,20 @@
     position: absolute;
     top: 0;
     right: 0;
-    background-color: red;
     transform: translateX(100%);
     transition: transform 0.3s ease-in-out;
     height: 100vh;
     max-height: 100vh;
+    z-index: 20;
+    border-left: 0;
   }
   .right-side .main .right-col.open {
     transform: translateX(0);
+  }
+}
+@media only screen and (max-width : 640px) {
+  .right-side .main .right-col {
+    width: 70%;
   }
 }
 

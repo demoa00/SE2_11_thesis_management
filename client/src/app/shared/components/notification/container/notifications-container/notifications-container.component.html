@@ -8,7 +8,7 @@
       (delete)="delete($event)"
       (click)="read(n)"
       [notification]="n"
-      *ngFor="let n of notifications" @slide @fade
+      *ngFor="let n of notificationsToShow" @slide @fade
     >
     </app-notification>
   </div>

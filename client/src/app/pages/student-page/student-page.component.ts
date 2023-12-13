@@ -257,5 +257,14 @@ export class StudentPageComponent {
 
     }
   }
+
+  goToProfilePage($event: boolean) {
+    if ($event) {
+      this.menuItems.forEach((item) => {
+        item.selected = false
+      })
+      this.profilePage = true
+    }
+  }
 }
 

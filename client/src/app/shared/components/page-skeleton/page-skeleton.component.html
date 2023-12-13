@@ -1,43 +1,47 @@
-<div class="columns-2 min-h-screen flex bg-gray-50 relative" [ngClass]="theme ? 'dark' : ''">
+<div class="container" [ngClass]="theme ? 'dark' : ''">
   <ng-content></ng-content>
-  <div #leftColMobile class="left-col-mobile {{menuOpen ? 'open' : ''}}">
+  <div class="left-col-mobile {{menuOpen ? 'open' : ''}}">
     <div class="p-4 border-b-2">
       <img src="assets/images/LogoPoli.svg" *ngIf="!theme" alt="no image found">
 <!--      <img src="assets/images/LogoPoli.svg" alt="no image found">-->
       <img src="assets/images/LogoPoliWhite.svg" *ngIf="theme" alt="no image found">
     </div>
     <div class="flex flex-col justify-between p-4">
-      <div class="w-full md:hidden">
-        <div class="flex items-center">
-          <img alt="propic" src="https://picsum.photos/512/512" class="propic mr-4" *ngIf="currentRoute!=='/'">
-          <p (click)="goToProfile()" class="text-sm uppercase" *ngIf="currentRoute==='/student'">{{student?.name}} {{student?.surname}}, {{student?.studentId}}</p>
-          <p (click)="goToProfile()" class="text-sm uppercase" *ngIf="currentRoute==='/professor'">{{professor?.name}} {{professor?.surname}}, {{professor?.professorId}}</p>
+      <div class="nameContainer">
+        <div class="flex items-center justify-between">
+<!--          <img alt="propic" src="https://picsum.photos/512/512" class="propic mr-4" *ngIf="currentRoute!=='/'">-->
+          <p (click)="goToProfile()" class="text-sm" *ngIf="currentRoute==='/student'">{{student?.name}} {{student?.surname}}, {{student?.studentId}}</p>
+          <p (click)="goToProfile()" class="text-sm" *ngIf="currentRoute==='/professor'">{{professor?.name}} {{professor?.surname}}, {{professor?.professorId}}</p>
+          <app-button class="small w-fit mb-4 mt-2" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
         </div>
-        <app-button class="w-fit mb-4 mt-2" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
       </div>
       <ng-content select="[left-col]"></ng-content>
     </div>
   </div>
-  <div class="left-overlay {{menuOpen ? 'open' : ''}}" (click)="closeMenu()"></div>
-  <div class="right-side">
-    <div class="title">
+  <div class="overlay {{menuOpen ? 'open' : ''}}" (click)="closeMenu()"></div>
+  <div class="right-side relative">
+    <div class="titleContainer">
       <mat-icon class="menu-icon" (click)="menuOpen = !menuOpen">menu</mat-icon>
-      <h2 class="uppercase text-3xl font-bold">thesis proposals</h2>
+      <h2 class="title">thesis proposals</h2>
       <div class="md:flex items-center max-md:hidden">
         <img alt="propic" src="https://picsum.photos/512/512" class="propic mr-4" *ngIf="currentRoute!=='/'">
         <p class="text-sm uppercase cursor-pointer hover:underline" (click)="goToProfile()" *ngIf="currentRoute==='/student'">{{student?.name}} {{student?.surname}}, {{student?.studentId}}</p>
         <p class="text-sm uppercase cursor-pointer hover:underline" (click)="goToProfile()" *ngIf="currentRoute==='/professor'">{{professor?.name}} {{professor?.surname}}, {{professor?.professorId}}</p>
         <app-button class="ml-4" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
       </div>
-      <mat-icon class="menu-icon" (click)="menuOpen = !menuOpen">notifications</mat-icon>
+      <mat-icon class="menu-icon" (click)="notificationsOpen = !notificationsOpen">notifications</mat-icon>
     </div>
     <div class="main columns-2 flex">
       <div class="main-col">
         <ng-content select="[main-col]"></ng-content>
       </div>
-      <div class="right-col open">
+      <div class="right-col {{notificationsOpen ? 'open' : ''}}">
         <ng-content select="[right-col]"></ng-content>
       </div>
+      <div class="overlay {{notificationsOpen ? 'open' : ''}}" (click)="closeNotifications()">
+      </div>
+        <mat-icon class="pointer-events-none closeIcon right {{menuOpen ? 'open' : ''}}">close</mat-icon>
+        <mat-icon class="pointer-events-none closeIcon left {{notificationsOpen ? 'open' : ''}}">close</mat-icon>
     </div>
   </div>
 </div>

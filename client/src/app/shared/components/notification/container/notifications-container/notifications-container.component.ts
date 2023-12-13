@@ -37,6 +37,7 @@ export class NotificationsContainerComponent {
   }
 
   notifications: any[] = []
+  notificationsToShow: any[] = []
   counter = 0;
   @Output() applicationsPage = new EventEmitter<boolean>();
 
@@ -55,6 +56,7 @@ export class NotificationsContainerComponent {
       this.api.getNotifications().then((response: any) => {
         console.log(response);
         this.notifications = response;
+        this.notificationsToShow = this.notifications.filter((n: any) => n.isRead === 0)
       })
     });
   }
