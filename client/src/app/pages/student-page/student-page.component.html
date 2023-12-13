@@ -37,7 +37,7 @@
                    *ngIf="prof.name.toLocaleLowerCase().includes(professorsSearchValue) || prof.surname.toLocaleLowerCase().includes(professorsSearchValue)">
                 <app-checkbox [checked]="isProfSelected(prof)"></app-checkbox>
                 <p>{{prof.name}} {{prof.surname}}</p>
-              </div>
+              </div>student
             </div>
           </app-dropdown-checkbox>
         </div>
@@ -48,7 +48,7 @@
           <p class="underline">Delete filters</p>
         </div>
       </div>
-      <app-filters-container *ngIf="showFilters" [showFilters]="showFilters" (newProposals)="proposals = $event" [proposals]="proposals" [params]="proposalParams" [checkFilters]="checkFilters"></app-filters-container>
+      <app-filters-container [showFilters]="showFilters" (newProposals)="proposals = $event" [proposals]="proposals" [params]="proposalParams" [checkFilters]="checkFilters"></app-filters-container>
     </div>
     <div class="proposalsCard card">
       <div *ngFor="let proposal of proposals" (click)="selectProposal(proposal.thesisProposalId)">
