@@ -28,10 +28,10 @@ export class ProfilePageComponent {
   }
 
   loadFile(file: any) {
-    const formData = new FormData();
-    formData.append('file', this.cv);
-    console.log(formData.get('file'))
-    this.api.postCv(formData).then(r => {
+    const body = new FormData();
+    body.append('file', this.cv);
+    console.log(body.get('file'))
+    this.api.postCv(body).then(r => {
       console.log(r)
       this.cv = file.target.files[0]
     }).catch(e => {

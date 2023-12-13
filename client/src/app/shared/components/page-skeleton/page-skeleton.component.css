@@ -149,7 +149,8 @@
 }
 @media only screen and (max-width : 768px) {
   .left-col-mobile {
-    @apply absolute top-0 left-0 h-full z-20 w-1/2 bg-gray-50;
+    width: 30%;
+    @apply absolute top-0 left-0 h-full z-20 bg-gray-50;
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
   }
@@ -158,6 +159,11 @@
   }
 }
 @media only screen and (max-width : 640px) {
+  .left-col-mobile {
+    width: 40%;
+  }
+}
+@media only screen and (max-width : 480px) {
   .left-col-mobile {
     width: 70%;
   }
@@ -219,7 +225,7 @@
 }
 @media only screen and (max-width : 768px) {
   .right-side .main .right-col {
-    width: 50%;
+    width: 30%;
     position: absolute;
     top: 0;
     right: 0;
@@ -235,6 +241,11 @@
   }
 }
 @media only screen and (max-width : 640px) {
+  .right-side .main .right-col {
+    width: 40%;
+  }
+}
+@media only screen and (max-width : 480px) {
   .right-side .main .right-col {
     width: 70%;
   }

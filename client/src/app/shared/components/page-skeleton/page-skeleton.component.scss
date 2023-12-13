@@ -104,7 +104,8 @@
     @apply w-1/5
   }
   @media #{$media-tablet} {
-    @apply absolute top-0 left-0 h-full z-20 w-1/2 bg-gray-50;
+    width: 30%;
+    @apply absolute top-0 left-0 h-full z-20 bg-gray-50;
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
     &.open {
@@ -112,6 +113,9 @@
     }
   }
   @media #{$media-mobile} {
+    width: 40%;
+  }
+  @media #{$media-mobile-sm} {
     width: 70%;
   }
   .nameContainer {
@@ -158,7 +162,7 @@
         @apply w-1/3
       }
       @media #{$media-tablet} {
-        width: 50%;
+        width: 30%;
         position: absolute;
         top: 0;
         right: 0;
@@ -174,6 +178,9 @@
       }
 
       @media #{$media-mobile} {
+        width: 40%;
+      }
+      @media #{$media-mobile-sm} {
         width: 70%;
       }
 
