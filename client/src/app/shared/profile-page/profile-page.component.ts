@@ -28,12 +28,14 @@ export class ProfilePageComponent {
   }
 
   loadFile(file: any) {
+    console.log("LOAD FILE")
     const body = new FormData();
-    body.append('file', this.cv);
+    console.log(file.target.files[0])
+    body.append('file', file.target.files[0]);
     console.log(body.get('file'))
     this.api.postCv(body).then(r => {
       console.log(r)
-      this.cv = file.target.files[0]
+      this.cv = new File([], `${this.userId}.pdf`)
     }).catch(e => {
       console.log(e)
     })

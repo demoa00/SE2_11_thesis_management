@@ -26,7 +26,7 @@
           <app-button>
             <label for="upload-file" class="cursor-pointer">Upload</label>
             <input class="hidden" type="file" id="upload-file" name="upload-file" accept=".pdf"
-                   (change)="loadFile($event)">
+                   (input)="loadFile($event)">
           </app-button>
         </td>
       </tr>
