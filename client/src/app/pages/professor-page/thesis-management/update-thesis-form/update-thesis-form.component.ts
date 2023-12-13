@@ -105,7 +105,6 @@ export class UpdateThesisFormComponent implements OnInit{
       this.myForm.get('requirements')?.setValue(this.thesisProposal.requirements)
       this.myForm.get('expirationDate')?.setValue(this.thesisProposal.expirationDate)
       this.myForm.get('abroad')?.setValue(this.thesisProposal.abroad)
-      this.myForm.get('keywords')?.setValue(this.thesisProposal.keywords.shift())
       this.selectedCdS = [...this.thesisProposal.CdS]
       if(this.thesisProposal.coSupervisor){
          this.thesisProposal.coSupervisor?.forEach((element:any)=>{
