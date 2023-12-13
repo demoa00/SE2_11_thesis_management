@@ -30,7 +30,7 @@
         <app-button class="ml-4" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
       </div>
       <div class="notIconContainer">
-        <mat-icon class="menu-icon" (click)="notificationsOpen = !notificationsOpen">notifications</mat-icon>
+        <mat-icon class="menu-icon" (click)="openNotifications()">notifications</mat-icon>
         <div class="counter" *ngIf="unreadCounter > 0">
           {{unreadCounter}}
         </div>

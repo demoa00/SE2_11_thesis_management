@@ -172,6 +172,7 @@
 }
 
 .right-side {
+  max-height: 100vh;
   @apply w-5/6 flex flex-col;
 }
 @media only screen and (max-width : 1024px) {

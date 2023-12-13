@@ -1,7 +1,10 @@
 <app-page-skeleton
   [trigger] = "trigger"
   (profilePage) = "goToProfilePage($event)"
-  [unreadCounter]="unreadCounter">
+  [unreadCounter]="unreadCounter"
+  [notificationsOpen]="notificationsOpen"
+  (notificationsOpenChange)="notificationsOpen = $event"
+  >
 
   <div class="leftMenuItem" left-col
        [class.selected]="n.selected"
@@ -128,6 +131,10 @@
 
   <app-application-view *ngIf="menuItems[1].selected && !profilePage" main-col></app-application-view>
   <app-profile-page *ngIf="profilePage" main-col></app-profile-page>
-  <app-notifications-container (applicationsPage) = "goToApplicationPage($event)" (counterChange)="unreadCounter = $event" right-col/>
+  <app-notifications-container
+    (applicationsPage) = "goToApplicationPage($event)"
+    (counterChange)="unreadCounter = $event" right-col
+    (close)="closeNotifications($event)"
+  />
 
 </app-page-skeleton>

@@ -1,7 +1,13 @@
 <div class="container">
   <h1 class="title">Applicant's Profile</h1>
   <div class="card profileDataContainer">
-    <p class="name">{{user.name}} {{user.surname}}, {{userId}}</p>
+    <div class="projectButtons">
+      <p class="name">{{user.name}} {{user.surname}}, {{userId}}</p>
+      <div class="flex items-center gap-2" *ngIf="cv.name">
+        <p class="font-medium" >Applicant CV:</p>
+        <app-icon name="pdf" class="text-blue-900 h-6 w-6 hover:cursor-pointer" (click)="getCv()">CV</app-icon>
+      </div>
+    </div>
     <div *ngIf="application && application.message!=null" class="flex items-center gap-2">
       <p class="name"> Message from applicant:</p>
       {{'application.message'}}
@@ -28,11 +34,19 @@
         <app-icon name="arrowLeft" class="text-gray-500 h-6 w-6" >Back</app-icon>
         <div class="text-gray-500">Back</div>
       </div>
-      <div class="flex items-center gap-2" *ngIf="cv.name">
-        <p class="font-medium" >Applicant CV:</p>
-        <app-icon name="pdf" class="text-blue-900 h-6 w-6 hover:cursor-pointer" (click)="getCv()">CV</app-icon>
+      <div class="flex gap-8">
+        <div *ngIf="application?.status =='Pending'" class=" w-12 h-full">
+          <button  class="dropdownButton" (click)="triggerAccept.emit()" >Accept</button>
+        </div>
+        <div *ngIf="application?.status =='Pending'" class=" w-12 h-full">
+          <button class="dropdownButton red" (click)="triggerReject.emit()">Reject</button>
+        </div>
+        <div *ngIf="application?.status !='Pending'" [class.text-gray-400] = "application?.status=='Cancelled'"  [class.text-green-400] = "application?.status=='Accepted'" [class.text-red-400] = "application?.status=='Rejected'" class="h-full text-sm">
+          {{application?.status=='Accepted'?'accepted':application?.status=='Rejected'?'rejected':application?.status=='Cancelled'?'cancelled':''}}
+        </div>
       </div>
     </div>
   </div>
 </div>
+
 

@@ -35,7 +35,10 @@ export class PageSkeletonComponent {
   currentRoute = this._router.url;
 
   @Input() trigger: boolean = false
+  @Input() unreadCounter = 0
+  @Input() notificationsOpen = false
   @Output() profilePage = new EventEmitter<boolean>();
+  @Output() notificationsOpenChange = new EventEmitter<boolean>();
 
   user: User | undefined;
   student: StudentDetails | undefined;
@@ -43,8 +46,6 @@ export class PageSkeletonComponent {
 
   theme = false
   menuOpen = false
-  notificationsOpen = false
-  @Input() unreadCounter = 0
 
   logout() {
     let user= localStorage.getItem('user')
@@ -85,8 +86,14 @@ export class PageSkeletonComponent {
     this.menuOpen = false
   }
 
+  openNotifications() {
+    this.notificationsOpen = true
+    this.notificationsOpenChange.emit(this.notificationsOpen)
+  }
+
   closeNotifications() {
     this.notificationsOpen = false
+    this.notificationsOpenChange.emit(this.notificationsOpen)
   }
 
 }

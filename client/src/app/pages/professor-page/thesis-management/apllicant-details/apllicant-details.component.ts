@@ -18,6 +18,10 @@ export class ApllicantDetailsComponent {
   thesisId:any
   @Output()
   triggerBack: EventEmitter<void> = new EventEmitter<void>();
+  @Output()
+  triggerAccept: EventEmitter<void> = new EventEmitter<void>();
+  @Output()
+  triggerReject: EventEmitter<void> = new EventEmitter<void>();
 
   application:any;
   user: StudentDetails = new StudentDetails()

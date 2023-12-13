@@ -13,7 +13,7 @@
     </app-notification>
   </div>
   <div class="flex justify-between items-center w-full">
-    <p class="">Show read notifications</p>
+    <p class="">{{ showReadNotifications ? 'Hide' : 'Show' }} read notifications</p>
     <mat-icon class="cursor-pointer" (click)="toggleReadNotifications()">history</mat-icon>
   </div>
 </div>

@@ -34,10 +34,11 @@
       <div class="input-div">
         <select class="input-filter hover:cursor-pointer" id="status-input" [(ngModel)]="statusFilter" (change)="applyFilters()">
           <option value =''  disabled hidden selected >Select a status</option>
-          <option value =''>None</option>
+          <option value =''>All</option>
           <option value="Pending">Pending</option>
           <option value="Accepted">Accepted</option>
           <option value="Rejected">Rejected</option>
+          <option value="Cancelled">Cancelled</option>
         </select>
       </div>
     </td>
@@ -48,13 +49,11 @@
     <td class="py-0.5 w-24 h-6 text-sm text-gray-600 hover:cursor-pointer" (click)="selectedApplicant = row" >{{row?.thesisProposalTitle}}</td>
     <td class="py-0.5 w-24 h-6 text-sm text-gray-600 hover:cursor-pointer" (click)="selectedApplicant = row" >{{row?.date}}</td>
     <td *ngIf="row?.status =='Pending'" class="py-0.5 w-12 h-6">
-      <button  class="dropdownButton" (click)="openAcceptPopup(); applicant = row" >Accept</button>
+      <button  class="dropdownButton mr-2" (click)="openAcceptPopup(); applicant = row" >Accept</button>
+      <button class="dropdownButton red ml-2" (click)="openRejectPopup(); applicant = row">Reject</button>
     </td>
-    <td *ngIf="row?.status =='Pending'" class="py-0.5 w-12 h-6">
-      <button class="dropdownButton red" (click)="openRejectPopup(); applicant = row">Reject</button>
-    </td>
-    <td *ngIf="row?.status !='Pending'" [class.text-green-400] = "row?.status=='Accepted'" [class.text-red-400] = "row?.status=='Rejected'" class="py-0.5 w-12 h-6 text-sm">
-      {{row?.status=='Accepted'?'accepted':row?.status=='Rejected'?'rejected':''}}
+    <td *ngIf="row?.status !='Pending'" [class.text-gray-400] = "row?.status=='Cancelled'"  [class.text-green-400] = "row?.status=='Accepted'" [class.text-red-400] = "row?.status=='Rejected'" class="py-0.5 w-12 h-6 text-sm">
+      {{row?.status=='Accepted'?'accepted':row?.status=='Rejected'?'rejected':row?.status=='Cancelled'?'cancelled':''}}
     </td>
 <!--    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">-->
 <!--      <div class="w-full h-full flex items-center justify-center">-->
@@ -67,11 +66,11 @@
   <h3 *ngIf="rows==''"> No Applicants Avaiable</h3>
 </div>
 
-<app-apllicant-details *ngIf="selectedApplicant" [thesisId]="selectedApplicant.thesisProposalId" [userId]="selectedApplicant.studentId" (triggerBack)="selectedApplicant = undefined" ></app-apllicant-details>
+<app-apllicant-details *ngIf="selectedApplicant" [thesisId]="selectedApplicant.thesisProposalId" [userId]="selectedApplicant.studentId" (triggerBack)="selectedApplicant = undefined" (triggerAccept)="openAcceptPopup(selectedApplicant)" (triggerReject)="openRejectPopup(selectedApplicant)"></app-apllicant-details>
 
 <app-popup
   *ngIf="rejectPopup"
-  (close)="openRejectPopup(); this.triggerUpdate.emit();"
+  (close)="openRejectPopup(); this.triggerUpdate.emit(); selectedApplicant = undefined"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"
@@ -90,7 +89,7 @@
 
 <app-popup
   *ngIf="acceptPopup"
-  (close)="openAcceptPopup() ; this.triggerUpdate.emit();"
+  (close)="openAcceptPopup() ; this.triggerUpdate.emit(); selectedApplicant = undefined"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"

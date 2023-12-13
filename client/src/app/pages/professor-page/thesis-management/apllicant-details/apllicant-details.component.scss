@@ -44,3 +44,15 @@
   gap: 8px;
   @apply h-full justify-between;
 }
+
+.dropdownButton {
+  background-color: #03577A;
+  color: white;
+  line-height: 16px;
+  padding: 8px;
+  border-radius: 8px;
+  @apply hover:drop-shadow-lg;
+  &.red {
+    @apply bg-red-500;
+  }
+}
