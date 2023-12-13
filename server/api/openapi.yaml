@@ -236,7 +236,6 @@ components:
           type: integer
         cv:
           type: string
-          format: uri
         self:
           type: string
           format: uri

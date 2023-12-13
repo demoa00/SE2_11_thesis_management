@@ -1,5 +1,7 @@
 'use strict';
 
+const fs = require('fs');
+
 const { PromiseError } = require('../utils/error');
 
 const db = require('../utils/dbConnection');
@@ -46,9 +48,16 @@ exports.getStudentById = function (studentId) {
           email: row.email,
           codDegree: row.codDegree,
           nationality: row.nationality,
-          cv: "example.pdf",
           self: `/api/students/${studentId}`
         };
+
+        const filepath = './uploads/' + studentId + '.pdf';
+        
+        if (fs.existsSync(filepath)) {
+          student = { ...student, cv: `${studentId}.pdf` };
+        } else {
+          student = { ...student, cv: '' };
+        }
 
         resolve(student);
       }

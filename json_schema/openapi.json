@@ -318,8 +318,7 @@
                         "type": "integer"
                     },
                     "cv": {
-                        "type": "string",
-                        "format": "uri"
+                        "type": "string"
                     },
                     "self": {
                         "type": "string",
