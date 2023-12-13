@@ -46,7 +46,7 @@ export class ProfilePageComponent {
       let url = window.URL;
       let link = url.createObjectURL(r)
       let cv = document.createElement('a')
-      cv.setAttribute("download", `cv_${this.userId}.pdf`)
+      cv.setAttribute("download", this.cv.name)
       cv.setAttribute("href", link)
       document.body.appendChild(cv)
       cv.click()
