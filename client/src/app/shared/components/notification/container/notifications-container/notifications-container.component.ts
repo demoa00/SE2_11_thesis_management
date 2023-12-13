@@ -36,8 +36,8 @@ export class NotificationsContainerComponent {
   constructor(private socket: Socket, private api: APIService) {
   }
 
-  notifications: any[] = [{notificationId: 0, isRead: 0, message: "Notifica 1"}, {notificationId: 1, isRead: 0, message: "Notifica 2"}]
-  notificationsToShow: any[] = [{notificationId: 0, isRead: 0, message: "Notifica 1"}, {notificationId: 1, isRead: 0, message: "Notifica 2"}]
+  notifications: any[] = []
+  notificationsToShow: any[] = []
   showReadNotifications: boolean = false;
 
   counter = 0;
