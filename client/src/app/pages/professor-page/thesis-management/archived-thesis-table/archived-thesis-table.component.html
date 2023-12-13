@@ -23,24 +23,15 @@
   </table>
   <h3 *ngIf="rows==''"> No Archived Thesis Avaiable</h3>
 </div>
-<div *ngIf="selectedProposal" class="card flex gap-4 flex-col">
-  <!--
-  <div class="flex gap-1 items-center hover:cursor-pointer" (click)="selectedProposal=undefined">
-    <app-icon name="arrowLeft" class="text-gray-500 h-6 w-6" >Archive</app-icon>
-    <div class="text-gray-500">Back</div>
-  </div>
-  -->
-  <app-thesis-details [selectedProposal]="selectedProposal"></app-thesis-details>
+<div *ngIf="selectedProposal" class="card flex gap-4 flex-col h-full">
+  <app-thesis-details class=" overflow-auto" [selectedProposal]="selectedProposal"></app-thesis-details>
   <div *ngIf="selectedProposal" class="projectButtons">
-
     <div class="flex gap-1 items-center hover:cursor-pointer" (click)="selectedProposal=undefined">
       <app-icon name="arrowLeft" class="text-gray-500 h-6 w-6" >Back</app-icon>
       <div class="text-gray-500">Back</div>
     </div>
-
     <div class="flex gap-6">
       <app-icon name="newFile" class="text-green-900 h-6 w-6 hover:cursor-pointer" (click)="openCreatePopup()">New</app-icon>
-<!--      <app-icon name="delete" class="text-red-700 h-6 w-6 hover:cursor-pointer" (click)="deleteThesisPopup(); selectedThesisId = selectedProposal.thesisProposalId">Delete</app-icon>-->
     </div>
   </div>
 </div>
