@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Injectable, Output} from '@angular/core';
 import {Socket} from "ngx-socket-io";
 import {animate, style, transition, trigger} from "@angular/animations";
-import {APIService} from "../../../../services/api.service";
+import { APIService } from 'src/app/shared/services/api.service';
 
 @Component({
   selector: 'app-notifications-container',

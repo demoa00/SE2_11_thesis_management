@@ -4,6 +4,7 @@ import { NotificationsContainerComponent } from './notifications-container.compo
 import { Socket } from 'ngx-socket-io';
 import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 class mockSocket {
   on(event: String): Observable<any> {
@@ -20,7 +21,7 @@ describe('NotificationsContainerComponent', () => {
     socketSpy = jasmine.createSpyObj('Socket', ['on']);
 
     TestBed.configureTestingModule({
-      imports: [MatIconModule],
+      imports: [MatIconModule, HttpClientTestingModule],
       declarations: [NotificationsContainerComponent],
       providers: [{ provide: Socket, useClass: mockSocket }]
     });
