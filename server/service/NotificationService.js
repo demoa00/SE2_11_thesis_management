@@ -54,10 +54,8 @@ exports.updateNotification = function (userId, notificationId) {
 
         db.run(sql, [notificationId, userId], function (err) {
             if (err) {
-                console.log(err);
                 reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
             } else {
-                console.log(this.changes);
                 resolve();
             }
         });
