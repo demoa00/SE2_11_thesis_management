@@ -16,7 +16,7 @@ module.exports.getNotifications = async function getNotifications(req, res, next
 
 module.exports.updateNotification = async function updateNotification(req, res, next) {
     try {
-        await Notification.updateNotification(req.user.userId);
+        await Notification.updateNotification(req.user.userId, req.params.notificationId);
 
         utils.writeJson(res, 'No Content', 204);
     } catch (error) {

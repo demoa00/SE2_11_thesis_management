@@ -318,7 +318,7 @@ app.put('/api/thesisRequests/:thesisRequestId', isLoggedIn, validate({ body: the
 
 /* NOTIFICATIONS API */
 app.get('/api/notifications', isLoggedIn, notificationController.getNotifications);
-app.put('/api/notifications/:notificationsId', isLoggedIn, notificationController.updateNotification);
+app.put('/api/notifications/:notificationId', isLoggedIn, notificationController.updateNotification);
 app.delete('/api/notifications', isLoggedIn, notificationController.deleteAllNotifications);
 
 
