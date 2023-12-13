@@ -101,6 +101,11 @@ export class CreateThesisFormComponent implements OnInit{
     this.myForm.get('CdS')?.setValidators([cdsValidator]);
     this.myForm.get('CdS')?.updateValueAndValidity();
   }
+  updateKeywordValidator(): void {
+    const keyValidator = customKeywordValidator(this.keywordsList);
+    this.myForm.get('keywords')?.setValidators([keyValidator]);
+    this.myForm.get('keywords')?.updateValueAndValidity();
+  }
 
   ngOnInit(): void {
     if(this.thesisProposal) {
@@ -135,6 +140,7 @@ export class CreateThesisFormComponent implements OnInit{
       }
       this.keywordsList = [...this.thesisProposal.keywords]
       this.updateCdSValidator()
+      this.updateKeywordValidator()
     } else {
       console.log('thesisProposal is not defined');
     }
