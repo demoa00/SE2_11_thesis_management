@@ -2,7 +2,7 @@
   <div class="flex flex-col bo-popup-content {{small? 'small' : ''}} p-4 justify-between" (click)="$event.stopPropagation()">
     <div class="flex items-center justify-around gap-2 w-160 mb-4">
       <img *ngIf="showLogo" alt="logo" src="../../../assets/images/LogoPoli.svg" class="w-48" >
-      <h1 *ngIf="title" class="font-bold text-3xl">{{ title }}</h1>
+      <h1 *ngIf="title" class="font-bold text-3xl text-center">{{ title }}</h1>
       <app-icon
         *ngIf="showCloseButton"
         name="cross"
@@ -11,7 +11,7 @@
         (click)="close.emit()"></app-icon>
       <!--<div *ngIf="showCloseButton" class="bo-popup-close-1" (click)="close.emit()"></div>-->
     </div>
-    <div class="flex flex-col w-full items-center gap-4 mb-4">
+    <div class="flex flex-col w-full items-center gap-4">
       <ng-content></ng-content>
       <app-button-slider
         *ngIf="showSlider && showSliderAfterResponse"

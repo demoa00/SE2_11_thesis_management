@@ -30,10 +30,21 @@
           </app-button>
         </td>
       </tr>
-      <tr>
+      <tr *ngIf="cv.name !== ''">
         <td><p class="mr-4 font-medium hover:underline cursor-pointer" (click)="getCv()">Your CV: <span class="font-normal">{{ cv.name }}</span></p></td>
-        <td><app-button class="danger" (click)="deleteCv()">Delete</app-button></td>
+        <td><app-button class="danger" (click)="showPopup=true">Delete</app-button></td>
       </tr>
     </table>
+    <app-popup
+      [showSlider]="false"
+      [showLogo]="false"
+      [small]="true"
+      [title]="'Do you really want to delete your cv?'"
+      *ngIf="showPopup">
+      <div class="flex justify-evenly w-full">
+        <app-button (click)="showPopup = false">Cancel</app-button>
+        <app-button class="danger" (click)="deleteCv()">Confirm</app-button>
+      </div>
+    </app-popup>
   </div>
 </div>

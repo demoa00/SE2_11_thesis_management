@@ -64,6 +64,7 @@
 }
 .bo-popup-content.small {
   max-width: 40vw;
+  min-height: 0;
 }
 @media (max-width: 640px) {
   .bo-popup-content.small {
