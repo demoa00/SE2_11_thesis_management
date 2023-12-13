@@ -29,7 +29,6 @@ function customCdSValidator(selectedCdS:{ titleDegree: any; degreeId:any; }[]): 
       return null; // No error if the list is full
     }
 
-
     // Check if the value is required
     return Validators.required(control);
   };
@@ -145,7 +144,6 @@ export class CreateThesisFormComponent implements OnInit{
       console.log('thesisProposal is not defined');
     }
   }
-
 
   constructor(private fb: FormBuilder, private api: APIService) {
     let stringProfessor= localStorage.getItem('professor');

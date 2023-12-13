@@ -4,6 +4,7 @@ import { CreateThesisFormComponent } from './create-thesis-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APIService } from 'src/app/shared/services/api.service';
+import { of } from 'rxjs';
 
 describe('CreateThesisFormComponent', () => {
   let component: CreateThesisFormComponent;
@@ -27,46 +28,43 @@ describe('CreateThesisFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // it('should submit the form and emit events', fakeAsync(() => {
-  //   apiServiceSpy.insertNewThesis.and.returnValue(Promise.resolve({}));
+  it('should initialize form when thesisProposal is defined', () => {
+    const mockThesisProposal = {
+      title: 'Test Thesis',
+      level: 'Test Level',
+      thesisType: 'Test Type',
+      description: 'Test Description',
+      requirements: 'Test Requirements',
+      expirationDate: '2023-12-31',
+      abroad: false,
+      keywords: ['Keyword1', 'Keyword2'],
+      CdS: [{ titleDegree: 'Degree1', degreeId: '1' }],
+      coSupervisor: [
+        { coSupervisorId: 'e123', name: 'External CoSupervisor', surname: 'External Surname', self: 'Some info' },
+        { coSupervisorId: 'p456', name: 'Internal CoSupervisor', surname: 'Internal Surname', self: 'Some info' }
+      ],
+      notes: 'Test Notes',
+    };
+  
+    component.thesisProposal = mockThesisProposal;
 
-  //   component.myForm.setValue({
-  //     title: 'Test Thesis',
-  //     keywords: '',
-  //     abroad: false,
-  //     thesisType: 'Test Type',
-  //     description: 'Test Description',
-  //     expirationDate: '2023-12-31',
-  //     level: 'Test Level',
-  //     requirements: 'Test Requirements',
-  //     CdS: ['Test CdS'],
-  //     externalCoSupervisor: ['Test External-Co-Supervisor'],
-  //     internalCoSupervisor: ['Test Internal-Co-Supervisor'],
-  //     notes: 'Test Notes',
-  //     groups: 'Test Group',
-  //     supervisor: {
-  //       codDepartment: 'Test Department',
-  //       codGroup: 'Test Group',
-  //       email: 'test@email.com',
-  //       professorId: 'Test Professor ID',
-  //       self: 'Test Self',
-  //       name: 'Test Name',
-  //       surname: 'Test Surname',
-  //     },
-  //   });
-
-  //   spyOn(component.requestAccepted, 'emit');
-  //   spyOn(component.response, 'emit');
-
-  //   component.onSubmit();
-
-  //   tick();
-
-  //   expect(apiServiceSpy.insertNewThesis).toHaveBeenCalledWith(jasmine.any(Object));
-  //   expect(component.requestAccepted.emit).toHaveBeenCalledWith(true);
-  //   expect(component.response.emit).toHaveBeenCalledWith({});
-  // }));
-
+    const updateCdSValidatorSpy = spyOn(component, 'updateCdSValidator');
+    const updateKeywordValidatorSpy = spyOn(component, 'updateKeywordValidator');
+    spyOn(console, 'log');
+  
+    component.ngOnInit();
+  
+    expect(component.myForm.get('title')?.value).toBe(mockThesisProposal.title);
+    expect(component.myForm.get('level')?.value).toBe(mockThesisProposal.level);
+  
+    expect(component.keywordsList).toEqual(mockThesisProposal.keywords);
+    expect(component.selectedCdS).toEqual(mockThesisProposal.CdS);
+  
+    expect(updateCdSValidatorSpy).toHaveBeenCalled();
+    expect(updateKeywordValidatorSpy).toHaveBeenCalled();
+    expect(console.log).toHaveBeenCalledWith(mockThesisProposal);
+  });
+  
   it('should handle valid stringDegrees', () => {
     const degreesData = '[{"titleDegree": "Degree 1", "degreeId": 1}]';
     localStorage.setItem('degrees', degreesData);
@@ -166,5 +164,27 @@ describe('CreateThesisFormComponent', () => {
     component.removeKeyword(fakeEvent);
 
     expect(component.keywordsList).toEqual(['Keyword1', 'Keyword3']);
+  });
+
+  it('should update CdS validator', () => {
+    const mockAbstractControl = jasmine.createSpyObj('AbstractControl', ['setValidators', 'updateValueAndValidity']);
+  
+    spyOn(component.myForm, 'get').and.returnValue(mockAbstractControl);
+  
+    component.updateCdSValidator();
+  
+    expect(mockAbstractControl.setValidators).toHaveBeenCalled();
+    expect(mockAbstractControl.updateValueAndValidity).toHaveBeenCalled();
+  });
+  
+  it('should update CdS validator', () => {
+    const mockAbstractControl = jasmine.createSpyObj('AbstractControl', ['setValidators', 'updateValueAndValidity']);
+  
+    spyOn(component.myForm, 'get').and.returnValue(mockAbstractControl);
+  
+    component.updateKeywordValidator();
+  
+    expect(mockAbstractControl.setValidators).toHaveBeenCalled();
+    expect(mockAbstractControl.updateValueAndValidity).toHaveBeenCalled();
   });
 });
