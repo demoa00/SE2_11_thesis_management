@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {APIService} from "../../../../shared/services/api.service";
+import {APIService} from "../services/api.service";
 import {JsonPipe, NgForOf} from "@angular/common";
-import {StudentDetails} from "../../../../shared/classes/student/student-details";
+import {StudentDetails} from "../classes/student/student-details";
 
 @Component({
   selector: 'app-profile-page',

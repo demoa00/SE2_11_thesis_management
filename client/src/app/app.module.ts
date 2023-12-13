@@ -42,7 +42,7 @@ import {SocketIoModule} from "ngx-socket-io";
 import {
   ArchivedThesisTableComponent
 } from "./pages/professor-page/thesis-management/archived-thesis-table/archived-thesis-table.component";
-import {ProfilePageComponent} from "./pages/student-page/components/profile-page/profile-page.component";
+import {ProfilePageComponent} from "./shared/profile-page/profile-page.component";
 import {
   UpdateThesisFormComponent
 } from "./pages/professor-page/thesis-management/update-thesis-form/update-thesis-form.component";
