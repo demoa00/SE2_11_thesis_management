@@ -128,6 +128,7 @@ export class UpdateThesisFormComponent implements OnInit{
       }
       this.keywordsList = [...this.thesisProposal.keywords]
       this.updateCdSValidator()
+      this.updateKeywordValidator()
     } else {
       console.error('thesisProposal is not defined');
     }
@@ -136,6 +137,11 @@ export class UpdateThesisFormComponent implements OnInit{
     const cdsValidator = customCdSValidator(this.selectedCdS);
     this.myForm.get('CdS')?.setValidators([cdsValidator]);
     this.myForm.get('CdS')?.updateValueAndValidity();
+  }
+  updateKeywordValidator(): void {
+    const keyValidator = customKeywordValidator(this.keywordsList);
+    this.myForm.get('keywords')?.setValidators([keyValidator]);
+    this.myForm.get('keywords')?.updateValueAndValidity();
   }
 
   constructor(private fb: FormBuilder, private api: APIService) {
