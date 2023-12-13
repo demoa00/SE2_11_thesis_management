@@ -34,7 +34,7 @@
       <div class="input-div">
         <select class="input-filter hover:cursor-pointer" id="status-input" [(ngModel)]="statusFilter" (change)="applyFilters()">
           <option value =''  disabled hidden selected >Select a status</option>
-          <option value =''>None</option>
+          <option value =''>All</option>
           <option value="Pending">Pending</option>
           <option value="Accepted">Accepted</option>
           <option value="Rejected">Rejected</option>
@@ -70,7 +70,7 @@
 
 <app-popup
   *ngIf="rejectPopup"
-  (close)="openRejectPopup(); this.triggerUpdate.emit();"
+  (close)="openRejectPopup(); this.triggerUpdate.emit(); selectedApplicant = undefined"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"
@@ -89,7 +89,7 @@
 
 <app-popup
   *ngIf="acceptPopup"
-  (close)="openAcceptPopup() ; this.triggerUpdate.emit();"
+  (close)="openAcceptPopup() ; this.triggerUpdate.emit(); selectedApplicant = undefined"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"
