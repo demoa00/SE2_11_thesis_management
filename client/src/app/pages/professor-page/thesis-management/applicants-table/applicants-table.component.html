@@ -43,10 +43,10 @@
     </td>
 <!--    <td></td>-->
   </tr>
-  <tr *ngFor="let row of filteredRows" class="hover:cursor-pointer" (click)="selectedApplicant = row" >
-    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row?.studentId}}</td>
-    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row?.thesisProposalTitle}}</td>
-    <td class="py-0.5 w-24 h-6 text-sm text-gray-600">{{row?.date}}</td>
+  <tr *ngFor="let row of filteredRows">
+    <td class="py-0.5 w-24 h-6 text-sm text-gray-600 hover:cursor-pointer" (click)="selectedApplicant = row" >{{row?.studentId}}</td>
+    <td class="py-0.5 w-24 h-6 text-sm text-gray-600 hover:cursor-pointer" (click)="selectedApplicant = row" >{{row?.thesisProposalTitle}}</td>
+    <td class="py-0.5 w-24 h-6 text-sm text-gray-600 hover:cursor-pointer" (click)="selectedApplicant = row" >{{row?.date}}</td>
     <td *ngIf="row?.status =='Pending'" class="py-0.5 w-12 h-6">
       <button  class="dropdownButton" (click)="openAcceptPopup(); applicant = row" >Accept</button>
     </td>
