@@ -10,6 +10,10 @@
     font-weight: bold;
   }
 
+  @media #{$media-tablet} {
+    height: 100vh;
+  }
+
   .notifications {
     display: flex;
     flex-direction: column;

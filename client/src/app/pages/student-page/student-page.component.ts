@@ -250,5 +250,12 @@ export class StudentPageComponent {
     }
   }
 
+  goToApplicationPage(e: boolean) {
+    if (e) {
+      this.selectMenuItem(1)
+      this.profilePage = false
+
+    }
+  }
 }
 

@@ -205,6 +205,10 @@ export class APIService {
     return await this.httpService.get('notifications', false, true)
   }
 
+  async updateNotification(notificationId: any) {
+    return await this.httpService.put(`notifications/${notificationId}`, {})
+  }
+
   async updateThesis(thesisProposalId: any, submitform: {
     coSupervisor: { coSupervisorId: any }[];
     abroad: any;

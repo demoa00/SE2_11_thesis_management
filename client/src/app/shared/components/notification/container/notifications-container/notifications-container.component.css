@@ -46,6 +46,11 @@
   font-size: 16px;
   font-weight: bold;
 }
+@media only screen and (max-width : 768px) {
+  .container {
+    height: 100vh;
+  }
+}
 .container .notifications {
   display: flex;
   flex-direction: column;

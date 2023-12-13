@@ -1,4 +1,6 @@
-<app-page-skeleton [trigger] = "trigger" (profilePage) = "profilePage = $event">
+<app-page-skeleton
+  [trigger] = "trigger"
+  (profilePage) = "profilePage = $event">
 
   <div class="leftMenuItem" left-col
        [class.selected]="n.selected"
@@ -125,6 +127,6 @@
 
   <app-application-view *ngIf="menuItems[1].selected && !profilePage" main-col></app-application-view>
   <app-profile-page *ngIf="profilePage" main-col></app-profile-page>
-  <app-notifications-container right-col/>
+  <app-notifications-container (applicationsPage) = "goToApplicationPage($event)" right-col/>
 
 </app-page-skeleton>

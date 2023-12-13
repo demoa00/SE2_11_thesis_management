@@ -14,8 +14,9 @@ export class ProfilePageComponent {
 
   userId = JSON.parse(localStorage.getItem('user') || '{}').userId
   user: StudentDetails = new StudentDetails()
-  career: {userId: number, exams: any[]} = {userId: 0, exams: []}
+  career: { userId: number, exams: any[] } = {userId: 0, exams: []}
   cv: File = new File([], '')
+
   ngOnInit() {
     this.api.getUserDetails(this.userId).then((response: any) => {
       this.user = response
@@ -26,7 +27,7 @@ export class ProfilePageComponent {
     })
   }
 
-  loadFile(file:any) {
+  loadFile(file: any) {
     this.cv = file.target.files[0]
     const formData = new FormData();
     formData.append('file', this.cv);
@@ -40,7 +41,7 @@ export class ProfilePageComponent {
     })
   }
 
-  getCv(){
+  getCv() {
     this.api.getCv(this.userId).then(r => {
       console.log(r)
       let url = window.URL;
@@ -55,8 +56,10 @@ export class ProfilePageComponent {
     }).catch(e => {
       console.log(e)
     })
+  }
 
-
+  deleteCv(){
+    console.log(this.cv)
   }
 
 }

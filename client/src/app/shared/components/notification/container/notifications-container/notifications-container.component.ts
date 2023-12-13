@@ -1,4 +1,4 @@
-import {Component, Injectable} from '@angular/core';
+import {Component, EventEmitter, Injectable, Output} from '@angular/core';
 import {Socket} from "ngx-socket-io";
 import {animate, style, transition, trigger} from "@angular/animations";
 import {APIService} from "../../../../services/api.service";
@@ -38,6 +38,7 @@ export class NotificationsContainerComponent {
 
   notifications: any[] = []
   counter = 0;
+  @Output() applicationsPage = new EventEmitter<boolean>();
 
   ngOnInit() {
     this.api.getNotifications().then((response: any) => {
@@ -45,17 +46,34 @@ export class NotificationsContainerComponent {
       this.notifications = response;
     })
     this.socket.on('message', (data: any) => {
-      let n = {
-        id: this.counter++,
-        message: data,
-      }
-      this.notifications.unshift(n);
-      console.log(this.notifications);
+      // let n = {
+      //   id: this.counter++,
+      //   message: data,
+      // }
+      // this.notifications.unshift(n);
+      // console.log(this.notifications);
+      this.api.getNotifications().then((response: any) => {
+        console.log(response);
+        this.notifications = response;
+      })
     });
   }
 
-  read(id: number) {
-    console.log(this.notifications[id]);
+  read(n: any) {
+
+    this.api.updateNotification(n.notificationId).then((response: any) => {
+    }).catch((error) => {
+      console.log(error);
+    })
+    this.notifications = this.notifications.filter((not: any) => not.notificationId !== n.notificationId);
+
+    console.log(n);
+    switch (n.type) {
+      case 2:
+        this.applicationsPage.emit(true);
+        break;
+      //other cases here
+    }
   }
 
   delete(id: number) {
