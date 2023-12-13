@@ -124,18 +124,32 @@ exports.getApplicationById = function (user, studentId, thesisProposalId) {
 
 exports.insertNewApplication = function (studentId, newApplication) {
   return new Promise(function (resolve, reject) {
-    const sql = 'SELECT professors.professorId, professors.email FROM professors, thesisProposals WHERE thesisProposalId = ? AND supervisor = professorId';
+    const sql = "SELECT * FROM applications WHERE studentId = ? AND status = 'Accepted'";
 
-    db.get(sql, [newApplication.thesisProposalId], (err, row) => {
+    db.get(sql, [studentId], (err, row) => {
       if (err) {
         reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (row === undefined) {
-        reject(new PromiseError({ code: 404, message: "Not Found" }));
+        resolve();
       } else {
-        let professor = { professorId: row.professorId, email: row.email };
-
-        resolve(professor);
+        reject(new PromiseError({ code: 409, message: "Conflict" }));
       }
+    });
+  }).then(() => {
+    return new Promise(function (resolve, reject) {
+      const sql = 'SELECT professors.professorId, professors.email FROM professors, thesisProposals WHERE thesisProposalId = ? AND supervisor = professorId';
+
+      db.get(sql, [newApplication.thesisProposalId], (err, row) => {
+        if (err) {
+          reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+        } else if (row === undefined) {
+          reject(new PromiseError({ code: 404, message: "Not Found" }));
+        } else {
+          let professor = { professorId: row.professorId, email: row.email };
+
+          resolve(professor);
+        }
+      });
     });
   }).then((professor) => {
     return new Promise(function (resolve, reject) {
@@ -148,7 +162,7 @@ exports.insertNewApplication = function (studentId, newApplication) {
           resolve(professor);
         }
       });
-    })
+    });
   }).then(async (professor) => {
     let emailPromises = [];
     let notificationPromises = [];
@@ -203,15 +217,24 @@ exports.updateApplication = function (professorId, studentId, thesisProposalId, 
         db.run(sql, [thesisProposalId, professorId], function (err) {
           if (err) {
             reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
-          } else if (this.changes == 0) {
-            reject(new PromiseError({ code: 404, message: "Not Found" }));
-          } else {
-            resolve(students);
           }
-        })
-      } else {
-        resolve(students);
+        });
       }
+
+      resolve(students);
+    }).then((students) => {
+      return new Promise(function (resolve, reject) {
+        if (newApplication.status === 'Accepted') {
+          const sql = "UPDATE applications SET status = 'Cancelled' WHERE status = 'Pending' AND studentId = ?";
+          db.run(sql, [studentId], function (err) {
+            if (err) {
+              reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+            }
+          });
+        }
+
+        resolve(students);
+      });
     });
   }).then(async (students) => {
     let emailPromises = [];
