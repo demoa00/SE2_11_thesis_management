@@ -46,6 +46,9 @@ import {ProfilePageComponent} from "./shared/profile-page/profile-page.component
 import {
   UpdateThesisFormComponent
 } from "./pages/professor-page/thesis-management/update-thesis-form/update-thesis-form.component";
+import {
+  ApllicantDetailsComponent
+} from "./pages/professor-page/thesis-management/apllicant-details/apllicant-details.component";
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
@@ -79,7 +82,8 @@ const routes: Routes = [
     ApplicationViewComponent,
     NotificationsContainerComponent,
     UpdateThesisFormComponent,
-    ProfilePageComponent
+    ProfilePageComponent,
+    ApllicantDetailsComponent
   ],
   imports: [
     BrowserModule,

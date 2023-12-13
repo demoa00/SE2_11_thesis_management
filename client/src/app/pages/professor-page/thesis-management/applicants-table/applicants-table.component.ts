@@ -26,6 +26,7 @@ export class ApplicantsTableComponent implements OnChanges{
   acceptPopup= false;
   applicant:any;
   openFilter: boolean = false;
+  selectedApplicant: any;
 
   constructor(private api: APIService) {
   }
