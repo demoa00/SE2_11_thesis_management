@@ -16,7 +16,7 @@ export class ProfilePageComponent {
   user: StudentDetails = new StudentDetails()
   career: { userId: number, exams: any[] } = {userId: 0, exams: []}
   cv: File = new File([], '')
-
+  showPopup = false
   ngOnInit() {
     this.api.getUserDetails(this.userId).then((response: any) => {
       this.user = response
@@ -28,14 +28,12 @@ export class ProfilePageComponent {
   }
 
   loadFile(file: any) {
-    this.cv = file.target.files[0]
     const formData = new FormData();
     formData.append('file', this.cv);
-
     console.log(formData.get('file'))
-
     this.api.postCv(formData).then(r => {
       console.log(r)
+      this.cv = file.target.files[0]
     }).catch(e => {
       console.log(e)
     })
@@ -58,8 +56,15 @@ export class ProfilePageComponent {
     })
   }
 
-  deleteCv(){
-    console.log(this.cv)
+
+  deleteCv() {
+    this.api.deleteCv(this.userId).then(r => {
+      console.log(r)
+      this.showPopup = false
+      this.cv = new File([], '')
+    }).catch(e => {
+      console.log(e)
+    })
   }
 
 }

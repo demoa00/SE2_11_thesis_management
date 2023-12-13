@@ -9,36 +9,6 @@ import {animate, style, transition, trigger} from "@angular/animations";
   selector: 'app-filters-container',
   templateUrl: './filters-container.component.html',
   styleUrls: ['./filters-container.component.scss'],
-  animations: [
-    trigger('open', [
-      transition(':enter', [
-        style({
-          height: '0',
-          'padding-top': '0',
-          'padding-bottom': 0,
-        }),
-        animate(200, style({
-          height: '*',
-          'padding-top': '*',
-          'padding-bottom': '*',
-        }))
-      ])
-    ]),
-    trigger('close', [
-      transition(':leave', [
-        style({
-          height: '*',
-          'padding-top': '*',
-          'padding-bottom': '*'
-        }),
-        animate(200, style({
-          height: '0',
-          'padding-top': '0',
-          'padding-bottom': '0',
-        }))
-      ])
-    ]),
-  ]
 })
 
 

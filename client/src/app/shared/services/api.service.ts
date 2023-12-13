@@ -236,4 +236,9 @@ export class APIService {
   async getCv(userId: any):Promise<Blob> {
     return await this.httpService.getBlob(`cv/${userId}`, false, true)
   }
+
+  async deleteCv(userId: any) {
+    return await this.httpService.delete(`cv/${userId}`, true)
+  }
+
 }

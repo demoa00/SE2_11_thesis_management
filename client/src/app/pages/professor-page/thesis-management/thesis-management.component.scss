@@ -24,7 +24,7 @@ input, select {
   &.orange {
     @apply bg-orange-500;
   }
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 1100px){
     @apply hidden;
   }
 }
@@ -33,24 +33,23 @@ input, select {
   &.orange {
     @apply bg-orange-500;
   }
-  position: absolute;
   bottom: 20px;
   right: 20px;
   width: 120px;
   height: 60px;
-  @media only screen and (min-width: 1000px) {
+  @media only screen and (min-width: 1100px){
     @apply hidden;
   }
 }
 .main-body{
   @apply w-full flex flex-row gap-4;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 1100px){
     @apply flex flex-col;
   }
 }
 .button-body{
   @apply w-1/6 flex flex-col gap-4 bg-white;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 1100px){
     @apply w-full flex flex-row;
   }
 }
@@ -62,17 +61,20 @@ input, select {
 }
 .show-buttons{
   @apply  w-full flex flex-col gap-6;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 1100px){
     @apply flex flex-row;
   }
 }
 .show-body{
-  @apply  h-full p-5 w-5/6;
-  @media only screen and (max-width: 1000px) {
+  @apply  h-full p-5 w-5/6 flex flex-col gap-6;
+  @media only screen and (max-width: 1100px){
     @apply w-full h-full;
   }
-  position: relative;
 }
 .body-height{
-  padding-bottom: 80px;
+  @media only screen and (max-width: 1100px){
+    max-height: calc(100% - 80px);
+    @apply w-full h-full;
+  }
+  max-height: 100%;
 }

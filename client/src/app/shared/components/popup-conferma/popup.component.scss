@@ -59,6 +59,7 @@
   max-height: 80vh;
   &.small {
     max-width: 40vw;
+    min-height: 0;
     @media (max-width: 640px) {
       max-width: 90vw;
     }

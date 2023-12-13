@@ -70,4 +70,19 @@
   padding: 4px;
 }
 
+.cvTable {
+  width: fit-content;
+  border-spacing: 0 4px;
+  border-collapse: separate;
+}
+@media only screen and (max-width : 480px) {
+  .cvTable {
+    width: 100%;
+  }
+  .cvTable td:nth-child(even) {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
 /*# sourceMappingURL=profile-page.component.css.map */
