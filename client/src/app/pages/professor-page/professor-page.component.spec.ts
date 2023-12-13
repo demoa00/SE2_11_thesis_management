@@ -6,18 +6,34 @@ import { PageSkeletonComponent } from 'src/app/shared/components/page-skeleton/p
 import { IconComponent } from 'src/app/shared/components/icon/icon.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatIconModule } from '@angular/material/icon';
+import { NotificationsContainerComponent } from 'src/app/shared/components/notification/container/notifications-container/notifications-container.component';
+import { Observable } from 'rxjs';
+import { Socket } from 'ngx-socket-io';
+import { NotificationComponent } from 'src/app/shared/components/notification/notification/notification.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+class mockSocket {
+  on(event: String): Observable<any> {
+    return new Observable();
+  }
+}
 
 describe('ProfessorPageComponent', () => {
   let component: ProfessorPageComponent;
   let fixture: ComponentFixture<ProfessorPageComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatIconModule],
-      declarations: [ProfessorPageComponent, ThesisManagementComponent, PageSkeletonComponent, IconComponent]
-    });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, MatIconModule, BrowserAnimationsModule],
+      declarations: [ProfessorPageComponent, ThesisManagementComponent, PageSkeletonComponent, IconComponent, NotificationsContainerComponent, NotificationComponent],
+      providers: [{ provide: Socket, useClass: mockSocket }]
+    }).compileComponents();
+
     fixture = TestBed.createComponent(ProfessorPageComponent);
     component = fixture.componentInstance;
+
+    await fixture.whenStable();
+
     fixture.detectChanges();
   });
 

@@ -41,7 +41,7 @@
       &.accepted {
         background: $success;
       }
-      &.rejected {
+      &.rejected, &.cancelled {
         background: $danger;
       }
     }

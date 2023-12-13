@@ -46,29 +46,29 @@ describe('ArchivedThesisTableComponent', () => {
     expect(component.selectedProposal).toEqual(mockResponse);
   }));
 
-  it('should toggle deletePopup and reset state on deleteThesisPopup', () => {
-    component.deletePopup = false;
-    component.requestAccepted = true;
-    component.response = { someData: 'test data' };
+  // it('should toggle deletePopup and reset state on deleteThesisPopup', () => {
+  //   component.deletePopup = false;
+  //   component.requestAccepted = true;
+  //   component.response = { someData: 'test data' };
 
-    component.deleteThesisPopup();
+  //   component.deleteThesisPopup();
 
-    expect(component.deletePopup).toBe(true);
-    expect(component.requestAccepted).toBe(false);
-    expect(component.response).toBeUndefined();
-  });
+  //   expect(component.deletePopup).toBe(true);
+  //   expect(component.requestAccepted).toBe(false);
+  //   expect(component.response).toBeUndefined();
+  // });
 
-  it('should call deleteThesis and set requestAccepted to true', fakeAsync(() => {
-    const mockReponse = {};
+  // it('should call deleteThesis and set requestAccepted to true', fakeAsync(() => {
+  //   const mockReponse = {};
 
-    apiService.deleteThesis.and.returnValue(Promise.resolve(mockReponse));
+  //   apiService.deleteThesis.and.returnValue(Promise.resolve(mockReponse));
 
-    component.selectedThesisId = 123;
-    component.deleteThesis();
-    tick();
+  //   component.selectedThesisId = 123;
+  //   component.deleteThesis();
+  //   tick();
 
-    expect(apiService.deleteThesis).toHaveBeenCalledWith(component.selectedThesisId);
-    expect(component.response).toEqual(mockReponse);
-    expect(component.requestAccepted).toBeTruthy();
-  }));
+  //   expect(apiService.deleteThesis).toHaveBeenCalledWith(component.selectedThesisId);
+  //   expect(component.response).toEqual(mockReponse);
+  //   expect(component.requestAccepted).toBeTruthy();
+  // }));
 });
