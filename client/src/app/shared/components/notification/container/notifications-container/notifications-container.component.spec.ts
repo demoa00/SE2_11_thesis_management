@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NotificationComponent } from '../../notification/notification.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { APIService } from 'src/app/shared/services/api.service';
 
 class mockSocket {
   on(event: String): Observable<any> {
@@ -18,18 +19,30 @@ describe('NotificationsContainerComponent', () => {
   let component: NotificationsContainerComponent;
   let fixture: ComponentFixture<NotificationsContainerComponent>;
   let socketSpy: jasmine.SpyObj<Socket>;
+  let apiService: jasmine.SpyObj<APIService>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    apiService = jasmine.createSpyObj('APIService', {
+      'getNotifications': Promise.resolve([]),
+      'updateNotification': Promise.resolve([])
+    });
+
     socketSpy = jasmine.createSpyObj('Socket', ['on']);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [MatIconModule, HttpClientTestingModule, BrowserAnimationsModule],
       declarations: [NotificationsContainerComponent, NotificationComponent],
-      providers: [{ provide: Socket, useClass: mockSocket }]
-    });
+      providers: [
+        { provide: APIService, useValue: apiService },
+        { provide: Socket, useClass: mockSocket }
+      ]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(NotificationsContainerComponent);
     component = fixture.componentInstance;
+
+    await fixture.whenStable();
+
     fixture.detectChanges();
   });
 
