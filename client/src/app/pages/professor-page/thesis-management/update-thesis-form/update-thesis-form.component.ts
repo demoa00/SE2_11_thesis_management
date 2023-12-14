@@ -250,7 +250,7 @@ export class UpdateThesisFormComponent implements OnInit{
     console.log(event.target.value)
     let cosupervisor = this.externalCoSupervisors.find(elemento => elemento.externalCoSupervisorId==event.target.value)
     this.externalCoSupervisors = this.externalCoSupervisors.filter(elemento => elemento.externalCoSupervisorId!=event.target.value)
-    this.selectedCoSupervisors.push(cosupervisor?cosupervisor:{
+    this.selectedCoSupervisors.push(cosupervisor || {
       externalCoSupervisorId: '',
       name:'',
       surname:'',
@@ -262,7 +262,7 @@ export class UpdateThesisFormComponent implements OnInit{
     const valoreDiv = event.target.textContent;
     let cosupervisor = this.selectedCoSupervisors.find(elemento => elemento.name==valoreDiv.split(' ')[0] && elemento.surname==valoreDiv.split(' ')[1])
     this.selectedCoSupervisors = this.selectedCoSupervisors.filter(elemento => elemento.externalCoSupervisorId!=cosupervisor?.externalCoSupervisorId)
-    this.externalCoSupervisors.push(cosupervisor?cosupervisor:{
+    this.externalCoSupervisors.push(cosupervisor || {
       externalCoSupervisorId: '',
       name:'',
       surname:'',
@@ -273,7 +273,7 @@ export class UpdateThesisFormComponent implements OnInit{
     console.log(event.target.value)
     let cosupervisor = this.professors.find(elemento => elemento.professorId==event.target.value)
     this.professors = this.professors.filter(elemento => elemento.professorId!=event.target.value)
-    this.selectedProfessors.push(cosupervisor?cosupervisor:{
+    this.selectedProfessors.push(cosupervisor || {
       professorId: '',
       name:'',
       surname:'',
@@ -285,7 +285,7 @@ export class UpdateThesisFormComponent implements OnInit{
     const valoreDiv = event.target.textContent;
     let cosupervisor = this.selectedProfessors.find(elemento => elemento.name==valoreDiv.split(' ')[0] && elemento.surname==valoreDiv.split(' ')[1])
     this.selectedProfessors = this.selectedProfessors.filter(elemento => elemento.professorId!=cosupervisor?.professorId)
-    this.professors.push(cosupervisor?cosupervisor:{
+    this.professors.push(cosupervisor || {
       professorId: '',
       name:'',
       surname:'',
@@ -297,7 +297,7 @@ export class UpdateThesisFormComponent implements OnInit{
     let cds = this.degrees.find(elemento => elemento.degreeId==event.target.value)
     this.degrees = [];
     this.degrees = originalProfessors.filter(elemento => elemento.degreeId!=event.target.value)
-    this.selectedCdS.push(cds?cds:{
+    this.selectedCdS.push(cds || {
       titleDegree: '',
       degreeId:'',
     })
@@ -308,7 +308,7 @@ export class UpdateThesisFormComponent implements OnInit{
     const valoreDiv = event.target.textContent;
     let cds = this.selectedCdS.find(elemento => elemento.degreeId==valoreDiv.split(' ')[0])
     this.selectedCdS = this.selectedCdS.filter(elemento => elemento.degreeId!=cds?.degreeId)
-    this.degrees.push(cds?cds:{
+    this.degrees.push(cds || {
       titleDegree: '',
       degreeId:'',
     })

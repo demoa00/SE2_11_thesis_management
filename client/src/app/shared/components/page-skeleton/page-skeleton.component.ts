@@ -1,13 +1,9 @@
 import {
-  AfterViewInit,
   Component,
-  ContentChild,
-  ElementRef,
   EventEmitter,
   Injectable,
   Input,
-  Output,
-  ViewChild
+  Output
 } from '@angular/core';
 import {Router} from "@angular/router";
 import {APIService} from "../../services/api.service";
@@ -104,7 +100,7 @@ export class PageSkeletonComponent {
     let month = $event.value.getMonth() + 1 < 10 ? `0${$event.value.getMonth() + 1}` : ($event.value.getMonth() + 1).toString()
     let day = $event.value.getDate() < 10 ? `0${$event.value.getDate()}` : $event.value.getDate().toString()
     let date = `${year}-${month}-${day}`
-    this.api.putVirtualClock(date).then((response: any) => {
+    this.api.putVirtualClock(date).then(() => {
       this.api.getAllProposals(null).then((response: any) => {
         this.newProposals.emit(response)
       }).catch((error: any) => {

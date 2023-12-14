@@ -22,7 +22,7 @@ describe('FiltersContainerComponent', () => {
       'getExternalCoSupervisors': Promise.resolve([]),
       'getCoSupervisors': Promise.resolve([])
     });
-    
+
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, MatDatepickerModule, MatNativeDateModule, MatIconModule, NoopAnimationsModule],
       declarations: [FiltersContainerComponent, ButtonComponent, DropdownCheckboxComponent],
@@ -33,26 +33,26 @@ describe('FiltersContainerComponent', () => {
     component = fixture.componentInstance;
 
     await fixture.whenStable();
-    
+
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  
+
   it('should reset selectedCs and selectedExtCs when cosupervisors are null', () => {
     component.params = { cosupervisors: [{ professorId: 1, name: 'John Doe' }] };
     component.selectedCs = [{ professorId: 1, name: 'John Doe' }];
     component.selectedExtCs = [{ externalCoSupervisorId: 2, name: 'Jane Smith' }];
-  
+
     component.ngOnChanges({ params: { currentValue: { cosupervisors: null } }, selectedDate: null });
-  
+
     expect(component.selectedCs.length).toEqual(0);
     expect(component.selectedExtCs.length).toEqual(0);
     expect(component.selectedDate).toBe(null);
   });
-  
+
   it('should return true if cs is in selectedCs', () => {
     component.selectedCs = [
       { professorId: 1, name: 'John Doe' },
@@ -90,7 +90,7 @@ describe('FiltersContainerComponent', () => {
 
   it('should set params.cosupervisors to null if selectedCs and selectedExtCs are empty', () => {
     const csToRemove = { professorId: 1, name: 'John Doe' };
-    
+
     component.selectedCs = [csToRemove];
     component.selectedExtCs = [];
 
@@ -140,7 +140,7 @@ describe('FiltersContainerComponent', () => {
 
   it('should set params.cosupervisors to null if selectedCs and selectedExtCs are empty', () => {
     const extCsToRemove = { externalCoSupervisorId: 1, name: 'Jane Smith' };
-    
+
     component.selectedCs = [];
     component.selectedExtCs = [extCsToRemove];
 
@@ -169,7 +169,7 @@ describe('FiltersContainerComponent', () => {
   }));
 
   it('should handle error and emit empty proposals on API call failure', fakeAsync(() => {
-    apiService.getAllProposals.and.returnValue(Promise.reject('API error'));
+    apiService.getAllProposals.and.returnValue(Promise.reject(new Error('API error')));
 
     spyOn(component.newProposals, 'emit');
 
@@ -187,30 +187,30 @@ describe('FiltersContainerComponent', () => {
   it('should reset selectedDate and params.expirationDate to null and update proposals', () => {
     component.selectedDate = new FormControl(new Date());
     component.params = { expirationDate: '2023-12-31' };
-  
+
     component.deleteDate();
-  
+
     expect(component.selectedDate).toBeNull();
     expect(component.params.expirationDate).toBeNull();
-  
+
     expect(apiService.getAllProposals).toHaveBeenCalledWith(component.params);
   });
 
   it('should update selectedDate and params.expirationDate and call updateProposals for a month less than 10', () => {
     const dateValue = new Date(2023, 0, 15); // January 15, 2023
     const dateEvent = { value: dateValue } as MatDatepickerInputEvent<any, any>;
-  
+
     spyOn(component, 'updateProposals');
     component.selectDate(dateEvent);
-  
+
     expect(component.selectedDate.value).toEqual(dateValue);
-  
+
     const expectedExpirationDate = '2023-01-15';
     expect(component.params.expirationDate).toEqual(expectedExpirationDate);
 
     expect(component.updateProposals).toHaveBeenCalled();
   });
-  
+
   it('should update selectedDate, params.expirationDate, and call updateProposals for a month greater than or equal to 10', fakeAsync(() => {
     const dateValue = new Date(2023, 9, 15); // October 15, 2023
     const dateEvent = { value: dateValue } as MatDatepickerInputEvent<any, any>;
@@ -222,7 +222,7 @@ describe('FiltersContainerComponent', () => {
 
     expect(component.selectedDate).toEqual(dateEvent);
     expect(component.params.expirationDate).toEqual('2023-10-15');
-    
+
     expect(component.updateProposals).toHaveBeenCalled();
   }));
 
@@ -256,7 +256,7 @@ describe('FiltersContainerComponent', () => {
 
     component.toggleAbroad();
     tick();
-    
+
     expect(component.abroad).toBe(false);
 
     expect(component.params.abroad).toBe(null);

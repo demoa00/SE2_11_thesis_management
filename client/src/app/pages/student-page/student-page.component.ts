@@ -1,14 +1,10 @@
 // @ts-ignore
 
-import {Component, EventEmitter, Injectable} from '@angular/core';
+import {Component, EventEmitter} from '@angular/core';
 import {APIService} from "../../shared/services/api.service";
 import {User} from "../../shared/classes/user";
 import {StudentDetails} from "../../shared/classes/student/student-details";
 import * as dayjs from "dayjs"
-import {
-  PageSkeletonComponent,
-} from "../../shared/components/page-skeleton/page-skeleton.component";
-
 type ProposalsParams = {
   text: string | null;
   supervisors: {}[] | null;
@@ -38,7 +34,7 @@ type Proposal = {
 export class StudentPageComponent {
   notificationsOpen: boolean = false;
 
-  constructor(public api: APIService, private parent: PageSkeletonComponent) {
+  constructor(public api: APIService) {
     this.api.setStudent()
   }
   protected readonly dayjs = dayjs;
@@ -221,7 +217,7 @@ export class StudentPageComponent {
       'date': this.dayjs().format('YYYY-MM-DD'),
     }
 
-    this.api.insertNewApplication(body).then((response: any) => {
+    this.api.insertNewApplication(body).then(() => {
       this.canApply = false
       this.togglePopup()
       this.showSuccessAlert = true
