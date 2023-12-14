@@ -23,14 +23,14 @@
     <table class="cvTable">
       <caption></caption>
       <tr>
-        <td><p class="mr-4 font-medium">Upload your CV (PDF document)</p></td>
-        <td>
+        <th><p class="mr-4 font-medium">Upload your CV (PDF document)</p></th>
+        <th>
           <app-button>
             <label for="upload-file" class="cursor-pointer">Upload</label>
             <input class="hidden" type="file" id="upload-file" name="upload-file" accept=".pdf"
                    (input)="loadFile($event)">
           </app-button>
-        </td>
+        </th>
       </tr>
       <tr *ngIf="cv.name !== ''">
         <td><p class="mr-4 font-medium hover:underline cursor-pointer" (click)="getCv()">Your CV: <span class="font-normal">{{ cv.name }}</span></p></td>

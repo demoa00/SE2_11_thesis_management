@@ -173,7 +173,10 @@ export class CreateThesisFormComponent implements OnInit{
 
     async onSubmit() {
       if (this.myForm.valid) {
-        this.myForm.get('keywords')?.value!=''?this.keywordsList.push(this.myForm.get('keywords')?.value):''
+        if(this.myForm.get('keywords')?.value!=''){
+          this.keywordsList.push(this.myForm.get('keywords')?.value)
+        }
+        // this.myForm.get('keywords')?.value!=''?this.keywordsList.push(this.myForm.get('keywords')?.value):''
         let submitform = {
           title: this.myForm.get('title')?.value,
           keywords: this.keywordsList,
