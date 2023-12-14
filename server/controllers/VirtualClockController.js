@@ -7,7 +7,7 @@ module.exports.updateVirtualClock = async function updateVirtualClock(req, res, 
     try {
         await VirtualClock.updateVirtualClock(req.body.date);
 
-        utils.writeJson(res, 'OK', 200);
+        utils.writeJson(res, { message: 'OK' }, 200);
     } catch (error) {
         utils.writeJson(res, { error: error.message }, error.code);
     }
