@@ -1,10 +1,9 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateThesisFormComponent } from './create-thesis-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APIService } from 'src/app/shared/services/api.service';
-import { of } from 'rxjs';
 
 describe('CreateThesisFormComponent', () => {
   let component: CreateThesisFormComponent;
@@ -45,26 +44,26 @@ describe('CreateThesisFormComponent', () => {
       ],
       notes: 'Test Notes',
     };
-  
+
     component.thesisProposal = mockThesisProposal;
 
     const updateCdSValidatorSpy = spyOn(component, 'updateCdSValidator');
     const updateKeywordValidatorSpy = spyOn(component, 'updateKeywordValidator');
     spyOn(console, 'log');
-  
+
     component.ngOnInit();
-  
+
     expect(component.myForm.get('title')?.value).toBe(mockThesisProposal.title);
     expect(component.myForm.get('level')?.value).toBe(mockThesisProposal.level);
-  
+
     expect(component.keywordsList).toEqual(mockThesisProposal.keywords);
     expect(component.selectedCdS).toEqual(mockThesisProposal.CdS);
-  
+
     expect(updateCdSValidatorSpy).toHaveBeenCalled();
     expect(updateKeywordValidatorSpy).toHaveBeenCalled();
     expect(console.log).toHaveBeenCalledWith(mockThesisProposal);
   });
-  
+
   it('should handle valid stringDegrees', () => {
     const degreesData = '[{"titleDegree": "Degree 1", "degreeId": 1}]';
     localStorage.setItem('degrees', degreesData);
@@ -168,22 +167,22 @@ describe('CreateThesisFormComponent', () => {
 
   it('should update CdS validator', () => {
     const mockAbstractControl = jasmine.createSpyObj('AbstractControl', ['setValidators', 'updateValueAndValidity']);
-  
+
     spyOn(component.myForm, 'get').and.returnValue(mockAbstractControl);
-  
+
     component.updateCdSValidator();
-  
+
     expect(mockAbstractControl.setValidators).toHaveBeenCalled();
     expect(mockAbstractControl.updateValueAndValidity).toHaveBeenCalled();
   });
-  
+
   it('should update CdS validator', () => {
     const mockAbstractControl = jasmine.createSpyObj('AbstractControl', ['setValidators', 'updateValueAndValidity']);
-  
+
     spyOn(component.myForm, 'get').and.returnValue(mockAbstractControl);
-  
+
     component.updateKeywordValidator();
-  
+
     expect(mockAbstractControl.setValidators).toHaveBeenCalled();
     expect(mockAbstractControl.updateValueAndValidity).toHaveBeenCalled();
   });
