@@ -75,7 +75,7 @@ describe("getThesisProposals ", () => {
 
     const thesisProposalsForProfessor = ["thesisProposal1", "thesisProposal2"];
 
-    checkRole.isProfessor.mockResolvedValue("professor");
+    checkRole.isProfessor.mockResolvedValue(true);
 
     getThesisProposalsForProfessor.mockResolvedValue(
       thesisProposalsForProfessor
