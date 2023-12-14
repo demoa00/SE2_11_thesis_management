@@ -89,7 +89,7 @@ exports.getThesisProposalsForStudent = function (codDegree, filter) {
     filter.expirationdate = filter.expirationdate instanceof Array ? filter.expirationdate[0] : filter.expirationdate;
 
     sql_filter_expirationdate = 'expirationDate < ? ';
-    params.push(filter.expirationdate);
+    params.push(dayjs(filter.expirationdate).format('YYYY-MM-DD'));
   }
   if (filter?.abroad) {
     filter.abroad = filter.abroad instanceof Array ? filter.abroad[0] : filter.abroad;
