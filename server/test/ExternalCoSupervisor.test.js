@@ -7,7 +7,7 @@ const {
 } = require("../service/ExternalCoSupervisorService.js");
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  jest.resetAllMocks();
 });
 
 jest.mock("../service/ExternalCoSupervisorService.js", () => ({
@@ -15,16 +15,17 @@ jest.mock("../service/ExternalCoSupervisorService.js", () => ({
   getExternalCoSupervisorById: jest.fn(),
 }));
 
+const mockRes = {
+  writeHead: jest.fn().mockReturnThis(),
+  end: jest.fn().mockReturnThis(),
+};
+const mockNext = {};
+
 describe("getExternalCoSupervisors", () => {
   test("should respond with 200", async () => {
     const mockReq = {
       user: {},
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const ExternalCoSupervisorList = [
       "ExternalCoSupervisor1",
@@ -55,11 +56,6 @@ describe("getExternalCoSupervisorById", () => {
         ExternalCoSupervisorId: "ExternalCoSupervisor1",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const externalCoSupervisor = {
       externalCoSupervisorId: "ExternalCoSupervisor1",
@@ -84,11 +80,6 @@ describe("getExternalCoSupervisorById", () => {
     const mockReq = {
       params: {},
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     getExternalCoSupervisorById.mockRejectedValue({
       code: 404,

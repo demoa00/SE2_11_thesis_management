@@ -4,12 +4,18 @@ const StudentController = require("../controllers/StudentController.js");
 const { getStudentById } = require("../service/StudentService.js");
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  jest.resetAllMocks();
 });
 
 jest.mock("../service/StudentService.js", () => ({
   getStudentById: jest.fn(),
 }));
+
+const mockRes = {
+  writeHead: jest.fn().mockReturnThis(),
+  end: jest.fn().mockReturnThis(),
+};
+const mockNext = {};
 
 describe("getStudentById", () => {
   test("should respond with 200", async () => {
@@ -18,11 +24,6 @@ describe("getStudentById", () => {
         studentId: "s123456",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const student = {
       studentId: "s123456",
@@ -43,11 +44,6 @@ describe("getStudentById", () => {
         studentId: "s123324",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     getStudentById.mockRejectedValue({ code: 404, message: "Not Found" });
 

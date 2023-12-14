@@ -4,21 +4,22 @@ const KeywordController = require("../controllers/KeywordController.js");
 const { getKeywords } = require("../service/KeywordService.js");
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  jest.resetAllMocks();
 });
 
 jest.mock("../service/KeywordService.js", () => ({
   getKeywords: jest.fn(),
 }));
 
+const mockRes = {
+  writeHead: jest.fn().mockReturnThis(),
+  end: jest.fn().mockReturnThis(),
+};
+const mockNext = {};
+
 describe("getKeywords", () => {
   test("should return 200", async () => {
     const mockReq = {};
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     getKeywords.mockResolvedValue(["keyword1", "keyword2"]);
 
@@ -33,11 +34,6 @@ describe("getKeywords", () => {
   });
   test("should respond with 404 not found - no Keywords available", async () => {
     const mockReq = {};
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     getKeywords.mockRejectedValue({ code: 404, message: "Not Found" });
 

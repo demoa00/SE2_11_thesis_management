@@ -7,7 +7,7 @@ const {
 } = require("../service/ProfessorService.js");
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  jest.resetAllMocks();
 });
 
 jest.mock("../service/ProfessorService.js", () => ({
@@ -15,14 +15,15 @@ jest.mock("../service/ProfessorService.js", () => ({
   getProfessorById: jest.fn(),
 }));
 
+const mockRes = {
+  writeHead: jest.fn().mockReturnThis(),
+  end: jest.fn().mockReturnThis(),
+};
+const mockNext = {};
+
 describe("getProfessors", () => {
   test("should respond with 200", async () => {
     const mockReq = {};
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const professorsList = [
       {
@@ -59,11 +60,6 @@ describe("getProfessorsById", () => {
         professorId: "p987123",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const professor = {
       professorId: "p123098",
@@ -90,11 +86,6 @@ describe("getProfessorsById", () => {
     const mockReq = {
       params: {},
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     getProfessorById.mockRejectedValue({ code: 404, message: "Not Found" });
 

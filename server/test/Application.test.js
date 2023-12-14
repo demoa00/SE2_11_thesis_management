@@ -11,7 +11,7 @@ const {
 const checkRole = require("../utils/checkRole.js");
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  jest.resetAllMocks();
 });
 
 jest.mock("../service/ApplicationService.js", () => ({
@@ -27,6 +27,12 @@ jest.mock("../utils/checkRole.js", () => ({
   isProfessor: jest.fn(),
 }));
 
+const mockRes = {
+  writeHead: jest.fn().mockReturnThis(),
+  end: jest.fn().mockReturnThis(),
+};
+const mockNext = {};
+
 describe("getApplications", () => {
   test("should return 200 - accessing as a student", async () => {
     const mockReq = {
@@ -37,11 +43,6 @@ describe("getApplications", () => {
         studentId: "s876543",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const ApplicationsListForStudent = ["application1", "application2"];
 
@@ -67,11 +68,6 @@ describe("getApplications", () => {
         professorId: "p123654",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const ApplicationsListForProfessor = ["application1", "application2"];
 
@@ -97,11 +93,6 @@ describe("getApplications", () => {
         studentId: "s876543",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     checkRole.isStudent.mockResolvedValue("student");
 
@@ -132,11 +123,6 @@ describe("getApplicationById", () => {
         studentId: "s876543",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const Application = [
       {
@@ -201,11 +187,6 @@ describe("insertNewApplication", () => {
         thesisProposalId: "t123456",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const newApplication = {
       newApplication: "/api/Application/24",
@@ -239,11 +220,6 @@ describe("insertNewApplication", () => {
         thesisProposalId: "t123457",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const newApplication = {
       newApplication: "/api/Application/24",
@@ -312,11 +288,6 @@ describe("updateNewApplication", () => {
       },
       body: {},
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     await ApplicationController.updateApplication(mockReq, mockRes, mockNext);
 

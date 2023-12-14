@@ -11,13 +11,6 @@ const {
 const { isProfessor, isSecretaryClerck } = require("../utils/checkRole.js");
 
 beforeEach(() => {
-  getThesisRequestsForProfessor.mockClear();
-  getThesisRequestsForSecretary.mockClear();
-  getThesisRequestById.mockClear();
-  insertNewThesisRequest.mockClear();
-  updateThesisRequest.mockClear();
-  isProfessor.mockClear();
-  isSecretaryClerck.mockClear();
   jest.resetAllMocks();
 });
 
@@ -34,6 +27,12 @@ jest.mock("../utils/checkRole.js", () => ({
   isProfessor: jest.fn(),
 }));
 
+const mockRes = {
+  writeHead: jest.fn().mockReturnThis(),
+  end: jest.fn().mockReturnThis(),
+};
+const mockNext = {};
+
 describe("getThesisRequest ", () => {
   test("should respond with 200 - as Secretary Clerk", async () => {
     const mockReq = {
@@ -41,11 +40,6 @@ describe("getThesisRequest ", () => {
         userId: "s123654",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const thesisRequestsForSecretary = ["thesisRequest1", "thesisRequest2"];
 
@@ -68,11 +62,6 @@ describe("getThesisRequest ", () => {
         userId: "p123654",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const thesisRequestsForProfessor = ["thesisRequest1", "thesisRequest2"];
 
@@ -95,11 +84,6 @@ describe("getThesisRequest ", () => {
         studentId: "s123456",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     await ThesisRequestController.getThesisRequests(mockReq, mockRes, mockNext);
 
@@ -120,11 +104,6 @@ describe("getThesisRequestById ", () => {
         thesisRequestId: "123",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const thesisRequest = ["thesisRequest"];
 
@@ -153,11 +132,6 @@ describe("insertNewThesisRequest", () => {
       },
       body: {},
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const newThesisRequest = ["newThesisRequest"];
 
@@ -189,11 +163,6 @@ describe("updateThesisRequest", () => {
         thesisRequestId: "123",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const thesisRequestUpdated = ["thesisRequestUpdated"];
 

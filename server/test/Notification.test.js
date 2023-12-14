@@ -8,7 +8,7 @@ const {
 } = require("../service/NotificationService.js");
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  jest.resetAllMocks();
 });
 
 jest.mock("../service/NotificationService.js", () => ({
@@ -17,6 +17,12 @@ jest.mock("../service/NotificationService.js", () => ({
   deleteAllNotifications: jest.fn(),
 }));
 
+const mockRes = {
+  writeHead: jest.fn().mockReturnThis(),
+  end: jest.fn().mockReturnThis(),
+};
+const mockNext = {};
+
 describe("getNotification ", () => {
   test("should respond with 200", async () => {
     const mockReq = {
@@ -24,11 +30,6 @@ describe("getNotification ", () => {
         userId: "s123456",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const notificationsList = ["notification1", "notification2"];
 
@@ -49,11 +50,6 @@ describe("getNotification ", () => {
         userId: "s123456",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     getNotifications.mockRejectedValue({
       code: 404,
@@ -81,11 +77,6 @@ describe("updateNotification ", () => {
         notificationId: "123",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     updateNotification.mockResolvedValue();
 
@@ -105,11 +96,6 @@ describe("deleteNotification ", () => {
         userId: "s123456",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     deleteAllNotifications.mockResolvedValue();
 
