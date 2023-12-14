@@ -9,7 +9,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { APIService } from 'src/app/shared/services/api.service';
 import { FormControl } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('FiltersContainerComponent', () => {
   let component: FiltersContainerComponent;
@@ -24,7 +24,7 @@ describe('FiltersContainerComponent', () => {
     });
     
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatDatepickerModule, MatNativeDateModule, MatIconModule, BrowserAnimationsModule],
+      imports: [HttpClientTestingModule, MatDatepickerModule, MatNativeDateModule, MatIconModule, NoopAnimationsModule],
       declarations: [FiltersContainerComponent, ButtonComponent, DropdownCheckboxComponent],
       providers: [{ provide: APIService, useValue: apiService }]
     }).compileComponents();

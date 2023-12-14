@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { NotificationsContainerComponent } from 'src/app/shared/components/notification/container/notifications-container/notifications-container.component';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
+import { ProfilePageComponent } from 'src/app/shared/profile-page/profile-page.component';
 
 class mockSocket {
   on(event: String): Observable<any> {
@@ -35,11 +36,13 @@ describe('StudentPageComponent', () => {
       'insertNewApplication': Promise.resolve([]),
       'checkAutorization': Promise.resolve([]),
       'getSupervisors': Promise.resolve([]),
+      'getNotifications': Promise.resolve([]),
+      'getCareer': Promise.resolve([])
     });
 
     await TestBed.configureTestingModule({
       imports: [FormsModule, MatIconModule],
-      declarations: [StudentPageComponent, PageSkeletonComponent, ButtonComponent, AlertComponent, PopupComponent, IconComponent, DropdownCheckboxComponent, NotificationsContainerComponent],
+      declarations: [StudentPageComponent, PageSkeletonComponent, ButtonComponent, AlertComponent, PopupComponent, IconComponent, DropdownCheckboxComponent, NotificationsContainerComponent, ProfilePageComponent],
       providers: [
         { provide: APIService, useValue: apiService },
         { provide: Socket, useClass: mockSocket }
