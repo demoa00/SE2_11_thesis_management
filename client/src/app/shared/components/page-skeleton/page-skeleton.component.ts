@@ -30,7 +30,6 @@ import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 
 
 export class PageSkeletonComponent {
-
   constructor(private _router: Router, private api: APIService, private darkMode: DarkModeService) {
   }
 
@@ -42,6 +41,7 @@ export class PageSkeletonComponent {
   @Output() profilePage = new EventEmitter<boolean>();
   @Output() notificationsOpenChange = new EventEmitter<boolean>();
   @Output() newProposals = new EventEmitter<any>();
+  @Output() newApplications = new EventEmitter<any>();
 
   user: User | undefined;
   student: StudentDetails | undefined;
@@ -105,11 +105,13 @@ export class PageSkeletonComponent {
     let day = $event.value.getDate() < 10 ? `0${$event.value.getDate()}` : $event.value.getDate().toString()
     let date = `${year}-${month}-${day}`
     this.api.putVirtualClock(date).then((response: any) => {
-      console.log(response)
       this.api.getAllProposals(null).then((response: any) => {
-        console.log("NEW PROPOSALS")
-        console.log(response)
         this.newProposals.emit(response)
+      }).catch((error: any) => {
+        console.log(error)
+      })
+      this.api.getApplications().then((response: any) => {
+        this.newApplications.emit(response)
       }).catch((error: any) => {
         console.log(error)
       })

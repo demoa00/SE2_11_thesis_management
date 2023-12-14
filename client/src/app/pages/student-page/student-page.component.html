@@ -5,6 +5,7 @@
   [notificationsOpen]="notificationsOpen"
   (notificationsOpenChange)="notificationsOpen = $event"
   (newProposals)="proposals = $event"
+  (newApplications)="newApplications = $event"
   >
 
   <div class="leftMenuItem" left-col
@@ -130,7 +131,7 @@
     </div>
   </div>
 
-  <app-application-view *ngIf="menuItems[1].selected && !profilePage" main-col></app-application-view>
+  <app-application-view [applications]="newApplications" *ngIf="menuItems[1].selected && !profilePage" main-col></app-application-view>
   <app-profile-page *ngIf="profilePage" main-col></app-profile-page>
   <app-notifications-container
     (applicationsPage) = "goToApplicationPage($event)"

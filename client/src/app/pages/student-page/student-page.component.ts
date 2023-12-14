@@ -89,6 +89,7 @@ export class StudentPageComponent {
   }
 
   unreadCounter = 0
+  newApplications: any;
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('user') || '{}')
