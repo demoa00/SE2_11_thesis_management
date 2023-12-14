@@ -11,6 +11,8 @@ import { Observable } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
 import { NotificationComponent } from 'src/app/shared/components/notification/notification/notification.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 class mockSocket {
   on(event: String): Observable<any> {
@@ -24,7 +26,7 @@ describe('ProfessorPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatIconModule, BrowserAnimationsModule],
+      imports: [HttpClientTestingModule, MatIconModule, BrowserAnimationsModule, MatDatepickerModule, MatNativeDateModule],
       declarations: [ProfessorPageComponent, ThesisManagementComponent, PageSkeletonComponent, IconComponent, NotificationsContainerComponent, NotificationComponent],
       providers: [{ provide: Socket, useClass: mockSocket }]
     }).compileComponents();

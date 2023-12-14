@@ -6,6 +6,8 @@ import { ButtonComponent } from '../button/button.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { APIService } from '../../services/api.service';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 describe('PageSkeletonComponent', () => {
   let component: PageSkeletonComponent;
@@ -21,7 +23,7 @@ describe('PageSkeletonComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule, MatIconModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, MatIconModule, MatDatepickerModule, MatNativeDateModule],
       declarations: [PageSkeletonComponent, ButtonComponent],
       providers: [{ provide: APIService, useValue: apiService }]
     }).compileComponents();
