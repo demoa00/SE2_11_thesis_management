@@ -4,6 +4,8 @@
   [unreadCounter]="unreadCounter"
   [notificationsOpen]="notificationsOpen"
   (notificationsOpenChange)="notificationsOpen = $event"
+  (newProposals)="proposals = $event"
+  (newApplications)="newApplications = $event"
   >
 
   <div class="leftMenuItem" left-col
@@ -20,7 +22,7 @@
     <div class="proposalsContainer">
       <div class="searchToolsContainer">
         <div class="searchbar">
-          <input id="search-input" type="text" placeholder="Search..." [ngModel]="searchValue"
+          <input id="search-input" type="text" placeholder="Search among title, description, keywords..." [ngModel]="searchValue"
                  (ngModelChange)="updateSearchValue($event)"/>
         </div>
         <app-button class="rounded" (click)="search()">
@@ -129,7 +131,7 @@
     </div>
   </div>
 
-  <app-application-view *ngIf="menuItems[1].selected && !profilePage" main-col></app-application-view>
+  <app-application-view [applications]="newApplications" *ngIf="menuItems[1].selected && !profilePage" main-col></app-application-view>
   <app-profile-page *ngIf="profilePage" main-col></app-profile-page>
   <app-notifications-container
     (applicationsPage) = "goToApplicationPage($event)"

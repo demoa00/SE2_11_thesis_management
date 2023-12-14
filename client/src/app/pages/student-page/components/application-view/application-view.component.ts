@@ -9,7 +9,7 @@ import {APIService} from "../../../../shared/services/api.service";
 export class ApplicationViewComponent {
   constructor(private api: APIService) { }
 
-  applications: any;
+  @Input() applications: any;
   selectedApplication: any;
   user = JSON.parse(localStorage.getItem('user') || '{}')
 

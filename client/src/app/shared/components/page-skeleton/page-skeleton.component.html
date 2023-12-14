@@ -26,9 +26,9 @@
       <h2 class="title">thesis proposals</h2>
       <div class="md:flex items-center max-md:hidden">
         <div class="relative">
-          <input class="w-0 h-0 absolute -bottom-1" (dateChange)="selectDate($event)" matInput [matDatepicker]="picker">
+          <input class="w-0 h-0 absolute -bottom-1" [min]="today" (dateChange)="selectDate($event)" matInput [matDatepicker]="picker">
           <mat-icon class="mr-4" (click)="picker.open()">access_time</mat-icon>
-          <mat-datepicker #picker></mat-datepicker>
+          <mat-datepicker #picker ></mat-datepicker>
         </div>
         <img alt="propic" src="https://picsum.photos/512/512" class="propic mr-4" *ngIf="currentRoute!=='/'">
         <p class="text-sm uppercase cursor-pointer hover:underline" (click)="goToProfile()"

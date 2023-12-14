@@ -89,7 +89,7 @@ exports.getThesisProposalsForStudent = function (codDegree, filter) {
     filter.expirationdate = filter.expirationdate instanceof Array ? filter.expirationdate[0] : filter.expirationdate;
 
     sql_filter_expirationdate = 'expirationDate < ? ';
-    params.push(filter.expirationdate);
+    params.push(dayjs(filter.expirationdate).format('YYYY-MM-DD'));
   }
   if (filter?.abroad) {
     filter.abroad = filter.abroad instanceof Array ? filter.abroad[0] : filter.abroad;
@@ -123,7 +123,7 @@ exports.getThesisProposalsForStudent = function (codDegree, filter) {
       if (err) {
         reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (rows.length == 0) {
-        reject(new PromiseError({ code: 404, message: "Not Found" }));
+        resolve([]);
       } else {
         let thesisProposalsList = rows.map((r) => ({
           thesisProposalId: r.thesisProposalId,
