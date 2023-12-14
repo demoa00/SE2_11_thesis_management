@@ -77,8 +77,12 @@
 .applicationsContainer .application .status.accepted {
   background: #75ce8f;
 }
-.applicationsContainer .application .status.rejected, .applicationsContainer .application .status.cancelled {
+.applicationsContainer .application .status.rejected {
   background: #f56565;
+}
+.applicationsContainer .application .status.cancelled {
+  background: #e5e7eb;
+  color: #545454;
 }
 
 /*# sourceMappingURL=application-view.component.css.map */

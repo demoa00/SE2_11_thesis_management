@@ -41,8 +41,12 @@
       &.accepted {
         background: $success;
       }
-      &.rejected, &.cancelled {
+      &.rejected {
         background: $danger;
+      }
+      &.cancelled {
+        background: $lightgrey;
+        color: #545454;
       }
     }
   }

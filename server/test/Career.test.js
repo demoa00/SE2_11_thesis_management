@@ -4,12 +4,18 @@ const CareerController = require("../controllers/CareerController.js");
 const { getCareer } = require("../service/CareerService.js");
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  jest.resetAllMocks();
 });
 
 jest.mock("../service/CareerService.js", () => ({
   getCareer: jest.fn(),
 }));
+
+const mockRes = {
+  writeHead: jest.fn().mockReturnThis(),
+  end: jest.fn().mockReturnThis(),
+};
+const mockNext = {};
 
 describe("getCareer ", () => {
   test("should respond with 200", async () => {
@@ -18,12 +24,6 @@ describe("getCareer ", () => {
         studentId: "s123456",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-      set: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const career = ["career"];
 

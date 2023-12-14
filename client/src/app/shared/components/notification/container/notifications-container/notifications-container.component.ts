@@ -84,6 +84,11 @@ export class NotificationsContainerComponent {
       case 2:
         this.applicationsPage.emit(true);
         break;
+      case 5:
+        this.applicationsPage.emit(true);
+        break;
+      default:
+        break;
       //other cases here
     }
     this.close.emit(true);

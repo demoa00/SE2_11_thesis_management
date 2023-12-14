@@ -4,12 +4,18 @@ const VirtualClockController = require("../controllers/VirtualClockController.js
 const { updateVirtualClock } = require("../service/VirtualClockService.js");
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  jest.resetAllMocks();
 });
 
 jest.mock("../service/VirtualClockService.js", () => ({
   updateVirtualClock: jest.fn(),
 }));
+
+const mockRes = {
+  writeHead: jest.fn().mockReturnThis(),
+  end: jest.fn().mockReturnThis(),
+};
+const mockNext = {};
 
 describe("updateVirtualClock ", () => {
   test("should respond with 200", async () => {
@@ -18,11 +24,6 @@ describe("updateVirtualClock ", () => {
         date: "",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     updateVirtualClock.mockResolvedValue();
 
@@ -31,6 +32,8 @@ describe("updateVirtualClock ", () => {
     expect(mockRes.writeHead).toHaveBeenCalledWith(200, {
       "Content-Type": "application/json",
     });
-    expect(mockRes.end).toHaveBeenCalledWith("OK");
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ message: "OK" }, null, 2)
+    );
   });
 });

@@ -10,11 +10,7 @@ const {
 const checkRole = require("../utils/checkRole.js");
 
 beforeEach(() => {
-  getThesisProposalsForStudent.mockClear();
-  getThesisProposalsForProfessor.mockClear();
-  getThesisProposalById.mockClear();
-  insertNewThesisProposal.mockClear();
-  jest.clearAllMocks();
+  jest.resetAllMocks();
 });
 
 jest.mock("../service/ThesisProposalService.js", () => ({
@@ -29,6 +25,13 @@ jest.mock("../utils/checkRole.js", () => ({
   isProfessor: jest.fn(),
 }));
 
+const mockRes = {
+  writeHead: jest.fn().mockReturnThis(),
+  end: jest.fn().mockReturnThis(),
+};
+
+const mockNext = {};
+
 describe("getThesisProposals ", () => {
   test("should respond with 200 - as student", async () => {
     const mockReq = {
@@ -36,11 +39,6 @@ describe("getThesisProposals ", () => {
         studentId: "s123456",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const thesisProposalsForStudent = ["thesisProposal1", "thesisProposal2"];
 
@@ -67,11 +65,6 @@ describe("getThesisProposals ", () => {
         professorId: "p123654",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const thesisProposalsForProfessor = ["thesisProposal1", "thesisProposal2"];
 
@@ -100,11 +93,6 @@ describe("getThesisProposals ", () => {
         studentId: "s123456",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     checkRole.isStudent.mockResolvedValue("student");
 
@@ -138,11 +126,6 @@ describe("getThesisProposalById", () => {
         thesisProposalId: 11,
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const thesisProposal = {
       thesisProposalId: 11,
@@ -180,11 +163,6 @@ describe("getThesisProposalById", () => {
         thesisProposalId: 11,
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const thesisProposal = {
       thesisProposalId: 11,
@@ -222,11 +200,6 @@ describe("getThesisProposalById", () => {
         thesisProposalId: 11,
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const thesisProposal = {
       thesisProposalId: 11,
@@ -270,11 +243,6 @@ describe("insertNewThesisProposal", () => {
         professorId: "p123654",
       },
     };
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     const newThesisProposal = {
       newThesisProposal: "/api/thesisProposals/24",

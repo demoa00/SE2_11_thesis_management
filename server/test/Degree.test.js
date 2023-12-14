@@ -11,14 +11,15 @@ jest.mock("../service/DegreeService.js", () => ({
   getDegrees: jest.fn(),
 }));
 
+const mockRes = {
+  writeHead: jest.fn().mockReturnThis(),
+  end: jest.fn().mockReturnThis(),
+};
+const mockNext = {};
+
 describe("getDegrees", () => {
   test("should return 200", async () => {
     const mockReq = {};
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     getDegrees.mockResolvedValue(["degree1", "degree2"]);
 
