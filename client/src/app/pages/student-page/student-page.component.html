@@ -4,6 +4,7 @@
   [unreadCounter]="unreadCounter"
   [notificationsOpen]="notificationsOpen"
   (notificationsOpenChange)="notificationsOpen = $event"
+  (newProposals)="proposals = $event"
   >
 
   <div class="leftMenuItem" left-col
@@ -20,7 +21,7 @@
     <div class="proposalsContainer">
       <div class="searchToolsContainer">
         <div class="searchbar">
-          <input id="search-input" type="text" placeholder="Search..." [ngModel]="searchValue"
+          <input id="search-input" type="text" placeholder="Search among title, description, keywords..." [ngModel]="searchValue"
                  (ngModelChange)="updateSearchValue($event)"/>
         </div>
         <app-button class="rounded" (click)="search()">
