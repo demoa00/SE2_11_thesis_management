@@ -13,6 +13,10 @@ import { NotificationsContainerComponent } from 'src/app/shared/components/notif
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
 import { ProfilePageComponent } from 'src/app/shared/profile-page/profile-page.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { FiltersContainerComponent } from './components/filters-container/filters-container.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 class mockSocket {
   on(event: String): Observable<any> {
@@ -37,12 +41,14 @@ describe('StudentPageComponent', () => {
       'checkAutorization': Promise.resolve([]),
       'getSupervisors': Promise.resolve([]),
       'getNotifications': Promise.resolve([]),
-      'getCareer': Promise.resolve([])
+      'getCareer': Promise.resolve([]),
+      'getExternalCoSupervisors': Promise.resolve([]),
+      'getCoSupervisors': Promise.resolve([])
     });
 
     await TestBed.configureTestingModule({
-      imports: [FormsModule, MatIconModule],
-      declarations: [StudentPageComponent, PageSkeletonComponent, ButtonComponent, AlertComponent, PopupComponent, IconComponent, DropdownCheckboxComponent, NotificationsContainerComponent, ProfilePageComponent],
+      imports: [FormsModule, MatIconModule, MatDatepickerModule, MatNativeDateModule, NoopAnimationsModule],
+      declarations: [StudentPageComponent, PageSkeletonComponent, ButtonComponent, AlertComponent, PopupComponent, IconComponent, DropdownCheckboxComponent, NotificationsContainerComponent, ProfilePageComponent, FiltersContainerComponent],
       providers: [
         { provide: APIService, useValue: apiService },
         { provide: Socket, useClass: mockSocket }
