@@ -3,15 +3,16 @@
   <div class="left-col-mobile {{menuOpen ? 'open' : ''}}">
     <div class="p-4 border-b-2">
       <img src="assets/images/LogoPoli.svg" *ngIf="!theme" alt="no image found">
-<!--      <img src="assets/images/LogoPoli.svg" alt="no image found">-->
       <img src="assets/images/LogoPoliWhite.svg" *ngIf="theme" alt="no image found">
     </div>
     <div class="flex flex-col justify-between p-4">
       <div class="nameContainer">
         <div class="flex items-center justify-between">
-<!--          <img alt="propic" src="https://picsum.photos/512/512" class="propic mr-4" *ngIf="currentRoute!=='/'">-->
-          <p (click)="goToProfile()" class="text-sm" *ngIf="currentRoute==='/student'">{{student?.name}} {{student?.surname}}, {{student?.studentId}}</p>
-          <p (click)="goToProfile()" class="text-sm" *ngIf="currentRoute==='/professor'">{{professor?.name}} {{professor?.surname}}, {{professor?.professorId}}</p>
+          <p (click)="goToProfile()" class="text-sm"
+             *ngIf="currentRoute==='/student'">{{ student?.name }} {{ student?.surname }}, {{ student?.studentId }}</p>
+          <p (click)="goToProfile()" class="text-sm"
+             *ngIf="currentRoute==='/professor'">{{ professor?.name }} {{ professor?.surname }}
+            , {{ professor?.professorId }}</p>
           <app-button class="small w-fit mb-4 mt-2" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
         </div>
       </div>
@@ -24,15 +25,23 @@
       <mat-icon class="menu-icon" (click)="menuOpen = !menuOpen">menu</mat-icon>
       <h2 class="title">thesis proposals</h2>
       <div class="md:flex items-center max-md:hidden">
+        <div class="relative">
+          <input class="w-0 h-0 absolute -bottom-1" (dateChange)="selectDate($event)" matInput [matDatepicker]="picker">
+          <mat-icon class="mr-4" (click)="picker.open()">access_time</mat-icon>
+          <mat-datepicker #picker></mat-datepicker>
+        </div>
         <img alt="propic" src="https://picsum.photos/512/512" class="propic mr-4" *ngIf="currentRoute!=='/'">
-        <p class="text-sm uppercase cursor-pointer hover:underline" (click)="goToProfile()" *ngIf="currentRoute==='/student'">{{student?.name}} {{student?.surname}}, {{student?.studentId}}</p>
-        <p class="text-sm uppercase cursor-pointer hover:underline" (click)="goToProfile()" *ngIf="currentRoute==='/professor'">{{professor?.name}} {{professor?.surname}}, {{professor?.professorId}}</p>
+        <p class="text-sm uppercase cursor-pointer hover:underline" (click)="goToProfile()"
+           *ngIf="currentRoute==='/student'">{{ student?.name }} {{ student?.surname }}, {{ student?.studentId }}</p>
+        <p class="text-sm uppercase cursor-pointer hover:underline" (click)="goToProfile()"
+           *ngIf="currentRoute==='/professor'">{{ professor?.name }} {{ professor?.surname }}
+          , {{ professor?.professorId }}</p>
         <app-button class="ml-4" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
       </div>
       <div class="notIconContainer">
         <mat-icon class="menu-icon" (click)="openNotifications()">notifications</mat-icon>
         <div class="counter" *ngIf="unreadCounter > 0">
-          {{unreadCounter}}
+          {{ unreadCounter }}
         </div>
       </div>
     </div>
@@ -45,8 +54,8 @@
       </div>
       <div class="overlay {{notificationsOpen ? 'open' : ''}}" (click)="closeNotifications()">
       </div>
-        <mat-icon class="pointer-events-none closeIcon right {{menuOpen ? 'open' : ''}}">close</mat-icon>
-        <mat-icon class="pointer-events-none closeIcon left {{notificationsOpen ? 'open' : ''}}">close</mat-icon>
+      <mat-icon class="pointer-events-none closeIcon right {{menuOpen ? 'open' : ''}}">close</mat-icon>
+      <mat-icon class="pointer-events-none closeIcon left {{notificationsOpen ? 'open' : ''}}">close</mat-icon>
     </div>
   </div>
 </div>

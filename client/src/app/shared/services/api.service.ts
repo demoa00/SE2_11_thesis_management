@@ -241,4 +241,8 @@ export class APIService {
     return await this.httpService.delete(`cv/${userId}`, true)
   }
 
+  async putVirtualClock(date: string) {
+    return await this.httpService.put(`virtualClock`, {date: date})
+  }
+
 }
