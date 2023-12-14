@@ -65,7 +65,9 @@
       </tbody>
     </table>
   </div>
-  <h3 *ngIf="rows==''"> No Applicants Avaiable</h3>
+  <div class="w-full flex justify-center">
+    <h3 *ngIf="rows==''"> No Applicants Avaiable</h3>
+  </div>
 </div>
 
 <app-apllicant-details class=" overflow-auto" *ngIf="selectedApplicant" [thesisId]="selectedApplicant.thesisProposalId" [userId]="selectedApplicant.studentId" (triggerBack)="selectedApplicant = undefined" (triggerAccept)="openAcceptPopup(selectedApplicant)" (triggerReject)="openRejectPopup(selectedApplicant)"></app-apllicant-details>
