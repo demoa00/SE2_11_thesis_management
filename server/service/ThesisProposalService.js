@@ -123,7 +123,7 @@ exports.getThesisProposalsForStudent = function (codDegree, filter) {
       if (err) {
         reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (rows.length == 0) {
-        reject(new PromiseError({ code: 404, message: "Not Found" }));
+        resolve([]);
       } else {
         let thesisProposalsList = rows.map((r) => ({
           thesisProposalId: r.thesisProposalId,
