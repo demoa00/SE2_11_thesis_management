@@ -81,7 +81,7 @@ export class NotificationsContainerComponent {
 
     console.log(n);
     switch (n.type) {
-      case 2:
+      case 2 || 5:
         this.applicationsPage.emit(true);
         break;
       //other cases here
