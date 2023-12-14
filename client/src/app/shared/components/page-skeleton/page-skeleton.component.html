@@ -20,12 +20,12 @@
     </div>
   </div>
   <div class="overlay {{menuOpen ? 'open' : ''}}" (click)="closeMenu()"></div>
-  <div class="right-side relative">
+  <div class="right-side md-max:relative">
     <div class="titleContainer">
       <mat-icon class="menu-icon" (click)="menuOpen = !menuOpen">menu</mat-icon>
       <h2 class="title">thesis proposals</h2>
       <div class="md:flex items-center max-md:hidden">
-        <div class="relative">
+        <div class="relative flex">
           <input class="w-0 h-0 absolute -bottom-1" [min]="today" (dateChange)="selectDate($event)" matInput [matDatepicker]="picker">
           <mat-icon class="mr-4" (click)="picker.open()">access_time</mat-icon>
           <mat-datepicker #picker ></mat-datepicker>
