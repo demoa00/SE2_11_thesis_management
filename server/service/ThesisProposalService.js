@@ -774,7 +774,7 @@ exports.archiveThesisProposal = async function (thesisProposalId, professorId) {
   }).then(() => {
     return new Promise(function (resolve, reject) {
       if (students.length != 0) {
-        const sql = "UPDATE applications SET status = 'Cancelled' WHERE thesisProposalId = ?";
+        const sql = "UPDATE applications SET status = 'Cancelled' WHERE thesisProposalId = ? AND status = 'Pending'";
 
         db.run(sql, [thesisProposalId], function (err) {
           if (err) {
