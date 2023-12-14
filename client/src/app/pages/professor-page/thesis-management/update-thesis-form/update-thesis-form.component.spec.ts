@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UpdateThesisFormComponent, customKeywordValidator } from './update-thesis-form.component';
+import { UpdateThesisFormComponent } from './update-thesis-form.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 describe('UpdateThesisFormComponent', () => {
   let component: UpdateThesisFormComponent;
@@ -13,7 +13,7 @@ describe('UpdateThesisFormComponent', () => {
       imports: [HttpClientTestingModule, FormsModule, ReactiveFormsModule],
       declarations: [UpdateThesisFormComponent]
     }).compileComponents();
-    
+
     fixture = TestBed.createComponent(UpdateThesisFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -44,22 +44,22 @@ describe('UpdateThesisFormComponent', () => {
 
   it('should set selectFocus to false on blur', () => {
     component.selectFocus = true;
-  
+
     component.onSelectBlur();
-  
+
     expect(component.selectFocus).toBe(false);
   });
-  
+
   it('should add a keyword to the keywords list', () => {
     const initialKeywordsList = component.keywordsList.slice();
-  
+
     const keywordValue = 'NewKeyword';
     component.myForm.get('keywords')?.setValue(keywordValue);
     component.addKeyword(new Event('click'));
-  
+
     expect(component.keywordsList).toEqual([...initialKeywordsList, keywordValue]);
   });
-  
+
   it('should remove a keyword from keywordsList', () => {
     component.keywordsList = ['Keyword1', 'Keyword2', 'Keyword3'];
 
@@ -98,12 +98,12 @@ describe('UpdateThesisFormComponent', () => {
         self: 'some value',
       },
     ];
-  
+
     component.externalCoSupervisors = mockExternalCoSupervisors;
-  
+
     const event = { target: { value: 'non-existent-id' } };
     component.onSelectCoSupervisorChange(event);
-  
+
     expect(component.selectedCoSupervisors.length).toBe(1);
     expect(component.externalCoSupervisors.length).toBe(mockExternalCoSupervisors.length);
   });
