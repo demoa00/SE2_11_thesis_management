@@ -15,6 +15,7 @@ import {User} from "../../classes/user";
 import {StudentDetails} from "../../classes/student/student-details";
 import {DarkModeService} from "../../services/dark-mode.service";
 import {ProfessorDetails} from "../../classes/professor/professor-details";
+import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 
 @Component({
   selector: 'app-page-skeleton',
@@ -96,4 +97,15 @@ export class PageSkeletonComponent {
     this.notificationsOpenChange.emit(this.notificationsOpen)
   }
 
+    selectDate($event: MatDatepickerInputEvent<any, any>) {
+      let year = $event.value.getFullYear().toString()
+      let month = $event.value.getMonth() + 1 < 10 ? `0${$event.value.getMonth() + 1}` : ($event.value.getMonth() + 1).toString()
+      let day = $event.value.getDate() < 10 ? `0${$event.value.getDate()}` : $event.value.getDate().toString()
+      let date = `${year}-${month}-${day}`
+      this.api.putVirtualClock(date).then((response: any)=>{
+        console.log(response)
+      }).catch((error)=>{
+        console.log(error)
+      })
+    }
 }

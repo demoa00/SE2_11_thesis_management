@@ -3,13 +3,29 @@ import {APIService} from "../../../../shared/services/api.service";
 import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 import * as dayjs from "dayjs";
 import {FormControl} from "@angular/forms";
-import {animate, style, transition, trigger} from "@angular/animations";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-filters-container',
   templateUrl: './filters-container.component.html',
   styleUrls: ['./filters-container.component.scss'],
-  animations: [] // - add this field like in NotificationsContainerComponent*/
+  animations: [
+    trigger('OpenClose',[
+      state('open', style({
+        "max-height": "100vh",
+        padding: "16px",
+        overflow: "visible",
+      })),
+      state('closed', style({
+        "max-height": "0",
+        padding: "0 16px",
+        overflow: "hidden",
+      })),
+      transition('open <=> closed', [
+        animate('0.3s')
+      ]),
+    ])
+  ] // - add this field like in NotificationsContainerComponent*/
 })
 
 

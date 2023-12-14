@@ -37,7 +37,7 @@
                    *ngIf="prof.name.toLocaleLowerCase().includes(professorsSearchValue) || prof.surname.toLocaleLowerCase().includes(professorsSearchValue)">
                 <app-checkbox [checked]="isProfSelected(prof)"></app-checkbox>
                 <p>{{prof.name}} {{prof.surname}}</p>
-              </div>student
+              </div>
             </div>
           </app-dropdown-checkbox>
         </div>
