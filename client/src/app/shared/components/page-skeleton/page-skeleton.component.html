@@ -13,7 +13,7 @@
           <p (click)="goToProfile()" class="text-sm"
              *ngIf="currentRoute==='/professor'">{{ professor?.name }} {{ professor?.surname }}
             , {{ professor?.professorId }}</p>
-          <app-button class="small w-fit mb-4 mt-2" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
+          <app-button class="small w-fit" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
         </div>
       </div>
       <ng-content select="[left-col]"></ng-content>
