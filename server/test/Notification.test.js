@@ -23,7 +23,7 @@ const mockRes = {
 };
 const mockNext = {};
 
-describe("getNotification ", () => {
+describe("getNotifications ", () => {
   test("should respond with 200", async () => {
     const mockReq = {
       user: {
@@ -42,6 +42,24 @@ describe("getNotification ", () => {
     });
     expect(mockRes.end).toHaveBeenCalledWith(
       JSON.stringify(notificationsList, null, 2)
+    );
+  });
+  test("should respond with 404 Bad Request", async () => {
+    const mockReq = {
+      user: {},
+    };
+
+    const notificationsList = ["notification1", "notification2"];
+
+    getNotifications.mockResolvedValue(notificationsList);
+
+    await NotificationController.getNotifications(mockReq, mockRes, mockNext);
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
     );
   });
   test("should respond with 404 not found", async () => {
@@ -87,6 +105,21 @@ describe("updateNotification ", () => {
     });
     expect(mockRes.end).toHaveBeenCalledWith("No Content");
   });
+  test("should respond with 404 Bad Request", async () => {
+    const mockReq = {
+      user: {},
+      params: {},
+    };
+
+    await NotificationController.updateNotification(mockReq, mockRes, mockNext);
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
+    );
+  });
 });
 
 describe("deleteNotification ", () => {
@@ -109,5 +142,23 @@ describe("deleteNotification ", () => {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith("No Content");
+  });
+  test("should respond with 404 Bad Request", async () => {
+    const mockReq = {
+      user: {},
+    };
+
+    await NotificationController.deleteAllNotifications(
+      mockReq,
+      mockRes,
+      mockNext
+    );
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
+    );
   });
 });

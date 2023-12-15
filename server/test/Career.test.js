@@ -36,4 +36,22 @@ describe("getCareer ", () => {
     });
     expect(mockRes.end).toHaveBeenCalledWith(JSON.stringify(career, null, 2));
   });
+  test("should respond with 404 Bad Request", async () => {
+    const mockReq = {
+      params: {},
+    };
+
+    const career = ["career"];
+
+    getCareer.mockResolvedValue(career);
+
+    await CareerController.getCareer(mockReq, mockRes, mockNext);
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
+    );
+  });
 });

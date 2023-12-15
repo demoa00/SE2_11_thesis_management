@@ -122,6 +122,25 @@ describe("getThesisRequestById ", () => {
       JSON.stringify(thesisRequest, null, 2)
     );
   });
+  test("should respond with 404 Bad Request", async () => {
+    const mockReq = {
+      user: {},
+      params: {},
+    };
+
+    await ThesisRequestController.getThesisRequestById(
+      mockReq,
+      mockRes,
+      mockNext
+    );
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
+    );
+  });
 });
 
 describe("insertNewThesisRequest", () => {
@@ -148,6 +167,25 @@ describe("insertNewThesisRequest", () => {
     });
     expect(mockRes.end).toHaveBeenCalledWith(
       JSON.stringify(newThesisRequest, null, 2)
+    );
+  });
+  test("should respond with 404 Bad Request", async () => {
+    const mockReq = {
+      user: {},
+      body: {},
+    };
+
+    await ThesisRequestController.insertNewThesisRequest(
+      mockReq,
+      mockRes,
+      mockNext
+    );
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
     );
   });
 });
@@ -179,6 +217,28 @@ describe("updateThesisRequest", () => {
     });
     expect(mockRes.end).toHaveBeenCalledWith(
       JSON.stringify(thesisRequestUpdated, null, 2)
+    );
+  });
+  test("should respond with 404 Bad Request", async () => {
+    const mockReq = {
+      user: {
+        userId: "s123654",
+      },
+      body: {},
+      params: {},
+    };
+
+    await ThesisRequestController.updateThesisRequest(
+      mockReq,
+      mockRes,
+      mockNext
+    );
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
     );
   });
 });

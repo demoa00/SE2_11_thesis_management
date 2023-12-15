@@ -40,8 +40,9 @@ describe("getApplications", () => {
         studentId: "s876543",
       },
       user: {
-        studentId: "s876543",
+        userId: "s876543",
       },
+      query: {},
     };
 
     const ApplicationsListForStudent = ["application1", "application2"];
@@ -65,8 +66,9 @@ describe("getApplications", () => {
         professorId: "p123654",
       },
       user: {
-        professorId: "p123654",
+        userId: "p123654",
       },
+      query: {},
     };
 
     const ApplicationsListForProfessor = ["application1", "application2"];
@@ -90,8 +92,9 @@ describe("getApplications", () => {
         studentId: "s876543",
       },
       user: {
-        studentId: "s876543",
+        userId: "s876543",
       },
+      query: {},
     };
 
     checkRole.isStudent.mockResolvedValue("student");
@@ -110,6 +113,20 @@ describe("getApplications", () => {
       JSON.stringify({ error: "Not Found" }, null, 2)
     );
   });
+  test("should respond with 404 Bad Request", async () => {
+    const mockReq = {
+      user: {},
+    };
+
+    await ApplicationController.getApplications(mockReq, mockRes, mockNext);
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
+    );
+  });
 });
 
 describe("getApplicationById", () => {
@@ -117,7 +134,7 @@ describe("getApplicationById", () => {
     const mockReq = {
       params: {
         studentId: "s876543",
-        applicationId: "a123456",
+        thesisProposalId: "a123456",
       },
       user: {
         studentId: "s876543",
@@ -145,7 +162,7 @@ describe("getApplicationById", () => {
     const mockReq = {
       params: {
         studentId: "s876543",
-        applicationId: "a123456",
+        thesisProposalId: "a123456",
       },
       user: {
         studentId: "s876543",
@@ -171,6 +188,25 @@ describe("getApplicationById", () => {
       JSON.stringify({ error: "Not Found" }, null, 2)
     );
   });
+  test("should return 403 Bad Request", async () => {
+    const mockReq = {
+      params: {
+        studentId: "s876543",
+      },
+      user: {
+        studentId: "s876543",
+      },
+    };
+
+    await ApplicationController.getApplicationById(mockReq, mockRes, mockNext);
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
+    );
+  });
 });
 
 describe("insertNewApplication", () => {
@@ -181,7 +217,7 @@ describe("insertNewApplication", () => {
         thesisProposalId: "t123456",
       },
       user: {
-        studentId: "s876543",
+        userId: "s876543",
       },
       body: {
         thesisProposalId: "t123456",
@@ -243,14 +279,14 @@ describe("insertNewApplication", () => {
 });
 
 describe("updateNewApplication", () => {
-  test("should respond with 201", async () => {
+  test("should respond with 200", async () => {
     const mockReq = {
       params: {
         studentId: "s876543",
         thesisProposalId: "t123456",
       },
       user: {
-        studentId: "s876543",
+        userId: "s876543",
       },
       body: {
         thesisProposalId: "t123456",

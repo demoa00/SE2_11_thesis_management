@@ -23,7 +23,10 @@ const mockNext = {};
 
 describe("getProfessors", () => {
   test("should respond with 200", async () => {
-    const mockReq = {};
+    const mockReq = {
+      user: {},
+      query: {},
+    };
 
     const professorsList = [
       {
@@ -49,6 +52,18 @@ describe("getProfessors", () => {
     });
     expect(mockRes.end).toHaveBeenCalledWith(
       JSON.stringify(professorsList, null, 2)
+    );
+  });
+  test("should respond with 404 Bad Request", async () => {
+    const mockReq = {};
+
+    await ProfessorController.getProfessors(mockReq, mockRes, mockNext);
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
     );
   });
 });
@@ -82,9 +97,25 @@ describe("getProfessorsById", () => {
       JSON.stringify(professor, null, 2)
     );
   });
-  test("should respond with 404 not found - missing professorId", async () => {
+  test("should respond with 404", async () => {
     const mockReq = {
       params: {},
+    };
+
+    await ProfessorController.getProfessorById(mockReq, mockRes, mockNext);
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
+    );
+  });
+  test("should respond with 404 not found - missing professorId", async () => {
+    const mockReq = {
+      params: {
+        professorId: "p987123",
+      },
     };
 
     getProfessorById.mockRejectedValue({ code: 404, message: "Not Found" });

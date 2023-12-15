@@ -4,7 +4,7 @@ const DegreeControler = require("../controllers/DegreeController.js");
 const { getDegrees } = require("../service/DegreeService.js");
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  jest.resetAllMocks();
 });
 
 jest.mock("../service/DegreeService.js", () => ({
@@ -34,11 +34,6 @@ describe("getDegrees", () => {
   });
   test("should respond with 404 not found - no Degree available", async () => {
     const mockReq = {};
-    const mockRes = {
-      writeHead: jest.fn().mockReturnThis(),
-      end: jest.fn().mockReturnThis(),
-    };
-    const mockNext = {};
 
     getDegrees.mockRejectedValue({ code: 404, message: "Not Found" });
 

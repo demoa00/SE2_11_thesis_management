@@ -6,6 +6,9 @@ const {
   getThesisProposalsForProfessor,
   getThesisProposalById,
   insertNewThesisProposal,
+  updateThesisProposal,
+  archiveThesisProposal,
+  deleteThesisProposal,
 } = require("../service/ThesisProposalService.js");
 const checkRole = require("../utils/checkRole.js");
 
@@ -18,6 +21,9 @@ jest.mock("../service/ThesisProposalService.js", () => ({
   getThesisProposalsForProfessor: jest.fn(),
   getThesisProposalById: jest.fn(),
   insertNewThesisProposal: jest.fn(),
+  updateThesisProposal: jest.fn(),
+  archiveThesisProposal: jest.fn(),
+  deleteThesisProposal: jest.fn(),
 }));
 
 jest.mock("../utils/checkRole.js", () => ({
@@ -191,6 +197,26 @@ describe("getThesisProposalById", () => {
       JSON.stringify(thesisProposal, null, 2)
     );
   });
+  test("should respond with 404 Bad Request", async () => {
+    const mockReq = {
+      user: {},
+      params: {},
+    };
+
+    await ThesisProposalController.getThesisProposalById(
+      mockReq,
+      mockRes,
+      mockNext
+    );
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+      "Content-Type": "application/json",
+    });
+
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
+    );
+  });
   test("should respond with 404 not found - no thesisProposal available", async () => {
     const mockReq = {
       user: {
@@ -237,11 +263,9 @@ describe("insertNewThesisProposal", () => {
   test("should respond with 201", async () => {
     const mockReq = {
       user: {
-        professorId: "p123654",
+        userId: "p123654",
       },
-      params: {
-        professorId: "p123654",
-      },
+      body: {},
     };
 
     const newThesisProposal = {
@@ -261,6 +285,172 @@ describe("insertNewThesisProposal", () => {
     });
     expect(mockRes.end).toHaveBeenCalledWith(
       JSON.stringify(newThesisProposal, null, 2)
+    );
+  });
+  test("should respond with 404 Bad Request", async () => {
+    const mockReq = {
+      user: {},
+      body: {},
+    };
+
+    await ThesisProposalController.insertNewThesisProposal(
+      mockReq,
+      mockRes,
+      mockNext
+    );
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
+    );
+  });
+});
+
+describe("updateThesisProposal", () => {
+  test("should respond with 200", async () => {
+    const mockReq = {
+      user: {
+        userId: "p123654",
+      },
+      body: {},
+      params: {
+        thesisProposalId: {},
+      },
+    };
+
+    const thesisProposalUpdated = {
+      thesisProposalUpdated: "/api/thesisProposals/24",
+    };
+
+    updateThesisProposal.mockResolvedValue(thesisProposalUpdated);
+
+    await ThesisProposalController.updateThesisProposal(
+      mockReq,
+      mockRes,
+      mockNext
+    );
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(200, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify(thesisProposalUpdated, null, 2)
+    );
+  });
+  test("should respond with 404 Bad Request", async () => {
+    const mockReq = {
+      user: {},
+      body: {},
+      params: {},
+    };
+
+    await ThesisProposalController.updateThesisProposal(
+      mockReq,
+      mockRes,
+      mockNext
+    );
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
+    );
+  });
+});
+
+describe("archiveThesisProposal", () => {
+  test("should respond with 204", async () => {
+    const mockReq = {
+      user: {
+        userId: "p123654",
+      },
+      body: {},
+      params: {
+        thesisProposalId: {},
+      },
+    };
+
+    archiveThesisProposal.mockResolvedValue();
+
+    await ThesisProposalController.archiveThesisProposal(
+      mockReq,
+      mockRes,
+      mockNext
+    );
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(204, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith("No Content");
+  });
+  test("should respond with 404 Bad Request", async () => {
+    const mockReq = {
+      user: {},
+      body: {},
+      params: {},
+    };
+
+    await ThesisProposalController.archiveThesisProposal(
+      mockReq,
+      mockRes,
+      mockNext
+    );
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
+    );
+  });
+});
+
+describe("deleteThesisProposal", () => {
+  test("should respond with 204", async () => {
+    const mockReq = {
+      user: {
+        userId: "p123654",
+      },
+      body: {},
+      params: {
+        thesisProposalId: {},
+      },
+    };
+
+    deleteThesisProposal.mockResolvedValue();
+
+    await ThesisProposalController.deleteThesisProposal(
+      mockReq,
+      mockRes,
+      mockNext
+    );
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(204, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith("No Content");
+  });
+  test("should respond with 404 Bad Request", async () => {
+    const mockReq = {
+      user: {},
+      body: {},
+      params: {},
+    };
+
+    await ThesisProposalController.deleteThesisProposal(
+      mockReq,
+      mockRes,
+      mockNext
+    );
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
     );
   });
 });
