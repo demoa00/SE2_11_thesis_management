@@ -12,9 +12,9 @@ sections:
 
 ### Macro statistics
 
-- Number of stories committed vs done 
-- Total points committed vs done 
-- Nr of hours planned vs spent (as a team)
+- Number of stories committed vs done : 17 / 17
+- Total points committed vs done : 59 / 59
+- Nr of hours planned vs spent (as a team) : 
 
 **Remember**  a story is done ONLY if it fits the Definition of Done:
  
@@ -66,15 +66,20 @@ sections:
 ## ASSESSMENT
 
 - What caused your errors in estimation (if any)?
+  
 
 - What lessons did you learn (both positive and negative) in this sprint?
+  
 
-- Which improvement goals set in the previous retrospective were you able to achieve? 
+- Which improvement goals set in the previous retrospective were you able to achieve?
+  
   
 - Which ones you were not able to achieve? Why?
+  
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
-
 > Propose one or two
 
+
 - One thing you are proud of as a Team!!
+  
