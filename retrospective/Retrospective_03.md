@@ -1,4 +1,4 @@
-TEMPLATE FOR RETROSPECTIVE (Team ##)
+TEMPLATE FOR RETROSPECTIVE (Team 11)
 =====================================
 
 The retrospective should include _at least_ the following
@@ -42,16 +42,16 @@ sections:
 ## QUALITY MEASURES 
 
 - Unit Testing:
-  - Total hours estimated
-  - Total hours spent
-  - Nr of automated unit test cases 
-  - Coverage (if available)
+  - Total hours estimated : 
+  - Total hours spent : 
+  - Nr of automated unit test cases : 127 
+  - Coverage (if available) : 60%
 - E2E testing:
-  - Total hours estimated
-  - Total hours spent
+  - Total hours estimated : 2h
+  - Total hours spent : 1h 30m
 - Code review 
-  - Total hours estimated 
-  - Total hours spent
+  - Total hours estimated : 6h
+  - Total hours spent : 6h 30m
 - Technical Debt management:
   - Total hours estimated 
   - Total hours spent
