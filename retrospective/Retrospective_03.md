@@ -14,7 +14,7 @@ sections:
 
 - Number of stories committed vs done : 17 / 17
 - Total points committed vs done : 59 / 59
-- Nr of hours planned vs spent (as a team) : 
+- Nr of hours planned vs spent (as a team) : 102h 30m / 94h
 
 **Remember**  a story is done ONLY if it fits the Definition of Done:
  
@@ -29,14 +29,29 @@ sections:
 
 | Story  | # Tasks | Points | Hours est. | Hours actual |
 |--------|---------|--------|------------|--------------|
-| _#0_   |         |    -   |            |              |
-| n      |         |        |            |              |
-   
+| _#0_   | 19      |    -   | 55h        | 52h          |
+| 8      | 2       | 3      | 8h         | 9h           |
+| 9      | 2       | 8      | 1h 30m     | 1h 30m       |
+| 10     | 2       | 1      | 1h 30m     | 1h 45m       |
+| 11     | 2       | 2      | 3h         | 1h           | 
+| 12     | 2       | 8      | 1h 30m     | 1h           | 
+| 13     | 2       | 8      | 10h        | 11h          | 
+| 14     | 0       | 3      | 0h         | 0h           |
+| 15     | 2       | 8      | 2h         | 1h 30m       |
+| 16     | 2       | 1      | 1h         | 1h           | 
+| 19     | 0       | 2      | 0h         | 0h           |
+| 21     | 0       | 1      | 0h         | 0h           |
+| 22     | 2       | 1      | 2h 30m     | 2h           |
+| 23     | 0       | 1      | 0h         | 0h           |
+| 24     | 0       | 1      | 0h         | 0h           | 
+| 25     | 0       | 1      | 0h         | 0h           | 
+| 26     | 2       | 5      | 24h        | 18h          |
+| 91     | 0       | 3      | 0h         | 0h           |
 
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
 
-- Hours per task (average, standard deviation)
-- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent -1
+- Hours per task (average, standard deviation) : 2,41h
+- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent -1 : 0.09
 
   
 ## QUALITY MEASURES 
@@ -55,7 +70,7 @@ sections:
 - Technical Debt management:
   - Total hours estimated : 5h
   - Total hours spent : 3h 30m
-  - Hours estimated for remediation by SonarQube
+  - Hours estimated for remediation by SonarQube : 8h
   - Hours estimated for remediation by SonarQube only for the selected and planned issues
   - Hours spent on remediation
   - debt ratio (as reported by SonarQube under "Measures-Maintainability")
