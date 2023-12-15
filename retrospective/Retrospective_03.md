@@ -46,7 +46,7 @@ sections:
 | 24     | 0       | 1      | 0h         | 0h           | 
 | 25     | 0       | 1      | 0h         | 0h           | 
 | 26     | 2       | 5      | 24h        | 18h          |
-| 91     | 0       | 3      | 0h         | 0h           |
+| 35     | 0       | 3      | 0h         | 0h           |
 
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
 
