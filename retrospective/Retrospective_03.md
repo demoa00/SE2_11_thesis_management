@@ -42,9 +42,9 @@ sections:
 ## QUALITY MEASURES 
 
 - Unit Testing:
-  - Total hours estimated : 
-  - Total hours spent : 
-  - Nr of automated unit test cases : 127 
+  - Total hours estimated : 22h
+  - Total hours spent : 16.5h
+  - Nr of automated unit test cases : 192
   - Coverage (if available) : 60%
 - E2E testing:
   - Total hours estimated : 2h
@@ -53,11 +53,11 @@ sections:
   - Total hours estimated : 6h
   - Total hours spent : 6h 30m
 - Technical Debt management:
-  - Total hours estimated 
-  - Total hours spent
+  - Total hours estimated : 4h
+  - Total hours spent : 2h 30m
   - Hours estimated for remediation by SonarQube
-  - Hours estimated for remediation by SonarQube only for the selected and planned issues 
-  - Hours spent on remediation 
+  - Hours estimated for remediation by SonarQube only for the selected and planned issues
+  - Hours spent on remediation
   - debt ratio (as reported by SonarQube under "Measures-Maintainability")
   - rating for each quality characteristic reported in SonarQube under "Measures" (namely reliability, security, maintainability )
   
