@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { NotificationsContainerComponent } from './notifications-container.component';
 import { Socket } from 'ngx-socket-io';
