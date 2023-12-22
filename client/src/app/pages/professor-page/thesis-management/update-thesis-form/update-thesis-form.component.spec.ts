@@ -127,4 +127,57 @@ describe('UpdateThesisFormComponent', () => {
     expect(component.externalCoSupervisors.length).toBe(1);
     expect(component.externalCoSupervisors[0]).toEqual(coSupervisorToRemove);
   });
+
+  it('should initialize component properties on ngOnInit', () => {
+    const mockThesisProposal = {
+      title: 'Mock Thesis',
+      level: 'Master',
+      thesisType: 'Research',
+      description: 'Mock description',
+      requirements: 'Mock requirements',
+      expirationDate: '2023-12-31',
+      abroad: true,
+      CdS: [
+        { titleDegree: 'Computer Science', degreeId: 'CS123' },
+        { titleDegree: 'Physics', degreeId: 'PHY456' },
+      ],
+      coSupervisor: [
+        { coSupervisorId: 'e123', name: 'External', surname: 'CoSupervisor', self: 'example.com/external' },
+        { coSupervisorId: 'p456', name: 'Internal', surname: 'CoSupervisor', self: 'example.com/internal' },
+      ],
+      notes: 'Mock notes',
+      keywords: ['Keyword1', 'Keyword2'],
+    };
+
+    const mockExternalCoSupervisors = [ { 
+      externalCoSupervisorId: 'e123', 
+      name: 'External', 
+      surname: 'CoSupervisor', 
+      self: 'example.com/external' 
+    } ];
+    const mockProfessors = [ { 
+      professorId: 'p456', 
+      name: 'Internal', 
+      surname: 'CoSupervisor', 
+      self: 'example.com/internal' 
+    } ];
+
+    component.thesisProposal = mockThesisProposal;
+    component.externalCoSupervisors = mockExternalCoSupervisors;
+    component.professors = mockProfessors;
+
+    component.ngOnInit();
+
+    expect(component.keywordsList).toEqual(mockThesisProposal.keywords);
+    expect(component.selectedCdS).toEqual(mockThesisProposal.CdS);
+    expect(component.selectedCoSupervisors).toEqual([
+      { externalCoSupervisorId: 'e123', name: 'External', surname: 'CoSupervisor', self: 'example.com/external' }
+    ]);
+    expect(component.selectedProfessors).toEqual([
+      { professorId: 'p456', name: 'Internal', surname: 'CoSupervisor', self: 'example.com/internal' }
+    ]);
+    expect(component.myForm.get('title')?.value).toEqual(mockThesisProposal.title);
+    expect(component.myForm.get('level')?.value).toEqual(mockThesisProposal.level);
+    expect(component.myForm.get('thesisType')?.value).toEqual(mockThesisProposal.thesisType);
+  });
 });
