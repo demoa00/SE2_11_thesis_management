@@ -1,21 +1,31 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { UpdateThesisFormComponent } from './update-thesis-form.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { APIService } from 'src/app/shared/services/api.service';
 
 describe('UpdateThesisFormComponent', () => {
   let component: UpdateThesisFormComponent;
   let fixture: ComponentFixture<UpdateThesisFormComponent>;
+  let apiService: jasmine.SpyObj<APIService>;
 
   beforeEach(async () => {
+    apiService = jasmine.createSpyObj('APIService', {
+      'updateThesis': Promise.resolve([]),
+    });
+
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, FormsModule, ReactiveFormsModule],
-      declarations: [UpdateThesisFormComponent]
+      declarations: [UpdateThesisFormComponent],
+      providers: [{ provide: APIService, useValue: apiService }]
     }).compileComponents();
 
     fixture = TestBed.createComponent(UpdateThesisFormComponent);
     component = fixture.componentInstance;
+
+    await fixture.whenStable();
+
     fixture.detectChanges();
   });
 
@@ -128,6 +138,24 @@ describe('UpdateThesisFormComponent', () => {
     expect(component.externalCoSupervisors[0]).toEqual(coSupervisorToRemove);
   });
 
+  it('should handle non-existing co-supervisor on remove co-supervisor', () => {
+    const mockExternalCoSupervisors = [
+      {
+        externalCoSupervisorId: '1',
+        name: 'John',
+        surname: 'Doe',
+        self: 'some value',
+      },
+    ];
+
+    component.selectedCoSupervisors = mockExternalCoSupervisors;
+
+    const event = { target: { textContent: 'non-existent id' } };
+    component.removeCoSupervisor(event);
+
+    expect(component.selectedCoSupervisors.length).toBe(1);
+  });
+
   it('should initialize component properties on ngOnInit', () => {
     const mockThesisProposal = {
       title: 'Mock Thesis',
@@ -179,5 +207,165 @@ describe('UpdateThesisFormComponent', () => {
     expect(component.myForm.get('title')?.value).toEqual(mockThesisProposal.title);
     expect(component.myForm.get('level')?.value).toEqual(mockThesisProposal.level);
     expect(component.myForm.get('thesisType')?.value).toEqual(mockThesisProposal.thesisType);
+    expect(component.myForm.get('description')?.value).toEqual(mockThesisProposal.description);
+  });
+
+  it('should return supervisor name when supervisor is set', () => {
+    const supervisorName = 'John Doe';
+    const supervisor = { name: supervisorName, surname: 'Doe', self: 'example.com/johndoe' };
+  
+    component.myForm.get('supervisor')?.setValue(supervisor);
+  
+    const result = component.supervisorName;
+  
+    expect(result).toBe(supervisorName);
+  });
+
+  it('should return an empty string when supervisor is not set', () => {
+    component.myForm.get('supervisor')?.setValue(null);
+  
+    const result = component.supervisorName;
+  
+    expect(result).toBe('');
+  });
+
+  it('should add professor on select change', () => {
+    const mockProfessors = [
+      {
+        professorId: '1',
+        name: 'John',
+        surname: 'Doe',
+        self: 'some value',
+      },
+    ];
+  
+    component.professors = mockProfessors;
+  
+    const event = { target: { value: '1' } };
+    component.onSelectProfessorChange(event);
+  
+    expect(component.selectedProfessors.length).toBe(1);
+    expect(component.professors.length).toBe(mockProfessors.length - 1);
+  });
+
+  it('should handle non-existing professor on select change', () => {
+    const mockProfessors = [
+      {
+        professorId: '1',
+        name: 'John',
+        surname: 'Doe',
+        self: 'some value',
+      },
+    ];
+  
+    component.professors = mockProfessors;
+  
+    const event = { target: { value: 'non-existent-id' } };
+    component.onSelectProfessorChange(event);
+  
+    expect(component.selectedProfessors.length).toBe(1);
+    expect(component.professors.length).toBe(mockProfessors.length);
+  });
+
+  it('should remove a professor', () => {
+    const professorToRemove = {
+      professorId: '123',
+      name: 'John',
+      surname: 'Doe',
+      self: 'example.com/johndoe',
+    };
+  
+    component.selectedProfessors = [professorToRemove];
+  
+    component.professors = [];
+  
+    component.removeProfessor({ target: { textContent: 'John Doe' } });
+  
+    expect(component.selectedProfessors.length).toBe(0);
+  
+    expect(component.professors.length).toBe(1);
+    expect(component.professors[0]).toEqual(professorToRemove);
+  });
+
+  it('should handle non-existing professor on remove professor', () => {
+    const mockProfessors = [
+      {
+        professorId: '1',
+        name: 'John',
+        surname: 'Doe',
+        self: 'some value',
+      },
+    ];
+  
+    component.selectedProfessors = mockProfessors;
+
+    const event = { target: { textContent: 'non-existent id' } };
+    component.removeProfessor(event);
+
+    expect(component.selectedProfessors.length).toBe(1);
+    expect(component.professors.length).toBe(mockProfessors.length);
+  });
+
+  it('should add CdS on select change', () => {
+    const mockDegrees = [
+      { titleDegree: 'Degree1', degreeId: '1' },
+      { titleDegree: 'Degree2', degreeId: '2' },
+    ];
+  
+    component.degrees = mockDegrees;
+  
+    const event = { target: { value: '1' } };
+    component.onSelectCdSChange(event);
+  
+    expect(component.selectedCdS.length).toBe(1);
+    expect(component.selectedCdS[0]).toEqual(mockDegrees[0]);
+  
+    expect(component.degrees.length).toBe(mockDegrees.length - 1);
+  });
+
+  it('should handle non-existing CdS on select change', () => {
+    const mockDegrees = [
+      { titleDegree: 'Degree1', degreeId: '1' },
+      { titleDegree: 'Degree2', degreeId: '2' },
+    ];
+  
+    component.degrees = mockDegrees;
+  
+    const event = { target: { value: 'non-existent-id' } };
+    component.onSelectCdSChange(event);
+  
+    expect(component.selectedCdS.length).toBe(1);
+  
+    expect(component.degrees.length).toBe(mockDegrees.length);
+  });
+
+  it('should remove a CdS', () => {
+    const cdsToRemove = { titleDegree: 'Degree1', degreeId: '1' };
+  
+    component.selectedCdS = [cdsToRemove];
+    component.degrees = [];
+  
+    const event = { target: { textContent: '1' } };
+    component.removeCdS(event);
+  
+    expect(component.selectedCdS.length).toBe(0);
+  
+    expect(component.degrees.length).toBe(1);
+    expect(component.degrees[0]).toEqual(cdsToRemove);
+  });
+
+  it('should handle non-existing CdS on remove CdS', () => {
+    const mockDegrees = [
+      { titleDegree: 'Degree1', degreeId: '1' },
+      { titleDegree: 'Degree2', degreeId: '2' },
+    ];
+  
+    component.selectedCdS = mockDegrees;
+
+    const event = { target: { textContent: 'non-existent-id' } };
+    component.removeCdS(event);
+
+    expect(component.selectedCdS.length).toBe(2);
+    expect(component.degrees.length).toBe(mockDegrees.length);
   });
 });
