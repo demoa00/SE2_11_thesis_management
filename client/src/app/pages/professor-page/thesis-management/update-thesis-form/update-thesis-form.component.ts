@@ -317,5 +317,4 @@ export class UpdateThesisFormComponent implements OnInit{
     this.myForm.get('CdS')?.setValue( '')
     this.updateCdSValidator();
   }
-
 }
