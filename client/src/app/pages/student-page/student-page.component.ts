@@ -37,7 +37,7 @@ export class StudentPageComponent {
   constructor(public api: APIService) {
     this.api.setStudent()
   }
-  protected readonly dayjs = dayjs;
+  /*protected*/ readonly dayjs = dayjs;
 
   user: User | undefined
   userDetails: StudentDetails | undefined

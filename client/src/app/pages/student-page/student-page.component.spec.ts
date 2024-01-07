@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { NotificationsContainerComponent } from 'src/app/shared/components/notification/container/notifications-container/notifications-container.component';
 import { Socket } from 'ngx-socket-io';
-import { Observable } from 'rxjs';
+import { Observable, filter, map, Subject } from 'rxjs';
 import { ProfilePageComponent } from 'src/app/shared/profile-page/profile-page.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -19,8 +19,17 @@ import { FiltersContainerComponent } from './components/filters-container/filter
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 class mockSocket {
+  socketSubject = new Subject<any>();
+
+  emit(event: String, data: any): void {
+    this.socketSubject.next({ event, data });
+  }
+
   on(event: String): Observable<any> {
-    return new Observable();
+    return this.socketSubject.asObservable().pipe(
+      filter((message) => message.event === event),
+      map((message) => message.data)
+    );
   }
 }
 
@@ -65,6 +74,14 @@ describe('StudentPageComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should toggle trigger when closeMenu is called', () => {
+    expect(component.trigger).toBeFalsy();
+  
+    component.closeMenu();
+  
+    expect(component.trigger).toBeTruthy();
   });
 
   it('should select the menu item', () => {
@@ -147,19 +164,162 @@ describe('StudentPageComponent', () => {
     expect(component.selectedProposal).toBeNull();
   });
 
-  // it('should update canApply property based on applications', async () => {
-  //   const proposalIdWithApplication = 1;
+  it('should search and update proposals', fakeAsync(() => {
+    const mockResponse = [{ proposalId: 1, title: 'Test Proposal' }];
+    apiService.getAllProposals.and.returnValue(Promise.resolve(mockResponse));
+  
+    component.searchValue = 'test';
+  
+    component.search();
+    tick();
+  
+    expect(apiService.getAllProposals).toHaveBeenCalledWith(component.proposalParams);
+  }));
 
-  //   const mockApplications = [
-  //     { thesisProposalId: proposalIdWithApplication }
-  //   ];
+  it('should handle search with empty value', fakeAsync(() => {
+    const mockResponse = [{ proposalId: 1, title: 'Test Proposal' }];
+    apiService.getAllProposals.and.returnValue(Promise.resolve(mockResponse));
+  
+    component.searchValue = '';
+  
+    component.search();
+    tick();
+  
+    expect(apiService.getAllProposals).toHaveBeenCalledWith(component.proposalParams);
+  }));
 
-  //   apiService.getApplications.and.returnValue(Promise.resolve(mockApplications));
+  it('should toggle popupVisible when togglePopup is called', () => {
+    expect(component.popupVisible).toBeFalsy();
+  
+    component.togglePopup();
+  
+    expect(component.popupVisible).toBeTruthy();
+  });
 
-  //   await fixture.whenStable();
-      
-  //   component.selectProposal(proposalIdWithApplication);
-  //   await fixture.whenStable();
-  //   expect(component.canApply).toBeFalsy();
-  // });
+  it('should close notifications', () => {
+    const mockSocketInstance = TestBed.inject(Socket) as unknown as mockSocket;
+  
+    component.notificationsOpen = true;
+  
+    mockSocketInstance.emit('closeNotifications', {});
+  
+    component.closeNotifications(true);
+  
+    expect(component.notificationsOpen).toBeFalse();
+  });
+
+  it('should navigate to the profile page', () => {
+    expect(component.menuItems[0].selected).toBeTruthy();
+    expect(component.menuItems[1].selected).toBeFalsy();
+    expect(component.profilePage).toBeFalsy();
+  
+    component.goToProfilePage(true);
+  
+    expect(component.menuItems[0].selected).toBeFalsy();
+    expect(component.menuItems[1].selected).toBeFalsy();
+    expect(component.profilePage).toBeTruthy();
+  });
+
+  it('should navigate to Applications page', () => {
+    const selectMenuItemSpy = spyOn(component, 'selectMenuItem');
+  
+    component.goToApplicationPage(true);
+  
+    expect(selectMenuItemSpy).toHaveBeenCalledWith(1);
+  
+    expect(component.profilePage).toBe(false);
+  });
+
+  it('should delete filters and reset properties', fakeAsync(() => {
+    component.proposalParams = {
+      text: 'SomeText',
+      supervisors: [{ id: 1, name: 'John Doe' }],
+      cosupervisors: null,
+      extCs: null,
+      expirationDate: '2022-01-01',
+      abroad: true,
+    };
+    component.selectedProfs = [{ id: 1, name: 'John Doe' }];
+    component.searchValue = 'SomeSearchValue';
+  
+    component.deleteFilters();
+    tick();
+  
+    expect(component.proposalParams).toEqual({
+      text: null,
+      supervisors: null,
+      cosupervisors: null,
+      extCs: null,
+      expirationDate: null,
+      abroad: null,
+    });
+    expect(component.selectedProfs).toEqual([]);
+    expect(component.searchValue).toBe('');
+  
+    expect(apiService.getAllProposals).toHaveBeenCalledWith(null);
+  }));
+
+  it('should apply for a proposal', fakeAsync(() => {
+    const proposalId = 1;
+    const mockProposal = {
+      thesisProposalId: proposalId,
+      title: 'Test Proposal'
+    };
+    const applicationMessage = 'Test application message';
+  
+    component.selectedProposal = mockProposal;
+    component.applicationMessage = applicationMessage;
+  
+    apiService.insertNewApplication.and.returnValue(Promise.resolve());
+
+    spyOn(component, 'togglePopup');
+  
+    component.apply();
+    tick();
+  
+    expect(apiService.insertNewApplication).toHaveBeenCalledWith({
+      'thesisProposalId': proposalId,
+      'thesisProposalTitle': mockProposal.title,
+      'applicant': {
+        'studentId': component.user?.userId,
+        'name': component.userDetails?.name,
+        'surname': component.userDetails?.surname,
+        'student': `https://localhost:3000${component.userDetails?.self}`
+      },
+      'message': applicationMessage,
+      'date': component.dayjs().format('YYYY-MM-DD'),
+    });
+
+    expect(component.canApply).toBe(false);
+    expect(component.togglePopup).toHaveBeenCalled();
+  
+    expect(component.showSuccessAlert).toBe(true);
+    tick(3001);
+    expect(component.showSuccessAlert).toBe(false);
+  }));
+
+  it('should toggle more filters and update proposals accordingly', fakeAsync(() => {
+    component.showFilters = true;
+    component.proposalParams.cosupervisors = [{ id: 1, name: 'Professor A' }];
+    component.proposalParams.extCs = [{ id: 2, name: 'Professor B' }];
+    component.proposalParams.expirationDate = '2024-01-07';
+  
+    component.toggleMoreFilters();
+    tick();
+  
+    expect(component.showFilters).toBe(false);
+    expect(component.proposalParams.cosupervisors).toBeNull();
+    expect(component.proposalParams.extCs).toBeNull();
+    expect(component.proposalParams.expirationDate).toBeNull();
+  
+    expect(apiService.getAllProposals).toHaveBeenCalledWith(component.proposalParams);
+  }));
+
+  it('should toggle showFilters when toggleMoreFilters is called', () => {
+    expect(component.showFilters).toBeFalsy();
+  
+    component.toggleMoreFilters();
+  
+    expect(component.showFilters).toBeTruthy();
+  });
 });
