@@ -49,6 +49,7 @@ import {
 import {
   ApllicantDetailsComponent
 } from "./pages/professor-page/thesis-management/apllicant-details/apllicant-details.component";
+import {RequestsComponent} from "./pages/student-page/components/requests/requests.component";
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
@@ -83,29 +84,30 @@ const routes: Routes = [
     NotificationsContainerComponent,
     UpdateThesisFormComponent,
     ProfilePageComponent,
-    ApllicantDetailsComponent
+    ApllicantDetailsComponent,
+		RequestsComponent,
   ],
-  imports: [
-    BrowserModule,
-    RouterModule.forRoot(routes),
-    FormsModule,
-    CdkDrag,
-    ReactiveFormsModule,
-    HttpClientModule,
-    AuthModule.forRoot({
-      domain: 'dev-qzcvobvfrndn6b3g.us.auth0.com',
-      clientId: 'OmyzHGjNrO1FRlu3umd3xv1ZMMHyEYq6',
-      authorizationParams: {
-        redirect_uri: window.location.origin
-      }
-    }),
-    MatIconModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatInputModule,
-    BrowserAnimationsModule,
-    SocketIoModule.forRoot({url: 'http://localhost:3000', options: {withCredentials: true, autoConnect: true}}),
-  ],
+	imports: [
+		BrowserModule,
+		RouterModule.forRoot(routes),
+		FormsModule,
+		CdkDrag,
+		ReactiveFormsModule,
+		HttpClientModule,
+		AuthModule.forRoot({
+			domain: 'dev-qzcvobvfrndn6b3g.us.auth0.com',
+			clientId: 'OmyzHGjNrO1FRlu3umd3xv1ZMMHyEYq6',
+			authorizationParams: {
+				redirect_uri: window.location.origin
+			}
+		}),
+		MatIconModule,
+		MatDatepickerModule,
+		MatNativeDateModule,
+		MatInputModule,
+		BrowserAnimationsModule,
+		SocketIoModule.forRoot({url: 'http://localhost:3000', options: {withCredentials: true, autoConnect: true}}),
+	],
   providers: [AuthGuardProfessorService],
   exports: [
     ButtonComponent

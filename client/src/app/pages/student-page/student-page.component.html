@@ -63,7 +63,7 @@
     </div>
   </div>
 
-  <div *ngIf="selectedProposal!==null && menuItems[0] &&!profilePage" class="container" main-col>
+  <div *ngIf="selectedProposal!==null && menuItems[0].selected &&!profilePage" class="container" main-col>
     <div class="proposalsCard card">
       <div class="projectHeader">
         <h2 class="projectTitle">{{selectedProposal.title}}</h2>
@@ -132,6 +132,7 @@
   </div>
 
   <app-application-view [applications]="newApplications" *ngIf="menuItems[1].selected && !profilePage" main-col></app-application-view>
+  <app-requests *ngIf="menuItems[2].selected && !profilePage" main-col></app-requests>
   <app-profile-page *ngIf="profilePage" main-col></app-profile-page>
   <app-notifications-container
     (applicationsPage) = "goToApplicationPage($event)"

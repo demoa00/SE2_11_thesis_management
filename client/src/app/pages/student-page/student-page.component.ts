@@ -65,7 +65,7 @@ export class StudentPageComponent {
   menuItems = [
     {
       'id': 0,
-      'selected': true,
+      'selected': false,
       'hovered': false,
       'text': 'Proposals'
     },
@@ -75,6 +75,12 @@ export class StudentPageComponent {
       'hovered': false,
       'text': 'Applications'
     },
+    {
+      'id': 2,
+      'selected': true,
+      'hovered': false,
+      'text': 'Requests'
+    }
   ]
   applicationMessage: string = "";
 
