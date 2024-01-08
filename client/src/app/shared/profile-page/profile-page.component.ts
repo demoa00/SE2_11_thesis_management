@@ -47,11 +47,11 @@ export class ProfilePageComponent {
       let link = url.createObjectURL(r)
       let cv = document.createElement('a')
       cv.setAttribute("download", this.cv.name)
-      cv.setAttribute("href", link)
+     //  cv.setAttribute("href", link)
       document.body.appendChild(cv)
       cv.click()
       document.body.removeChild(cv)
-      // window.open(link)
+      window.open(link)
     }).catch(e => {
       console.log(e)
     })
