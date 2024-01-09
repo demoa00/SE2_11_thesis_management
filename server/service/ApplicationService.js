@@ -236,27 +236,43 @@ exports.updateApplication = function (professorId, studentId, thesisProposalId, 
         resolve(students);
       });
     });
+  }).then((students) => {
+    return new Promise(function (resolve, reject) {
+      const sql = "SELECT title FROM thesisProposals WHERE thesisProposalId = ?";
+
+      db.get(sql, [thesisProposalId], (err, row) => {
+        if (err) {
+          reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+        } else if (row === undefined) {
+          reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+        } else {
+          resolve({ students: students, title: row.title });
+        }
+      });
+    });
   }).then(async (students) => {
     let emailPromises = [];
     let notificationPromises = [];
+
+    console.log(students.students)
 
     try {
       if (newApplication.status === 'Accepted') {
         await ThesisProposal.archiveThesisProposal(thesisProposalId);
 
-        students.forEach((s) => {
+        students.students.forEach((s) => {
           if (s.studentId === studentId) {
-            emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, smtp.textAcceptApplication)));
+            emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, `${smtp.textAcceptApplication} ${students.title}`)));
           } else {
-            emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, smtp.textRejectApplication)));
+            emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, `${smtp.textRejectApplication} ${students.title}`)));
           }
 
           notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectDecisionApplication, 2));
         });
       } else {
-        students.forEach((s) => {
+        students.students.forEach((s) => {
           if (s.studentId === studentId) {
-            emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, smtp.textRejectApplication)));
+            emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, `${smtp.textRejectApplication} ${students.title}`)));
 
             notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectDecisionApplication, 2));
           }
