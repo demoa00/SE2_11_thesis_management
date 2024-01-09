@@ -16,14 +16,14 @@ exports.subjectRemoveCoSupervisor = 'Removed as co-supervisor';
 exports.textRemoveCoSupervisor = 'You are removed as a co-supervisor';
 
 exports.subjectDecisionApplication = 'Application decision';
-exports.textAcceptApplication = 'Your application has been accepted';
-exports.textRejectApplication = 'Your application has been rejected';
+exports.textAcceptApplication = 'Your application has been accepted, for thesis proposal:';
+exports.textRejectApplication = 'Your application has been rejected, for thesis proposal:';
 
 exports.subjectCancelApplication = 'Application canceled';
-exports.textCancelApplication = 'Your application has been canceled';
+exports.textCancelApplication = 'Your application has been canceled, for thesis proposal:';
 
 exports.subjectNewApplication = 'New application';
-exports.textNewApplication = 'You have received new application';
+exports.textNewApplication = 'You have received new application, for thesis proposal:';
 
 exports.mailConstructor = function (to, subject, text) {
     return {

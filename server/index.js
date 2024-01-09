@@ -273,7 +273,7 @@ app.delete('/api/thesisProposals/:thesisProposalId', isLoggedIn, isProfessor, th
 /* APPLICATIONS API */
 app.get('/api/applications', isLoggedIn, applicationController.getApplications);
 app.get('/api/applications/:thesisProposalId/:studentId', isLoggedIn, applicationController.getApplicationById);
-app.post('/api/thesisProposals/:thesisProposalId', isLoggedIn, isStudent, validate({ body: applicationSchema }), applicationController.insertNewApplication);
+app.post('/api/thesisProposals/:thesisProposalId', /* isLoggedIn, isStudent, */ validate({ body: applicationSchema }), applicationController.insertNewApplication);
 app.put('/api/applications/:thesisProposalId/:studentId', isLoggedIn, isProfessor, validate({ body: applicationSchema }), applicationController.updateApplication);
 
 

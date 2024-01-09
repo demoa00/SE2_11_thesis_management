@@ -3,11 +3,7 @@
 const VirtualClock = require("../service/VirtualClockService.js");
 const utils = require("../utils/writer.js");
 
-module.exports.updateVirtualClock = async function updateVirtualClock(
-  req,
-  res,
-  next
-) {
+module.exports.updateVirtualClock = async function updateVirtualClock(req, res, next) {
   try {
     if (req.body.date != undefined) {
       await VirtualClock.updateVirtualClock(req.body.date);
