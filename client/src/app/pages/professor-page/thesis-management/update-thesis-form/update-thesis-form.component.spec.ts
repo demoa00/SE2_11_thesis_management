@@ -362,7 +362,7 @@ describe('UpdateThesisFormComponent', () => {
   
     component.selectedCdS = mockDegrees;
 
-    const event = { target: { textContent: 'non-existent-id' } };
+    const event = { target: { textContent: '3' } };
     component.removeCdS(event);
 
     expect(component.selectedCdS.length).toBe(2);
