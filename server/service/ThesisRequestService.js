@@ -5,6 +5,7 @@ const dayjs = require('dayjs');
 const checkRole = require('../utils/checkRole');
 const smtp = require('../utils/smtp');
 const { PromiseError } = require('../utils/error');
+const Professor = require('./ProfessorService');
 
 const db = require('../utils/dbConnection');
 
@@ -18,7 +19,7 @@ exports.getThesisRequestsForProfessor = function (professorId, filter) {
                 sql = "SELECT * FROM thesisRequests, professor WHERE supervisor = ? AND professor.professorId = thesisRequest.supervisor AND thesisRequests.secretaryStatus = 'Accepted' ";
 
             } else if (filter.cosupervisor === 'true') {
-                sql = "SELECT * FROM thesisRequests WHERE thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCoSupervisor_bridge WHERE internalCoSupervisorId = ?) AND thesisRequests.secretaryStatus = 'Accepted' ";
+                sql = "SELECT * FROM thesisRequests WHERE thesisRequestId IN (SELECT thesisRequestId FROM thesisRequest_internalCoSupervisor_bridge WHERE internalCoSupervisorId = ?) AND thesisRequests.secretaryStatus = 'Accepted' ";
             }
         } else {
             resolve();
@@ -339,15 +340,69 @@ exports.updateThesisRequestForSecretary = function (thesisRequest, thesisRequest
 }
 
 exports.updateThesisRequestForStudent = async function (studentId, thesisRequest, thesisRequestId) {
-    let oldCoSupervisors = await Professor.getInternalCoSupervisorByThesisRequestId(thesisProposalId);
-    
+    let promises = []
+    let emailPromises = []
+    let notificationPromises = []
+    let newCoSupervisors = []
 
-    
-    
-    
-    
-    
-    return new Promise(function (resolve, reject) {
+    let oldCoSupervisors = await Professor.getInternalCoSupervisorByThesisRequestId(thesisRequestId);
+
+    if (thesisRequest?.coSupervisors) {
+        for (let c of thesisRequest.coSupervisors) {
+            try {
+                let internalCoSupervisor = await Professor.getProfessorById(c.coSupervisorId);
+                newCoSupervisors.push({ coSupervisorId: internalCoSupervisor.professorId, email: internalCoSupervisor.email });
+            } catch (error) {
+                throw error;
+            }
+        }
+    }
+
+    oldCoSupervisors.forEach((e1) => {
+        if (newCoSupervisors.find((e2) => e2.coSupervisorId === e1.coSupervisorId)) {
+            oldCoSupervisors = oldCoSupervisors.filter((c) => c.coSupervisorId != e1.coSupervisorId);
+            newCoSupervisors = thesisRequest.coSupervisors.filter((c) => c.coSupervisorId != e1.coSupervisorId);
+        }
+    });
+
+    // old array.lenght > 0 => some cosupervisors has been removed in the new array
+    if (oldCoSupervisors.length > 0) {
+        oldCoSupervisors.forEach((c) => {
+            promises.push(new Promise(function (resolve, reject) {
+                const sql = "DELETE FROM thesisRequest_internalCoSupervisor_bridge WHERE thesisRequestId = ? AND internalCoSupervisorId = ?";
+                db.run(sql, [thesisRequestId, c.coSupervisorId], function (err) {
+                    if (err) {
+                        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+                    } else {
+                        resolve();
+                    }
+                })
+            }));
+
+            emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectRemoveCoSupervisor, `${smtp.textRemoveThesisRequestCoSupervisor} ${thesisRequest.title}`)));
+            notificationPromises.push(Notification.insertNewNotification(c.coSupervisorId, smtp.subjectRemoveCoSupervisor, 8));
+        })
+    }
+    // new array.lenght > 0 => some cosupervisors has been added 
+    if (newCoSupervisors.length > 0) {
+        newCoSupervisors.forEach((c) => {
+            promises.push(new Promise(function (resolve, reject) {
+                const sql = "INSERT INTO thesisRequest_internalCoSupervisor_bridge(thesisRequestId, internalCoSupervisorId) VALUES(?,?)";
+                db.run(sql, [thesisRequestId, c.coSupervisorId], function (err) {
+                    if (err) {
+                        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+                    } else {
+                        resolve();
+                    }
+                })
+            }));
+            emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectInsertCoSupervisor, `${smtp.textInsertThesisRequestCoSupervisor} ${thesisRequest.title}`)));
+            notificationPromises.push(Notification.insertNewNotification(c.coSupervisorId, smtp.subjectInsertCoSupervisor, 9));
+        })
+    }
+
+
+    promises.push(new Promise(function (resolve, reject) {
         const sql = "UPDATE thesisRequests SET title=?, description=?, professorStatus='Pending' WHERE thesisRequestId = ? AND studentId = ?";
         db.run(sql, [thesisRequest.title, thesisRequest.description, thesisRequestId, studentId], function (err) {
             if (err) {
@@ -358,9 +413,69 @@ exports.updateThesisRequestForStudent = async function (studentId, thesisRequest
                 resolve();
             }
         })
-    }).then(()=>{
-        return new Promise(function (resolve, reject){
+    })
+    );
+    return Promise.all(promises).then(async () => {
+        try {
+            await Promise.all(notificationPromises);
+            await Promise.all(emailPromises);
 
-        })
+            return { updatedThesisRequest: `/api/thesisRequests/${thesisRequestId}` };
+        } catch (error) {
+            throw error;
+        }
     });
+}
+
+exports.deleteThesisRequest = async function (studentId, thesisRequestId) {
+    let supervisor = '';
+    let coSupervisors = [];
+    return new Promise(function (resolve, reject) {
+        const sql = "SELECT professorId, title FROM thesisRequests WHERE supervisor = ?";
+        db.get(sql, [thesisRequestId], function (err, row) {
+            if (err) {
+                reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+            } else if (row === undefined) {
+                reject(new PromiseError({ code: 404, message: "Not Found" }));
+            } else {
+                resolve({professorId: row.professorId, title : row.title});
+            }
+        })
+
+    }).then(async (thesisRequest) => {
+        supervisor = await Professor.getProfessorById(thesisRequest.professorId);
+        coSupervisors = await Professor.getInternalCoSupervisorByThesisRequestId(thesisRequestId);
+        return thesisRequest;
+
+    }).then((thesisRequest) => {
+        const sql = "DELETE FROM thesisRequests WHERE thesisRequestId = ? AND studendId = ?";
+        db.run(sql, [thesisRequestId, studentId], function (err) {
+            if (err) {
+                reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+            } else {
+                resolve(thesisRequest);
+            }
+        })
+
+    }).then( async (thesisRequest) => {
+        try {
+            let notificationPromises = [];
+            let emailPromises = [];
+
+            emailPromises.push(smtp.sendMail(smtp.mailConstructor(supervisor.email, smtp.subjectDeleteThesisRequest, `${smtp.textDeleteThesisRequest} ${thesisRequest.title}`)));
+            notificationPromises.push(Notification.insertNewNotification(supervisor.professorId, smtp.subjectDeleteThesisRequest, 10));
+
+            coSupervisors.forEach(c => {
+                emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectDeleteThesisRequest, `${smtp.textDeleteThesisRequest} ${thesisRequest.title}`)));
+                notificationPromises.push(Notification.insertNewNotification(c.professorId, smtp.subjectDeleteThesisRequest, 10));
+            })
+
+            await Promise.all(notificationPromises);
+            await Promise.all(emailPromises);
+
+            return;
+        } catch (error) {
+            throw error;
+        }
+    })
 }

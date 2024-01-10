@@ -7,7 +7,7 @@ const checkRole = require("../utils/checkRole.js");
 module.exports.getThesisRequests = async function getThesisRequests(req, res, next) {
   try {
     let thesisRequestList;
-    
+
     if (checkRole.isProfessor(req.user)) {
       // get the requests for his own thesis
       thesisRequestList = await ThesisRequest.getThesisRequestsForProfessor(req.user.userId);
@@ -73,3 +73,16 @@ module.exports.updateThesisRequest = async function updateThesisRequest(req, res
     utils.writeJson(res, { error: error.message }, error.code);
   }
 };
+
+module.exports.deleteThesisRequest = async function (req, res, next) {
+  try {
+    if (checkRole.isStudent(req.user)) {
+      let newThesisRequest = await ThesisRequest.deleteThesisRequest(req.user.userId, req.params.thesisRequestId);
+      utils.writeJson(res, newThesisRequest, 200);
+    } else {
+      utils.writeJson(res, { error: "Bad Request" }, 400);
+    }
+  } catch (error) {
+    utils.writeJson(res, { error: error.message }, error.code);
+  }
+}

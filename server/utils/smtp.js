@@ -31,6 +31,13 @@ exports.textRejectThesisRequest = 'Your thesis request has been rejected, for th
 exports.subjectInsertThesisRequest = 'Added as supervisor, for thesis request:';
 exports.textInsertThesisRequest = 'You are added as a supervisor, for thesis request:';
 
+exports.textRemoveThesisRequestCoSupervisor = 'You have been removed as a co-supervisor, for thesis request:';
+exports.textInsertThesisRequestCoSupervisor = 'You have been added as a co-supervisor, for thesis request:';
+
+
+exports.subjectDeleteThesisRequest = 'Thesis Request cancelled';
+exports.textDeleteThesisRequest = 'The request has been cancelled, for thesis request:';
+
 exports.mailConstructor = function (to, subject, text) {
     return {
         from: 'thesisproposal.service@polito.it',
