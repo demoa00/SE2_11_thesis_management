@@ -112,6 +112,10 @@ components:
           type: string
           minLength: 1
           maxLength: 1000
+        professorEmail:
+          type: string
+          minLength: 1
+          maxLength: 1000
         secretaryStatus:
           enum:
             - Pending
@@ -492,6 +496,34 @@ components:
             type: string
             format: uri
         additionalProperties: false
+    secretaryClerck:
+      type: object
+      properties:
+        $schema:
+          type: string
+        secretaryClerckEmployeeId:
+          type: string
+          pattern: ^(c|C)[0-9]{6}$
+        name:
+          type: string
+          pattern: ^[a-zA-Z ]+$
+          minLength: 1
+        surname:
+          type: string
+          pattern: ^[a-zA-Z ]+$
+          minLength: 1
+        email:
+          type: string
+          format: email
+        self:
+          type: string
+          format: uri
+      additionalProperties: false
+      required:
+        - secretaryClerckEmployeeId
+        - name
+        - surname
+        - email
     degrees:
       type: array
       items:
@@ -554,6 +586,7 @@ tags:
   - name: thesisProposal
   - name: application
   - name: externalCoSupervisor
+  - name: secretaryClerck
   - name: degree
   - name: keyword
   - name: curriculumVitae
@@ -1358,6 +1391,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/externalCoSupervisor'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      security:
+        - cookieAuth: []
+  /secretaryClercks/{secretaryClerckEmployeeId}:
+    get:
+      tags:
+        - secretaryClerck
+      operationId: getSecretaryClerckEmplyeeById
+      parameters:
+        - name: secretaryClerckEmployeeId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^(c|C)[0-9]{6}$
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/secretaryClerck'
         '400':
           description: Bad Request
         '401':
