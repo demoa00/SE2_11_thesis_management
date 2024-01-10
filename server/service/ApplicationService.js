@@ -2,6 +2,7 @@
 
 const dayjs = require('dayjs');
 
+const Professor = require('./ProfessorService');
 const ThesisProposal = require('./ThesisProposalService');
 const Notification = require('./NotificationService');
 const checkRole = require('../utils/checkRole');
@@ -254,9 +255,12 @@ exports.updateApplication = function (professorId, studentId, thesisProposalId, 
     let emailPromises = [];
     let notificationPromises = [];
 
-    console.log(students.students)
-
     try {
+
+      let coSupervisors = [];
+
+      coSupervisors = await Professor.getInternalCoSupervisorByThesisProposalId(thesisProposalId);
+
       if (newApplication.status === 'Accepted') {
         await ThesisProposal.archiveThesisProposal(thesisProposalId);
 
@@ -268,6 +272,11 @@ exports.updateApplication = function (professorId, studentId, thesisProposalId, 
           }
 
           notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectDecisionApplication, 2));
+        });
+
+        coSupervisors.forEach((c) => {
+          emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectDecisionApplication, `${smtp.textAcceptApplicationCoSupervisor} ${students.title}`))); ù
+          notificationPromises.push(Notification.insertNewNotification(c.coSupervisorId, smtp.subjectDecisionApplication, 11));
         });
       } else {
         students.students.forEach((s) => {

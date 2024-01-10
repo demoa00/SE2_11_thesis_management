@@ -18,6 +18,8 @@ exports.subjectDecisionApplication = 'Application decision';
 exports.textAcceptApplication = 'Your application has been accepted, for thesis proposal:';
 exports.textRejectApplication = 'Your application has been rejected, for thesis proposal:';
 
+exports.textAcceptApplicationCoSupervisor = 'An application, where you are a co-supervisor, has been accepted, for thesis proposal:';
+
 exports.subjectCancelApplication = 'Application canceled';
 exports.textCancelApplication = 'Your application has been canceled, for thesis proposal:';
 
@@ -34,9 +36,12 @@ exports.textInsertThesisRequest = 'You are added as a supervisor, for thesis req
 exports.textRemoveThesisRequestCoSupervisor = 'You have been removed as a co-supervisor, for thesis request:';
 exports.textInsertThesisRequestCoSupervisor = 'You have been added as a co-supervisor, for thesis request:';
 
-
 exports.subjectDeleteThesisRequest = 'Thesis Request cancelled';
-exports.textDeleteThesisRequest = 'The request has been cancelled, for thesis request:';
+exports.textDeleteThesisRequest = 'The thesis request has been cancelled, for thesis request:';
+
+exports.subjectThesisProposalExpiring = 'Thesis Proposal expiring';
+exports.textThesisProposalExpiring = 'Your thesis proposal will expire in a week, for thesis proposal:';
+
 
 exports.mailConstructor = function (to, subject, text) {
     return {

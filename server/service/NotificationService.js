@@ -2,7 +2,10 @@
 
 const dayjs = require('dayjs');
 
+const ThesisProposal = require('./ThesisProposalService');
+const Notification = require('./NotificationService');
 const { PromiseError } = require('../utils/error');
+const smtp = require('../utils/smtp');
 
 const db = require('../utils/dbConnection');
 
@@ -73,5 +76,38 @@ exports.deleteAllNotifications = function (userId) {
                 resolve();
             }
         });
+    });
+}
+
+exports.thesisProposalExpirationNotification = function () {
+    let promises = [];
+    let emailPromises = [];
+    let notificationPromises = [];
+
+    return new Promise(function (resolve, reject) {
+        const sql = "SELECT thesisProposals.thesisProposalId, thesisProposals.supervisor, thesisProposals.title, thesisProposals.expirationDate, professors.email FROM thesisProposals, professors WHERE professors.professorId = thesisProposals.supervisor";
+
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                resolve();
+            } else {
+                rows.forEach((r) => {
+                    if (dayjs().diff(r.expirationDate, "day") === -7) {
+                        emailPromises.push(smtp.sendMail(smtp.mailConstructor(r.email, smtp.subjectThesisProposalExpiring, `${smtp.textThesisProposalExpiring} ${r.title}`)));
+                        notificationPromises.push(Notification.insertNewNotification(r.supervisor, smtp.subjectThesisProposalExpiring, 12));
+                    } else if (dayjs('2024-05-31').diff(r.expirationDate, "day") === 0) {
+                        promises.push(ThesisProposal.archiveThesisProposal(r.thesisProposalId, r.supervisor));
+                    }
+                });
+            }
+        });
+    }).then(async () => {
+        try {
+            await Promise.all(promises);
+            await Promise.all(emailPromises);
+            await Promise.all(notificationPromises);
+        } catch (error) {
+            console.log(error);
+        }
     });
 }

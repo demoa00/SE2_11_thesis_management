@@ -6,6 +6,7 @@ const checkRole = require('../utils/checkRole');
 const smtp = require('../utils/smtp');
 const { PromiseError } = require('../utils/error');
 const Professor = require('./ProfessorService');
+const Notification = require('./NotificationService');
 
 const db = require('../utils/dbConnection');
 
@@ -201,6 +202,7 @@ exports.insertNewThesisRequest = function (studentId, thesisRequest) {
         try {
             let emailPromises = [];
             let notificationPromises = [];
+            
             emailPromises.push(smtp.sendMail(smtp.mailConstructor(professor.email, smtp.subjectInsertThesisRequest, `${smtp.textInsertThesisRequest} ${thesisRequest.title}`)));
             notificationPromises.push(Notification.insertNewNotification(professor.professorId, smtp.subjectInsertThesisRequest, 7));
 
