@@ -125,7 +125,7 @@ const strategy = new saml(
     },
     async (profile, done) => {
         let userEmail = profile.attributes['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
-        let regex1 = new RegExp('.*@studenti.*');
+        let regex = new RegExp('.*@studenti.*');
         let user;
 
         if (regex.test(userEmail)) { //user is a student
