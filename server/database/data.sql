@@ -63,6 +63,12 @@ INSERT INTO externalCoSupervisors (externalCoSupervisorId, name, surname, email,
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
+/* SECRETARY CLERCK EMPLOYEES DATA */
+DELETE FROM secretaryClerckEmployees;
+INSERT INTO secretaryClerckEmployees (secretaryClerckEmployeeId, name, surname, email) VALUES ('c123456', 'Tony', 'Jordan', 'tony.jordan@polito.it');
+
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
 /* THESIS PROPOSALS DATA */
 DELETE FROM thesisProposals;
 INSERT INTO thesisProposals (thesisProposalId, title, supervisor, keywords, description, requirements, thesisType, abroad, notes, expirationDate, level, isArchieved) VALUES (1, 'Design and Analysis of a Solar-Powered Water Pump for Rural Communities', 'p987123', '["solar energy","water pumping","rural communities"]', 'This thesis proposal aims to design and analyze a solar-powered water pump system for rural communities with limited access to electricity. The system will utilize solar panels to generate electricity, which will then be used to power a water pump to provide clean drinking water to the community.', 'The student should have a strong understanding of mechanical engineering principles, including thermodynamics, fluid mechanics, and electrical engineering. The student should also be proficient in using CAD software and have experience with data analysis.', 'Research', false, 'This thesis proposal is open to students interested in renewable energy, water resources, and sustainable development.', '2024-06-30', 'BSc', false);

@@ -38,6 +38,17 @@ CREATE TABLE externalCoSupervisors(
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
+/* TABLE TO MANAGE SECRETARY CLERCK EMPLOYEE */
+DROP TABLE secretaryClerckEmployees;
+CREATE TABLE secretaryClerckEmployees(
+    secretaryClerckEmployeeId TEXT(7) PRIMARY KEY NOT NULL,
+    name TEXT(20) NOT NULL,
+    surname TEXT(20) NOT NULL,
+    email TEXT(50) NOT NULL
+);
+
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
 /* TABLE TO MANAGE DEGREES */
 DROP TABLE degrees;
 CREATE TABLE degrees(

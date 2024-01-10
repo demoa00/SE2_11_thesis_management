@@ -51,6 +51,7 @@ const professorService = require(path.join(__dirname, 'service/ProfessorService'
 const secretaryClerckEmployeeService = require(path.join(__dirname, 'service/SecretaryClerckService'));
 const notificationService = require(path.join(__dirname, 'service/NotificationService'));
 
+
 //-- -- -- -- -- -- -- -- -- -- --
 // SCHEMA VALIDATOR INITIALIZATION
 //-- -- -- -- -- -- -- -- -- -- --
@@ -128,14 +129,14 @@ const strategy = new saml(
         let regex = new RegExp('.*@studenti.*');
         let user;
 
-        if (regex.test(userEmail)) { //user is a student
+        if (regex.test(userEmail)) { // User is a student
             try {
                 user = await studentService.getStudentByEmail(userEmail);
                 done(null, user);
             } catch (error) {
                 done(null, false);
             }
-        } else { //user is a professor or a secretary clerck employee
+        } else { // User is a professor or a secretary clerck employee
             try {
                 user = await professorService.getProfessorByEmail(userEmail);
 
@@ -344,6 +345,7 @@ app.post('/api/thesisRequests', isLoggedIn, isStudent, validate({ body: thesisRe
 app.put('/api/thesisRequests/:thesisRequestId', isLoggedIn, validate({ body: thesisRequestSchema }), thesisRequestController.updateThesisRequest);
 app.delete('/api/thesisRequests/:thesisRequestId', isLoggedIn, thesisRequestController.deleteThesisRequest);
 
+
 /* NOTIFICATIONS API */
 app.get('/api/notifications', isLoggedIn, notificationController.getNotifications);
 app.put('/api/notifications/:notificationId', isLoggedIn, notificationController.updateNotification);
@@ -403,6 +405,10 @@ io.on('connection', (socket) => {
 // SERVER ROUTINE
 //-- -- -- -- -- --
 
+/**
+ * This routine is executed every day at 00:00,
+ * in order to verify is a thesis proposal is expired
+ * */
 const job = schedule.scheduleJob('0 0 * * *', function () {
     notificationService.thesisProposalExpirationNotification();
 });
@@ -414,5 +420,5 @@ const job = schedule.scheduleJob('0 0 * * *', function () {
 
 httpServer.listen(PORT, function () {
     console.log('Your server is listening on port %d (http://localhost:%d)', PORT, PORT);
-    console.log('Swagger-ui is available on http://localhost:%d/docs', PORT);
+    console.log('Swagger-ui is available on http://localhost:%d/docs', PORT);   // API documentation
 });
