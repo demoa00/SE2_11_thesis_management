@@ -25,6 +25,13 @@ exports.textCancelApplication = 'Your application has been canceled';
 exports.subjectNewApplication = 'New application';
 exports.textNewApplication = 'You have received new application';
 
+exports.subjectThesisRequestChanges = 'Thesis Request decision';
+exports.textAcceptThesisRequest = 'Your thesis request has been accepted, for thesis request:';
+exports.textRejectThesisRequest = 'Your thesis request has been rejected, for thesis request:';
+
+exports.subjectInsertThesisRequest = 'Added as supervisor, for thesis request:';
+exports.textInsertThesisRequest = 'You are added as a supervisor, for thesis request:';
+
 exports.mailConstructor = function (to, subject, text) {
     return {
         from: 'thesisproposal.service@polito.it',
