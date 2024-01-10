@@ -7,11 +7,10 @@ const checkRole = require("../utils/checkRole.js");
 module.exports.getThesisRequests = async function getThesisRequests(req, res, next) {
   try {
     let thesisRequestList;
-    
+
     if (checkRole.isProfessor(req.user)) {
       // get the requests for his own thesis
       thesisRequestList = await ThesisRequest.getThesisRequestsForProfessor(req.user.userId);
-
       utils.writeJson(res, thesisRequestList, 200);
     } else if (checkRole.isSecretaryClerck(req.user)) {
       // get all the requests
@@ -30,7 +29,6 @@ module.exports.getThesisRequestById = async function getThesisRequestById(req, r
   try {
     if (req.user != undefined && req.params.thesisRequestId != undefined) {
       let thesisRequest = await ThesisRequest.getThesisRequestById(req.user, req.params.thesisRequestId);
-
       utils.writeJson(res, thesisRequest, 200);
     } else {
       utils.writeJson(res, { error: "Bad Request" }, 400);
@@ -44,7 +42,6 @@ module.exports.insertNewThesisRequest = async function insertNewThesisRequest(re
   try {
     if (req.user.userId != undefined && req.body != undefined) {
       let newThesisRequest = await ThesisRequest.insertNewThesisRequest(req.user.userId, req.body);
-
       utils.writeJson(res, newThesisRequest, 200);
     } else {
       utils.writeJson(res, { error: "Bad Request" }, 400);
@@ -56,9 +53,9 @@ module.exports.insertNewThesisRequest = async function insertNewThesisRequest(re
 
 module.exports.updateThesisRequest = async function updateThesisRequest(req, res, next) {
   try {
-    if (req.user.userId != undefined && req.body != undefined && req.params.thesisRequestId != undefined) {
-      let thesisRequestUpdated = await ThesisRequest.updateThesisRequest(req.user.userId, req.body, req.params.thesisRequestId);
-
+    let thesisRequestUpdated;
+    if (checkRole.isProfessor(req.user)) {
+      thesisRequestUpdated = await ThesisRequest.updateThesisRequestForProfessor(req.user.userId, req.body, req.params.thesisRequestId);
       utils.writeJson(res, thesisRequestUpdated, 200);
     } else {
       utils.writeJson(res, { error: "Bad Request" }, 400);
@@ -67,3 +64,16 @@ module.exports.updateThesisRequest = async function updateThesisRequest(req, res
     utils.writeJson(res, { error: error.message }, error.code);
   }
 };
+
+module.exports.deleteThesisRequest = async function (req, res, next) {
+  try {
+    if (checkRole.isStudent(req.user)) {
+      let newThesisRequest = await ThesisRequest.deleteThesisRequest(req.user.userId, req.params.thesisRequestId);
+      utils.writeJson(res, newThesisRequest, 200);
+    } else {
+      utils.writeJson(res, { error: "Bad Request" }, 400);
+    }
+  } catch (error) {
+    utils.writeJson(res, { error: error.message }, error.code);
+  }
+}
