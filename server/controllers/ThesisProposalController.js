@@ -31,7 +31,7 @@ module.exports.getThesisProposalById = async function getThesisProposalById(req,
 
       utils.writeJson(res, thesisProposal, 200);
     } else {
-      utils.writeJson(res, { error: "Bad Request" }, 404);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
@@ -45,7 +45,7 @@ module.exports.insertNewThesisProposal = async function insertNewThesisProposal(
 
       utils.writeJson(res, newThesisProposalURI, 201);
     } else {
-      utils.writeJson(res, { error: "Bad Request" }, 404);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
@@ -59,7 +59,7 @@ module.exports.updateThesisProposal = async function updateThesisProposal(req, r
 
       utils.writeJson(res, thesisProposalUpdated, 200);
     } else {
-      utils.writeJson(res, { error: "Bad Request" }, 404);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
@@ -73,7 +73,7 @@ module.exports.archiveThesisProposal = async function archiveThesisProposal(req,
 
       utils.writeJson(res, "No Content", 204);
     } else {
-      utils.writeJson(res, { error: "Bad Request" }, 404);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
@@ -87,7 +87,7 @@ module.exports.deleteThesisProposal = async function deleteThesisProposal(req, r
 
       utils.writeJson(res, "No Content", 204);
     } else {
-      utils.writeJson(res, { error: "Bad Request" }, 404);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);

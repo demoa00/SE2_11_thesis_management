@@ -33,7 +33,7 @@ module.exports.getThesisRequestById = async function getThesisRequestById(req, r
 
       utils.writeJson(res, thesisRequest, 200);
     } else {
-      utils.writeJson(res, { error: "Bad Request" }, 404);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
@@ -47,7 +47,7 @@ module.exports.insertNewThesisRequest = async function insertNewThesisRequest(re
 
       utils.writeJson(res, newThesisRequest, 200);
     } else {
-      utils.writeJson(res, { error: "Bad Request" }, 404);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
@@ -61,7 +61,7 @@ module.exports.updateThesisRequest = async function updateThesisRequest(req, res
 
       utils.writeJson(res, thesisRequestUpdated, 200);
     } else {
-      utils.writeJson(res, { error: "Bad Request" }, 404);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);

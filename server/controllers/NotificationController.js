@@ -10,7 +10,7 @@ module.exports.getNotifications = async function getNotifications(req, res, next
 
       utils.writeJson(res, notificationsList, 200);
     } else {
-      utils.writeJson(res, { error: "Bad Request" }, 404);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
@@ -24,7 +24,7 @@ module.exports.updateNotification = async function updateNotification(req, res, 
 
       utils.writeJson(res, "No Content", 204);
     } else {
-      utils.writeJson(res, { error: "Bad Request" }, 404);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
@@ -38,7 +38,7 @@ module.exports.deleteAllNotifications = async function deleteAllNotifications(re
 
       utils.writeJson(res, "No Content", 204);
     } else {
-      utils.writeJson(res, { error: "Bad Request" }, 404);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);

@@ -9,7 +9,7 @@ module.exports.updateVirtualClock = async function updateVirtualClock(req, res, 
       await VirtualClock.updateVirtualClock(req.body.date);
       utils.writeJson(res, { message: "OK" }, 200);
     } else {
-      utils.writeJson(res, { error: "Bad Request" }, 404);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);

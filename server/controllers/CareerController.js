@@ -10,7 +10,7 @@ module.exports.getCareer = async function (req, res, next) {
 
       utils.writeJson(res, career, 200);
     } else {
-      utils.writeJson(res, { error: "Bad Request" }, 404);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);

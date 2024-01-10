@@ -12,7 +12,7 @@ module.exports.getExternalCoSupervisors =
 
         utils.writeJson(res, externalCoSupervisorsList, 200);
       } else {
-        utils.writeJson(res, { error: "Bad Request" }, 404);
+        utils.writeJson(res, { error: "Bad Request" }, 400);
       }
     } catch (error) {
       utils.writeJson(res, { error: error.message }, error.code);
@@ -30,7 +30,7 @@ module.exports.getExternalCoSupervisorById =
 
         utils.writeJson(res, externalCoSupervisor, 200);
       } else {
-        utils.writeJson(res, { error: "Bad Request" }, 404);
+        utils.writeJson(res, { error: "Bad Request" }, 400);
       }
     } catch (error) {
       utils.writeJson(res, { error: error.message }, error.code);

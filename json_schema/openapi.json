@@ -1071,6 +1071,56 @@
                         "cookieAuth": []
                     }
                 ]
+            },
+            "delete": {
+                "tags": [
+                    "thesisRequest"
+                ],
+                "operationId": "deleteThesisRequest",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "cookie",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^(s|S)[0-9]{6}$"
+                        }
+                    },
+                    {
+                        "name": "thesisRequestId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
             }
         },
         "/virtualClock": {

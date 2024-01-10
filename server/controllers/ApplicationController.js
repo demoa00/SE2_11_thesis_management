@@ -21,7 +21,7 @@ module.exports.getApplications = async function getApplications(req, res, next) 
         utils.writeJson(res, { error: "Forbidden" }, 403);
       }
     } else {
-      utils.writeJson(res, { error: "Bad Request" }, 404);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
@@ -35,7 +35,7 @@ module.exports.getApplicationById = async function getApplicationById(req, res, 
 
       utils.writeJson(res, application, 200);
     } else {
-      utils.writeJson(res, { error: "Bad Request" }, 404);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
@@ -49,7 +49,7 @@ module.exports.insertNewApplication = async function insertNewApplication(req, r
 
       utils.writeJson(res, newApplicationURI, 201);
     } else {
-      utils.writeJson(res, { error: "Bad Request" }, 404);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
@@ -63,7 +63,7 @@ module.exports.updateApplication = async function updateApplication(req, res, ne
 
       utils.writeJson(res, newApplicationURI, 200);
     } else {
-      utils.writeJson(res, { error: "Bad Request" }, 404);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
