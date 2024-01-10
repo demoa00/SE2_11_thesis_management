@@ -315,7 +315,7 @@ app.get('/api/thesisRequests', isLoggedIn, thesisRequestController.getThesisRequ
 app.get('/api/thesisRequests/:thesisRequestId', isLoggedIn, thesisRequestController.getThesisRequestById);
 app.post('/api/thesisRequests', isLoggedIn, isStudent, validate({ body: thesisRequestSchema }), thesisRequestController.insertNewThesisRequest);
 app.put('/api/thesisRequests/:thesisRequestId', isLoggedIn, validate({ body: thesisRequestSchema }), thesisRequestController.updateThesisRequest);
-
+app.delete('/api/thesisRequests/:thesisRequestId', isLoggedIn, thesisRequestController.deleteThesisRequest);
 
 /* NOTIFICATIONS API */
 app.get('/api/notifications', isLoggedIn, notificationController.getNotifications);
