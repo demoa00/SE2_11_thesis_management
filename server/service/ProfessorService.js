@@ -57,7 +57,7 @@ exports.getProfessorByEmail = function (email) {
       if (err) {
         reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (row === undefined) {
-        reject(new PromiseError({ code: 404, message: "Not Found" }));
+        resolve(undefined);
       } else {
         let professor = {
           userId: row.professorId,

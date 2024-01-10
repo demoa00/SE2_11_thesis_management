@@ -32,6 +32,7 @@ const applicationController = require(path.join(__dirname, 'controllers/Applicat
 const studentController = require(path.join(__dirname, 'controllers/StudentController'));
 const professorController = require(path.join(__dirname, 'controllers/ProfessorController'));
 const externalCoSupervisorController = require(path.join(__dirname, 'controllers/ExternalCoSupervisorController'));
+const secretaryClerckEmployeeController = require(path.join(__dirname, 'controllers/SecretaryClerckController'));
 const keywordController = require(path.join(__dirname, 'controllers/KeywordController'));
 const degreeController = require(path.join(__dirname, 'controllers/DegreeController'));
 const curriculumVitaeController = require(path.join(__dirname, 'controllers/CurriculumVitaeController'));
@@ -47,6 +48,7 @@ const virtualClockController = require(path.join(__dirname, 'controllers/Virtual
 
 const studentService = require(path.join(__dirname, 'service/StudentService'));
 const professorService = require(path.join(__dirname, 'service/ProfessorService'));
+const secretaryClerckEmployeeService = require(path.join(__dirname, 'service/SecretaryClerckService'));
 const notificationService = require(path.join(__dirname, 'service/NotificationService'));
 
 //-- -- -- -- -- -- -- -- -- -- --
@@ -123,7 +125,7 @@ const strategy = new saml(
     },
     async (profile, done) => {
         let userEmail = profile.attributes['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
-        let regex = new RegExp('.*@studenti.*');
+        let regex1 = new RegExp('.*@studenti.*');
         let user;
 
         if (regex.test(userEmail)) { //user is a student
@@ -133,9 +135,14 @@ const strategy = new saml(
             } catch (error) {
                 done(null, false);
             }
-        } else { //user is a professor
+        } else { //user is a professor or a secretary clerck employee
             try {
                 user = await professorService.getProfessorByEmail(userEmail);
+
+                if (user === undefined) {
+                    user = await secretaryClerckEmployeeService.getSecretaryClerckEmployeeByEmail(userEmail);
+                }
+
                 done(null, user);
             } catch (error) {
                 done(null, false);
@@ -207,6 +214,21 @@ const isStudent = (req, res, next) => {
 const isProfessor = (req, res, next) => {
     if (req.user.userId != undefined && req.user.codGroup != undefined && req.user.role != undefined) {
         if (req.user.role === 'professor') {
+            return next();
+        }
+    }
+
+    return res.status(403).json({ error: 'Forbidden' });
+}
+
+/**
+ * Verify if the user that want to accede
+ * to a specific resorce has the role of 
+ * secretary
+ */
+const isSecretary = (req, res, next) => {
+    if (req.user.userId != undefined && req.user.role != undefined) {
+        if (req.user.role === 'secretary') {
             return next();
         }
     }
@@ -291,6 +313,10 @@ app.get('/api/professors/:professorId', isLoggedIn, professorController.getProfe
 /* EXTERNAL CO-SUPERVISORS API */
 app.get('/api/externalCoSupervisors', isLoggedIn, externalCoSupervisorController.getExternalCoSupervisors);
 app.get('/api/externalCoSupervisors/:externalCoSupervisorId', isLoggedIn, externalCoSupervisorController.getExternalCoSupervisorById);
+
+
+/* SECRETARY CLERK EMPLOYEES API */
+app.get('/api/secretaryClerckEmployees/:secretaryClerckEmployeeId', isLoggedIn, isSecretary, secretaryClerckEmployeeController.getSecretaryClerckEmployeeById);
 
 
 /* KEYWORDS API */

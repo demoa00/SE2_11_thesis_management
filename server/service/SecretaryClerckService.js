@@ -27,9 +27,9 @@ exports.getSecretaryClerckEmployeeByEmail = function (email) {
     });
 }
 
-exports.getProfessorById = function (secretaryClerckEmployeeId) {
+exports.getSecretaryClerckEmployeeById = function (secretaryClerckEmployeeId) {
     return new Promise(function (resolve, reject) {
-        const sql = 'SELECT * FROM secretaryClerkEmployees WHERE secretaryClerckEmployeeId = ?';
+        const sql = 'SELECT * FROM secretaryClerckEmployees WHERE secretaryClerckEmployeeId = ?';
 
         db.get(sql, [secretaryClerckEmployeeId], (err, row) => {
             if (err) {
