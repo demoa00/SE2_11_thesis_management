@@ -56,4 +56,14 @@ export class ApllicantDetailsComponent {
       console.log(e)
     })
   }
+  openCv() {
+    this.api.getCv(this.userId).then(r => {
+      console.log(r)
+      let url = window.URL;
+      let link = url.createObjectURL(r)
+      window.open(link, '_blank');
+    }).catch(e => {
+      console.log(e)
+    })
+  }
 }

@@ -5,7 +5,9 @@
       <p class="name">{{user.name}} {{user.surname}}, {{userId}}</p>
       <div class="flex items-center gap-2" *ngIf="cv.name">
         <p class="font-medium" >Applicant CV:</p>
-        <app-icon name="pdf" class="text-blue-900 h-6 w-6 hover:cursor-pointer" (click)="getCv()">CV</app-icon>
+        <app-icon name="search" class="text-blue-900 h-4 w-4 hover:cursor-pointer" (click)="openCv()">CV</app-icon>
+        Or
+        <app-icon name="download" class="text-blue-900 h-4 w-4 hover:cursor-pointer" (click)="getCv()">CV</app-icon>
       </div>
     </div>
     <div *ngIf="application && application.message!=null" class="flex items-center gap-2">
