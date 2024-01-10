@@ -4,7 +4,7 @@
 // SERVER DEPENDENCES
 //-- -- -- -- -- -- --
 
-require('dotenv').config()
+require('dotenv').config();
 const corsConfig = require('./config.js').config();
 
 const http = require('http');
@@ -38,6 +38,7 @@ const careerController = require(path.join(__dirname, 'controllers/CareerControl
 const thesisRequestController = require(path.join(__dirname, 'controllers/ThesisRequestController'));
 const notificationController = require(path.join(__dirname, 'controllers/NotificationController'));
 const virtualClockController = require(path.join(__dirname, 'controllers/VirtualClockController'));
+
 
 //-- -- -- -- -- -- -- -- -- --
 // IMPORT RESOURCE SERVICES

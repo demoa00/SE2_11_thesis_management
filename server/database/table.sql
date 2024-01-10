@@ -150,10 +150,13 @@ CREATE VIRTUAL TABLE virtualThesisProposals USING fts5(
     notes
 );
 
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
 /* TABLE TO MANAGE THESIS REQUESTS */
 DROP TABLE thesisRequests;
 CREATE TABLE thesisRequests(
     thesisRequestId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+	thesisProposalId INTEGER,
     studentId TEXT(7) NOT NULL,
 	title TEXT(20) NOT NULL,
     supervisor TEXT(7) NOT NULL,
@@ -162,6 +165,7 @@ CREATE TABLE thesisRequests(
 	professorStatus TEXT(20) NOT NULL DEFAULT 'Pending',
 	approvalDate DATE,
     
+	FOREIGN KEY(thesisProposalId) REFERENCES thesisProposals(thesisProposalId) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY(supervisor) REFERENCES professors(professorId) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -178,6 +182,9 @@ CREATE TABLE notifications(
 	isRead BOLEAN DEFAULT FALSE NOT NULL
 );
 
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
+/* TABLE TO MANAGE THE LIST OF INTERNAL CO-SUPERVISOR FOR A THESIS PROPOSAL */
 DROP TABLE thesisRequest_internalCoSupervisor_bridge;
 CREATE TABLE thesisRequest_internalCoSupervisor_bridge(
     thesisRequestId INTEGER NOT NULL,

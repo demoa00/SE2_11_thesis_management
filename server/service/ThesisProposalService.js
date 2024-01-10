@@ -478,7 +478,7 @@ exports.insertNewThesisProposal = async function (professorId, newThesisProposal
 
     try {
       internalCosupervisors.forEach((i) => {
-        emailPromises.push(smtp.sendMail(smtp.mailConstructor(i.email, smtp.subjectInsertCoSupervisor, smtp.textInsertCoSupervisor)));
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(i.email, smtp.subjectInsertCoSupervisor, `${smtp.textInsertCoSupervisor} ${newThesisProposal.title}`)));
         notificationPromises.push(Notification.insertNewNotification(i.coSupervisorId, smtp.subjectInsertCoSupervisor, 3));
       });
 
@@ -575,7 +575,7 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
           });
         }));
 
-        emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectRemoveCoSupervisor, smtp.textRemoveCoSupervisor)));
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectRemoveCoSupervisor, `${smtp.textRemoveCoSupervisor} ${thesisProposal.title}`)));
         notificationPromises.push(Notification.insertNewNotification(c.coSupervisorId, smtp.subjectRemoveCoSupervisor, 4));
       } else { //Is an external cosupervisor
         promises.push(new Promise(function (resolve, reject) {
@@ -606,7 +606,7 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
           })
         }));
 
-        emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectInsertCoSupervisor, smtp.textInsertCoSupervisor)));
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectInsertCoSupervisor, `${smtp.textInsertCoSupervisor} ${thesisProposal.title}`)));
         notificationPromises.push(Notification.insertNewNotification(c.coSupervisorId, smtp.subjectInsertCoSupervisor, 3));
       } else { //Is an external cosupervisor
         promises.push(new Promise(function (resolve, reject) {
@@ -695,20 +695,33 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
 exports.deleteThesisProposal = async function (professorId, thesisProposalId) {
   let internalCosupervisors = await Professor.getInternalCoSupervisorByThesisProposalId(thesisProposalId);
   let students = await Student.getStudentsByThesisProposalId(thesisProposalId);
-  //let externalCoSupervisors = await ExternalCoSupervisor.getExternalCoSupervisorsByThesisProposalId(thesisProposalId);
+
 
   return new Promise(function (resolve, reject) {
-    const sql = "DELETE FROM thesisProposals WHERE thesisProposalId = ? AND supervisor = ? AND isArchieved = 0";
-    db.run(sql, [thesisProposalId, professorId], function (err) {
+    const sql = "SELECT title FROM thesisProposals WHERE thesisProposalId = ?";
+    db.get(sql, [thesisProposalId], (err, row) => {
       if (err) {
         reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
-      } else if (this.changes == 0) {
+      } else if (row === undefined) {
         reject(new PromiseError({ code: 404, message: "Not Found" }));
       } else {
-        resolve();
+        resolve(row.title);
       }
     });
-  }).then(() => {
+  }).then((title) => {
+    return new Promise(function (resolve, reject) {
+      const sql = "DELETE FROM thesisProposals WHERE thesisProposalId = ? AND supervisor = ? AND isArchieved = 0";
+      db.run(sql, [thesisProposalId, professorId], function (err) {
+        if (err) {
+          reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+        } else if (this.changes == 0) {
+          reject(new PromiseError({ code: 404, message: "Not Found" }));
+        } else {
+          resolve(title);
+        }
+      });
+    });
+  }).then((title) => {
     return new Promise(function (resolve, reject) {
       if (students.length != 0) {
         const sql = "UPDATE applications SET status = 'Cancelled' WHERE thesisProposalId = ? AND status = 'Pending'";
@@ -720,21 +733,21 @@ exports.deleteThesisProposal = async function (professorId, thesisProposalId) {
         });
       }
 
-      resolve();
+      resolve(title);
     });
-  }).then(async () => {
+  }).then(async (title) => {
     let emailPromises = [];
     let notificationPromises = [];
 
     try {
       internalCosupervisors.forEach((i) => {
-        emailPromises.push(smtp.sendMail(smtp.mailConstructor(i.email, smtp.subjectRemoveCoSupervisor, smtp.textRemoveCoSupervisor)));
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(i.email, smtp.subjectRemoveCoSupervisor, `${smtp.textRemoveCoSupervisor} ${title}`)));
 
         notificationPromises.push(Notification.insertNewNotification(i.coSupervisorId, smtp.subjectRemoveCoSupervisor, 4));
       });
 
       students.forEach((s) => {
-        emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, smtp.textCancelApplication)));
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, `${smtp.textCancelApplication} ${title}`)));
 
         notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectCancelApplication, 5));
       });
@@ -785,13 +798,24 @@ exports.archiveThesisProposal = async function (thesisProposalId, professorId) {
 
       resolve();
     });
-  }).then(async () => {
+  }).then(() => {
+    const sql = "SELECT title FROM thesisProposals WHERE thesisProposalId = ?";
+    db.get(sql, [thesisProposalId], (err, row) => {
+      if (err) {
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+      } else if (row === undefined) {
+        reject(new PromiseError({ code: 404, message: "Not Found" }));
+      } else {
+        resolve(row.title);
+      }
+    });
+  }).then(async (title) => {
     let emailPromises = [];
     let notificationPromises = [];
 
     try {
       students.forEach((s) => {
-        emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, smtp.textCancelApplication)));
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, `${smtp.textCancelApplication} ${title}`)));
         notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectCancelApplication, 5));
       });
 

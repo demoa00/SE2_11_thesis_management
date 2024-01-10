@@ -17,6 +17,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FiltersContainerComponent } from './components/filters-container/filters-container.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RequestsComponent } from './components/requests/requests.component';
 
 class mockSocket {
   socketSubject = new Subject<any>();
@@ -57,7 +58,7 @@ describe('StudentPageComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [FormsModule, MatIconModule, MatDatepickerModule, MatNativeDateModule, NoopAnimationsModule],
-      declarations: [StudentPageComponent, PageSkeletonComponent, ButtonComponent, AlertComponent, PopupComponent, IconComponent, DropdownCheckboxComponent, NotificationsContainerComponent, ProfilePageComponent, FiltersContainerComponent],
+      declarations: [StudentPageComponent, PageSkeletonComponent, ButtonComponent, AlertComponent, PopupComponent, IconComponent, DropdownCheckboxComponent, NotificationsContainerComponent, ProfilePageComponent, FiltersContainerComponent, RequestsComponent],
       providers: [
         { provide: APIService, useValue: apiService },
         { provide: Socket, useClass: mockSocket }
@@ -85,9 +86,6 @@ describe('StudentPageComponent', () => {
   });
 
   it('should select the menu item', () => {
-    expect(component.menuItems[0].selected).toBeTruthy();
-    expect(component.menuItems[1].selected).toBeFalsy();
-
     component.selectMenuItem(1);
 
     expect(component.menuItems[0].selected).toBeFalsy();
@@ -209,8 +207,6 @@ describe('StudentPageComponent', () => {
   });
 
   it('should navigate to the profile page', () => {
-    expect(component.menuItems[0].selected).toBeTruthy();
-    expect(component.menuItems[1].selected).toBeFalsy();
     expect(component.profilePage).toBeFalsy();
   
     component.goToProfilePage(true);

@@ -1,18 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AuthGuardStudentService } from './auth-guard-student.service';
+import { AuthGuardProfessorService } from './auth-guard-professor.service';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-describe('AuthGuardStudentService', () => {
-  let service: AuthGuardStudentService;
+describe('AuthGuardProfessorService', () => {
+  let service: AuthGuardProfessorService;
   let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule]
     });
-    service = TestBed.inject(AuthGuardStudentService);
+    service = TestBed.inject(AuthGuardProfessorService);
     router = TestBed.inject(Router);
   });
 
@@ -20,18 +20,18 @@ describe('AuthGuardStudentService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should allow navigation for a student', () => {
-    spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify({ role: 'student' }));
+  it('should allow navigation for a professor', () => {
+    spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify({ role: 'professor' }));
     const canActivate = service.canActivate(null!, null!);
     expect(canActivate).toBeTruthy();
   });
 
-  it('should redirect to professor page for a professor', () => {
-    spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify({ role: 'professor' }));
+  it('should redirect to student page for a student', () => {
+    spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify({ role: 'student' }));
     const navigateSpy = spyOn(router, 'navigate');
     const canActivate = service.canActivate(null!, null!);
     expect(canActivate).toBeFalsy();
-    expect(navigateSpy).toHaveBeenCalledWith(['professor']);
+    expect(navigateSpy).toHaveBeenCalledWith(['student']);
   });
 
   it('should redirect to home for an unauthorized user', () => {

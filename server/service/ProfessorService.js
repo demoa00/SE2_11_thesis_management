@@ -112,3 +112,18 @@ exports.getInternalCoSupervisorByThesisProposalId = function (thesisProposalId) 
     });
   });
 }
+
+exports.getInternalCoSupervisorByThesisRequestId = function (thesisRequestId) {
+  return new Promise(function (resolve, reject) {
+    const sql = "SELECT internalCoSupervisorId, email FROM thesisRequest_internalCoSupervisor_bridge, professors WHERE thesisRequestId = ? AND thesisRequest_internalCoSupervisor_bridge.internalCoSupervisorId = professors.professorId";
+    db.all(sql, [thesisRequestId], function (err, rows) {
+      if (err) {
+        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+      } else {
+        let cosupervisors = rows.map((r) => ({ coSupervisorId: r.internalCoSupervisorId, email: r.email }));
+
+        resolve(cosupervisors);
+      }
+    });
+  });
+}

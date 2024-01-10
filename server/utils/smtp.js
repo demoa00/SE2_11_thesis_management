@@ -1,29 +1,28 @@
 'use strict';
 
 const nodemailer = require("nodemailer");
-const { PromiseError } = require('../utils/error');
-
 
 const transporter = nodemailer.createTransport({
     host: 'localhost',
     port: 2525
 });
 
+
 exports.subjectInsertCoSupervisor = 'Added as co-supervisor';
-exports.textInsertCoSupervisor = 'You are added as a co-supervisor';
+exports.textInsertCoSupervisor = 'You are added as a co-supervisor, for thesis proposal:';
 
 exports.subjectRemoveCoSupervisor = 'Removed as co-supervisor';
-exports.textRemoveCoSupervisor = 'You are removed as a co-supervisor';
+exports.textRemoveCoSupervisor = 'You are removed as a co-supervisor, for thesis proposal:';
 
 exports.subjectDecisionApplication = 'Application decision';
-exports.textAcceptApplication = 'Your application has been accepted';
-exports.textRejectApplication = 'Your application has been rejected';
+exports.textAcceptApplication = 'Your application has been accepted, for thesis proposal:';
+exports.textRejectApplication = 'Your application has been rejected, for thesis proposal:';
 
 exports.subjectCancelApplication = 'Application canceled';
-exports.textCancelApplication = 'Your application has been canceled';
+exports.textCancelApplication = 'Your application has been canceled, for thesis proposal:';
 
 exports.subjectNewApplication = 'New application';
-exports.textNewApplication = 'You have received new application';
+exports.textNewApplication = 'You have received new application, for thesis proposal:';
 
 exports.subjectThesisRequestChanges = 'Thesis Request decision';
 exports.textAcceptThesisRequest = 'Your thesis request has been accepted, for thesis request:';
@@ -46,7 +45,6 @@ exports.sendMail = function (mailOptions) {
         transporter.sendMail(mailOptions, (err, data) => {
             if (err) {
                 console.log(`Unable to send email to ${mailOptions.to} from ${mailOptions.from}`);
-                //reject(new PromiseError({ code: 500, message: 'Internal Server Error' }));
                 resolve();
             } else {
                 console.log(`Correctly send email to ${mailOptions.to} from ${mailOptions.from}`);

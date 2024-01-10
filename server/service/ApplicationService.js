@@ -137,7 +137,7 @@ exports.insertNewApplication = function (studentId, newApplication) {
     });
   }).then(() => {
     return new Promise(function (resolve, reject) {
-      const sql = 'SELECT professors.professorId, professors.email FROM professors, thesisProposals WHERE thesisProposalId = ? AND supervisor = professorId';
+      const sql = 'SELECT thesisProposals.title, professors.professorId, professors.email FROM professors, thesisProposals WHERE thesisProposalId = ? AND supervisor = professorId';
 
       db.get(sql, [newApplication.thesisProposalId], (err, row) => {
         if (err) {
@@ -145,7 +145,7 @@ exports.insertNewApplication = function (studentId, newApplication) {
         } else if (row === undefined) {
           reject(new PromiseError({ code: 404, message: "Not Found" }));
         } else {
-          let professor = { professorId: row.professorId, email: row.email };
+          let professor = { title: row.title, professorId: row.professorId, email: row.email };
 
           resolve(professor);
         }
@@ -154,9 +154,9 @@ exports.insertNewApplication = function (studentId, newApplication) {
   }).then((professor) => {
     return new Promise(function (resolve, reject) {
       const sql = 'INSERT INTO applications(thesisProposalId, studentId, message, date) VALUES (?, ?, ?, ?)';
+
       db.run(sql, [newApplication.thesisProposalId, studentId, newApplication.message, dayjs().format('YYYY-MM-DD')], function (err) {
         if (err) {
-          console.log(err)
           reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
         } else {
           resolve(professor);
@@ -168,7 +168,7 @@ exports.insertNewApplication = function (studentId, newApplication) {
     let notificationPromises = [];
 
     try {
-      emailPromises.push(smtp.sendMail(smtp.mailConstructor(professor.email, smtp.subjectNewApplication, smtp.textNewApplication)));
+      emailPromises.push(smtp.sendMail(smtp.mailConstructor(professor.email, smtp.subjectNewApplication, `${smtp.textNewApplication} ${professor.title}`)));
       notificationPromises.push(Notification.insertNewNotification(professor.professorId, smtp.subjectNewApplication, 1));
 
       await Promise.all(emailPromises);
@@ -236,27 +236,43 @@ exports.updateApplication = function (professorId, studentId, thesisProposalId, 
         resolve(students);
       });
     });
+  }).then((students) => {
+    return new Promise(function (resolve, reject) {
+      const sql = "SELECT title FROM thesisProposals WHERE thesisProposalId = ?";
+
+      db.get(sql, [thesisProposalId], (err, row) => {
+        if (err) {
+          reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+        } else if (row === undefined) {
+          reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+        } else {
+          resolve({ students: students, title: row.title });
+        }
+      });
+    });
   }).then(async (students) => {
     let emailPromises = [];
     let notificationPromises = [];
+
+    console.log(students.students)
 
     try {
       if (newApplication.status === 'Accepted') {
         await ThesisProposal.archiveThesisProposal(thesisProposalId);
 
-        students.forEach((s) => {
+        students.students.forEach((s) => {
           if (s.studentId === studentId) {
-            emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, smtp.textAcceptApplication)));
+            emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, `${smtp.textAcceptApplication} ${students.title}`)));
           } else {
-            emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, smtp.textRejectApplication)));
+            emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, `${smtp.textRejectApplication} ${students.title}`)));
           }
 
           notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectDecisionApplication, 2));
         });
       } else {
-        students.forEach((s) => {
+        students.students.forEach((s) => {
           if (s.studentId === studentId) {
-            emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, smtp.textRejectApplication)));
+            emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectDecisionApplication, `${smtp.textRejectApplication} ${students.title}`)));
 
             notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectDecisionApplication, 2));
           }
