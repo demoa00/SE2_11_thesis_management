@@ -20,6 +20,7 @@ const { Validator, ValidationError } = require('express-json-validator-middlewar
 const addFormats = require('ajv-formats').default;
 const fs = require('fs');
 const path = require('path');
+const schedule = require('node-schedule');
 
 
 //-- -- -- -- -- -- -- -- -- --
@@ -46,7 +47,7 @@ const virtualClockController = require(path.join(__dirname, 'controllers/Virtual
 
 const studentService = require(path.join(__dirname, 'service/StudentService'));
 const professorService = require(path.join(__dirname, 'service/ProfessorService'));
-
+const notificationService = require(path.join(__dirname, 'service/NotificationService'));
 
 //-- -- -- -- -- -- -- -- -- -- --
 // SCHEMA VALIDATOR INITIALIZATION
@@ -372,6 +373,15 @@ io.on('connection', (socket) => {
 });
 
 
+//-- -- -- -- -- --
+// SERVER ROUTINE
+//-- -- -- -- -- --
+
+const job = schedule.scheduleJob('0 0 * * *', function () {
+    notificationService.thesisProposalExpirationNotification();
+});
+
+
 //-- -- -- -- -- -- --
 // HTTP SERVER START
 //-- -- -- -- -- -- --
@@ -380,12 +390,3 @@ httpServer.listen(PORT, function () {
     console.log('Your server is listening on port %d (http://localhost:%d)', PORT, PORT);
     console.log('Swagger-ui is available on http://localhost:%d/docs', PORT);
 });
-
-//generate random messages for notifications
-/* const genRand = (len) => {
-    return Math.random().toString(36).substring(2, len + 2);
-}
-
-setInterval(() => {
-    io.emit('message', genRand(10));
-}, 2000); */

@@ -799,15 +799,17 @@ exports.archiveThesisProposal = async function (thesisProposalId, professorId) {
       resolve();
     });
   }).then(() => {
-    const sql = "SELECT title FROM thesisProposals WHERE thesisProposalId = ?";
-    db.get(sql, [thesisProposalId], (err, row) => {
-      if (err) {
-        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
-      } else if (row === undefined) {
-        reject(new PromiseError({ code: 404, message: "Not Found" }));
-      } else {
-        resolve(row.title);
-      }
+    return new Promise(function (resolve, reject) {
+      const sql = "SELECT title FROM thesisProposals WHERE thesisProposalId = ?";
+      db.get(sql, [thesisProposalId], (err, row) => {
+        if (err) {
+          reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+        } else if (row === undefined) {
+          reject(new PromiseError({ code: 404, message: "Not Found" }));
+        } else {
+          resolve(row.title);
+        }
+      });
     });
   }).then(async (title) => {
     let emailPromises = [];
