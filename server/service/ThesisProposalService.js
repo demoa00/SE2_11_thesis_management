@@ -9,7 +9,7 @@ const Degree = require('./DegreeService');
 const Notification = require('./NotificationService');
 const checkRole = require('../utils/checkRole');
 const smtp = require('../utils/smtp');
-const { PromiseError } = require('../utils/error');
+const { PromiseError, InternalError } = require('../utils/error');
 
 const db = require('../utils/dbConnection');
 
@@ -487,7 +487,7 @@ exports.insertNewThesisProposal = async function (professorId, newThesisProposal
 
       return { newThesisProposal: `/api/thesisProposals/${lastID}` };
     } catch (error) {
-      throw error;
+      return { newThesisProposal: `/api/thesisProposals/${lastID}` };
     }
   });
 }
@@ -589,7 +589,7 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
           });
         }));
       }
-    })
+    });
   }
 
   if (newCoSupervisors.length > 0) {
@@ -603,7 +603,7 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
             } else {
               resolve(this.lastID);
             }
-          })
+          });
         }));
 
         emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectInsertCoSupervisor, `${smtp.textInsertCoSupervisor} ${thesisProposal.title}`)));
@@ -617,11 +617,10 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
             } else {
               resolve(this.lastID);
             }
-          })
-        })
-        )
+          });
+        }));
       }
-    })
+    });
   }
 
   if (oldDegrees.length > 0) {
@@ -635,9 +634,8 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
             resolve();
           }
         });
-      })
-      )
-    })
+      }));
+    });
   }
 
   if (newDegrees.length > 0) {
@@ -650,10 +648,9 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
           } else {
             resolve(this.lastID);
           }
-        })
-      })
-      )
-    })
+        });
+      }));
+    });
   }
 
   return Promise.all(promises).then(() => {
@@ -687,15 +684,22 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
 
       return { newThesisProposal: `/api/thesisProposals/${thesisProposalId}` };
     } catch (error) {
-      throw error;
+      return { newThesisProposal: `/api/thesisProposals/${thesisProposalId}` };
     }
   });
 }
 
 exports.deleteThesisProposal = async function (professorId, thesisProposalId) {
-  let internalCosupervisors = await Professor.getInternalCoSupervisorByThesisProposalId(thesisProposalId);
-  let students = await Student.getStudentsByThesisProposalId(thesisProposalId);
+  let students;
+  let internalCosupervisors;
 
+  try {
+    students = await Student.getStudentsByThesisProposalId(thesisProposalId);
+    internalCosupervisors = await Professor.getInternalCoSupervisorByThesisProposalId(thesisProposalId);
+  } catch (error) {
+    students = [];
+    internalCosupervisors = [];
+  }
 
   return new Promise(function (resolve, reject) {
     const sql = "SELECT title FROM thesisProposals WHERE thesisProposalId = ?";
@@ -755,7 +759,7 @@ exports.deleteThesisProposal = async function (professorId, thesisProposalId) {
       await Promise.all(notificationPromises);
       await Promise.all(emailPromises);
     } catch (error) {
-      throw error;
+      return;
     }
   });
 }
@@ -764,7 +768,13 @@ exports.archiveThesisProposal = async function (thesisProposalId, professorId) {
   let sql = '';
   let params = [];
 
-  let students = await Student.getStudentsByThesisProposalId(thesisProposalId);
+  let students;
+
+  try {
+    students = await Student.getStudentsByThesisProposalId(thesisProposalId);
+  } catch (error) {
+    students = [];
+  }
 
   if (professorId != undefined) {
     sql = 'UPDATE thesisProposals SET isArchieved = 1 WHERE thesisProposalId = ? AND supervisor = ?';
@@ -824,7 +834,22 @@ exports.archiveThesisProposal = async function (thesisProposalId, professorId) {
       await Promise.all(notificationPromises);
       await Promise.all(emailPromises);
     } catch (error) {
-      throw error;
+      return;
     }
+  });
+}
+
+exports.getThesisProposalDetails = function (thesisProposalId) {
+  return new Promise(function (resolve, reject) {
+    const sql = "SELECT title, supervisor, email FROM thesisProposals, professors WHERE thesisProposalId = ? AND supervisor = professorId";
+    db.get(sql, [thesisProposalId], (err, row) => {
+      if (err) {
+        reject(new InternalError());
+      } else if (row === undefined) {
+        reject(new InternalError());
+      } else {
+        resolve({ title: row.title, supervisor: { professorId: row.supervisor, email: row.email } });
+      }
+    });
   });
 }

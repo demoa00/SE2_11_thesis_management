@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 
-const { PromiseError } = require('../utils/error');
+const { PromiseError, InternalError } = require('../utils/error');
 
 const db = require('../utils/dbConnection');
 
@@ -71,7 +71,7 @@ exports.getStudentsByThesisProposalId = function (thesisProposalId) {
 
     db.all(sql, [thesisProposalId], (err, rows) => {
       if (err) {
-        reject(new PromiseError({ message: "Internal Server Error", code: 500 }));
+        reject(new InternalError());
       } else if (rows.length == 0) {
         resolve([]);
       } else {

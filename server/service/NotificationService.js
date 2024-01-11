@@ -4,7 +4,7 @@ const dayjs = require('dayjs');
 
 const ThesisProposal = require('./ThesisProposalService');
 const Notification = require('./NotificationService');
-const { PromiseError } = require('../utils/error');
+const { PromiseError, InternalError } = require('../utils/error');
 const smtp = require('../utils/smtp');
 
 const db = require('../utils/dbConnection');
@@ -41,7 +41,7 @@ exports.insertNewNotification = function (userId, message, type) {
 
         db.run(sql, [userId, message, dayjs().format('YYYY-MM-DD'), type], function (err) {
             if (err) {
-                reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+                reject(new InternalError());
             } else {
                 resolve();
             }
