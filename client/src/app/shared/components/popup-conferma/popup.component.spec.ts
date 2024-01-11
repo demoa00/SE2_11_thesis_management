@@ -34,4 +34,24 @@ describe('PopupComponent', () => {
 
         expect(component.close.emit).toHaveBeenCalled();
     }));
+
+    it('should emit close event when Escape key is pressed', fakeAsync(() => {
+        spyOn(component.close, 'emit'); // Spy on the close event
+      
+        fixture.detectChanges();
+        tick();
+
+        const event = new KeyboardEvent('keyup', { key: 'Escape' });
+        window.dispatchEvent(event);
+
+        expect(component.close.emit).toHaveBeenCalled();
+    }));
+
+    it('should set showSliderAfterResponse to false when toggleButton is called', () => {
+        component.showSliderAfterResponse = true;
+
+        component.toggleButton();
+
+        expect(component.showSliderAfterResponse).toBe(false);
+    });
 });
