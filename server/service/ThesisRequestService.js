@@ -1,7 +1,5 @@
 'use strict';
 
-const dayjs = require('dayjs');
-
 const checkRole = require('../utils/checkRole');
 const smtp = require('../utils/smtp');
 const { PromiseError } = require('../utils/error');
@@ -12,22 +10,25 @@ const db = require('../utils/dbConnection');
 
 
 exports.getThesisRequestsForProfessor = function (professorId, filter) {
-    let sql = "";
+    let sql = "SELECT * FROM thesisRequests WHERE supervisor = ? OR thesisRequestId IN (SELECT thesisRequestId FROM thesisRequest_internalCoSupervisor_bridge WHERE internalCoSupervisorId = ?) AND thesisRequests.secretaryStatus = 'Accepted' ";
+
+    let params = [];
+    params.push(professorId);
+    params.push(professorId);
 
     if (filter?.cosupervisor) {
         filter.cosupervisor = filter.cosupervisor instanceof Array ? filter.cosupervisor[0] : filter.cosupervisor;
         if (filter.cosupervisor === 'false') {
-            sql = "SELECT * FROM thesisRequests, professor WHERE supervisor = ? AND professor.professorId = thesisRequest.supervisor AND thesisRequests.secretaryStatus = 'Accepted' ";
-
+            sql = "SELECT * FROM thesisRequests WHERE supervisor = ? AND secretaryStatus = 'Accepted' ";
+            params = [professorId];
         } else if (filter.cosupervisor === 'true') {
             sql = "SELECT * FROM thesisRequests WHERE thesisRequestId IN (SELECT thesisRequestId FROM thesisRequest_internalCoSupervisor_bridge WHERE internalCoSupervisorId = ?) AND thesisRequests.secretaryStatus = 'Accepted' ";
+            params = [professorId, professorId];
         }
-    } else {
-        throw new PromiseError({ code: 400, message: "Bad Request" });
     }
 
     return new Promise(function (resolve, reject) {
-        db.all(sql, [professorId], (err, rows) => {
+        db.all(sql, params, (err, rows) => {
             if (err) {
                 reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
             } else if (rows.length == 0) {
