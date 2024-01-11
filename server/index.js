@@ -357,7 +357,7 @@ app.put('/api/virtualClock', isLoggedIn, virtualClockController.updateVirtualClo
 
 
 //-- -- -- -- -- -- -- -- -- -- --
-// WEBSOCKET SERVER INITIALIZATION
+// SCHEMA VALIDATOR ERROR MANAGER
 //-- -- -- -- -- -- -- -- -- -- --
 
 app.use(function (err, req, res, next) {
@@ -365,6 +365,11 @@ app.use(function (err, req, res, next) {
         res.status(400).send(err);
     } else next(err);
 });
+
+
+//-- -- -- -- -- -- -- -- -- -- --
+// WEBSOCKET SERVER INITIALIZATION
+//-- -- -- -- -- -- -- -- -- -- --
 
 const httpServer = http.createServer(app);
 

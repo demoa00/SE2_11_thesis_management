@@ -1,7 +1,7 @@
 'use strict';
 
 const checkRole = require('../utils/checkRole');
-const { PromiseError } = require('../utils/error');
+const { PromiseError, InternalError } = require('../utils/error');
 
 const db = require('../utils/dbConnection');
 
@@ -65,7 +65,9 @@ exports.getExternalCoSupervisorsByThesisProposalId = function (thesisProposalId)
     const sql = "SELECT thesisProposal_externalCoSupervisor_bridge.externalCoSupervisorId, email FROM thesisProposal_externalCoSupervisor_bridge, externalCoSupervisors WHERE thesisProposalId = ? AND thesisProposal_externalCoSupervisor_bridge.externalCoSupervisorId = externalCoSupervisors.externalCoSupervisorId";
     db.all(sql, [thesisProposalId], function (err, rows) {
       if (err) {
-        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+        reject(new InternalError());
+      } else if (rows.length === 0) {
+        resolve([]);
       } else {
         let cosupervisors = rows.map((r) => ({ coSupervisorId: r.externalCoSupervisorId, email: r.email }));
 
