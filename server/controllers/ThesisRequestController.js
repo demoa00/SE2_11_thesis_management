@@ -15,10 +15,13 @@ module.exports.getThesisRequests = async function getThesisRequests(req, res, ne
     } else if (checkRole.isSecretaryClerck(req.user)) {
       // get all the requests
       thesisRequestList = await ThesisRequest.getThesisRequestsForSecretary();
-
+      utils.writeJson(res, thesisRequestList, 200);
+    } else if (checkRole.isStudent(req.user)) {
+      // get all the requests
+      thesisRequestList = await ThesisRequest.getThesisRequestsForStudent(req.user.userId);
       utils.writeJson(res, thesisRequestList, 200);
     } else {
-      utils.writeJson(res, { error: "Forbidden" }, 403);
+      utils.writeJson(res, { error: "Bad Request" }, 400);
     }
   } catch (error) {
     utils.writeJson(res, { error: error.message }, error.code);
@@ -56,6 +59,12 @@ module.exports.updateThesisRequest = async function updateThesisRequest(req, res
     let thesisRequestUpdated;
     if (checkRole.isProfessor(req.user)) {
       thesisRequestUpdated = await ThesisRequest.updateThesisRequestForProfessor(req.user.userId, req.body, req.params.thesisRequestId);
+      utils.writeJson(res, thesisRequestUpdated, 200);
+    } else if (checkRole.isSecretaryClerck(req.user)) {
+      thesisRequestUpdated = await ThesisRequest.updateThesisRequestForSecretary(req.body, req.params.thesisRequestId);
+      utils.writeJson(res, thesisRequestUpdated, 200);
+    } else if (checkRole.isStudent(req.user)) {
+      thesisRequestUpdated = await ThesisRequest.updateThesisRequestForSecretary(req.user.userId, req.body, req.params.thesisRequestId);
       utils.writeJson(res, thesisRequestUpdated, 200);
     } else {
       utils.writeJson(res, { error: "Bad Request" }, 400);

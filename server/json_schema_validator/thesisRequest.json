@@ -112,9 +112,18 @@
                 "Rejected"
             ]
         },
+        "date": {
+            "type": "string",
+            "format": "date"
+        },
         "approvalDate": {
             "type": "string",
             "format": "date"
+        },
+        "professorRequestChangesMessage": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
         },
         "self": {
             "type": "string",

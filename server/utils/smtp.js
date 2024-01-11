@@ -26,9 +26,12 @@ exports.textCancelApplication = 'Your application has been canceled, for thesis 
 exports.subjectNewApplication = 'New application';
 exports.textNewApplication = 'You have received new application, for thesis proposal:';
 
-exports.subjectThesisRequestChanges = 'Thesis Request decision';
-exports.textAcceptThesisRequest = 'Your thesis request has been accepted, for thesis request:';
-exports.textRejectThesisRequest = 'Your thesis request has been rejected, for thesis request:';
+exports.subjectDecisionThesisRequest = 'Thesis Request decision';
+exports.textAcceptThesisRequestBySecretary = 'Your thesis request has been accepted by secretary, for thesis request:';
+exports.textRejectThesisRequestBySecretary = 'Your thesis request has been rejected by secretary, for thesis request:';
+
+exports.textAcceptThesisRequestByProfessor = 'Your thesis request has been accepted by professor, for thesis request:';
+exports.textRejectThesisRequestByProfessor = 'Your thesis request has been rejected by professor, for thesis request:';
 
 exports.subjectInsertThesisRequest = 'Added as supervisor, for thesis request:';
 exports.textInsertThesisRequest = 'You are added as a supervisor, for thesis request:';
