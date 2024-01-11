@@ -112,10 +112,6 @@ components:
           type: string
           minLength: 1
           maxLength: 1000
-        professorEmail:
-          type: string
-          minLength: 1
-          maxLength: 1000
         secretaryStatus:
           enum:
             - Pending
