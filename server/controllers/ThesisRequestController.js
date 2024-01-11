@@ -10,7 +10,7 @@ module.exports.getThesisRequests = async function getThesisRequests(req, res, ne
 
     if (checkRole.isProfessor(req.user)) {
       // get the requests for his own thesis
-      thesisRequestList = await ThesisRequest.getThesisRequestsForProfessor(req.user.userId);
+      thesisRequestList = await ThesisRequest.getThesisRequestsForProfessor(req.user.userId, req.query.cosupervisor);
       utils.writeJson(res, thesisRequestList, 200);
     } else if (checkRole.isSecretaryClerck(req.user)) {
       // get all the requests
