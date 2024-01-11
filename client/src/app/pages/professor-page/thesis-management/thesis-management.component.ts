@@ -26,9 +26,11 @@ export class ThesisManagementComponent {
   showApplicants: boolean = false;
   showActiveTheses: boolean = false;
   showArchivedTheses: boolean = false;
+  showThesisRequests:boolean = false;
   applicantsRow :any;
   activeThesesRow:any;
   archivedThesesRow:any;
+  thesisRequestsRow:any
   /*applicantsRow:{}[] = [{nome:'Claudio Montanari', matricola:314461, titoloTesi:'AI'},{nome:'Massimo Decimo Meridio', matricola:314251, titoloTesi:'AI - nuovo universo'},
     {nome:'Carlo Bianchi', matricola:315851, titoloTesi:'AI - nuovo universo'},{nome:'Luca Verdi', matricola:314249, titoloTesi:'Machine Learning - Troppi Dati'},
     {nome:'Massimo Rossi', matricola:317453, titoloTesi:'Cloud in the envoironment'},{nome:'Giorgio Rosi', matricola:314254, titoloTesi:'Machine Learning - Find the right pattern'},
@@ -58,11 +60,31 @@ export class ThesisManagementComponent {
       this.applicantsRow = response;
       this.showApplicants = true;
       this.showActiveTheses = false;
+      this.showThesisRequests = false
       this.showArchivedTheses = false
     }
     else {
       this.applicantsRow = [];
       this.showApplicants = true;
+      this.showActiveTheses = false;
+      this.showThesisRequests = false
+      this.showArchivedTheses = false
+    }
+  }
+
+  async showThesisRequestsTable() {
+    const response = await this.api.getThesisRequests();
+    if(response != undefined){
+      this.thesisRequestsRow = response;
+      this.showThesisRequests = true
+      this.showApplicants = false;
+      this.showActiveTheses = false;
+      this.showArchivedTheses = false
+    }
+    else {
+      this.thesisRequestsRow = [];
+      this.showThesisRequests = true
+      this.showApplicants = false;
       this.showActiveTheses = false;
       this.showArchivedTheses = false
     }
@@ -73,12 +95,14 @@ export class ThesisManagementComponent {
       this.activeThesesRow = response;
       this.showApplicants = false;
       this.showActiveTheses = true;
+      this.showThesisRequests = false
       this.showArchivedTheses = false
     }
     else {
       this.activeThesesRow = [];
       this.showApplicants = false;
       this.showActiveTheses = true;
+      this.showThesisRequests = false
       this.showArchivedTheses = false
     }
   }
@@ -88,12 +112,14 @@ export class ThesisManagementComponent {
       this.archivedThesesRow = response;
       this.showApplicants = false;
       this.showActiveTheses = false;
+      this.showThesisRequests = false
       this.showArchivedTheses = true
     }
     else {
       this.archivedThesesRow = [];
       this.showApplicants = false;
       this.showActiveTheses = false;
+      this.showThesisRequests = false
       this.showArchivedTheses = true
     }
   }

@@ -61,6 +61,14 @@ export class APIService {
     }
   }
 
+  async getThesisRequests() {
+    try {
+      return await this.httpService.get('thesisRequests')
+    } catch (errore) {
+      return undefined
+    }
+  }
+
   async getApplicationById(applicationId: any, userId: any) {
     return await this.httpService.get(`applications/${applicationId}/${userId}`)
   }
