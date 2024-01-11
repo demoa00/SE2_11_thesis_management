@@ -158,7 +158,7 @@ INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11,
 INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (12, 's654321', '2023-10-30', 'Pending');
 INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (13, 's654321', '2023-08-15', 'Pending');
 
-/* STUDENT */
+/* STUDENT CAREERS */
 DELETE FROM careers;
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '13PROGWEB', 'Programming for the Web', 9, 29, '2022-10-04');
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '14ALGORIT', 'Algorithms and Data Structures', 12, 30, '2022-11-24');
@@ -172,3 +172,11 @@ INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s876543', '13PROGWEB', 'Programming for the Web', 9, 20, '2022-10-04');
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s876543', '14ALGORIT', 'Algorithms and Data Structures', 12, 18, '2022-11-24');
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s876543', '15SO', 'Operating Systems', 9, 24, '2022-12-01');
+
+/* THESIS REQUEST */
+DELETE FROM thesisRequests;
+INSERT INTO thesisRequests (thesisProposalId, studentId, title, supervisor, description, secretaryStatus, professorStatus, approvalDate) VALUES (NULL, 's654321', 'Enhancing Edge Computing for Real-time Medical Image Processing with Efficient Data Compression and Processing Techniques', 'p123654', 'Development of novel data compression techniques tailored for medical images to reduce bandwidth requirements and enable real-time access. Exploration of hardware-accelerated processing techniques to optimize computational efficiency for handling complex medical image processing tasks with reduced latency. Design and evaluation of comprehensive edge computing architectures for real-time medical image processing, showcasing significant performance improvements.', 'Accepted', 'Pendinng', NULL);
+
+/* THESIS PROPOSALS EXTERNAL CO-SUPERVISOR BRIDGE */
+DELETE FROM thesisRequest_internalCoSupervisor_bridge;
+INSERT INTO thesisRequest_internalCoSupervisor_bridge (thesisRequestId, internalCoSupervisorId) VALUES (1, 'p271846');
