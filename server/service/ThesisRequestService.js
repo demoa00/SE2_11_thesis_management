@@ -38,7 +38,7 @@ exports.getThesisRequestsForProfessor = function (professorId, filter) {
                 reject(new PromiseError({ code: 404, message: "Not Found" }));
             } else {
                 let list = rows.map((r) => ({
-                    thesisRequest: r.thesisRequestId,
+                    thesisRequestId: r.thesisRequestId,
                     title: r.title,
                     studentId: r.studentId,
                     secretaryStatus: r.secretaryStatus,
@@ -63,7 +63,7 @@ exports.getThesisRequestsForSecretary = function () {
                 reject(new PromiseError({ code: 404, message: "Not Found" }));
             } else {
                 let list = rows.map((r) => ({
-                    thesisRequest: r.thesisRequest,
+                    thesisRequestId: r.thesisRequestId,
                     title: r.title,
                     studentId: r.studentId,
                     secretaryStatus: r.secretaryStatus,
@@ -88,7 +88,7 @@ exports.getThesisRequestsForStudent = function (studentId) {
                 reject(new PromiseError({ code: 404, message: "Not Found" }));
             } else {
                 let list = rows.map((r) => ({
-                    thesisRequest: r.thesisRequest,
+                    thesisRequestId: r.thesisRequestId,
                     title: r.title,
                     studentId: r.studentId,
                     secretaryStatus: r.secretaryStatus,
