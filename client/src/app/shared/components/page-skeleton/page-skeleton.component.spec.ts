@@ -6,7 +6,7 @@ import { ButtonComponent } from '../button/button.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { APIService } from '../../services/api.service';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 
 describe('PageSkeletonComponent', () => {
@@ -19,7 +19,10 @@ describe('PageSkeletonComponent', () => {
       'logout': null,
       'checkAutorization': Promise.resolve([]),
       'getUserDetails': Promise.resolve({}),
-      'getProfessorDetails': Promise.resolve([])
+      'getProfessorDetails': Promise.resolve([]),
+      'putVirtualClock': Promise.resolve([]),
+      'getAllProposals': Promise.resolve([]),
+      'getApplications': Promise.resolve([])
     });
 
     await TestBed.configureTestingModule({
@@ -104,5 +107,31 @@ describe('PageSkeletonComponent', () => {
   
     expect(component.notificationsOpen).toBe(false);
     expect(emitSpy).toHaveBeenCalledWith(false);
-  });  
+  });
+  
+  it('should call the necessary methods and emit events when selectDate() is called', fakeAsync(() => {
+    const datepickerEvent: MatDatepickerInputEvent<any, any> = {
+      value: new Date('2024-01-11'),
+      target: {} as any,
+      targetElement: {} as any
+    };
+  
+    apiService.putVirtualClock.and.returnValue(Promise.resolve([]));
+    apiService.getAllProposals.and.returnValue(Promise.resolve([]));
+    apiService.getApplications.and.returnValue(Promise.resolve([]));
+  
+    const newProposalsSpy = spyOn(component.newProposals, 'emit');
+    const newApplicationsSpy = spyOn(component.newApplications, 'emit');
+  
+    component.selectDate(datepickerEvent);
+  
+    tick();
+  
+    expect(apiService.putVirtualClock).toHaveBeenCalledOnceWith('2024-01-11');
+    expect(apiService.getAllProposals).toHaveBeenCalledTimes(1);
+    expect(apiService.getApplications).toHaveBeenCalledTimes(1);
+
+    expect(newProposalsSpy).toHaveBeenCalledWith([]);
+    expect(newApplicationsSpy).toHaveBeenCalledWith([]);
+  }));
 });

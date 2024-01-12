@@ -176,7 +176,7 @@ describe('CreateThesisFormComponent', () => {
     expect(mockAbstractControl.updateValueAndValidity).toHaveBeenCalled();
   });
 
-  it('should update CdS validator', () => {
+  it('should update Keyword validator', () => {
     const mockAbstractControl = jasmine.createSpyObj('AbstractControl', ['setValidators', 'updateValueAndValidity']);
 
     spyOn(component.myForm, 'get').and.returnValue(mockAbstractControl);
@@ -185,5 +185,80 @@ describe('CreateThesisFormComponent', () => {
 
     expect(mockAbstractControl.setValidators).toHaveBeenCalled();
     expect(mockAbstractControl.updateValueAndValidity).toHaveBeenCalled();
+  });
+
+  it('should handle onSelectProfessorChange', () => {
+    const professorId = 123;
+    const professorData = {
+      professorId: professorId,
+      name: 'Test',
+      surname: 'Professor',
+      self: 'Some info',
+    };
+  
+    component.professors = [professorData];
+    component.selectedProfessors = [];
+  
+    spyOn(component, 'onSelectProfessorChange').and.callThrough();
+  
+    const event = { target: { value: professorId } };
+    component.onSelectProfessorChange(event);
+  
+    expect(component.onSelectProfessorChange).toHaveBeenCalledWith(event);
+    expect(component.selectedProfessors).toEqual([professorData]);
+    expect(component.professors).toEqual([]);
+  });
+
+  it('should remove professor from selectedProfessors and add it back to professors', () => {
+    const professorData = {
+      professorId: 123,
+      name: 'Test',
+      surname: 'Professor',
+      self: 'Some info',
+    };
+  
+    component.selectedProfessors = [professorData];
+    component.professors = [];
+  
+    spyOn(component, 'removeProfessor').and.callThrough();
+  
+    const mockEvent = { target: { textContent: 'Test Professor' } };
+    component.removeProfessor(mockEvent);
+  
+    expect(component.removeProfessor).toHaveBeenCalledWith(mockEvent);
+    expect(component.selectedProfessors).toEqual([]);
+    expect(component.professors).toEqual([professorData]);
+  });
+
+  it('should handle onSelectCdSChange', () => {
+    const mockCdS = { titleDegree: 'Degree1', degreeId: '1' };
+    component.degrees = [mockCdS];
+    component.selectedCdS = [];
+        
+    expect(component.selectedCdS.length).toBe(0);
+    expect(component.degrees.length).toBe(1);
+    
+    const event = { target: { value: mockCdS.degreeId } };
+    component.onSelectCdSChange(event);
+    
+    expect(component.selectedCdS.length).toBe(1);
+    expect(component.selectedCdS[0]).toEqual(mockCdS);
+    expect(component.degrees.length).toBe(0);
+  });
+
+  it('should remove CdS from selectedCdS and add it back to degrees', () => {
+    const initialCdS = { titleDegree: 'Degree1', degreeId: '1' };
+    component.selectedCdS = [initialCdS];
+    component.degrees = [];
+  
+    spyOn(console, 'log');
+  
+    const fakeEvent = { target: { textContent: '1' } };
+    component.removeCdS(fakeEvent);
+
+    expect(component.selectedCdS).toEqual([]);
+    expect(component.degrees).toEqual([initialCdS]);
+  
+    expect(console.log).toHaveBeenCalledWith(component.selectedCdS);
   });
 });
