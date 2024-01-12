@@ -3,8 +3,11 @@
   <div class="card applicationsContainer">
     <div class="application" *ngFor="let a of applications">
       <p class="title" (click)="selectApplication(a.thesisProposalId)">{{a.thesisProposalTitle}}</p>
-      <div class="status {{a.status.toLowerCase()}}">
-        <p>{{a.status}}</p>
+      <div class="statusContainer">
+        <app-button *ngIf="a.status ==='Accepted'" class="singleLine orange">New Request</app-button>
+        <div class="status {{a.status.toLowerCase()}}">
+          <p>{{a.status}}</p>
+        </div>
       </div>
     </div>
   </div>

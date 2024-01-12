@@ -1,0 +1,21 @@
+<form class="requestFormContainer" (ngSubmit)="submit($event)">
+  <div class="input titleContainer">
+    <label for="formTitle">Title*</label>
+    <input class="input-field" [(ngModel)]="title" placeholder="Title" type="text" name="title" id="formTitle" required>
+  </div>
+  <div class="input professorContainer">
+    <label for="formProfessor">Supervisor*</label>
+    <select class="input-field" [(ngModel)]="professor" name="professor" id="formProfessor" required>
+      <option *ngFor="let professor of professors" [value]="professor.professorId">{{professor.name}}</option>
+    </select>
+<!--    <input class="input-field" placeholder="Professor" type="text" name="title" id="formProfessor" required>-->
+  </div>
+  <div class="input descriptionContainer">
+    <label for="formDescription">Description*</label>
+    <textarea class="input-field" [(ngModel)]="description" name="description" placeholder="Description" rows="4" id="formDescription" required></textarea>
+  </div>
+  <div class="submitContainer">
+    <app-button (click)="cancel()">Cancel</app-button>
+    <app-button class="orange {{checkFields() ? '' : 'disabled'}}" [type]="'submit'">Submit</app-button>
+  </div>
+</form>

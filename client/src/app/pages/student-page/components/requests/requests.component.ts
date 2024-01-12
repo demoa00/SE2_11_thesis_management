@@ -9,4 +9,5 @@ import {AppModule} from "../../../../app.module";
 })
 export class RequestsComponent {
   requests = []
+  showPopup = true
 }

@@ -53,6 +53,7 @@ import {RequestsComponent} from "./pages/student-page/components/requests/reques
 import {
   ThesisRequestsTableComponent
 } from "./pages/professor-page/thesis-management/thesis-requests-table/thesis-requests-table.component";
+import {RequestFormComponent} from "./pages/student-page/components/requests/components/request-form/request-form.component";
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
@@ -90,6 +91,7 @@ const routes: Routes = [
     ApllicantDetailsComponent,
 		RequestsComponent,
     ThesisRequestsTableComponent,
+    RequestFormComponent
   ],
 	imports: [
 		BrowserModule,

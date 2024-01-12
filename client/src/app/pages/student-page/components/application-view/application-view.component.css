@@ -63,24 +63,29 @@
 .applicationsContainer .application .title {
   margin-right: 32px;
 }
-.applicationsContainer .application .status {
+.applicationsContainer .application .statusContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.applicationsContainer .application .statusContainer .status {
   padding: 8px;
   border-radius: 200px;
   line-height: normal;
   height: fit-content;
   color: white;
 }
-.applicationsContainer .application .status.pending {
+.applicationsContainer .application .statusContainer .status.pending {
   background: #ffdd48;
   color: #545454;
 }
-.applicationsContainer .application .status.accepted {
+.applicationsContainer .application .statusContainer .status.accepted {
   background: #75ce8f;
 }
-.applicationsContainer .application .status.rejected {
+.applicationsContainer .application .statusContainer .status.rejected {
   background: #f56565;
 }
-.applicationsContainer .application .status.cancelled {
+.applicationsContainer .application .statusContainer .status.cancelled {
   background: #e5e7eb;
   color: #545454;
 }

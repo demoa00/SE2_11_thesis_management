@@ -1,10 +1,19 @@
 <div class="container" >
   <div class="titleContainer">
     <h1 class="text-3xl font-medium">Your Requests</h1>
-    <app-button class="orange">New Request</app-button>
+    <app-button class="orange" (click)="showPopup=true">New Request</app-button>
   </div>
   <p class="mb-2">In this section you can submit new thesis requests in order to be evaluated by the professors and, eventually, accepted as your thesis project.</p>
   <div class="card" *ngIf="requests.length>0">
 
   </div>
+  <app-popup
+    *ngIf="showPopup"
+    [showSlider]="false"
+    [title]="'Create new thesis request'"
+    [closeClickOutside]="true"
+    [showCloseButton]="true"
+    (close)="showPopup=false">
+    <app-request-form (showPopup)="showPopup = $event"></app-request-form>
+  </app-popup>
 </div>

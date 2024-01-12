@@ -46,6 +46,9 @@
   width: fit-content;
   display: flex;
 }
+:host.singleLine button {
+  text-wrap: nowrap;
+}
 :host.disabled {
   opacity: 0.5;
   cursor: not-allowed;
