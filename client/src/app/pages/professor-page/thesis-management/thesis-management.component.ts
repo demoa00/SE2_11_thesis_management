@@ -74,6 +74,7 @@ export class ThesisManagementComponent {
 
   async showThesisRequestsTable() {
     const response = await this.api.getThesisRequests();
+    console.log(response)
     if(response != undefined){
       this.thesisRequestsRow = response;
       this.showThesisRequests = true

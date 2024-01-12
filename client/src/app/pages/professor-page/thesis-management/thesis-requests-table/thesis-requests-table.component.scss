@@ -33,6 +33,22 @@
     padding: 8px;
     border-radius: 8px;
     @apply hover:drop-shadow-lg;
+    &.left{
+      @media only screen and (max-width: 1100px){
+        @apply mb-2;
+      }
+      @media only screen and (min-width: 1100px){
+        @apply mr-2;
+      }
+    }
+    &.right{
+      @media only screen and (max-width: 1100px){
+        @apply mt-2;
+      }
+      @media only screen and (min-width: 1100px){
+        @apply ml-2;
+      }
+    }
     &.red {
       @apply bg-red-500;
     }

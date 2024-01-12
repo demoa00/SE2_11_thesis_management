@@ -1,0 +1,21 @@
+<div class="h-full flex flex-col gap-2">
+  <div class="projectHeader">
+    <h2 class="projectTitle">{{selectedRequest.title}}</h2>
+    <h3 class="font-bold">Requester: <span class="regularText">{{selectedRequest.requester.name}} {{selectedRequest.requester.surname}} {{selectedRequest.requester.studentId}}</span></h3>
+    <h3 class="font-bold">Supervisor: <span class="regularText">{{selectedRequest.supervisor.name}} {{selectedRequest.supervisor.surname}}</span></h3>
+    <h3 class="font-bold">Cosupervisors: <span class="regularText" *ngFor="let cs of selectedRequest.coSupervisor; let last = last">{{cs.name}} {{cs.surname}}{{last ? '' : ', '}}</span></h3>
+  </div>
+  <div class="projectBody ">
+    <h3 class="font-bold">Description</h3>
+    <div class="regularText">
+      <p>{{selectedRequest.description}}</p>
+    </div>
+  </div>
+  <div class="projectFooter">
+<!--    <h3 class="font-bold">Type: <span class="regularText">{{selectedRequest.thesisType}}</span></h3>-->
+<!--    <h3 class="font-bold">Abroad: <span class="regularText">{{selectedRequest.abroad ? 'Yes' : 'No'}}</span></h3>-->
+<!--    <h3 class="font-bold">Groups: <span class="regularText" *ngFor="let g of selectedRequest.groups; let last = last">{{g}}{{last ? '' : ', '}}</span></h3>-->
+<!--    <h3 class="font-bold">Study Courses: <span class="regularText" *ngFor="let cs of selectedRequest.CdS; let last = last">{{cs.titleDegree}} ({{cs.degreeId}}){{last ? '' : ', '}}</span></h3>-->
+    <h3 class="font-bold">Approval Date: <span class="regularText">{{selectedRequest.approvaldate}}</span></h3>
+  </div>
+</div>

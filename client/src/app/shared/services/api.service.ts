@@ -166,6 +166,10 @@ export class APIService {
     return await this.httpService.get(`thesisProposals/${proposalId}`, false, true)
   }
 
+  async getRequest(requestId: number | undefined) {
+    return await this.httpService.get(`thesisRequest/${requestId}`, false, true)
+  }
+
   async deleteThesis(proposalId: number | undefined) {
     return await this.httpService.delete(`thesisProposals/${proposalId}`, true)
   }

@@ -13,11 +13,15 @@ export class ThesisRequestsTableComponent {
   triggerUpdate: EventEmitter<void> = new EventEmitter<void>();
 
   // deletePopup: boolean = false;
-  createPopup: boolean = false;
   response :any;
   requestAccepted: boolean = false;
-  selectedProposal: any;
+  selectedRequest: any;
+  actionRequest : any;
   selectedThesisId: any;
+  updatePopup: boolean = false;
+  rejectPopup: boolean = false;
+  acceptPopup: boolean = false;
+
 
 
 
@@ -25,26 +29,53 @@ export class ThesisRequestsTableComponent {
   }
 
   shohDetails(row: any) {
-    this.api.getProposal(row.thesisProposalId).then((response: any) => {
-      this.selectedProposal = response
+    this.api.getRequest(row.thesisRequestId).then((response: any) => {
+      this.selectedRequest = response
     })
   }
 
-  // deleteThesisPopup() {
-  //   this.deletePopup = !this.deletePopup;
-  //   this.requestAccepted = false;
-  //   this.response = undefined;
-  // }
-
-  openCreatePopup() {
-    this.createPopup = !this.createPopup;
+  openAcceptPopup(actionRequest?:any) {
+    if (actionRequest){
+      this.actionRequest = actionRequest
+    }
+    this.acceptPopup = !this.acceptPopup;
     this.requestAccepted = false;
     this.response = undefined;
   }
-  // async deleteThesis() {
-  //   this.response = await this.api.deleteThesis(this.selectedThesisId)
-  //   if (this.response){
-  //     this.requestAccepted = true;
-  //   }
-  // }
+  openRejectPopup(actionRequest?:any) {
+    if (actionRequest){
+      this.actionRequest = actionRequest
+    }
+    this.rejectPopup = !this.rejectPopup;
+    this.requestAccepted = false;
+    this.response = undefined;
+  }
+
+  openUpdatePopup(actionRequest?:any) {
+    if (actionRequest){
+      this.actionRequest = actionRequest
+    }
+    this.updatePopup = !this.updatePopup;
+    this.requestAccepted = false;
+    this.response = undefined;
+  }
+
+
+  async rejectThesisRequest(){
+    this.response = await this.api.putApplication(this.actionRequest.studentId, this.actionRequest.thesisProposalId, 'Rejected')
+    if (this.response){
+      this.rows = await this.api.getApplications()
+      this.requestAccepted = true;
+    }
+    this.actionRequest = undefined;
+  }
+  async acceptThesisRequest(){
+    this.response = await this.api.putApplication(this.actionRequest.studentId, this.actionRequest.thesisProposalId, 'Accepted')
+    if (this.response){
+      this.rows = await this.api.getApplications()
+      this.requestAccepted = true;
+    }
+    this.actionRequest = undefined;
+  }
+
 }

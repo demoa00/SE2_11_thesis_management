@@ -19,7 +19,7 @@ describe('ThesisRequestsTableComponent', () => {
       declarations: [ThesisRequestsTableComponent],
       providers: [{ provide: APIService, useValue: apiService }]
     }).compileComponents();
-    
+
     fixture = TestBed.createComponent(ThesisRequestsTableComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
@@ -38,7 +38,7 @@ describe('ThesisRequestsTableComponent', () => {
     await component.shohDetails(row);
 
     expect(apiService.getProposal).toHaveBeenCalledWith('someProposalId' as any);
-    expect(component.selectedProposal).toEqual(response);
+    expect(component.selectedRequest).toEqual(response);
   });
 
   it('should open create popup', fakeAsync(() => {
