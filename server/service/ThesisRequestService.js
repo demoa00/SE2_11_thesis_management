@@ -110,11 +110,12 @@ exports.getThesisRequestById = function (user, thesisRequestId) {
     params.push(thesisRequestId);
 
     if (checkRole.isProfessor(user)) {
-        sql += " AND secretaryStatus = 'Accepted' ";
+        sql += " AND supervisor = ? AND secretaryStatus = 'Accepted' ";
+        params.push(/* user.userId */'p123654');
     }
     if (checkRole.isStudent(user)) {
         sql += " AND studentId = ?";
-        params.push(user);
+        params.push(user.userId);
     }
 
     return new Promise(function (resolve, reject) {
@@ -172,7 +173,7 @@ exports.getThesisRequestById = function (user, thesisRequestId) {
         });
     }).then((thesisRequest) => {
         return new Promise(function (resolve, reject) {
-            const sql = "SELECT professorId, name, surname FROM professors, thesisRequest_internalCoSupervisor_bridge as bridge WHERE professors.professorId = bridge.interalCoSupervisorId AND bridge.thesisRequestId = ?";
+            const sql = "SELECT professorId, name, surname FROM professors, thesisRequest_internalCoSupervisor_bridge as bridge WHERE professors.professorId = bridge.internalCoSupervisorId AND bridge.thesisRequestId = ?";
             db.all(sql, [thesisRequest.thesisRequestId], (err, rows) => {
                 if (err) {
                     reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
