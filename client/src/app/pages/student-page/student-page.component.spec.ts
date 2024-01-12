@@ -18,6 +18,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { FiltersContainerComponent } from './components/filters-container/filters-container.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RequestsComponent } from './components/requests/requests.component';
+import { RequestFormComponent } from './components/requests/components/request-form/request-form.component';
 
 class mockSocket {
   socketSubject = new Subject<any>();
@@ -58,7 +59,7 @@ describe('StudentPageComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [FormsModule, MatIconModule, MatDatepickerModule, MatNativeDateModule, NoopAnimationsModule],
-      declarations: [StudentPageComponent, PageSkeletonComponent, ButtonComponent, AlertComponent, PopupComponent, IconComponent, DropdownCheckboxComponent, NotificationsContainerComponent, ProfilePageComponent, FiltersContainerComponent, RequestsComponent],
+      declarations: [StudentPageComponent, PageSkeletonComponent, ButtonComponent, AlertComponent, PopupComponent, IconComponent, DropdownCheckboxComponent, NotificationsContainerComponent, ProfilePageComponent, FiltersContainerComponent, RequestsComponent, RequestFormComponent],
       providers: [
         { provide: APIService, useValue: apiService },
         { provide: Socket, useClass: mockSocket }

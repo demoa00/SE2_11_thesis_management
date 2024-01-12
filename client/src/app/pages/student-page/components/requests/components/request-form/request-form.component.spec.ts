@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RequestFormComponent } from './request-form.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ButtonComponent } from 'src/app/shared/components/button/button.component';
+import { FormsModule } from '@angular/forms';
 
 describe('RequestFormComponent', () => {
   let component: RequestFormComponent;
@@ -8,7 +11,8 @@ describe('RequestFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RequestFormComponent]
+      imports: [HttpClientTestingModule, FormsModule],
+      declarations: [RequestFormComponent, ButtonComponent]
     })
     .compileComponents();
     
