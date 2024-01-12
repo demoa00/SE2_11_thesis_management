@@ -1028,7 +1028,7 @@
                 ]
             }
         },
-        "/thesisRequest/{thesisRequestId}": {
+        "/thesisRequests/{thesisRequestId}": {
             "get": {
                 "tags": [
                     "thesisRequest"

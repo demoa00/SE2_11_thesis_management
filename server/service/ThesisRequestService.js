@@ -111,7 +111,7 @@ exports.getThesisRequestById = function (user, thesisRequestId) {
 
     if (checkRole.isProfessor(user)) {
         sql += " AND supervisor = ? AND secretaryStatus = 'Accepted' ";
-        params.push(/* user.userId */'p123654');
+        params.push(user.userId);
     }
     if (checkRole.isStudent(user)) {
         sql += " AND studentId = ?";
@@ -122,7 +122,7 @@ exports.getThesisRequestById = function (user, thesisRequestId) {
         db.get(sql, params, (err, row) => {
             if (err) {
                 reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
-            } else if (row == undefined) {
+            } else if (row == undefined) {console.log("ciao 1")
                 reject(new PromiseError({ code: 404, message: "Not Found" }));
             } else {
                 resolve({
@@ -147,7 +147,7 @@ exports.getThesisRequestById = function (user, thesisRequestId) {
             db.get(sql, [thesisRequest.supervisor.professorId], (err, row) => {
                 if (err) {
                     reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
-                } else if (row == undefined) {
+                } else if (row == undefined) {console.log("ciao 2")
                     reject(new PromiseError({ code: 404, message: "Not Found" }));
                 } else {
                     thesisRequest.supervisor.name = row.name;
@@ -162,7 +162,7 @@ exports.getThesisRequestById = function (user, thesisRequestId) {
             db.get(sql, [thesisRequest.requester.studentId], (err, row) => {
                 if (err) {
                     reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
-                } else if (row == undefined) {
+                } else if (row == undefined) { console.log("ciao 3")
                     reject(new PromiseError({ code: 404, message: "Not Found" }));
                 } else {
                     thesisRequest.requester.name = row.name;

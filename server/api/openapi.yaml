@@ -718,7 +718,7 @@ paths:
           description: Internal Server Error
       security:
         - cookieAuth: []
-  /thesisRequest/{thesisRequestId}:
+  /thesisRequests/{thesisRequestId}:
     get:
       tags:
         - thesisRequest
