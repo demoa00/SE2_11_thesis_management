@@ -61,4 +61,34 @@ describe('ApllicantDetailsComponent', () => {
     expect(spyBodyAppend).toHaveBeenCalledOnceWith(jasmine.any(HTMLAnchorElement));
     expect(spyBodyRemove).toHaveBeenCalledOnceWith(jasmine.any(HTMLAnchorElement));
   }));
+
+  it('should handle error on getCv()', () => {
+    const mockError = new Error('Test Error');
+
+    apiService.getCv.and.returnValue(Promise.reject(mockError));
+
+    const result = component.getCv();
+
+    expect(result).toBeUndefined();
+  });
+
+  it('should open a new window with CV when openCv() is called', fakeAsync(() => {
+    const spyWindowOpen = spyOn(window, 'open').and.callThrough();
+  
+    component.openCv();
+    tick();
+  
+    expect(apiService.getCv).toHaveBeenCalledWith(component.userId);
+    expect(spyWindowOpen).toHaveBeenCalledOnceWith(jasmine.any(String), '_blank');
+  }));
+
+  it('should handle error on openCv()', () => {
+    const mockError = new Error('Test Error');
+
+    apiService.getCv.and.returnValue(Promise.reject(mockError));
+
+    const result = component.openCv();
+
+    expect(result).toBeUndefined();
+  });
 });

@@ -132,4 +132,119 @@ describe('HTTPService', () => {
 
         expect(result).toEqual(path);
     });
+
+    it('should make a GET request for blob data and return it', fakeAsync(() => {
+        const testData = new Blob(['Test blob data'], { type: 'application/octet-stream' });
+        
+        let result: any;
+    
+        httpService.getBlob('sample-path').then(data => {
+            result = data;
+        });
+    
+        const req = httpTestingController.expectOne('http://localhost:3000/api/sample-path');
+        expect(req.request.method).toBe('GET');
+    
+        req.flush(testData);
+    
+        tick();
+    
+        expect(result).toEqual(testData);
+    }));
+
+    it('should make a POST request with blob response and return data', fakeAsync(() => {
+        const testData = new Blob(['This is a blob response'], { type: 'text/plain' });
+        const requestBody = { key: 'value' };
+        let result: any;
+
+        httpService.postBlob('sample-path', requestBody).then(response => {
+            result = response;
+        });
+
+        const req = httpTestingController.expectOne('http://localhost:3000/api/sample-path');
+        expect(req.request.method).toBe('POST');
+
+        req.flush(testData, {
+            status: 200,
+            statusText: 'OK',
+            headers: { 'Content-Type': 'application/octet-stream' }
+        });
+
+        tick();
+
+        expect(result.body).toEqual(testData);
+    }));
+
+    it('should make a PUT request with options and return data', fakeAsync(() => {
+        const testData = { result: 'Updated' };
+        const requestBody = { key: 'new-value' };
+        const options = { headers: { 'custom-header': 'custom-value' } };
+        let result: any;
+    
+        httpService.putWithOptions('sample-path', requestBody, options).then(response => {
+            result = response.body;
+        });
+    
+        const req = httpTestingController.expectOne(request => {
+            return (
+                request.method === 'PUT' &&
+                request.url === 'http://localhost:3000/api/sample-path' &&
+                request.body === requestBody &&
+                request.headers.get('custom-header') === 'custom-value'
+            );
+        });
+    
+        expect(req.request.method).toBe('PUT');
+        expect(req.request.url).toBe('http://localhost:3000/api/sample-path');
+        expect(req.request.body).toEqual(requestBody);
+        expect(req.request.headers.get('custom-header')).toBe('custom-value');
+    
+        req.flush(testData);
+    
+        tick();
+    
+        expect(result).toEqual(testData);
+    }));
+
+    it('should handle unsuccessful response (status >= 400)', fakeAsync(() => {
+        const errorResponse = { status: 404, message: 'Error' };
+      
+        let result: any;
+      
+        httpService['makeRequest'](async () => {
+          return Promise.resolve(errorResponse);
+        })
+        .then(data => {
+          result = data;
+        })
+        .catch(error => {
+          result = error;
+        });
+      
+        tick();
+      
+        const expectedErrorMessage = errorResponse.message;
+      
+        expect(result instanceof Error).toBeTruthy();
+        expect(result.message).toBe(expectedErrorMessage);
+    }));
+
+    it('should handle error during execution', fakeAsync(() => {
+        const errorMessage = 'An error occurred.';
+      
+        let result: any;
+      
+        httpService['makeRequest'](async () => {
+          throw new Error(errorMessage);
+        })
+        .catch(error => {
+          result = error;
+        });
+      
+        tick();
+      
+        expect(result instanceof Error).toBeTruthy();
+        expect(result.message).toContain(errorMessage);
+    }));
+      
 });

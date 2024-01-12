@@ -305,12 +305,6 @@ describe('APIService', () => {
     expect(result).toEqual(mockResponse);
   });
 
-
-
-
-
-
-
   it('should get proposal successfully', async () => {
     const proposalId = 123;
     const mockResponse = {};

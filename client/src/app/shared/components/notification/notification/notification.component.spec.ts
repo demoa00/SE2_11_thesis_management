@@ -25,4 +25,14 @@ describe('NotificationComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should emit delete event with correct id when deleteNotification is called', () => {
+    const notification = { id: 1, message: 'Test message' };
+    component.notification = notification;
+    const deleteSpy = spyOn(component.delete, 'emit');
+
+    component.deleteNotification(notification.id);
+
+    expect(deleteSpy).toHaveBeenCalledWith(notification.id);
+  });
 });
