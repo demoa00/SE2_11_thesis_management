@@ -210,7 +210,22 @@
                             "type": "string",
                             "pattern": "^(s|S)[0-9]{6}$"
                         },
-                        "date":{
+                        "secretaryStatus": {
+                            "enum": [
+                                "Pending",
+                                "Accepted",
+                                "Rejected"
+                            ]
+                        },
+                        "professorStatus": {
+                            "enum": [
+                                "Pending",
+                                "Change",
+                                "Accepted",
+                                "Rejected"
+                            ]
+                        },
+                        "date": {
                             "type": "string",
                             "format": "date"
                         },
@@ -911,6 +926,15 @@
                         "schema": {
                             "type": "string",
                             "pattern": "^((c|C)|(p|P))[0-9]{6}$"
+                        }
+                    },
+                    {
+                        "name": "cosupervisor",
+                        "description": "This parameter it is possible to specify in the case of professor request and allow to retrieve only thesis request where the professor is the supervisor or only where he is co-supervisor",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
                         }
                     }
                 ],

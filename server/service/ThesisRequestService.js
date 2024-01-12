@@ -37,9 +37,11 @@ exports.getThesisRequestsForProfessor = function (professorId, filter) {
                 reject(new PromiseError({ code: 404, message: "Not Found" }));
             } else {
                 let list = rows.map((r) => ({
-                    thesisProposalId: r.thesisProposalId,
+                    thesisRequest: r.thesisRequest,
                     title: r.title,
                     studentId: r.studentId,
+                    secretaryStatus: r.secretaryStatus,
+                    professorStatus: r.professorStatus,
                     date: r.date,
                     self: `/api/thesisRequests/${r.thesisRequestId}`
                 }));
@@ -60,9 +62,11 @@ exports.getThesisRequestsForSecretary = function () {
                 reject(new PromiseError({ code: 404, message: "Not Found" }));
             } else {
                 let list = rows.map((r) => ({
-                    thesisProposalId: r.thesisProposalId,
+                    thesisRequest: r.thesisRequest,
                     title: r.title,
                     studentId: r.studentId,
+                    secretaryStatus: r.secretaryStatus,
+                    professorStatus: r.professorStatus,
                     date: r.date,
                     self: `/api/thesisRequests/${r.thesisRequestId}`
                 }));
@@ -83,9 +87,11 @@ exports.getThesisRequestsForStudent = function (studentId) {
                 reject(new PromiseError({ code: 404, message: "Not Found" }));
             } else {
                 let list = rows.map((r) => ({
-                    thesisProposalId: r.thesisProposalId,
+                    thesisRequest: r.thesisRequest,
                     title: r.title,
                     studentId: r.studentId,
+                    secretaryStatus: r.secretaryStatus,
+                    professorStatus: r.professorStatus,
                     date: r.date,
                     self: `/api/thesisRequests/${r.thesisRequestId}`
                 }));
@@ -127,6 +133,7 @@ exports.getThesisRequestById = function (user, thesisRequestId) {
                     description: row.description,
                     secretaryStatus: row.secretaryStatus,
                     professorStatus: row.professorStatus,
+                    date: row.date,
                     approvalDate: row.approvalDate,
                     self: `/thesisRequests/${thesisRequestId}`
                 });

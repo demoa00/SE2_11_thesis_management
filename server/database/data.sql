@@ -1,5 +1,4 @@
 /* DEGREES DATA */
-DELETE FROM degrees;
 INSERT INTO degrees (degreeId, titleDegree) VALUES ('L-1', 'Bachelor in Mechanical Engineering');
 INSERT INTO degrees (degreeId, titleDegree) VALUES ('LM-9', 'Master in Software Engineering');
 INSERT INTO degrees (degreeId, titleDegree) VALUES ('L-4', 'Bachelor of Science in Civil Engineering');
@@ -20,7 +19,6 @@ INSERT INTO degrees (degreeId, titleDegree) VALUES ('LM-13', 'Master in Manageme
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* STUDENTS DATA */
-DELETE FROM students;
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s123456', 'John', 'Smith', 'male', 'Italian', 's123456@studenti.polito.it', 'L-1', 2023);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s789012', 'Jane', 'Brown', 'female', 'American', 's789012@studenti.polito.it', 'LM-13', 2022);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s987654', 'Peter', 'Williams', 'male', 'British', 's987654@studenti.polito.it', 'L-6', 2021);
@@ -35,7 +33,6 @@ INSERT INTO students (studentId, name, surname, gender, nationality, email, codD
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* PROFESSORS DATA */
-DELETE FROM professors;
 INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartment) VALUES ('p987123', 'Elizabeth', 'Lopez', 'elizabeth.lopez@polito.it', 'CG_23', 'CD_23');
 INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartment) VALUES ('p456789', 'James', 'Rodriguez', 'james.rodriguez@polito.it', 'CG_22', 'CD_22');
 INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartment) VALUES ('p123098', 'Robert', 'Clark', 'robert.clark@polito.it', 'CG_21', 'CD_21');
@@ -54,7 +51,6 @@ INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartme
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* EXTERNAL CO-SUPERVISORS DATA */
-DELETE FROM externalCoSupervisors;
 INSERT INTO externalCoSupervisors (externalCoSupervisorId, name, surname, email, company) VALUES ('e456789', 'Patricia', 'Rodriguez', 'patriciarodriguez@example.net', 'Apex Technologies');
 INSERT INTO externalCoSupervisors (externalCoSupervisorId, name, surname, email, company) VALUES ('e678901', 'Robert', 'Johnson', 'robertjohnson@example.co.uk', 'Zenith Innovations');
 INSERT INTO externalCoSupervisors (externalCoSupervisorId, name, surname, email, company) VALUES ('e890123', 'Jennifer', 'Wilson', 'jenniferwilson@example.io', 'Vertex Solutions');
@@ -64,13 +60,11 @@ INSERT INTO externalCoSupervisors (externalCoSupervisorId, name, surname, email,
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* SECRETARY CLERCK EMPLOYEES DATA */
-DELETE FROM secretaryClerckEmployees;
 INSERT INTO secretaryClerckEmployees (secretaryClerckEmployeeId, name, surname, email) VALUES ('c123456', 'Tony', 'Jordan', 'tony.jordan@polito.it');
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* THESIS PROPOSALS DATA */
-DELETE FROM thesisProposals;
 INSERT INTO thesisProposals (thesisProposalId, title, supervisor, keywords, description, requirements, thesisType, abroad, notes, expirationDate, level, isArchieved) VALUES (1, 'Design and Analysis of a Solar-Powered Water Pump for Rural Communities', 'p987123', '["solar energy","water pumping","rural communities"]', 'This thesis proposal aims to design and analyze a solar-powered water pump system for rural communities with limited access to electricity. The system will utilize solar panels to generate electricity, which will then be used to power a water pump to provide clean drinking water to the community.', 'The student should have a strong understanding of mechanical engineering principles, including thermodynamics, fluid mechanics, and electrical engineering. The student should also be proficient in using CAD software and have experience with data analysis.', 'Research', false, 'This thesis proposal is open to students interested in renewable energy, water resources, and sustainable development.', '2024-06-30', 'BSc', false);
 INSERT INTO thesisProposals (thesisProposalId, title, supervisor, keywords, description, requirements, thesisType, abroad, notes, expirationDate, level, isArchieved) VALUES (2, 'Development of a Biomechanical Model for Predicting Musculoskeletal Injuries in Athletes', 'p456789', '["biomechanics","musculoskeletal injuries","athletes"]', 'This thesis proposal aims to develop a biomechanical model to predict musculoskeletal injuries in athletes. The model will be based on the analysis of motion capture data and muscle activity data. The model will be used to identify athletes at risk of injury and to develop training programs to prevent injuries.', 'The student should have a strong understanding of biomechanics, anatomy, and physiology. The student should also be proficient in using motion capture software and have experience with data analysis.', 'Research', false, 'This thesis proposal is open to students interested in biomechanics, sports science, and injury prevention.', '2024-05-31', 'BSc', false);
 INSERT INTO thesisProposals (thesisProposalId, title, supervisor, keywords, description, requirements, thesisType, abroad, notes, expirationDate, level, isArchieved) VALUES (3, 'Optimization of a Wind Turbine Blade Design for Increased Efficiency', 'p987123', '["wind energy","optimization"]', 'This thesis proposal aims to optimize the design of a wind turbine blade to increase its efficiency. The optimization will be based on computational fluid dynamics (CFD) simulations. The optimized blade design will be tested in a wind tunnel to validate its performance.', 'The student should have a strong understanding of fluid mechanics, aerodynamics, and optimization techniques. The student should also be proficient in using CFD software and have experience with wind tunnel testing.', 'In Company', false, 'This thesis proposal is open to students interested in renewable energy, aerodynamics, and computational engineering. The student will have the opportunity to work on a real-world problem with a leading wind turbine manufacturer.', '2024-06-15', 'BSc', false);
@@ -96,7 +90,6 @@ INSERT INTO thesisProposals (thesisProposalId, title, supervisor, keywords, desc
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* THESIS PROPOSALS EXTERNAL CO-SUPERVISOR BRIDGE */
-DELETE FROM thesisProposal_externalCoSupervisor_bridge;
 INSERT INTO thesisProposal_externalCoSupervisor_bridge (thesisProposalId, externalCoSupervisorId) VALUES (2, 'e456789');
 INSERT INTO thesisProposal_externalCoSupervisor_bridge (thesisProposalId, externalCoSupervisorId) VALUES (5, 'e678901');
 INSERT INTO thesisProposal_externalCoSupervisor_bridge (thesisProposalId, externalCoSupervisorId) VALUES (6, 'e678901');
@@ -109,7 +102,6 @@ INSERT INTO thesisProposal_externalCoSupervisor_bridge (thesisProposalId, extern
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* THESIS PROPOSALS INTERNAL CO-SUPERVISOR BRIDGE */
-DELETE FROM thesisProposal_internalCoSupervisor_bridge;
 INSERT INTO thesisProposal_internalCoSupervisor_bridge (thesisProposalId, internalCoSupervisorId) VALUES (5, 'p123098');
 INSERT INTO thesisProposal_internalCoSupervisor_bridge (thesisProposalId, internalCoSupervisorId) VALUES (9, 'p123098');
 INSERT INTO thesisProposal_internalCoSupervisor_bridge (thesisProposalId, internalCoSupervisorId) VALUES (11, 'p456987');
@@ -123,7 +115,6 @@ INSERT INTO thesisProposal_internalCoSupervisor_bridge (thesisProposalId, intern
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* THESIS PROPOSALS CDS BRIDGE */
-DELETE FROM thesisProposal_cds_bridge;
 INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (1, 'L-1');
 INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (2, 'L-1');
 INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (2, 'L-45');
@@ -151,7 +142,6 @@ INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (21, 'LM-
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* THESIS PROPOSALS CDS BRIDGE */
-DELETE FROM applications;
 INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's654321', '2023-11-15', 'Pending');
 INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's876543', '2023-09-09', 'Pending');
 INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's345678', '2023-05-22', 'Pending');
@@ -159,7 +149,6 @@ INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (12,
 INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (13, 's654321', '2023-08-15', 'Pending');
 
 /* STUDENT CAREERS */
-DELETE FROM careers;
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '13PROGWEB', 'Programming for the Web', 9, 29, '2022-10-04');
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '14ALGORIT', 'Algorithms and Data Structures', 12, 30, '2022-11-24');
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '15SO', 'Operating Systems', 9, 28, '2022-12-01');
@@ -174,9 +163,7 @@ INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES
 INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s876543', '15SO', 'Operating Systems', 9, 24, '2022-12-01');
 
 /* THESIS REQUEST */
-DELETE FROM thesisRequests;
 INSERT INTO thesisRequests (thesisProposalId, studentId, title, supervisor, description, secretaryStatus, professorStatus, date) VALUES (NULL, 's654321', 'Enhancing Edge Computing for Real-time Medical Image Processing with Efficient Data Compression and Processing Techniques', 'p123654', 'Development of novel data compression techniques tailored for medical images to reduce bandwidth requirements and enable real-time access. Exploration of hardware-accelerated processing techniques to optimize computational efficiency for handling complex medical image processing tasks with reduced latency. Design and evaluation of comprehensive edge computing architectures for real-time medical image processing, showcasing significant performance improvements.', 'Accepted', 'Pendinng', '2024-11-01');
 
 /* THESIS PROPOSALS EXTERNAL CO-SUPERVISOR BRIDGE */
-DELETE FROM thesisRequest_internalCoSupervisor_bridge;
 INSERT INTO thesisRequest_internalCoSupervisor_bridge (thesisRequestId, internalCoSupervisorId) VALUES (1, 'p271846');

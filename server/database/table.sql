@@ -1,5 +1,5 @@
 /* TABLE TO MANAGE PROFESSORS */
-DROP TABLE professors;
+DROP TABLE IF EXISTS professors;
 CREATE TABLE professors(
     professorId TEXT(7) PRIMARY KEY NOT NULL,
     name TEXT(20) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE professors(
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* TABLE TO MANAGE STUDENTS */
-DROP TABLE students;
+DROP TABLE IF EXISTS students;
 CREATE TABLE students(
     studentId TEXT(7) PRIMARY KEY NOT NULL,
     name TEXT(20) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE students(
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* TABLE TO MANAGE EXTERNAL CO-SUPERVISORS */
-DROP TABLE externalCoSupervisors;
+DROP TABLE IF EXISTS externalCoSupervisors;
 CREATE TABLE externalCoSupervisors(
     externalCoSupervisorId TEXT(7) PRIMARY KEY NOT NULL,
     name TEXT(20) NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE externalCoSupervisors(
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* TABLE TO MANAGE SECRETARY CLERCK EMPLOYEE */
-DROP TABLE secretaryClerckEmployees;
+DROP TABLE IF EXISTS secretaryClerckEmployees;
 CREATE TABLE secretaryClerckEmployees(
     secretaryClerckEmployeeId TEXT(7) PRIMARY KEY NOT NULL,
     name TEXT(20) NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE secretaryClerckEmployees(
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* TABLE TO MANAGE DEGREES */
-DROP TABLE degrees;
+DROP TABLE IF EXISTS degrees;
 CREATE TABLE degrees(
     degreeId TEXT(20) PRIMARY KEY NOT NULL,
     titleDegree TEXT(20) NOT NULL
@@ -59,7 +59,7 @@ CREATE TABLE degrees(
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* TABLE TO MANAGE STUDENT PASSED EXAMS */
-DROP TABLE careers;
+DROP TABLE IF EXISTS careers;
 CREATE TABLE careers(
     studentId TEXT(7) NOT NULL,
     codCourse TEXT(7) NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE careers(
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* TABLE TO MANAGE THESIS PROPOSALS */
-DROP TABLE thesisProposals;
+DROP TABLE IF EXISTS thesisProposals;
 CREATE TABLE thesisProposals(
     thesisProposalId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     title TEXT(20) NOT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE thesisProposals(
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* TABLE TO MANAGE STUDENT APPLICATIONS FOR THESIS PROPOSALS */
-DROP TABLE applications;
+DROP TABLE IF EXISTS applications;
 CREATE TABLE applications(
     thesisProposalId INTEGER NOT NULL,
     studentId TEXT(7) NOT NULL,
@@ -111,7 +111,7 @@ CREATE TABLE applications(
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* TABLE TO MANAGE THE LIST OF INTERNAL CO-SUPERVISOR FOR A THESIS PROPOSAL */
-DROP TABLE thesisProposal_internalCoSupervisor_bridge;
+DROP TABLE IF EXISTS thesisProposal_internalCoSupervisor_bridge;
 CREATE TABLE thesisProposal_internalCoSupervisor_bridge(
     thesisProposalId INTEGER NOT NULL,
     internalCoSupervisorId TEXT(7) NOT NULL,
@@ -124,7 +124,7 @@ CREATE TABLE thesisProposal_internalCoSupervisor_bridge(
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* TABLE TO MANAGE THE LIST OF EXTERNAL CO-SUPERVISOR FOR A THESIS PROPOSAL */
-DROP TABLE thesisProposal_externalCoSupervisor_bridge;
+DROP TABLE IF EXISTS thesisProposal_externalCoSupervisor_bridge;
 CREATE TABLE thesisProposal_externalCoSupervisor_bridge(
     thesisProposalId INTEGER NOT NULL,
     externalCoSupervisorId TEXT(7) NOT NULL,
@@ -137,7 +137,7 @@ CREATE TABLE thesisProposal_externalCoSupervisor_bridge(
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* TABLE TO MANAGE THE LIST OF TITLE CDS FOR A THESIS PROPOSAL */
-DROP TABLE thesisProposal_cds_bridge;
+DROP TABLE IF EXISTS thesisProposal_cds_bridge;
 CREATE TABLE thesisProposal_cds_bridge(
     thesisProposalId INTEGER NOT NULL,
     cdsId INTEGER NOT NULL,
@@ -150,7 +150,7 @@ CREATE TABLE thesisProposal_cds_bridge(
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* TABLE TO PERFORM FULL TABLE TEXT SEARCH */
-DROP TABLE virtualThesisProposals;
+DROP TABLE IF EXISTS virtualThesisProposals;
 CREATE VIRTUAL TABLE virtualThesisProposals USING fts5(
     thesisProposalId,
     title,
@@ -164,7 +164,7 @@ CREATE VIRTUAL TABLE virtualThesisProposals USING fts5(
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* TABLE TO MANAGE THESIS REQUESTS */
-DROP TABLE thesisRequests;
+DROP TABLE IF EXISTS thesisRequests;
 CREATE TABLE thesisRequests(
     thesisRequestId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 	thesisProposalId INTEGER DEFAULT NULL,
@@ -183,8 +183,21 @@ CREATE TABLE thesisRequests(
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
+/* TABLE TO MANAGE THE LIST OF INTERNAL CO-SUPERVISOR FOR A THESIS PROPOSAL */
+DROP TABLE IF EXISTS thesisRequest_internalCoSupervisor_bridge;
+CREATE TABLE thesisRequest_internalCoSupervisor_bridge(
+    thesisRequestId INTEGER NOT NULL,
+    internalCoSupervisorId TEXT(7) NOT NULL,
+
+    PRIMARY KEY(thesisRequestId, internalCoSupervisorId),
+    FOREIGN KEY(thesisRequestId) REFERENCES thesisRequests(thesisRequestId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY(internalCoSupervisorId) REFERENCES professors(professorId)
+);
+
+/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
+
 /* TABLE TO MANAGE THE NOTIFICATIONS */
-DROP TABLE notifications;
+DROP TABLE IF EXISTS notifications;
 CREATE TABLE notifications(
 	notificationId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 	userId TEXT(7) NOT NULL,
@@ -192,17 +205,4 @@ CREATE TABLE notifications(
 	date DATE NOT NULL,
 	type INTEGER NOT NULL,
 	isRead BOLEAN DEFAULT FALSE NOT NULL
-);
-
-/* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
-
-/* TABLE TO MANAGE THE LIST OF INTERNAL CO-SUPERVISOR FOR A THESIS PROPOSAL */
-DROP TABLE thesisRequest_internalCoSupervisor_bridge;
-CREATE TABLE thesisRequest_internalCoSupervisor_bridge(
-    thesisRequestId INTEGER NOT NULL,
-    internalCoSupervisorId TEXT(7) NOT NULL,
-    
-    PRIMARY KEY(thesisRequestId, internalCoSupervisorId),
-    FOREIGN KEY(thesisRequestId) REFERENCES thesisRequests(thesisRequestId) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY(internalCoSupervisorId) REFERENCES professors(professorId)
 );
