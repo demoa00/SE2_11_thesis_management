@@ -1,14 +1,15 @@
 'use strict';
 
-const checkRole = require('../utils/checkRole');
-const smtp = require('../utils/smtp');
-const { PromiseError } = require('../utils/error');
+const dayjs = require('dayjs');
+
 const Professor = require('./ProfessorService');
 const Student = require('./StudentService');
 const Notification = require('./NotificationService');
+const checkRole = require('../utils/checkRole');
+const smtp = require('../utils/smtp');
+const { PromiseError } = require('../utils/error');
 
 const db = require('../utils/dbConnection');
-const dayjs = require('dayjs');
 
 
 exports.getThesisRequestsForProfessor = function (professorId, filter) {
@@ -37,7 +38,7 @@ exports.getThesisRequestsForProfessor = function (professorId, filter) {
                 reject(new PromiseError({ code: 404, message: "Not Found" }));
             } else {
                 let list = rows.map((r) => ({
-                    thesisRequest: r.thesisRequest,
+                    thesisRequest: r.thesisRequestId,
                     title: r.title,
                     studentId: r.studentId,
                     secretaryStatus: r.secretaryStatus,
