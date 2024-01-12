@@ -63,7 +63,8 @@ export class ThesisRequestsTableComponent {
 
 
   async rejectThesisRequest(){
-    this.response = await this.api.putThesisRequest(this.actionRequest.requester.studentId, this.actionRequest.thesisRequestId, 'Rejected')
+    console.log(this.actionRequest)
+    this.response = await this.api.putThesisRequest(this.actionRequest.requester.studentId, this.actionRequest.thesisRequestId, 'Rejected', this.actionRequest.title, this.actionRequest.description)
     if (this.response){
       this.rows = await this.api.getThesisRequests()
       this.requestAccepted = true;
@@ -71,7 +72,7 @@ export class ThesisRequestsTableComponent {
     this.actionRequest = undefined;
   }
   async acceptThesisRequest(){
-    this.response = await this.api.putThesisRequest(this.actionRequest.requester.studentId, this.actionRequest.thesisRequestId, 'Accepted')
+    this.response = await this.api.putThesisRequest(this.actionRequest.requester.studentId, this.actionRequest.thesisRequestId, 'Accepted', this.actionRequest.title, this.actionRequest.description)
     if (this.response){
       this.rows = await this.api.getThesisRequests()
       this.requestAccepted = true;
@@ -80,7 +81,7 @@ export class ThesisRequestsTableComponent {
   }
 
   async updateThesisRequest(text:any){
-    this.response = await this.api.putThesisRequest(this.actionRequest.requester.studentId, this.actionRequest.thesisRequestId, 'Change', text)
+    this.response = await this.api.putThesisRequest(this.actionRequest.requester.studentId, this.actionRequest.thesisRequestId, 'Change', this.actionRequest.title, this.actionRequest.description, text)
     if (this.response){
       this.rows = await this.api.getThesisRequests()
       this.requestAccepted = true;
