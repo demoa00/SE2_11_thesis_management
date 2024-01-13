@@ -7,7 +7,7 @@ const ThesisProposal = require('./ThesisProposalService');
 const Notification = require('./NotificationService');
 const checkRole = require('../utils/checkRole');
 const smtp = require('../utils/smtp');
-const { PromiseError, InternalError } = require('../utils/error');
+const { PromiseError } = require('../utils/error');
 
 const db = require('../utils/dbConnection');
 
@@ -275,6 +275,24 @@ exports.updateApplication = function (professorId, studentId, thesisProposalId, 
       return { newApplication: `/api/applications/${newApplication.thesisProposalId}/${studentId}` };
     } catch (error) {
       return { newApplication: `/api/applications/${newApplication.thesisProposalId}/${studentId}` };
+    }
+  });
+}
+
+exports.getApplicationFile = function (thesisProposalId, studentId) {
+  return new Promise((resolve, reject) => {
+    const filepath = './uploads/' + studentId + "_" + thesisProposalId + '.pdf';
+
+    if (fs.existsSync(filepath)) {
+      fs.readFile(filepath, (err, data) => {
+        if (err) {
+          reject(new PromiseError({ code: 500, message: 'Internal Server Error' }));
+        } else {
+          resolve(data);
+        }
+      });
+    } else {
+      reject(new PromiseError({ message: "Not Found", code: 404 }));
     }
   });
 }

@@ -4,6 +4,7 @@ const utils = require("../utils/writer.js");
 const Application = require("../service/ApplicationService");
 const checkRole = require("../utils/checkRole.js");
 
+
 module.exports.getApplications = async function getApplications(req, res, next) {
   try {
     if (req.user.userId != undefined && req.query != undefined) {
@@ -41,6 +42,21 @@ module.exports.getApplicationById = async function getApplicationById(req, res, 
     utils.writeJson(res, { error: error.message }, error.code);
   }
 };
+
+module.exports.getApplicationFile = async function getApplicationFile(res, req, next) {
+  try {
+    if (req.params.thesisProposalId != undefined && req.params.studentId != undefined) {
+      let data = await Application.getApplicationFile(req.params.thesisProposalId, req.params.studentId);
+
+      res.set('Content-Type', 'application/pdf');
+      res.send(data);
+    } else {
+      utils.writeJson(res, { error: "Bad Request" }, 400);
+    }
+  } catch (error) {
+    utils.writeJson(res, { error: error.message }, error.code);
+  }
+}
 
 module.exports.insertNewApplication = async function insertNewApplication(req, res, next) {
   try {

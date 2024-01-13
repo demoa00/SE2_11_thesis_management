@@ -3,12 +3,12 @@
 const fs = require('fs');
 
 const { PromiseError } = require('../utils/error');
-const storage = require('../utils/storage');
+const uploadFile = require('../utils/storage').uploadFile1;
 
 
 exports.insertNewCV = function (req, res) {
     return new Promise(function (resolve, reject) {
-        storage.uploadFile(req, res, function (err) {
+        uploadFile(req, res, function (err) {
             if (err) {
                 reject(new PromiseError({ code: 500, message: err.message }));
             } else if (req.file === undefined) {

@@ -21,6 +21,9 @@ const addFormats = require('ajv-formats').default;
 const fs = require('fs');
 const path = require('path');
 const schedule = require('node-schedule');
+const { body } = require('express-validator');
+
+const uploadFile = require('./utils/storage').uploadFile2;
 
 
 //-- -- -- -- -- -- -- -- -- --
@@ -298,7 +301,8 @@ app.delete('/api/thesisProposals/:thesisProposalId', isLoggedIn, isProfessor, th
 /* APPLICATIONS API */
 app.get('/api/applications', isLoggedIn, applicationController.getApplications);
 app.get('/api/applications/:thesisProposalId/:studentId', isLoggedIn, applicationController.getApplicationById);
-app.post('/api/thesisProposals/:thesisProposalId', isLoggedIn, isStudent, validate({ body: applicationSchema }), applicationController.insertNewApplication);
+app.get('/api/applications/:thesisProposalId/:studentId/file', isLoggedIn, applicationController.getApplicationFile);
+app.post('/api/thesisProposals/:thesisProposalId', isLoggedIn, isStudent, uploadFile, /* validate({ body: applicationSchema }), */ applicationController.insertNewApplication);
 app.put('/api/applications/:thesisProposalId/:studentId', isLoggedIn, isProfessor, validate({ body: applicationSchema }), applicationController.updateApplication);
 
 
@@ -329,7 +333,7 @@ app.get('/api/degrees', isLoggedIn, degreeController.getDegrees);
 
 
 /* CV API */
-app.post('/api/cv', isLoggedIn, isStudent, curriculumVitaeController.insertNewCV);
+app.post('/api/cv', /* isLoggedIn, isStudent, */ curriculumVitaeController.insertNewCV);
 app.get('/api/cv/:studentId', isLoggedIn, curriculumVitaeController.getCV);
 app.delete('/api/cv/:studentId', isLoggedIn, isStudent, curriculumVitaeController.deleteCV);
 
