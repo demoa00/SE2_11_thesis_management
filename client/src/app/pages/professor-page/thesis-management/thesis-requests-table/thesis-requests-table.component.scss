@@ -75,3 +75,8 @@
   gap: 8px;
   @apply justify-between;
 }
+.textArea {
+  @apply w-full h-32 bg-gray-50 border-2 border-gray-300 rounded-md p-2;
+  font-size: 12px;
+  line-height: 14px;
+}

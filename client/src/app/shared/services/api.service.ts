@@ -209,14 +209,14 @@ export class APIService {
     })
   }
 
-  async putThesisRequest(professorId: any, thesisRequestId: any, status: 'Accepted' | 'Rejected' | 'Change', title:any, description:any, professorRequestChangesMessage?:any) {
+  async putThesisRequest(professorId: any, thesisRequestId: any, status: 'Accepted' | 'Rejected' | 'Change', professorRequestChangesMessage?:any) {
     return await this.httpService.put(`thesisRequests/${thesisRequestId}`, professorRequestChangesMessage?{
       supervisor: {
         professorId: professorId
       },
       professorStatus: status,
-      title:title,
-      description:description,
+      title:' ',
+      description:' ',
       professorRequestChangesMessage: professorRequestChangesMessage,
     }:
       {
@@ -224,8 +224,8 @@ export class APIService {
           professorId: professorId
         },
         professorStatus: status,
-        title:title,
-        description:description
+        title: ' ',
+        description:' '
       }
     )
   }

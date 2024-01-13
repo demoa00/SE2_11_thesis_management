@@ -31,7 +31,7 @@
       <app-icon name="arrowLeft" class="text-gray-500 h-6 w-6" >Back</app-icon>
       <div class="text-gray-500">Back</div>
     </div>
-    <div class="flex gap-6">
+    <div *ngIf="selectedRequest.professorStatus === 'Pending'" class="flex gap-6">
       <button  class="dropdownButton" (click)="openAcceptPopup(selectedRequest)" >Accept</button>
       <button class="dropdownButton red" (click)="openRejectPopup(selectedRequest)">Reject</button>
       <app-icon name="pencil" class="text-yellow-700 h-6 w-6 hover:cursor-pointer" (click)="openUpdatePopup(selectedRequest)">Ask For Update</app-icon>
@@ -41,7 +41,7 @@
 
 <app-popup
   *ngIf="rejectPopup"
-  (close)="openRejectPopup(); this.triggerUpdate.emit(); actionRequest = undefined"
+  (close)="openRejectPopup(); this.triggerUpdate.emit(); actionRequest = undefined; selectedRequest = undefined"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"
@@ -60,7 +60,7 @@
 
 <app-popup
   *ngIf="acceptPopup"
-  (close)="openAcceptPopup() ; this.triggerUpdate.emit(); actionRequest = undefined"
+  (close)="openAcceptPopup() ; this.triggerUpdate.emit(); actionRequest = undefined;  selectedRequest = undefined"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"
@@ -79,16 +79,17 @@
 
 <app-popup
   *ngIf="updatePopup"
-  (close)="openUpdatePopup() ; this.triggerUpdate.emit(); actionRequest = undefined"
+  (close)="openUpdatePopup() ; this.triggerUpdate.emit(); actionRequest = undefined; selectedRequest = undefined"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"
   [response] = response
-  (send)="updateThesisRequest('')">
+  (send)="updateThesisRequest(textMessage)">
   <div *ngIf="!requestAccepted" class="flex flex-col h-full w-full gap-4">
     <div class="p-2 w-full flex flex-col gap-2 items-center ">
       <div style="width: 90%; height: 1px" class="bg-orange-500"></div>
       <div class="font-bold">Write a message to request for a change of the Thesis Request?</div>
+      <textarea class="textArea" [(ngModel)]="textMessage" maxlength="1000" placeholder="Write a message..." ></textarea>
     </div>
   </div>
 
