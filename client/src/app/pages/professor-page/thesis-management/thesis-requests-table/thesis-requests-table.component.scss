@@ -32,7 +32,6 @@
   background-color: #03577A;
   color: white;
   line-height: 16px;
-  padding: 8px;
   border-radius: 8px;
   @apply hover:drop-shadow-lg;
   &.left{
@@ -53,6 +52,18 @@
   }
   &.red {
     @apply bg-red-500;
+  }
+  &.yellow {
+    @apply bg-yellow-500;
+  }
+  &.small {
+    @media only screen and (max-width: 1100px){
+      @apply p-1;
+    }
+    @media only screen and (min-width: 1100px){
+      padding: 8px;
+    }
+
   }
 }
 .bo-table-compact {

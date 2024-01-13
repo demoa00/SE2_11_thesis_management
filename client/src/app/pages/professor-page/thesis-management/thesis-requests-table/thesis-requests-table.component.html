@@ -13,8 +13,8 @@
       <td (click)="shohDetails(row)" class="cursor-pointer py-0.5 w-24 h-6 text-sm text-gray-600">{{row.studentId}}</td>
       <td (click)="shohDetails(row)" class="cursor-pointer py-0.5 w-24 h-6 text-sm text-gray-600">{{row.title}}</td>
       <td *ngIf="row?.professorStatus =='Pending'" class="py-0.5 w-12 h-6">
-        <button  class="dropdownButton left" (click)="openAcceptPopup(row)" >Accept</button>
-        <button class="dropdownButton red right" (click)="openRejectPopup(row)">Reject</button>
+        <button  class="dropdownButton left small" (click)="openAcceptPopup(row)" >Accept</button>
+        <button class="dropdownButton red right small" (click)="openRejectPopup(row)">Reject</button>
       </td>
       <td *ngIf="row?.professorStatus !='Pending'" [class.text-yellow-400] = "row?.professorStatus=='Change'"  [class.text-green-400] = "row?.professorStatus=='Accepted'" [class.text-red-400] = "row?.professorStatus=='Rejected'" class="py-0.5 w-12 h-6 text-sm">
         {{row?.professorStatus=='Accepted'?'accepted':row?.professorStatus=='Rejected'?'rejected':row?.professorStatus=='Change'?'requested change':''}}
@@ -31,10 +31,10 @@
       <app-icon name="arrowLeft" class="text-gray-500 h-6 w-6" >Back</app-icon>
       <div class="text-gray-500">Back</div>
     </div>
-    <div *ngIf="selectedRequest.professorStatus === 'Pending'" class="flex gap-6">
-      <button  class="dropdownButton" (click)="openAcceptPopup(selectedRequest)" >Accept</button>
-      <button class="dropdownButton red" (click)="openRejectPopup(selectedRequest)">Reject</button>
-      <app-icon name="pencil" class="text-yellow-700 h-6 w-6 hover:cursor-pointer" (click)="openUpdatePopup(selectedRequest)">Ask For Update</app-icon>
+    <div *ngIf="selectedRequest.professorStatus === 'Pending'" class="flex gap-4">
+      <button  class="dropdownButton small" (click)="openAcceptPopup(selectedRequest)" >Accept</button>
+      <button class="dropdownButton red small" (click)="openRejectPopup(selectedRequest)">Reject</button>
+      <button class="dropdownButton yellow small" (click)="openUpdatePopup(selectedRequest)">Request Change</button>
     </div>
   </div>
 </div>
