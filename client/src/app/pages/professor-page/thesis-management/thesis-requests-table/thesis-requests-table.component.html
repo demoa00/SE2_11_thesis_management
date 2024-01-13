@@ -32,7 +32,7 @@
       <div class="text-gray-500">Back</div>
     </div>
     <div *ngIf="selectedRequest.professorStatus === 'Pending'" class="flex gap-4">
-      <button  class="dropdownButton small" (click)="openAcceptPopup(selectedRequest)" >Accept</button>
+      <button class="dropdownButton small" (click)="openAcceptPopup(selectedRequest)" >Accept</button>
       <button class="dropdownButton red small" (click)="openRejectPopup(selectedRequest)">Reject</button>
       <button class="dropdownButton yellow small" (click)="openUpdatePopup(selectedRequest)">Request Change</button>
     </div>

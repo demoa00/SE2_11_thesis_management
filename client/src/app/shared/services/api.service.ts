@@ -109,12 +109,25 @@ export class APIService {
 
   async getAllActiveTheses() {
     try {
-      return await this.httpService.get('thesisProposals/?cosupervisor=false&isArchieved=false')
+      const  theses: [] = await this.httpService.get('thesisProposals/?cosupervisor=false&isArchieved=false')
+      return theses.map((thesis: {}) => {
+        return {...thesis, coSupervised: false}
+      })
     } catch (errore) {
       return undefined
     }
   }
+  async getAllCusupervisedTheses () {
+    try {
+      const coSupervisedTheses: [] = await this.httpService.get('thesisProposals/?cosupervisor=true&isArchieved=false')
+      return coSupervisedTheses.map((thesis: {}) => {
+        return {...thesis, coSupervised: true}
+      })
+    } catch (errore) {
+      return undefined
+    }
 
+  }
   async getAllArchivedTheses() {
     try {
       return await this.httpService.get('thesisProposals/?cosupervisor=false&isArchieved=true')

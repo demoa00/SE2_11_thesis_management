@@ -41,6 +41,7 @@ export class ActiveThesisTableComponent {
   shohDetails(row: any) {
     this.api.getProposal(row.thesisProposalId).then((response: any) => {
       this.selectedProposal = response
+      console.log(this.rows)
     })
   }
 
@@ -70,4 +71,7 @@ export class ActiveThesisTableComponent {
       this.requestAccepted = true;
     }
   }
+
+  protected readonly localStorage = localStorage;
+  protected readonly JSON = JSON;
 }

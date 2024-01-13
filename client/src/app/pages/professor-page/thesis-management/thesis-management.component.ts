@@ -91,7 +91,10 @@ export class ThesisManagementComponent {
     }
   }
   async showActiveThesesTable() {
-    const response = await this.api.getAllActiveTheses();
+    const response1 = await this.api.getAllActiveTheses();
+    const response2 = await this.api.getAllCusupervisedTheses();
+    const response = response1 && response2? [...response1, ...response2]: response2? response2: response1?response1: undefined
+    console.log(response)
     if (response != undefined) {
       this.activeThesesRow = response;
       this.showApplicants = false;
@@ -133,7 +136,9 @@ export class ThesisManagementComponent {
     else {
       this.archivedThesesRow = [];
     }
-    const active =  await this.api.getAllActiveTheses();
+    const response1 = await this.api.getAllActiveTheses();
+    const response2 = await this.api.getAllCusupervisedTheses();
+    const active = response1 && response2? [...response1, ...response2]: response2? response2: response1?response1: undefined
     if (active != undefined) {
       this.activeThesesRow = active;
     }
