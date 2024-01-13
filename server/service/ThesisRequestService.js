@@ -26,7 +26,7 @@ exports.getThesisRequestsForProfessor = function (professorId, filter) {
             params = [professorId];
         } else if (filter.cosupervisor === 'true') {
             sql = "SELECT * FROM thesisRequests WHERE thesisRequestId IN (SELECT thesisRequestId FROM thesisRequest_internalCoSupervisor_bridge WHERE internalCoSupervisorId = ?) AND thesisRequests.secretaryStatus = 'Accepted' ";
-            params = [professorId, professorId];
+            params = [professorId];
         }
     }
 
