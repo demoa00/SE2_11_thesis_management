@@ -194,8 +194,8 @@ export class APIService {
     return await this.httpService.get('professors/?cosupervisor=false')
   }
 
-  async insertNewApplication(body: any) {
-    return await this.httpService.post(`thesisProposals/${body.thesisProposalId}`, body)
+  async insertNewApplication(body: FormData) {
+    return await this.httpService.post(`thesisProposals/${body.get("thesisProposalId")}`, body)
   }
 
 

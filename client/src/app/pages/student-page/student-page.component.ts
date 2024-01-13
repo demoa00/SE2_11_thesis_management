@@ -5,6 +5,7 @@ import {APIService} from "../../shared/services/api.service";
 import {User} from "../../shared/classes/user";
 import {StudentDetails} from "../../shared/classes/student/student-details";
 import * as dayjs from "dayjs"
+
 type ProposalsParams = {
   text: string | null;
   supervisors: {}[] | null;
@@ -37,7 +38,9 @@ export class StudentPageComponent {
   constructor(public api: APIService) {
     this.api.setStudent()
   }
-  /*protected*/ readonly dayjs = dayjs;
+
+  /*protected*/
+  readonly dayjs = dayjs;
 
   user: User | undefined
   userDetails: StudentDetails | undefined
@@ -65,7 +68,7 @@ export class StudentPageComponent {
   menuItems = [
     {
       'id': 0,
-      'selected': false,
+      'selected': true,
       'hovered': false,
       'text': 'Proposals'
     },
@@ -77,21 +80,23 @@ export class StudentPageComponent {
     },
     {
       'id': 2,
-      'selected': true,
+      'selected': false,
       'hovered': false,
       'text': 'Requests'
     }
   ]
   applicationMessage: string = "";
+  applicationFile: any;
 
   trigger: boolean = false
   profilePage: boolean = false;
+
   closeMenu() {
     this.trigger = !this.trigger
   }
 
   unreadCounter = 0
-  newApplications: any;
+  newApplications: File | null = null;
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('user') || '{}')
@@ -117,6 +122,7 @@ export class StudentPageComponent {
     })
     this.menuItems[id].selected = true
   }
+
   updateSearchValue(value: string) {
     this.searchValue = value.trim().toLowerCase();
   }
@@ -149,7 +155,7 @@ export class StudentPageComponent {
       this.selectedProposal = response
     })
     this.canApply = true
-    if(this.applications !== undefined){
+    if (this.applications !== undefined) {
       this.applications.forEach((application: any) => {
         if (application.thesisProposalId === proposalId) {
           this.canApply = false
@@ -167,7 +173,7 @@ export class StudentPageComponent {
       this.proposals = response
     }).catch((error) => {
       console.log(JSON.stringify(error))
-      if (!!error){
+      if (!!error) {
         this.proposals = []
       }
     })
@@ -210,22 +216,20 @@ export class StudentPageComponent {
   }
 
   apply() {
-    let body = {
-      'thesisProposalId': this.selectedProposal?.thesisProposalId,
-      'thesisProposalTitle': this.selectedProposal?.title,
-      'applicant': {
-        'studentId': this.user?.userId,
-        'name': this.userDetails?.name,
-        'surname': this.userDetails?.surname,
-        'student': `https://localhost:3000${this.userDetails?.self}`
-      },
-      'message': this.applicationMessage,
-      'date': this.dayjs().format('YYYY-MM-DD'),
+    let body = new FormData()
+    if (this.applicationFile) {
+      body.append('file', this.applicationFile)
     }
+    if (this.applicationMessage) {
+      body.append('message', this.applicationMessage)
+    }
+    body.append('thesisProposalId', this.selectedProposal?.thesisProposalId)
 
     this.api.insertNewApplication(body).then(() => {
       this.canApply = false
       this.togglePopup()
+      this.applicationMessage = ""
+      this.applicationFile = null
       this.showSuccessAlert = true
       setTimeout(() => {
         this.showSuccessAlert = false
@@ -239,11 +243,10 @@ export class StudentPageComponent {
     })
   }
 
-  toggleMoreFilters(){
-    if(!this.showFilters){
+  toggleMoreFilters() {
+    if (!this.showFilters) {
       this.showFilters = true
-    }
-    else{
+    } else {
       this.showFilters = false
       this.proposalParams.cosupervisors = null
       this.proposalParams.extCs = null
@@ -276,6 +279,11 @@ export class StudentPageComponent {
   closeNotifications($event: boolean) {
     console.log($event)
     this.notificationsOpen = false
+  }
+
+  selectFile(file: any) {
+    // console.log(file.target.files?.item(0))
+    this.applicationFile = file.target.files?.item(0)
   }
 }
 
