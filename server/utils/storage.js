@@ -5,6 +5,8 @@ const fs = require("fs");
 
 const maxSize = 8000000; //8MB
 
+
+// Storage manager for curriculum vitae
 const storage1 = multer.diskStorage({
     destination: function (req, file, cb) {
         if (!fs.existsSync('./uploads')) {
@@ -37,6 +39,7 @@ const uploadFile1 = multer({
 }).single('file');
 
 
+// Storage manager for attached file to applications
 const storage2 = multer.diskStorage({
     destination: function (req, file, cb) {
         if (!fs.existsSync('./uploads')) {
@@ -50,7 +53,7 @@ const storage2 = multer.diskStorage({
         }
     },
     filename: function (req, file, cb) {
-        const filename = /* req.user.userId */ 'ciao' + "_" + req.params.thesisProposalId + '.pdf';
+        const filename = req.user.userId + "_" + req.params.thesisProposalId + '.pdf';
 
         cb(null, filename);
     }

@@ -302,7 +302,7 @@ app.delete('/api/thesisProposals/:thesisProposalId', isLoggedIn, isProfessor, th
 app.get('/api/applications', isLoggedIn, applicationController.getApplications);
 app.get('/api/applications/:thesisProposalId/:studentId', isLoggedIn, applicationController.getApplicationById);
 app.get('/api/applications/:thesisProposalId/:studentId/file', isLoggedIn, applicationController.getApplicationFile);
-app.post('/api/thesisProposals/:thesisProposalId', isLoggedIn, isStudent, uploadFile, /* validate({ body: applicationSchema }), */ applicationController.insertNewApplication);
+app.post('/api/thesisProposals/:thesisProposalId', isLoggedIn, isStudent, uploadFile, validate({ body: applicationSchema }), applicationController.insertNewApplication);
 app.put('/api/applications/:thesisProposalId/:studentId', isLoggedIn, isProfessor, validate({ body: applicationSchema }), applicationController.updateApplication);
 
 
