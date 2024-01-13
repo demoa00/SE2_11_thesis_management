@@ -278,4 +278,8 @@ export class APIService {
     return await this.httpService.put(`virtualClock`, {date: date})
   }
 
+  async getAllRequests(){
+return await this.httpService.get(`thesisRequests`)
+  }
+
 }
