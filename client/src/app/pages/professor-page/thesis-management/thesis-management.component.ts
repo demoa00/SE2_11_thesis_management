@@ -73,7 +73,9 @@ export class ThesisManagementComponent {
   }
 
   async showThesisRequestsTable() {
-    const response = await this.api.getThesisRequests();
+    const response1 = await this.api.getThesisRequests();
+    const response2 = await this.api.getCoSupervisedThesisRequests();
+    const response = response1 && response2? [...response1, ...response2]: response2? response2: response1?response1: undefined
     console.log(response)
     if(response != undefined){
       this.thesisRequestsRow = response;
@@ -92,7 +94,7 @@ export class ThesisManagementComponent {
   }
   async showActiveThesesTable() {
     const response1 = await this.api.getAllActiveTheses();
-    const response2 = await this.api.getAllCusupervisedTheses();
+    const response2 = await this.api.getAllCoSupervisedActiveTheses();
     const response = response1 && response2? [...response1, ...response2]: response2? response2: response1?response1: undefined
     console.log(response)
     if (response != undefined) {
@@ -136,9 +138,9 @@ export class ThesisManagementComponent {
     else {
       this.archivedThesesRow = [];
     }
-    const response1 = await this.api.getAllActiveTheses();
-    const response2 = await this.api.getAllCusupervisedTheses();
-    const active = response1 && response2? [...response1, ...response2]: response2? response2: response1?response1: undefined
+    const active1 = await this.api.getAllActiveTheses();
+    const active2 = await this.api.getAllCoSupervisedActiveTheses();
+    const active = active1 && active2? [...active1, ...active2]: active2? active2: active1?active1: undefined
     if (active != undefined) {
       this.activeThesesRow = active;
     }
@@ -151,6 +153,15 @@ export class ThesisManagementComponent {
     }
     else {
       this.applicantsRow = [];
+    }
+    const request1 = await this.api.getThesisRequests();
+    const request2 = await this.api.getCoSupervisedThesisRequests();
+    const request = request1 && request2? [...request1, ...request2]: request2? request2: request1?request1: undefined
+    if(request != undefined){
+      this.thesisRequestsRow = request;
+    }
+    else {
+      this.thesisRequestsRow = [];
     }
   }
 }

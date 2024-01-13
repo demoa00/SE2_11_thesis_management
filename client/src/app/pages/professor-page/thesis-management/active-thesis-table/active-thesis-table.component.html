@@ -7,6 +7,7 @@
   <tr class="thead">
     <th>Title</th>
     <th>Expiration</th>
+    <th>Role</th>
     <th>Action</th>
   </tr>
   <tr *ngFor="let row of rows" >
@@ -17,6 +18,9 @@
       <app-icon name="pencil" class="text-blue-900 h-6 w-6" (click)="openCreatePopup()">Update</app-icon>
     </td>
     -->
+    <td  class="py-0.5 w-6 h-6 hover:cursor-pointer text-gray-700">
+      {{row.coSupervised?'Co-Supervisor':'Supervisor'}}
+    </td>
     <td *ngIf="!row.coSupervised" class="py-0.5 w-16 h-6 hover:cursor-pointer">
       <div class="flex w-full justify-around">
         <app-icon name="archive" class="text-yellow-700  h-6 w-6" (click)="archiveThesisPopup(); selectedThesisId = row.thesisProposalId">Archive</app-icon>
@@ -24,8 +28,8 @@
 
       </div>
     </td>
-    <td *ngIf="row.coSupervised" class="py-0.5 w-6 h-6 hover:cursor-pointer">
-      Co-Supervisor
+    <td *ngIf="row.coSupervised" class="py-0.5 w-6 h-6 hover:cursor-pointer text-red-700">
+      Not authorized
     </td>
   </tr>
   </tbody>

@@ -7,14 +7,19 @@
     <tr class="thead">
       <th>Student ID</th>
       <th>Title</th>
+      <th>Role</th>
       <th> Status</th>
     </tr>
     <tr *ngFor="let row of rows" >
       <td (click)="shohDetails(row)" class="cursor-pointer py-0.5 w-24 h-6 text-sm text-gray-600">{{row.studentId}}</td>
       <td (click)="shohDetails(row)" class="cursor-pointer py-0.5 w-24 h-6 text-sm text-gray-600">{{row.title}}</td>
+      <td  class="py-0.5 w-6 h-6 hover:cursor-pointer text-gray-700">
+        {{row.coSupervised?'Co-Supervisor':'Supervisor'}}
+      </td>
       <td *ngIf="row?.professorStatus =='Pending'" class="py-0.5 w-12 h-6">
-        <button  class="dropdownButton left small" (click)="openAcceptPopup(row)" >Accept</button>
-        <button class="dropdownButton red right small" (click)="openRejectPopup(row)">Reject</button>
+        <div *ngIf="row?.coSupervised ==true">{{'Pending'}}</div>
+        <button *ngIf="row?.coSupervised ==false"  class="dropdownButton left small" (click)="openAcceptPopup(row)" >Accept</button>
+        <button *ngIf="row?.coSupervised ==false" class="dropdownButton red right small" (click)="openRejectPopup(row)">Reject</button>
       </td>
       <td *ngIf="row?.professorStatus !='Pending'" [class.text-yellow-400] = "row?.professorStatus=='Change'"  [class.text-green-400] = "row?.professorStatus=='Accepted'" [class.text-red-400] = "row?.professorStatus=='Rejected'" class="py-0.5 w-12 h-6 text-sm">
         {{row?.professorStatus=='Accepted'?'accepted':row?.professorStatus=='Rejected'?'rejected':row?.professorStatus=='Change'?'requested change':''}}
@@ -32,9 +37,9 @@
       <div class="text-gray-500">Back</div>
     </div>
     <div *ngIf="selectedRequest.professorStatus === 'Pending'" class="flex gap-4">
-      <button class="dropdownButton small" (click)="openAcceptPopup(selectedRequest)" >Accept</button>
-      <button class="dropdownButton red small" (click)="openRejectPopup(selectedRequest)">Reject</button>
-      <button class="dropdownButton yellow small" (click)="openUpdatePopup(selectedRequest)">Request Change</button>
+      <button *ngIf="selectedRequest.supervisor.professorId == JSON.parse(localStorage.getItem('professor')!).professorId" class="dropdownButton small" (click)="openAcceptPopup(selectedRequest)" >Accept</button>
+      <button *ngIf="selectedRequest.supervisor.professorId == JSON.parse(localStorage.getItem('professor')!).professorId" class="dropdownButton red small" (click)="openRejectPopup(selectedRequest)">Reject</button>
+      <button *ngIf="selectedRequest.supervisor.professorId == JSON.parse(localStorage.getItem('professor')!).professorId" class="dropdownButton yellow small" (click)="openUpdatePopup(selectedRequest)">Request Change</button>
     </div>
   </div>
 </div>

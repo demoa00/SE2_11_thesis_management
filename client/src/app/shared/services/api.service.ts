@@ -61,14 +61,6 @@ export class APIService {
     }
   }
 
-  async getThesisRequests() {
-    try {
-      return await this.httpService.get('thesisRequests')
-    } catch (errore) {
-      return undefined
-    }
-  }
-
   async getApplicationById(applicationId: any, userId: any) {
     return await this.httpService.get(`applications/${applicationId}/${userId}`)
   }
@@ -117,7 +109,7 @@ export class APIService {
       return undefined
     }
   }
-  async getAllCusupervisedTheses () {
+  async getAllCoSupervisedActiveTheses () {
     try {
       const coSupervisedTheses: [] = await this.httpService.get('thesisProposals/?cosupervisor=true&isArchieved=false')
       return coSupervisedTheses.map((thesis: {}) => {
@@ -126,7 +118,28 @@ export class APIService {
     } catch (errore) {
       return undefined
     }
+  }
 
+  async getThesisRequests() {
+    try {
+      const  theses: [] = await this.httpService.get('thesisRequests/?cosupervisor=false')
+      return theses.map((thesis: {}) => {
+        return {...thesis, coSupervised: false}
+      })
+    } catch (errore) {
+      return undefined
+    }
+  }
+
+  async getCoSupervisedThesisRequests() {
+    try {
+      const coSupervisedTheses: [] = await this.httpService.get('thesisRequests/?cosupervisor=true')
+      return coSupervisedTheses.map((thesis: {}) => {
+        return {...thesis, coSupervised: true}
+      })
+    } catch (errore) {
+      return undefined
+    }
   }
   async getAllArchivedTheses() {
     try {

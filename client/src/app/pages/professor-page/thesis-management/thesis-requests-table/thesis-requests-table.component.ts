@@ -92,4 +92,6 @@ export class ThesisRequestsTableComponent {
     this.actionRequest = undefined;
   }
 
+  protected readonly JSON = JSON;
+  protected readonly localStorage = localStorage;
 }
