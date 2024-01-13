@@ -1,11 +1,241 @@
-<div class="container" >
+<div class="container">
   <div class="titleContainer">
     <h1 class="text-3xl font-medium">Your Requests</h1>
     <app-button class="orange" (click)="showPopup=true">New Request</app-button>
   </div>
-  <p class="mb-2">In this section you can submit new thesis requests in order to be evaluated by the professors and, eventually, accepted as your thesis project.</p>
-  <div class="card" *ngIf="requests.length>0">
+  <p class="mb-2">In this section you can submit new thesis requests in order to be evaluated by the professors and,
+    eventually, accepted as your thesis project.</p>
+  <div class="card requestsContainer" *ngIf="requests.length>0">
+    <table class="requestsTable">
+      <thead>
+      <tr>
+        <th class="text-left">Thesis Title</th>
+        <th class="statusHeader pl-4 pr-4">Secretary Status</th>
+        <th class="statusHeader pl-2">Professor Status</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">{{ request.title }}</td>
+          <td class="secretary statusContainer">
+            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+          </td>
+          <td class="professor statusContainer">
+            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="request" *ngFor="let request of requests">
 
+    </div>
   </div>
   <app-popup
     *ngIf="showPopup"

@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import {NgForOf} from "@angular/common";
-import {AppModule} from "../../../../app.module";
 import {APIService} from "../../../../shared/services/api.service";
 
 @Component({
@@ -12,7 +10,7 @@ export class RequestsComponent {
 
   constructor(private api: APIService) {}
 
-  requests = []
+  requests: any[] = []
   showPopup = false
 
   ngOnInit() {
