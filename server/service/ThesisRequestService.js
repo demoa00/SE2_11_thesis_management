@@ -80,7 +80,7 @@ exports.getThesisRequestsForSecretary = function () {
 
 exports.getThesisRequestsForStudent = function (studentId) {
     return new Promise(function (resolve, reject) {
-        const sql = "SELECT * FROM thesisRequests WHERE sudentId = ?";
+        const sql = "SELECT * FROM thesisRequests WHERE studentId = ?";
         db.all(sql, [studentId], (err, rows) => {
             if (err) {
                 reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
