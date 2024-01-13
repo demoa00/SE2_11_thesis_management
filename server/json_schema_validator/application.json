@@ -5,7 +5,8 @@
     "type": "object",
     "properties": {
         "thesisProposalId": {
-            "type": "integer"
+            "type": "string",
+            "pattern": "^[1-9][0-9]*$"
         },
         "thesisProposalTitle":{
             "type": "string",

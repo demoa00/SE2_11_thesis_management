@@ -169,3 +169,10 @@
     line-height: 14px;
   }
 }
+
+.textOverflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100px;
+}

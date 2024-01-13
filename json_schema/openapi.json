@@ -2028,6 +2028,64 @@
                 ]
             }
         },
+        "/applications/{thesisProposalId}/{studentId}/file": {
+            "get": {
+                "tags": [
+                    "application"
+                ],
+                "operationId": "getApplicationFile",
+                "parameters": [
+                    {
+                        "name": "authenticatedUserId",
+                        "in": "cookie",
+                        "required": true,
+                        "description": "The authenticated user id corresponds to the student or professor that perform this request",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^((p|P)[0-9]{6})|((s|S)[0-9]{6})$"
+                        }
+                    },
+                    {
+                        "name": "thesisProposalId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "studentId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/pdf": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
+            }
+        },
         "/externalCoSupervisors": {
             "get": {
                 "tags": [

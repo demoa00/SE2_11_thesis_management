@@ -1,14 +1,26 @@
 <div class="container" >
   <h1 class="text-3xl font-medium mb-2">Your Applications</h1>
   <div class="card applicationsContainer">
-    <div class="application" *ngFor="let a of applications">
-      <p class="title" (click)="selectApplication(a.thesisProposalId)">{{a.thesisProposalTitle}}</p>
-      <div class="statusContainer">
-        <app-button *ngIf="a.status ==='Accepted'" class="singleLine orange">New Request</app-button>
-        <div class="status {{a.status.toLowerCase()}}">
-          <p>{{a.status}}</p>
-        </div>
-      </div>
-    </div>
+    <table class="applicationsTable">
+      <thead>
+        <tr>
+          <th class="text-left">Thesis Title</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="application" *ngFor="let a of applications">
+          <td class="title pr-1" (click)="selectApplication(a.thesisProposalId)">{{a.thesisProposalTitle}}</td>
+          <td class="statusContainer ">
+            <div class="status {{a.status.toLowerCase()}}">
+              <p>{{a.status}}</p>
+            </div>
+          </td>
+          <td class="requestButton" *ngIf="a.status ==='Accepted'">
+            <app-button class="singleLine orange">New Request</app-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

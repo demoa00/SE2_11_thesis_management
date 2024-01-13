@@ -36,11 +36,66 @@
   }
 }
 
+.container {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(87.5vh - 32px);
+}
+
 .titleContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
+}
+
+.requestsContainer {
+  overflow: auto;
+}
+.requestsContainer .requestsTable {
+  width: 100%;
+}
+.requestsContainer .requestsTable .statusHeader {
+  width: 1%;
+  white-space: nowrap;
+}
+.requestsContainer .requestsTable .request {
+  border-bottom: 1px solid #e5e7eb;
+}
+.requestsContainer .requestsTable .request:last-child {
+  border-bottom: none;
+}
+.requestsContainer .requestsTable .request td.title {
+  padding: 8px 8px 8px 0;
+}
+.requestsContainer .requestsTable .request td.secretary {
+  padding: 8px 8px 8px 8px;
+}
+.requestsContainer .requestsTable .request td.professor {
+  padding: 8px 0 8px 8px;
+}
+.requestsContainer .requestsTable .request .statusContainer .status {
+  margin: auto;
+  padding: 8px;
+  border-radius: 200px;
+  line-height: normal;
+  height: fit-content;
+  color: white;
+  width: fit-content;
+}
+.requestsContainer .requestsTable .request .statusContainer .status.pending {
+  background: #ffdd48;
+  color: #545454;
+}
+.requestsContainer .requestsTable .request .statusContainer .status.accepted {
+  background: #75ce8f;
+}
+.requestsContainer .requestsTable .request .statusContainer .status.rejected {
+  background: #f56565;
+}
+.requestsContainer .requestsTable .request .statusContainer .status.cancelled {
+  background: #e5e7eb;
+  color: #545454;
 }
 
 /*# sourceMappingURL=requests.component.css.map */
