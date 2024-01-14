@@ -104,8 +104,9 @@ exports.getThesisRequestsForStudent = function (studentId) {
 }
 
 exports.getThesisRequestById = function (user, thesisRequestId) {
-    let params = [];
     let sql = "SELECT * FROM thesisRequests WHERE thesisRequestId = ?";
+
+    let params = [];
     params.push(thesisRequestId);
 
     if (checkRole.isProfessor(user)) {
