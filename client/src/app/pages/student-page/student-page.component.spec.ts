@@ -142,6 +142,17 @@ describe('StudentPageComponent', () => {
     expect(isProfSelected).toBe(true);
   });
 
+  it('should handle error on toggleProf', () => {
+    const mockError = new Error('Test Error');
+    const prof = 'Professor Name';
+
+    apiService.getAllProposals.and.returnValue(Promise.reject(mockError));
+  
+    const result = component.toggleProf(prof);
+  
+    expect(result).toBeUndefined();
+  });
+
   it('should select a proposal', fakeAsync(() => {
     const proposalId = 1;
     const mockProposal = {};
@@ -162,6 +173,32 @@ describe('StudentPageComponent', () => {
 
     expect(component.selectedProposal).toBeNull();
   });
+
+  it('should select a proposal and update canApply based on applications', fakeAsync(() => {
+    const proposalId = 1;
+    const mockApplications = [
+      { thesisProposalId: proposalId + 1 },  // Another proposal
+      { thesisProposalId: proposalId },      // The targeted proposal
+      { thesisProposalId: proposalId + 2 }   // Another proposal
+    ];
+    component.applications = mockApplications;
+  
+    // Mock the getProposal method
+    apiService.getProposal.and.returnValue(Promise.resolve({}));
+  
+    // Mock the getApplications method
+    apiService.getApplications.and.returnValue(Promise.resolve(mockApplications));
+  
+    // Call the selectProposal method
+    component.selectProposal(proposalId);
+    tick();
+  
+    // Assert that getProposal was called with the correct proposalId
+    expect(apiService.getProposal).toHaveBeenCalledWith(proposalId);
+  
+    // Assert that canApply is updated correctly based on the mock applications
+    expect(component.canApply).toBe(false);
+  }));
 
   it('should search and update proposals', fakeAsync(() => {
     const mockResponse = [{ proposalId: 1, title: 'Test Proposal' }];
@@ -186,6 +223,16 @@ describe('StudentPageComponent', () => {
   
     expect(apiService.getAllProposals).toHaveBeenCalledWith(component.proposalParams);
   }));
+
+  it('should handle error on search', () => {
+    const mockError = new Error('Test Error');
+
+    apiService.getAllProposals.and.returnValue(Promise.reject(mockError));
+  
+    const result = component.search();
+  
+    expect(result).toBeUndefined();
+  });
 
   it('should toggle popupVisible when togglePopup is called', () => {
     expect(component.popupVisible).toBeFalsy();
@@ -256,36 +303,69 @@ describe('StudentPageComponent', () => {
     expect(apiService.getAllProposals).toHaveBeenCalledWith(null);
   }));
 
-  // it('should apply for a proposal', fakeAsync(() => {
-  //   const proposalId = 1;
-  //   const mockProposal = {
-  //     title: 'Test Proposal'
-  //   };
-  //   const applicationMessage = 'Test application message';
-  
-  //   component.selectedProposal = mockProposal;
-  //   component.applicationMessage = applicationMessage;
-  
-  //   apiService.insertNewApplication.and.returnValue(Promise.resolve());
+  it('should handle error on deleteFilters', () => {
+    const mockError = new Error('Test Error');
 
-  //   spyOn(component, 'togglePopup');
+    apiService.getAllProposals.and.returnValue(Promise.reject(mockError));
   
-  //   component.apply();
-  //   tick();
+    const result = component.deleteFilters();
   
-  //   expect(apiService.insertNewApplication).toHaveBeenCalledWith({
-      
-  //     'message': applicationMessage,
-  //     'date': component.dayjs().format('YYYY-MM-DD'),
-  //   });
+    expect(result).toBeUndefined();
+  });
 
-  //   expect(component.canApply).toBe(false);
-  //   expect(component.togglePopup).toHaveBeenCalled();
+  it('should apply for a proposal', fakeAsync(() => {
+    const proposalId = 1;
+    const mockProposal = {
+      title: 'Test Proposal'
+    };
+    const applicationMessage = 'Test application message';
   
-  //   expect(component.showSuccessAlert).toBe(true);
-  //   tick(3001);
-  //   expect(component.showSuccessAlert).toBe(false);
-  // }));
+    component.selectedProposal = mockProposal;
+    component.applicationMessage = applicationMessage;
+  
+    apiService.insertNewApplication.and.returnValue(Promise.resolve());
+  
+    const togglePopupSpy = spyOn(component, 'togglePopup');
+  
+    component.apply();
+    tick();
+  
+    expect(apiService.insertNewApplication).toHaveBeenCalledWith(jasmine.any(FormData));
+    expect(togglePopupSpy).toHaveBeenCalled();
+    expect(component.canApply).toBe(false);
+  
+    tick(3001);
+    expect(component.showSuccessAlert).toBe(false);
+  }));
+
+  it('should handle error during application submission', fakeAsync(() => {
+    const proposalId = 1;
+    const mockProposal = {
+      title: 'Test Proposal'
+    };
+    const applicationMessage = 'Test application message';
+    const applicationFile = new File([], 'test.pdf');
+  
+    component.selectedProposal = mockProposal;
+    component.applicationMessage = applicationMessage;
+    component.applicationFile = applicationFile;
+  
+    const errorMessage = 'Error submitting application';
+    apiService.insertNewApplication.and.returnValue(Promise.reject(errorMessage));
+  
+    spyOn(component, 'togglePopup');
+    const consolelogSpy = spyOn(console, 'log');
+  
+    component.apply();
+    tick();
+  
+    expect(apiService.insertNewApplication).toHaveBeenCalledWith(jasmine.any(FormData));
+  
+    expect(component.showErrorAlert).toBe(true);
+    tick(3001);
+    expect(component.showErrorAlert).toBe(false);
+    expect(consolelogSpy).toHaveBeenCalledWith(errorMessage);
+  }));
 
   it('should toggle more filters and update proposals accordingly', fakeAsync(() => {
     component.showFilters = true;
@@ -310,5 +390,31 @@ describe('StudentPageComponent', () => {
     component.toggleMoreFilters();
   
     expect(component.showFilters).toBeTruthy();
+  });
+
+  it('should handle error on toggleMoreFilters', () => {
+    const mockError = new Error('Test Error');
+    component.showFilters = true;
+
+    apiService.getAllProposals.and.returnValue(Promise.reject(mockError));
+  
+    const result = component.toggleMoreFilters();
+  
+    expect(result).toBeUndefined();
+  });
+
+  it('should select a file', () => {
+    const fileContent = 'Test file content';
+    const file = new File([fileContent], 'test-file.txt', { type: 'text/plain' });
+  
+    const fakeFileList = {
+      0: file,
+      length: 1,
+      item: (index: number) => file,
+    } as FileList;
+  
+    component.selectFile({ target: { files: fakeFileList } } as any);
+  
+    expect(component.applicationFile).toEqual(file);
   });
 });
