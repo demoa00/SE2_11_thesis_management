@@ -14,6 +14,9 @@ describe('ThesisRequestDetailsComponent', () => {
 
     fixture = TestBed.createComponent(ThesisRequestDetailsComponent);
     component = fixture.componentInstance;
+
+    await fixture.whenStable();
+    
     fixture.detectChanges();
   });
 

@@ -17,10 +17,12 @@ describe('ThesisManagementComponent', () => {
 
   beforeEach(() => {
     apiService = jasmine.createSpyObj('APIService', {
-      'getApplications': Promise.resolve(),
-      'getThesisRequests': Promise.resolve(),
-      'getAllActiveTheses': Promise.resolve(),
-      'getAllArchivedTheses': Promise.resolve(),
+      'getApplications': Promise.resolve([]),
+      'getThesisRequests': Promise.resolve([]),
+      'getAllActiveTheses': Promise.resolve([]),
+      'getAllArchivedTheses': Promise.resolve([]),
+      'getAllCoSupervisedActiveTheses': Promise.resolve([]),
+      'getCoSupervisedThesisRequests': Promise.resolve([]),
     });
     
     TestBed.configureTestingModule({
@@ -74,7 +76,7 @@ describe('ThesisManagementComponent', () => {
   }));
 
   it('should set showThesisRequests to true and others to false when response is defined', fakeAsync(() => {
-    const mockResponse = [{}];
+    const mockResponse = [{ coSupervised: false }];
     apiService.getThesisRequests.and.returnValue(Promise.resolve(mockResponse));
   
     component.showThesisRequestsTable();
@@ -101,7 +103,7 @@ describe('ThesisManagementComponent', () => {
   }));
 
   it('should set showActiveThesis to true when response is defined', fakeAsync(() => {
-    const mockResponse = [{ title: 'Thesis 1' }, { title: 'Thesis 2' }];
+    const mockResponse = [{ title: 'Thesis 1', coSupervised: false }, { title: 'Thesis 2', coSupervised: false }];
     apiService.getAllActiveTheses.and.returnValue(Promise.resolve(mockResponse));
 
     component.showActiveThesesTable();
@@ -154,7 +156,7 @@ describe('ThesisManagementComponent', () => {
 
   it('should update all rows when APIs return data', fakeAsync(() => {
     const archivedThesesResponse = [{}];
-    const activeThesesResponse = [{}];
+    const activeThesesResponse = [{ coSupervised: false }];
     const applicationsResponse = [{}];
   
     apiService.getAllArchivedTheses.and.returnValue(Promise.resolve(archivedThesesResponse));
