@@ -142,10 +142,9 @@ exports.getThesisProposalsForStudent = function (codDegree, filter) {
 }
 
 exports.getThesisProposalsForProfessor = function (professorId, filter) {
-  let sql = 'SELECT thesisProposals.thesisProposalId, thesisProposals.title, p.name, p.surname, thesisProposals.keywords, thesisProposals.expirationDate FROM thesisProposals, (SELECT professorId, name, surname FROM professors WHERE professorId = ?) p WHERE supervisor = ?' + ' OR ' + 'thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?) AND supervisor = p.professorId AND isArchieved = 0';
+  let sql = 'SELECT thesisProposals.thesisProposalId, thesisProposals.title, p.name, p.surname, thesisProposals.keywords, thesisProposals.expirationDate FROM thesisProposals, (SELECT professorId, name, surname FROM professors) p WHERE supervisor = ?' + ' OR ' + 'thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?) AND supervisor = p.professorId AND isArchieved = 0';
 
   let params = [];
-  params.push(professorId);
   params.push(professorId);
   params.push(professorId);
 
@@ -156,8 +155,8 @@ exports.getThesisProposalsForProfessor = function (professorId, filter) {
       sql = 'SELECT thesisProposals.thesisProposalId, thesisProposals.title, p.name, p.surname, thesisProposals.keywords, thesisProposals.expirationDate FROM thesisProposals, (SELECT professorId, name, surname FROM professors WHERE professorId = ?) p WHERE supervisor = ? AND supervisor = p.professorId ';
       params = [professorId, professorId];
     } else if (filter.cosupervisor === 'true') {
-      sql = 'SELECT thesisProposals.thesisProposalId, thesisProposals.title, p.name, p.surname, thesisProposals.keywords, thesisProposals.expirationDate FROM thesisProposals, (SELECT professorId, name, surname FROM professors WHERE professorId = ?) p WHERE thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?) AND supervisor = p.professorId ';
-      params = [professorId, professorId];
+      sql = 'SELECT thesisProposals.thesisProposalId, thesisProposals.title, p.name, p.surname, thesisProposals.keywords, thesisProposals.expirationDate FROM thesisProposals, (SELECT professorId, name, surname FROM professors) p WHERE thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?) AND supervisor = p.professorId ';
+      params = [professorId];
     }
   }
 
