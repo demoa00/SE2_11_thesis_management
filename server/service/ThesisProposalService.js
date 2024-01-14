@@ -199,8 +199,8 @@ exports.getThesisProposalById = function (user, thesisProposalId) {
   let params = [];
 
   if (checkRole.isProfessor(user)) {//professor request -- both active and archived thesis proposals
-    sql = 'SELECT * FROM thesisProposals WHERE thesisProposalId = ? AND supervisor = ?';
-    params = [thesisProposalId, user.userId];
+    sql = 'SELECT * FROM thesisProposals WHERE thesisProposalId = ? AND (supervisor = ? OR thesisProposalId IN (SELECT DISTINCT thesisProposalId FROM thesisProposal_internalCoSupervisor_bridge WHERE internalCoSupervisorId = ?))';
+    params = [thesisProposalId, user.userId, user.userId];
   } else if (checkRole.isStudent(user)) {//student request -- only active thesis proposals
     sql = 'SELECT * FROM thesisProposals WHERE thesisProposalId = ? AND thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_cds_bridge WHERE cdsId = ?) AND isArchieved = 0';
     params = [thesisProposalId, user.codDegree];

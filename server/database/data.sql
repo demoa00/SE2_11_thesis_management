@@ -44,7 +44,7 @@ INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartme
 INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartment) VALUES ('p321654', 'David', 'Miller', 'david.miller@polito.it', 'CG_05', 'CD_14');
 INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartment) VALUES ('p789012', 'Mary', 'Brown', 'mary.brown@polito.it', 'CG_04', 'CD_13');
 INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartment) VALUES ('p695310', 'Michael', 'Williams', 'michael.williams@polito.it', 'CG_25', 'CD_26');
-INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartment) VALUES ('p271846', 'Sandra', 'Bullock', 'sandra.brown@polito.it', 'CG_27', 'CD_28');
+INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartment) VALUES ('p271846', 'Sandra', 'Bullock', 'sandra.bullock@polito.it', 'CG_27', 'CD_28');
 INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartment) VALUES ('p540287', 'Anthony', 'Taylor', 'anthony.taylor@polito.it', 'CG_29', 'CD_30');
 INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartment) VALUES ('p106398', 'Barbara', 'Garcia', 'barbara.garcia@polito.it', 'CG_31', 'CD_32');
 

@@ -104,7 +104,6 @@ exports.getApplicationById = function (user, studentId, thesisProposalId) {
   return new Promise(function (resolve, reject) {
     db.get(sql, params, function (err, row) {
       if (err) {
-        console.log(err)
         reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
       } else if (row === undefined) {
         reject(new PromiseError({ code: 404, message: "Not Found" }));
