@@ -8,10 +8,10 @@ const db = require('../utils/dbConnection');
 
 exports.getSecretaryClerckEmployeeByEmail = function (email) {
     return new Promise(function (resolve, reject) {
-        const sql = 'SELECT * FROM secretaryClerkEmployees WHERE email = ?';
+        const sql = 'SELECT * FROM secretaryClerckEmployees WHERE email = ?';
 
         db.get(sql, [email], (err, row) => {
-            if (err) {
+            if (err) {console.log(err)
                 reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
             } else if (row === undefined) {
                 reject(new PromiseError({ code: 404, message: "Not Found" }));
@@ -30,7 +30,6 @@ exports.getSecretaryClerckEmployeeByEmail = function (email) {
 exports.getSecretaryClerckEmployeeById = function (secretaryClerckEmployeeId) {
     return new Promise(function (resolve, reject) {
         const sql = 'SELECT * FROM secretaryClerckEmployees WHERE secretaryClerckEmployeeId = ?';
-
         db.get(sql, [secretaryClerckEmployeeId], (err, row) => {
             if (err) {
                 reject(new PromiseError({ code: 500, message: "Internal Server Error" }));

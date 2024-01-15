@@ -142,14 +142,17 @@ const strategy = new saml(
         } else { // User is a professor or a secretary clerck employee
             try {
                 user = await professorService.getProfessorByEmail(userEmail);
-
-                if (user === undefined) {
-                    user = await secretaryClerckEmployeeService.getSecretaryClerckEmployeeByEmail(userEmail);
-                }
-
+                console.log(user)
                 done(null, user);
             } catch (error) {
-                done(null, false);
+                try {console.log("ciao")
+                    user = await secretaryClerckEmployeeService.getSecretaryClerckEmployeeByEmail(userEmail);
+                    console.log(user)
+                    console.log("ciao")
+                    done(null, user);
+                } catch (error) {console.log(error)
+                    done(null, false);
+                }
             }
         }
     }
