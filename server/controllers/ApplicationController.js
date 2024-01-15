@@ -43,7 +43,7 @@ module.exports.getApplicationById = async function getApplicationById(req, res, 
   }
 };
 
-module.exports.getApplicationFile = async function getApplicationFile(res, req, next) {
+module.exports.getApplicationFile = async function getApplicationFile(req, res, next) {
   try {
     if (req.params.thesisProposalId != undefined && req.params.studentId != undefined) {
       let data = await Application.getApplicationFile(req.params.thesisProposalId, req.params.studentId);

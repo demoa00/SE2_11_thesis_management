@@ -1,6 +1,7 @@
 'use strict';
 
 const dayjs = require('dayjs');
+const fs = require('fs');
 
 const Professor = require('./ProfessorService');
 const ThesisProposal = require('./ThesisProposalService');

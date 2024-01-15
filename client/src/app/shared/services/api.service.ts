@@ -304,6 +304,9 @@ export class APIService {
     return await this.httpService.getBlob(`cv/${userId}`, false, true)
   }
 
+  async getApplicationFile(thesisProposalId: any, studentId:any):Promise<Blob> {
+    return await this.httpService.getBlob(`applications/${thesisProposalId}/${studentId}/file`, false, true)
+  }
   async deleteCv(userId: any) {
     return await this.httpService.delete(`cv/${userId}`, true)
   }
