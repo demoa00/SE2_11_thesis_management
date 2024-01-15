@@ -1,4 +1,11 @@
+@import "../../../../../../../styles";
+
+:host {
+  width: 100%;
+}
+
 .requestFormContainer {
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto 1fr;
@@ -23,21 +30,33 @@
     &.titleContainer {
       height: fit-content;
       grid-area: 1 / 1 / 2 / 3;
+      @media #{$media-mobile}{
+        grid-area: 1 / 1 / 2 / 4;
+      }
     }
 
     &.professorContainer {
       height: fit-content;
       grid-area: 1 / 3 / 2 / 4;
+      @media #{$media-mobile}{
+        grid-area: 2 / 1 / 3 / 4;
+      }
     }
 
     &.descriptionContainer {
       height: fit-content;
       grid-area: 2 / 1 / 3 / 4;
+      @media #{$media-mobile}{
+        grid-area: 3 / 1 / 4 / 4;
+      }
     }
   }
 
   .submitContainer{
     grid-area: 3 / 1 / 4 / 4;
+    @media #{$media-mobile}{
+      grid-area: 4 / 1 / 5 / 4;
+    }
     width: 100%;
     display: flex;
     justify-content: center;
