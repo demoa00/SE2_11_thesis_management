@@ -457,31 +457,35 @@ exports.deleteThesisRequest = async function (studentId, thesisRequestId) {
     let coSupervisors = [];
 
     return new Promise(function (resolve, reject) {
-        const sql = "SELECT professorId, title FROM thesisRequests WHERE supervisor = ?";
+        const sql = "SELECT supervisor, title FROM thesisRequests WHERE thesisRequestId = ?";
         db.get(sql, [thesisRequestId], (err, row) => {
             if (err) {
+                console.log(err)
                 reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
             } else if (row === undefined) {
                 reject(new PromiseError({ code: 404, message: "Not Found" }));
             } else {
-                resolve({ professorId: row.professorId, title: row.title });
+                resolve({ supervisor: row.supervisor, title: row.title });
             }
         });
     }).then(async (thesisRequest) => {
         try {
-            supervisor = await Professor.getProfessorById(thesisRequest.professorId);
+            supervisor = await Professor.getProfessorById(thesisRequest.supervisor);
             coSupervisors = await Professor.getInternalCoSupervisorByThesisRequestId(thesisRequestId);
         } catch (error) {
             throw error;
         }
     }).then((thesisRequest) => {
-        const sql = "DELETE FROM thesisRequests WHERE thesisRequestId = ? AND studendId = ?";
-        db.run(sql, [thesisRequestId, studentId], function (err) {
-            if (err) {
-                reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
-            } else {
-                resolve(thesisRequest);
-            }
+        return new Promise(function (resolve, reject) {
+            const sql = "DELETE FROM thesisRequests WHERE thesisRequestId = ? AND studentId = ?";
+            db.run(sql, [thesisRequestId, studentId], function (err) {
+                if (err) {
+                    console.log(err)
+                    reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+                } else {
+                    resolve(thesisRequest);
+                }
+            });
         });
     }).then(async (thesisRequest) => {
         let emailPromises = [];
