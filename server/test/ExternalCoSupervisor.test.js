@@ -47,7 +47,7 @@ describe("getExternalCoSupervisors", () => {
       JSON.stringify(ExternalCoSupervisorList, null, 2)
     );
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {};
 
     await ExternalCoSupervisorController.getExternalCoSupervisors(
@@ -56,7 +56,7 @@ describe("getExternalCoSupervisors", () => {
       mockNext
     );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
@@ -92,7 +92,7 @@ describe("getExternalCoSupervisorById", () => {
       JSON.stringify(externalCoSupervisor, null, 2)
     );
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {
       params: {},
     };
@@ -103,7 +103,7 @@ describe("getExternalCoSupervisorById", () => {
       mockNext
     );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(

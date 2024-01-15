@@ -44,7 +44,7 @@ describe("getNotifications ", () => {
       JSON.stringify(notificationsList, null, 2)
     );
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {
       user: {},
     };
@@ -55,7 +55,7 @@ describe("getNotifications ", () => {
 
     await NotificationController.getNotifications(mockReq, mockRes, mockNext);
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
@@ -105,7 +105,7 @@ describe("updateNotification ", () => {
     });
     expect(mockRes.end).toHaveBeenCalledWith("No Content");
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {
       user: {},
       params: {},
@@ -113,7 +113,7 @@ describe("updateNotification ", () => {
 
     await NotificationController.updateNotification(mockReq, mockRes, mockNext);
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
@@ -143,7 +143,7 @@ describe("deleteNotification ", () => {
     });
     expect(mockRes.end).toHaveBeenCalledWith("No Content");
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {
       user: {},
     };
@@ -154,7 +154,7 @@ describe("deleteNotification ", () => {
       mockNext
     );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(

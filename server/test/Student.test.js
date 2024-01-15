@@ -38,14 +38,14 @@ describe("getStudentById", () => {
     });
     expect(mockRes.end).toHaveBeenCalledWith(JSON.stringify(student, null, 2));
   });
-  test("should respond with 200", async () => {
+  test("should respond with 400 - Bad Request", async () => {
     const mockReq = {
       params: {},
     };
 
     await StudentController.getStudentById(mockReq, mockRes, mockNext);
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
