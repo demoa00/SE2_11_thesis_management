@@ -177,26 +177,21 @@ describe('StudentPageComponent', () => {
   it('should select a proposal and update canApply based on applications', fakeAsync(() => {
     const proposalId = 1;
     const mockApplications = [
-      { thesisProposalId: proposalId + 1 },  // Another proposal
-      { thesisProposalId: proposalId },      // The targeted proposal
-      { thesisProposalId: proposalId + 2 }   // Another proposal
+      { thesisProposalId: proposalId + 1 },
+      { thesisProposalId: proposalId },
+      { thesisProposalId: proposalId + 2 }
     ];
     component.applications = mockApplications;
   
-    // Mock the getProposal method
     apiService.getProposal.and.returnValue(Promise.resolve({}));
   
-    // Mock the getApplications method
     apiService.getApplications.and.returnValue(Promise.resolve(mockApplications));
   
-    // Call the selectProposal method
     component.selectProposal(proposalId);
     tick();
   
-    // Assert that getProposal was called with the correct proposalId
     expect(apiService.getProposal).toHaveBeenCalledWith(proposalId);
   
-    // Assert that canApply is updated correctly based on the mock applications
     expect(component.canApply).toBe(false);
   }));
 
@@ -319,9 +314,11 @@ describe('StudentPageComponent', () => {
       title: 'Test Proposal'
     };
     const applicationMessage = 'Test application message';
+    const applicationFile = new File([], 'test.pdf');
   
     component.selectedProposal = mockProposal;
     component.applicationMessage = applicationMessage;
+    component.applicationFile = applicationFile;
   
     apiService.insertNewApplication.and.returnValue(Promise.resolve());
   
@@ -334,10 +331,10 @@ describe('StudentPageComponent', () => {
     expect(togglePopupSpy).toHaveBeenCalled();
     expect(component.canApply).toBe(false);
   
-    tick(3001);
+    tick(5001);
     expect(component.showSuccessAlert).toBe(false);
   }));
-
+  
   it('should handle error during application submission', fakeAsync(() => {
     const proposalId = 1;
     const mockProposal = {
@@ -354,6 +351,7 @@ describe('StudentPageComponent', () => {
     apiService.insertNewApplication.and.returnValue(Promise.reject(errorMessage));
   
     spyOn(component, 'togglePopup');
+  
     const consolelogSpy = spyOn(console, 'log');
   
     component.apply();
@@ -362,10 +360,13 @@ describe('StudentPageComponent', () => {
     expect(apiService.insertNewApplication).toHaveBeenCalledWith(jasmine.any(FormData));
   
     expect(component.showErrorAlert).toBe(true);
-    tick(3001);
+  
+    tick(5001);
+  
     expect(component.showErrorAlert).toBe(false);
+  
     expect(consolelogSpy).toHaveBeenCalledWith(errorMessage);
-  }));
+  }));  
 
   it('should toggle more filters and update proposals accordingly', fakeAsync(() => {
     component.showFilters = true;

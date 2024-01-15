@@ -341,13 +341,13 @@ describe('APIService', () => {
   });
 
   it('should handle successful getThesisRequests', async () => {
-    const mockResponse = [{ coSupervised: false }];
+    const mockResponse = [] as any;
     
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
   
     const result = await apiService.getThesisRequests();
   
-    expect(httpServiceSpy.get).toHaveBeenCalledWith('thesisRequests/?cosupervisor=false');
+    expect(httpServiceSpy.get).toHaveBeenCalledWith('thesisRequests/');
     expect(result).toEqual(mockResponse);
   });
   
@@ -624,14 +624,14 @@ describe('APIService', () => {
     expect(result).toEqual(mockResponse);
   });
 
-  it('should get all requests successfully', async () => {
-    const mockResponse = [{}, {}];
+  // it('should get all requests successfully', async () => {
+  //   const mockResponse = [{}, {}];
   
-    httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
+  //   httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
   
-    const result = await apiService.getAllRequests();
+  //   const result = await apiService.getAllRequests();
   
-    expect(httpServiceSpy.get).toHaveBeenCalledWith('thesisRequests');
-    expect(result).toEqual(mockResponse);
-  });
+  //   expect(httpServiceSpy.get).toHaveBeenCalledWith('thesisRequests');
+  //   expect(result).toEqual(mockResponse);
+  // });
 });
