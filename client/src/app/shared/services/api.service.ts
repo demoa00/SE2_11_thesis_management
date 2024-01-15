@@ -227,7 +227,7 @@ export class APIService {
 
   async putApplication(studentId: any, thesisProposalId: any, status: 'Accepted' | 'Rejected') {
     return await this.httpService.put(`applications/${thesisProposalId}/${studentId}`, {
-      thesisProposalId: thesisProposalId,
+      thesisProposalId: thesisProposalId.toString(),
       applicant: {
         studentId: studentId
       },
