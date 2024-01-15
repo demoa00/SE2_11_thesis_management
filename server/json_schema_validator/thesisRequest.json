@@ -36,8 +36,7 @@
         },
         "title": {
             "type": "string",
-            "minLength": 1,
-            "maxLength": 20
+            "minLength": 1
         },
         "supervisor": {
             "type": "object",
