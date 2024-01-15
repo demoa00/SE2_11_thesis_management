@@ -4,11 +4,18 @@ const ThesisRequestController = require("../controllers/ThesisRequestController.
 const {
   getThesisRequestsForProfessor,
   getThesisRequestsForSecretary,
+  getThesisRequestsForStudent,
   getThesisRequestById,
   insertNewThesisRequest,
-  updateThesisRequest,
+  updateThesisRequestForSecretary,
+  updateThesisRequestForProfessor,
+  updateThesisRequestForStudent,
 } = require("../service/ThesisRequestService.js");
-const { isProfessor, isSecretaryClerck } = require("../utils/checkRole.js");
+const {
+  isProfessor,
+  isSecretaryClerck,
+  isStudent,
+} = require("../utils/checkRole.js");
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -17,14 +24,18 @@ beforeEach(() => {
 jest.mock("../service/ThesisRequestService.js", () => ({
   getThesisRequestsForProfessor: jest.fn(),
   getThesisRequestsForSecretary: jest.fn(),
+  getThesisRequestsForStudent: jest.fn(),
   getThesisRequestById: jest.fn(),
   insertNewThesisRequest: jest.fn(),
-  updateThesisRequest: jest.fn(),
+  updateThesisRequestForSecretary: jest.fn(),
+  updateThesisRequestForProfessor: jest.fn(),
+  updateThesisRequestForStudent: jest.fn(),
 }));
 
 jest.mock("../utils/checkRole.js", () => ({
   isSecretaryClerck: jest.fn(),
   isProfessor: jest.fn(),
+  isStudent: jest.fn(),
 }));
 
 const mockRes = {
@@ -33,7 +44,7 @@ const mockRes = {
 };
 const mockNext = {};
 
-describe("getThesisRequest ", () => {
+describe("getThesisRequests ", () => {
   test("should respond with 200 - as Secretary Clerk", async () => {
     const mockReq = {
       user: {
@@ -43,9 +54,9 @@ describe("getThesisRequest ", () => {
 
     const thesisRequestsForSecretary = ["thesisRequest1", "thesisRequest2"];
 
-    isProfessor.mockResolvedValue();
+    isSecretaryClerck.mockResolvedValue();
 
-    getThesisRequestsForProfessor.mockResolvedValue(thesisRequestsForSecretary);
+    getThesisRequestsForSecretary.mockResolvedValue(thesisRequestsForSecretary);
 
     await ThesisRequestController.getThesisRequests(mockReq, mockRes, mockNext);
 
@@ -78,7 +89,29 @@ describe("getThesisRequest ", () => {
       JSON.stringify(thesisRequestsForProfessor, null, 2)
     );
   });
-  test("should respond with 403 Forbidden", async () => {
+  test("should respond with 200 - as student", async () => {
+    const mockReq = {
+      user: {
+        userId: "s123654",
+      },
+    };
+
+    const thesisRequestsForStudent = ["thesisRequest1", "thesisRequest2"];
+
+    isStudent.mockResolvedValue();
+
+    getThesisRequestsForStudent.mockResolvedValue(thesisRequestsForStudent);
+
+    await ThesisRequestController.getThesisRequests(mockReq, mockRes, mockNext);
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(200, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify(thesisRequestsForStudent, null, 2)
+    );
+  });
+  test("should respond with 400 - Bad Request", async () => {
     const mockReq = {
       user: {
         studentId: "s123456",
@@ -87,11 +120,11 @@ describe("getThesisRequest ", () => {
 
     await ThesisRequestController.getThesisRequests(mockReq, mockRes, mockNext);
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(403, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
-      JSON.stringify({ error: "Forbidden" }, null, 2)
+      JSON.stringify({ error: "Bad Request" }, null, 2)
     );
   });
 });
@@ -122,7 +155,7 @@ describe("getThesisRequestById ", () => {
       JSON.stringify(thesisRequest, null, 2)
     );
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {
       user: {},
       params: {},
@@ -134,7 +167,7 @@ describe("getThesisRequestById ", () => {
       mockNext
     );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
@@ -169,7 +202,7 @@ describe("insertNewThesisRequest", () => {
       JSON.stringify(newThesisRequest, null, 2)
     );
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {
       user: {},
       body: {},
@@ -181,7 +214,7 @@ describe("insertNewThesisRequest", () => {
       mockNext
     );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
@@ -191,7 +224,7 @@ describe("insertNewThesisRequest", () => {
 });
 
 describe("updateThesisRequest", () => {
-  test("should respond with 200", async () => {
+  test("should respond with 200 - as Secretary Clerk", async () => {
     const mockReq = {
       user: {
         userId: "s123654",
@@ -202,9 +235,13 @@ describe("updateThesisRequest", () => {
       },
     };
 
-    const thesisRequestUpdated = ["thesisRequestUpdated"];
+    const thesisRequestUpdatedforSecretary = ["thesisRequestUpdated"];
 
-    updateThesisRequest.mockResolvedValue(thesisRequestUpdated);
+    isSecretaryClerck.mockResolvedValue();
+
+    updateThesisRequestForSecretary.mockResolvedValue(
+      thesisRequestUpdatedforSecretary
+    );
 
     await ThesisRequestController.updateThesisRequest(
       mockReq,
@@ -216,10 +253,74 @@ describe("updateThesisRequest", () => {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
-      JSON.stringify(thesisRequestUpdated, null, 2)
+      JSON.stringify(thesisRequestUpdatedforSecretary, null, 2)
     );
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 200 - as professor", async () => {
+    const mockReq = {
+      user: {
+        userId: "p123652",
+      },
+      body: {},
+      params: {
+        thesisRequestId: "123",
+      },
+    };
+
+    const thesisRequestUpdatedforProfessor = ["thesisRequestUpdated"];
+
+    isProfessor.mockResolvedValue();
+
+    updateThesisRequestForProfessor.mockResolvedValue(
+      thesisRequestUpdatedforProfessor
+    );
+
+    await ThesisRequestController.updateThesisRequest(
+      mockReq,
+      mockRes,
+      mockNext
+    );
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(200, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify(thesisRequestUpdatedforProfessor, null, 2)
+    );
+  });
+  test("should respond with 200 - as student", async () => {
+    const mockReq = {
+      user: {
+        userId: "s123654",
+      },
+      body: {},
+      params: {
+        thesisRequestId: "123",
+      },
+    };
+
+    const thesisRequestUpdatedforStudent = ["thesisRequestUpdated"];
+
+    isStudent.mockResolvedValue();
+
+    updateThesisRequestForStudent.mockResolvedValue(
+      thesisRequestUpdatedforStudent
+    );
+
+    await ThesisRequestController.updateThesisRequest(
+      mockReq,
+      mockRes,
+      mockNext
+    );
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(200, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify(thesisRequestUpdatedforStudent, null, 2)
+    );
+  });
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {
       user: {
         userId: "s123654",
@@ -234,7 +335,7 @@ describe("updateThesisRequest", () => {
       mockNext
     );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(

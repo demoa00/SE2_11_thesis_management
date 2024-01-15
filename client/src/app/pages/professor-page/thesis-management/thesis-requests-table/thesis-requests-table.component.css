@@ -36,6 +36,20 @@
   }
 }
 
+.icon-16 {
+  font-size: 16px;
+  line-height: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-20 {
+  font-size: 20px;
+  line-height: 20px;
+  width: 20px;
+  height: 20px;
+}
+
 .bo-table, .bo-table-compact {
   @apply divide-y divide-gray-200 p-4 bg-white;
 }
@@ -54,16 +68,49 @@
 .bo-table.bo-striped tbody tr:nth-child(even), .bo-striped.bo-table-compact tbody tr:nth-child(even) {
   @apply bg-gray-50 hover:bg-gray-100;
 }
-.bo-table .dropdownButton, .bo-table-compact .dropdownButton {
+
+.dropdownButton {
   background-color: #03577A;
   color: white;
   line-height: 16px;
-  padding: 8px;
   border-radius: 8px;
   @apply hover:drop-shadow-lg;
 }
-.bo-table .dropdownButton.red, .bo-table-compact .dropdownButton.red {
+@media only screen and (max-width: 1100px) {
+  .dropdownButton.left {
+    @apply mb-2;
+  }
+}
+@media only screen and (min-width: 1100px) {
+  .dropdownButton.left {
+    @apply mr-2;
+  }
+}
+@media only screen and (max-width: 1100px) {
+  .dropdownButton.right {
+    @apply mt-2;
+  }
+}
+@media only screen and (min-width: 1100px) {
+  .dropdownButton.right {
+    @apply ml-2;
+  }
+}
+.dropdownButton.red {
   @apply bg-red-500;
+}
+.dropdownButton.yellow {
+  @apply bg-yellow-500;
+}
+@media only screen and (max-width: 1100px) {
+  .dropdownButton.small {
+    @apply p-1;
+  }
+}
+@media only screen and (min-width: 1100px) {
+  .dropdownButton.small {
+    padding: 8px;
+  }
 }
 
 .bo-table-compact thead th {
@@ -77,6 +124,12 @@
   display: flex;
   gap: 8px;
   @apply justify-between;
+}
+
+.textArea {
+  @apply w-full h-32 bg-gray-50 border-2 border-gray-300 rounded-md p-2;
+  font-size: 12px;
+  line-height: 14px;
 }
 
 /*# sourceMappingURL=thesis-requests-table.component.css.map */

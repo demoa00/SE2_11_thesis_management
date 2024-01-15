@@ -28,25 +28,43 @@
     .request {
       border-bottom: 1px solid $lightgrey;
 
-      &:last-child {
-        border-bottom: none;
-      }
-
       td {
-        &.title {
+        padding: 8px 8px 8px 8px;
+
+        &:first-child {
           padding: 8px 8px 8px 0;
         }
 
-        &.secretary {
-          padding: 8px 8px 8px 8px;
-        }
-
-        &.professor {
+        &:last-child {
           padding: 8px 0 8px 8px;
         }
       }
+      &:last-child {
+        border-bottom: none;
+        td {
+          padding-bottom: 0;
+        }
+      }
+
+
+      //&.mobile {
+      //  td {
+      //    padding: 0;
+      //  }
+      //}
 
       .statusContainer {
+        &.mobile {
+          display: flex;
+          align-items: center;
+          justify-content: start;
+          flex-wrap: wrap;
+
+          .status {
+            margin: 0;
+          }
+        }
+
         .status {
           margin: auto;
           padding: 8px;
@@ -74,6 +92,11 @@
             color: #545454;
           }
         }
+      }
+
+      .actionsContainer {
+        display: flex;
+        gap: 8px
       }
     }
   }

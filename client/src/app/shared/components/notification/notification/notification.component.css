@@ -36,6 +36,20 @@
   }
 }
 
+.icon-16 {
+  font-size: 16px;
+  line-height: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-20 {
+  font-size: 20px;
+  line-height: 20px;
+  width: 20px;
+  height: 20px;
+}
+
 .container {
   background-color: #e5e7eb;
   padding: 12px 8px;

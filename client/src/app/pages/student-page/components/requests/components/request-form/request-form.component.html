@@ -5,10 +5,9 @@
   </div>
   <div class="input professorContainer">
     <label for="formProfessor">Supervisor*</label>
-    <select class="input-field" [(ngModel)]="professor" name="professor" id="formProfessor" required>
-      <option *ngFor="let professor of professors" [value]="professor.professorId">{{professor.name}}</option>
+    <select class="input-field" [(ngModel)]="professorId" name="professor" id="formProfessor" required>
+      <option *ngFor="let professor of professors" [value]="professor.professorId">{{professor.name}} {{professor.surname}}</option>
     </select>
-<!--    <input class="input-field" placeholder="Professor" type="text" name="title" id="formProfessor" required>-->
   </div>
   <div class="input descriptionContainer">
     <label for="formDescription">Description*</label>

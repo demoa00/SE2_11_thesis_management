@@ -75,9 +75,11 @@ describe('ThesisManagementComponent', () => {
     expect(component.applicantsRow).toEqual([]);
   }));
 
-  it('should set showThesisRequests to true and others to false when response is defined', fakeAsync(() => {
-    const mockResponse = [{ coSupervised: false }];
-    apiService.getThesisRequests.and.returnValue(Promise.resolve(mockResponse));
+  it('should set showThesisRequests to true and others to false when both responses are defined', fakeAsync(() => {
+    const mockResponse1 = [{ coSupervised: false }];
+    const mockResponse2 = [{ coSupervised: true }];
+    apiService.getThesisRequests.and.returnValue(Promise.resolve(mockResponse1));
+    apiService.getCoSupervisedThesisRequests.and.returnValue(Promise.resolve(mockResponse2));
   
     component.showThesisRequestsTable();
     tick();
@@ -86,11 +88,42 @@ describe('ThesisManagementComponent', () => {
     expect(component.showApplicants).toBe(false);
     expect(component.showActiveTheses).toBe(false);
     expect(component.showArchivedTheses).toBe(false);
-    expect(component.thesisRequestsRow).toEqual(mockResponse);
+    expect(component.thesisRequestsRow).toEqual([...mockResponse1, ...mockResponse2]);
+  }));
+
+  it('should set showThesisRequests to true and others to false when only response1 is defined', fakeAsync(() => {
+    const mockResponse1 = [{ coSupervised: false }];
+    apiService.getThesisRequests.and.returnValue(Promise.resolve(mockResponse1));
+    apiService.getCoSupervisedThesisRequests.and.returnValue(Promise.resolve(undefined));
+  
+    component.showThesisRequestsTable();
+    tick();
+  
+    expect(component.showThesisRequests).toBe(true);
+    expect(component.showApplicants).toBe(false);
+    expect(component.showActiveTheses).toBe(false);
+    expect(component.showArchivedTheses).toBe(false);
+    expect(component.thesisRequestsRow).toEqual(mockResponse1);
   }));
   
-  it('should set showThesisRequests to true and others to false when response is undefined', fakeAsync(() => {
+  it('should set showThesisRequests to true and others to false when only response2 is defined', fakeAsync(() => {
+    const mockResponse2 = [{ coSupervised: true }];
     apiService.getThesisRequests.and.returnValue(Promise.resolve(undefined));
+    apiService.getCoSupervisedThesisRequests.and.returnValue(Promise.resolve(mockResponse2));
+  
+    component.showThesisRequestsTable();
+    tick();
+  
+    expect(component.showThesisRequests).toBe(true);
+    expect(component.showApplicants).toBe(false);
+    expect(component.showActiveTheses).toBe(false);
+    expect(component.showArchivedTheses).toBe(false);
+    expect(component.thesisRequestsRow).toEqual(mockResponse2);
+  }));
+  
+  it('should set showThesisRequests to true and others to false when both responses are undefined', fakeAsync(() => {
+    apiService.getThesisRequests.and.returnValue(Promise.resolve(undefined));
+    apiService.getCoSupervisedThesisRequests.and.returnValue(Promise.resolve(undefined));
   
     component.showThesisRequestsTable();
     tick();
@@ -102,30 +135,65 @@ describe('ThesisManagementComponent', () => {
     expect(component.thesisRequestsRow).toEqual([]);
   }));
 
-  it('should set showActiveThesis to true when response is defined', fakeAsync(() => {
-    const mockResponse = [{ title: 'Thesis 1', coSupervised: false }, { title: 'Thesis 2', coSupervised: false }];
-    apiService.getAllActiveTheses.and.returnValue(Promise.resolve(mockResponse));
-
+  it('should set showActiveTheses to true and others to false when responses are defined', fakeAsync(() => {
+    const mockResponse1 = [{ title: 'Thesis 1', coSupervised: false }];
+    const mockResponse2 = [{ title: 'Thesis 2', coSupervised: true }];
+    apiService.getAllActiveTheses.and.returnValue(Promise.resolve(mockResponse1));
+    apiService.getAllCoSupervisedActiveTheses.and.returnValue(Promise.resolve(mockResponse2));
+  
     component.showActiveThesesTable();
     tick();
-
+  
     expect(component.showApplicants).toBe(false);
     expect(component.showActiveTheses).toBe(true);
     expect(component.showArchivedTheses).toBe(false);
-    expect(component.activeThesesRow).toEqual(mockResponse);
+    expect(component.showThesisRequests).toBe(false);
+    expect(component.activeThesesRow).toEqual([...mockResponse1, ...mockResponse2]);
   }));
-
-  it('should set showActiveThesis to true when response is undefined', fakeAsync(() => {
+  
+  it('should set showActiveTheses to true and others to false when only response1 is defined', fakeAsync(() => {
+    const mockResponse1 = [{ title: 'Thesis 1', coSupervised: false }];
+    apiService.getAllActiveTheses.and.returnValue(Promise.resolve(mockResponse1));
+    apiService.getAllCoSupervisedActiveTheses.and.returnValue(Promise.resolve(undefined));
+  
+    component.showActiveThesesTable();
+    tick();
+  
+    expect(component.showApplicants).toBe(false);
+    expect(component.showActiveTheses).toBe(true);
+    expect(component.showArchivedTheses).toBe(false);
+    expect(component.showThesisRequests).toBe(false);
+    expect(component.activeThesesRow).toEqual(mockResponse1);
+  }));
+  
+  it('should set showActiveTheses to true and others to false when only response2 is defined', fakeAsync(() => {
+    const mockResponse2 = [{ title: 'Thesis 2', coSupervised: true }];
     apiService.getAllActiveTheses.and.returnValue(Promise.resolve(undefined));
-
+    apiService.getAllCoSupervisedActiveTheses.and.returnValue(Promise.resolve(mockResponse2));
+  
     component.showActiveThesesTable();
     tick();
-
+  
     expect(component.showApplicants).toBe(false);
     expect(component.showActiveTheses).toBe(true);
     expect(component.showArchivedTheses).toBe(false);
-    expect(component.activeThesesRow).toEqual([]);
+    expect(component.showThesisRequests).toBe(false);
+    expect(component.activeThesesRow).toEqual(mockResponse2);
   }));
+  
+  it('should set showActiveTheses to true and others to false when both responses are undefined', fakeAsync(() => {
+    apiService.getAllActiveTheses.and.returnValue(Promise.resolve(undefined));
+    apiService.getAllCoSupervisedActiveTheses.and.returnValue(Promise.resolve(undefined));
+  
+    component.showActiveThesesTable();
+    tick();
+  
+    expect(component.showApplicants).toBe(false);
+    expect(component.showActiveTheses).toBe(true);
+    expect(component.showArchivedTheses).toBe(false);
+    expect(component.showThesisRequests).toBe(false);
+    expect(component.activeThesesRow).toEqual([]);
+  }));  
 
   it('should set showArchivedTheses to true and others to false when response is defined', fakeAsync(() => {
     const mockResponse = [{}];
@@ -158,10 +226,14 @@ describe('ThesisManagementComponent', () => {
     const archivedThesesResponse = [{}];
     const activeThesesResponse = [{ coSupervised: false }];
     const applicationsResponse = [{}];
+    const thesisRequestsResponse = [{ coSupervised: false }];
+    const coSupervisedThesisRequestsResponse = [{ coSupervised: false }];
   
     apiService.getAllArchivedTheses.and.returnValue(Promise.resolve(archivedThesesResponse));
     apiService.getAllActiveTheses.and.returnValue(Promise.resolve(activeThesesResponse));
     apiService.getApplications.and.returnValue(Promise.resolve(applicationsResponse));
+    apiService.getThesisRequests.and.returnValue(Promise.resolve(thesisRequestsResponse));
+    apiService.getCoSupervisedThesisRequests.and.returnValue(Promise.resolve(coSupervisedThesisRequestsResponse));
   
     component.updateAll();
     tick();
@@ -169,12 +241,15 @@ describe('ThesisManagementComponent', () => {
     expect(component.archivedThesesRow).toEqual(archivedThesesResponse);
     expect(component.activeThesesRow).toEqual(activeThesesResponse);
     expect(component.applicantsRow).toEqual(applicationsResponse);
+    expect(component.thesisRequestsRow).toEqual([...thesisRequestsResponse, ...coSupervisedThesisRequestsResponse]);
   }));
   
   it('should handle undefined responses from APIs', fakeAsync(() => {
     apiService.getAllArchivedTheses.and.returnValue(Promise.resolve(undefined));
     apiService.getAllActiveTheses.and.returnValue(Promise.resolve(undefined));
     apiService.getApplications.and.returnValue(Promise.resolve(undefined));
+    apiService.getThesisRequests.and.returnValue(Promise.resolve(undefined));
+    apiService.getCoSupervisedThesisRequests.and.returnValue(Promise.resolve(undefined));
   
     component.updateAll();
     tick();
@@ -182,6 +257,7 @@ describe('ThesisManagementComponent', () => {
     expect(component.archivedThesesRow).toEqual([]);
     expect(component.activeThesesRow).toEqual([]);
     expect(component.applicantsRow).toEqual([]);
+    expect(component.thesisRequestsRow).toEqual([]);
   }));
   
 });

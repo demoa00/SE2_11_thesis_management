@@ -36,6 +36,20 @@
   }
 }
 
+.icon-16 {
+  font-size: 16px;
+  line-height: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-20 {
+  font-size: 20px;
+  line-height: 20px;
+  width: 20px;
+  height: 20px;
+}
+
 .bo-table, .bo-table-compact {
   @apply divide-y divide-gray-200 p-4 bg-white;
 }
@@ -61,6 +75,26 @@
   padding: 8px;
   border-radius: 8px;
   @apply hover:drop-shadow-lg;
+}
+@media only screen and (max-width: 1330px) {
+  .bo-table .dropdownButton.left, .bo-table-compact .dropdownButton.left {
+    @apply mb-2;
+  }
+}
+@media only screen and (min-width: 1330px) {
+  .bo-table .dropdownButton.left, .bo-table-compact .dropdownButton.left {
+    @apply mr-2;
+  }
+}
+@media only screen and (max-width: 1330px) {
+  .bo-table .dropdownButton.right, .bo-table-compact .dropdownButton.right {
+    @apply mt-2;
+  }
+}
+@media only screen and (min-width: 1330px) {
+  .bo-table .dropdownButton.right, .bo-table-compact .dropdownButton.right {
+    @apply ml-2;
+  }
 }
 .bo-table .dropdownButton.red, .bo-table-compact .dropdownButton.red {
   @apply bg-red-500;

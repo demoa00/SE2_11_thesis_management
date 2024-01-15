@@ -36,6 +36,20 @@
   }
 }
 
+.icon-16 {
+  font-size: 16px;
+  line-height: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-20 {
+  font-size: 20px;
+  line-height: 20px;
+  width: 20px;
+  height: 20px;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -62,17 +76,29 @@
 .requestsContainer .requestsTable .request {
   border-bottom: 1px solid #e5e7eb;
 }
+.requestsContainer .requestsTable .request td {
+  padding: 8px 8px 8px 8px;
+}
+.requestsContainer .requestsTable .request td:first-child {
+  padding: 8px 8px 8px 0;
+}
+.requestsContainer .requestsTable .request td:last-child {
+  padding: 8px 0 8px 8px;
+}
 .requestsContainer .requestsTable .request:last-child {
   border-bottom: none;
 }
-.requestsContainer .requestsTable .request td.title {
-  padding: 8px 8px 8px 0;
+.requestsContainer .requestsTable .request:last-child td {
+  padding-bottom: 0;
 }
-.requestsContainer .requestsTable .request td.secretary {
-  padding: 8px 8px 8px 8px;
+.requestsContainer .requestsTable .request .statusContainer.mobile {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-wrap: wrap;
 }
-.requestsContainer .requestsTable .request td.professor {
-  padding: 8px 0 8px 8px;
+.requestsContainer .requestsTable .request .statusContainer.mobile .status {
+  margin: 0;
 }
 .requestsContainer .requestsTable .request .statusContainer .status {
   margin: auto;
@@ -96,6 +122,10 @@
 .requestsContainer .requestsTable .request .statusContainer .status.cancelled {
   background: #e5e7eb;
   color: #545454;
+}
+.requestsContainer .requestsTable .request .actionsContainer {
+  display: flex;
+  gap: 8px;
 }
 
 /*# sourceMappingURL=requests.component.css.map */

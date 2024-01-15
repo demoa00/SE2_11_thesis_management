@@ -113,14 +113,14 @@ describe("getApplications", () => {
       JSON.stringify({ error: "Not Found" }, null, 2)
     );
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {
       user: {},
     };
 
     await ApplicationController.getApplications(mockReq, mockRes, mockNext);
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
@@ -188,7 +188,7 @@ describe("getApplicationById", () => {
       JSON.stringify({ error: "Not Found" }, null, 2)
     );
   });
-  test("should return 403 Bad Request", async () => {
+  test("should return 400 Bad Request", async () => {
     const mockReq = {
       params: {
         studentId: "s876543",
@@ -200,7 +200,7 @@ describe("getApplicationById", () => {
 
     await ApplicationController.getApplicationById(mockReq, mockRes, mockNext);
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
@@ -243,7 +243,7 @@ describe("insertNewApplication", () => {
       JSON.stringify(newApplication, null, 2)
     );
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {
       params: {
         studentId: "s876543",
@@ -269,7 +269,7 @@ describe("insertNewApplication", () => {
       mockNext
     );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
@@ -313,7 +313,7 @@ describe("updateNewApplication", () => {
       JSON.stringify(newApplication, null, 2)
     );
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {
       params: {
         studentId: "s876543",
@@ -327,7 +327,7 @@ describe("updateNewApplication", () => {
 
     await ApplicationController.updateApplication(mockReq, mockRes, mockNext);
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(

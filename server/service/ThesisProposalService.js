@@ -336,6 +336,8 @@ exports.insertNewThesisProposal = async function (professorId, newThesisProposal
   let externalCosupervisors = [];
   let degree = [];
 
+  newThesisProposal.thesisProposalId = parseInt(newThesisProposal.thesisProposalId);
+
   let regex = new RegExp("(p|P)[0-9]{6}");
 
   if (dayjs(newThesisProposal.expirationDate).diff() <= 0) {
@@ -500,6 +502,8 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
   let oldCoSupervisors = [];
   let oldDegrees = [];
   let newDegrees = [];
+
+  thesisProposal.thesisProposalId = parseInt(thesisProposal.thesisProposalId);
 
   let regex = new RegExp("(p|P)[0-9]{6}");
 

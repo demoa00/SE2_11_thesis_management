@@ -54,12 +54,12 @@ describe("getProfessors", () => {
       JSON.stringify(professorsList, null, 2)
     );
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {};
 
     await ProfessorController.getProfessors(mockReq, mockRes, mockNext);
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
@@ -97,14 +97,14 @@ describe("getProfessorsById", () => {
       JSON.stringify(professor, null, 2)
     );
   });
-  test("should respond with 404", async () => {
+  test("should respond with 400 - Bad Request", async () => {
     const mockReq = {
       params: {},
     };
 
     await ProfessorController.getProfessorById(mockReq, mockRes, mockNext);
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(

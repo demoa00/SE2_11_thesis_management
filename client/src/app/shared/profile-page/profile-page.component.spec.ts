@@ -49,6 +49,18 @@ describe('ProfilePageComponent', () => {
     expect(component.cv.name).toBe(`${component.userId}.pdf`);
   }));
 
+  it('should handle error on loadFile', () => {
+    const mockError = 'Test Error';
+    const file = new File([''], 'test.pdf', { type: 'application/pdf' });
+    const event = { target: { files: [file] } } as any;
+
+    apiService.postCv.and.returnValue(Promise.reject(mockError));
+
+    let result = component.loadFile(event);
+
+    expect(result).toBeUndefined();
+  });
+
   it('should call getCv API and download file', fakeAsync(() => {
     const mockBlob = new Blob(['Mock file content'], { type: 'application/pdf' });
     apiService.getCv.and.resolveTo(mockBlob);
@@ -73,10 +85,30 @@ describe('ProfilePageComponent', () => {
     expect(removeChildSpy).toHaveBeenCalled();
   }));
 
+  it('should handle error on getCv', () => {
+    const mockError = 'Test Error';
+
+    apiService.getCv.and.returnValue(Promise.reject(mockError));
+
+    let result = component.getCv();
+
+    expect(result).toBeUndefined();
+  });
+
   it('should delete CV', fakeAsync(() => {
     component.deleteCv();
     tick();
     
     expect(apiService.deleteCv).toHaveBeenCalledWith(component.userId);
   }));
+
+  it('should handle error on deleteCv', () => {
+    const mockError = 'Test Error';
+
+    apiService.deleteCv.and.returnValue(Promise.reject(mockError));
+
+    let result = component.deleteCv();
+
+    expect(result).toBeUndefined();
+  });
 });

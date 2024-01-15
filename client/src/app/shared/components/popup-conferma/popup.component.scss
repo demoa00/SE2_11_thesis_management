@@ -1,3 +1,5 @@
+@import "../../../../styles";
+
 .dropdownButton {
   background-color: #03577A;
   color: white;
@@ -68,6 +70,12 @@
   min-height: 200px;
   max-width: calc(100vw - 140px);
   max-height: 80vh;
+
+  @media #{$media-mobile} {
+    max-width: calc(100vw - 16px);
+    max-height: calc(100vh - 16px);;
+  }
+
   &.small {
     max-width: 40vw;
     min-height: 0;

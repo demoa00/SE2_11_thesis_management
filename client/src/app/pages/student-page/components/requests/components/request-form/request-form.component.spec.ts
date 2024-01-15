@@ -14,6 +14,7 @@ describe('RequestFormComponent', () => {
   beforeEach(async () => {
     apiService = jasmine.createSpyObj('APIService', {
       'getProfessors': Promise.resolve([]),
+      'postThesisRequest': Promise.resolve([]),
     });
 
     await TestBed.configureTestingModule({
@@ -22,7 +23,7 @@ describe('RequestFormComponent', () => {
       providers: [{ provide: APIService, useValue: apiService }]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(RequestFormComponent);
     component = fixture.componentInstance;
 
@@ -38,15 +39,15 @@ describe('RequestFormComponent', () => {
   it('should reset form fields and emit false to showPopup', () => {
     component.title = 'Sample Title';
     component.description = 'Sample Description';
-    component.professor = 'Sample Professor';
-  
+    component.professorId = 'Sample Professor';
+
     spyOn(component.showPopup, 'emit');
-    
+
     component.cancel();
-  
+
     expect(component.title).toEqual('');
     expect(component.description).toEqual('');
-    expect(component.professor).toEqual('');
+    expect(component.professorId).toEqual('');
     expect(component.showPopup.emit).toHaveBeenCalledWith(false);
   });
 
@@ -63,7 +64,7 @@ describe('RequestFormComponent', () => {
   it('should return true when all fields are filled', () => {
     component.title = 'Test Title';
     component.description = 'Test Description';
-    component.professor = 'Test Professor';
+    component.professorId = 'Test Professor';
 
     const result = component.checkFields();
 

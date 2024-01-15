@@ -78,7 +78,7 @@ CREATE TABLE careers(
 DROP TABLE IF EXISTS thesisProposals;
 CREATE TABLE thesisProposals(
     thesisProposalId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    title TEXT(20) NOT NULL,
+    title TEXT(100) NOT NULL,
     supervisor TEXT(7) NOT NULL,
     keywords TEXT(100) NOT NULL,
     description TEXT(1000) NOT NULL,
@@ -169,7 +169,7 @@ CREATE TABLE thesisRequests(
     thesisRequestId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 	thesisProposalId INTEGER DEFAULT NULL,
     studentId TEXT(7) NOT NULL,
-	title TEXT(20) NOT NULL,
+	title TEXT(100) NOT NULL,
     supervisor TEXT(7) NOT NULL,
     description TEXT(1000) NOT NULL,
     secretaryStatus TEXT(20) NOT NULL DEFAULT 'Pending',
