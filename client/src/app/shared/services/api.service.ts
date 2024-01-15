@@ -122,7 +122,7 @@ export class APIService {
 
   async getThesisRequests() {
     try {
-      const  theses: [] = await this.httpService.get('thesisRequests/?cosupervisor=false')
+      const  theses: [] = await this.httpService.get('thesisRequests/')
       return theses.map((thesis: {}) => {
         return {...thesis, coSupervised: false}
       })
