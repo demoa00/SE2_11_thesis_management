@@ -30,6 +30,20 @@
 
       &:last-child {
         border-bottom: none;
+
+        td {
+          &.title {
+            padding: 8px 8px 0 0;
+          }
+
+          &.secretary {
+            padding: 8px 8px 0 8px;
+          }
+
+          &.professor {
+            padding: 8px 0 0 8px;
+          }
+        }
       }
 
       td {
@@ -47,6 +61,17 @@
       }
 
       .statusContainer {
+        &.mobile {
+          display: flex;
+          align-items: center;
+          justify-content: start;
+          //margin-top: 8px;
+          flex-wrap: wrap;
+          .status {
+            margin: 0;
+          }
+        }
+
         .status {
           margin: auto;
           padding: 8px;

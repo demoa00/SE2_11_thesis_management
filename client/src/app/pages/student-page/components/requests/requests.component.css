@@ -65,6 +65,15 @@
 .requestsContainer .requestsTable .request:last-child {
   border-bottom: none;
 }
+.requestsContainer .requestsTable .request:last-child td.title {
+  padding: 8px 8px 0 0;
+}
+.requestsContainer .requestsTable .request:last-child td.secretary {
+  padding: 8px 8px 0 8px;
+}
+.requestsContainer .requestsTable .request:last-child td.professor {
+  padding: 8px 0 0 8px;
+}
 .requestsContainer .requestsTable .request td.title {
   padding: 8px 8px 8px 0;
 }
@@ -73,6 +82,15 @@
 }
 .requestsContainer .requestsTable .request td.professor {
   padding: 8px 0 8px 8px;
+}
+.requestsContainer .requestsTable .request .statusContainer.mobile {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-wrap: wrap;
+}
+.requestsContainer .requestsTable .request .statusContainer.mobile .status {
+  margin: 0;
 }
 .requestsContainer .requestsTable .request .statusContainer .status {
   margin: auto;

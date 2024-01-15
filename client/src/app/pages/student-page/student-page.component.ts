@@ -233,12 +233,12 @@ export class StudentPageComponent {
       this.showSuccessAlert = true
       setTimeout(() => {
         this.showSuccessAlert = false
-      }, 3000)
+      }, 5000)
     }).catch((error: any) => {
       this.showErrorAlert = true
       setTimeout(() => {
         this.showErrorAlert = false
-      }, 3000)
+      }, 5000)
       console.log(error)
     })
   }

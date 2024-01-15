@@ -235,6 +235,10 @@ export class APIService {
     })
   }
 
+  async postThesisRequest(body: any) {
+    return await this.httpService.post('thesisRequests', body)
+  }
+
   async putThesisRequest(professorId: any, thesisRequestId: any, status: 'Accepted' | 'Rejected' | 'Change', professorRequestChangesMessage?:any) {
     return await this.httpService.put(`thesisRequests/${thesisRequestId}`, professorRequestChangesMessage?{
       supervisor: {
@@ -302,10 +306,6 @@ export class APIService {
 
   async putVirtualClock(date: string) {
     return await this.httpService.put(`virtualClock`, {date: date})
-  }
-
-  async getAllRequests(){
-return await this.httpService.get(`thesisRequests`)
   }
 
 }

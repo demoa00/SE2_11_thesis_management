@@ -1,12 +1,12 @@
 <div class="container">
   <div class="titleContainer">
-    <h1 class="text-3xl font-medium">Your Requests</h1>
+    <h1 class="text-3xl font-medium mr-4">Your Requests</h1>
     <app-button class="orange" (click)="showPopup=true">New Request</app-button>
   </div>
   <p class="mb-2">In this section you can submit new thesis requests in order to be evaluated by the professors and,
     eventually, accepted as your thesis project.</p>
   <div class="card requestsContainer" *ngIf="requests.length>0">
-    <table class="requestsTable">
+    <table class="requestsTable" *ngIf="screenWidth>480">
       <thead>
       <tr>
         <th class="text-left">Thesis Title</th>
@@ -26,6 +26,34 @@
         </tr>
       </tbody>
     </table>
+    <table class="requestsTable" *ngIf="screenWidth<=480">
+      <thead>
+      <tr>
+        <th class="text-left">Thesis Title</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr class="request" *ngFor="let request of requests">
+          <td class="title text-left">
+            {{ request.title }}
+            <div class="secretary statusContainer mobile">
+              <div class="flex items-center gap-2 mt-2 mr-4">
+                <p>Secretary:</p>
+                <div class="status {{request.secretaryStatus.toLowerCase()}}">
+                  <p>{{ request.secretaryStatus }}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 mt-2">
+                <p>Professor:</p>
+                <div class="status {{request.professorStatus.toLowerCase()}}">
+                  <p>{{ request.professorStatus }}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <div class="request" *ngFor="let request of requests">
 
     </div>
@@ -37,6 +65,10 @@
     [closeClickOutside]="true"
     [showCloseButton]="true"
     (close)="showPopup=false">
-    <app-request-form (showPopup)="showPopup = $event"></app-request-form>
+    <app-request-form
+      (showPopup)="showPopup = $event"
+      (showAlert)="showAlert($event)"/>
   </app-popup>
+  <app-alert class="success {{showSuccessAlert ? 'show' : ''}}">You correctly submitted your request</app-alert>
+  <app-alert class="danger {{showDangerAlert ? 'show' : ''}}">Error: something went wrong, try again later</app-alert>
 </div>

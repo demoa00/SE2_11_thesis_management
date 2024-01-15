@@ -1,4 +1,47 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.leftMenuItem {
+  border-radius: 8px;
+  padding: 8px 16px;
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 16px;
+  background-color: #e5e7eb;
+  cursor: pointer;
+}
+.leftMenuItem.selected {
+  background-color: #03577A;
+}
+.leftMenuItem.selected * {
+  color: white;
+}
+.leftMenuItem.hovered {
+  background-color: #d1d5db;
+}
+
+.card {
+  @apply shadow-sm rounded-md shadow-gray-400 p-4 bg-white;
+}
+
+.separator {
+  height: 1px;
+  width: 100%;
+  @apply bg-orange-500;
+}
+@media only screen and (max-width: 1000px) {
+  .separator {
+    display: none;
+  }
+}
+
+:host {
+  width: 100%;
+}
+
 .requestFormContainer {
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto 1fr;
@@ -27,13 +70,28 @@
   height: fit-content;
   grid-area: 1/1/2/3;
 }
+@media only screen and (max-width : 640px) {
+  .requestFormContainer .input.titleContainer {
+    grid-area: 1/1/2/4;
+  }
+}
 .requestFormContainer .input.professorContainer {
   height: fit-content;
   grid-area: 1/3/2/4;
 }
+@media only screen and (max-width : 640px) {
+  .requestFormContainer .input.professorContainer {
+    grid-area: 2/1/3/4;
+  }
+}
 .requestFormContainer .input.descriptionContainer {
   height: fit-content;
   grid-area: 2/1/3/4;
+}
+@media only screen and (max-width : 640px) {
+  .requestFormContainer .input.descriptionContainer {
+    grid-area: 3/1/4/4;
+  }
 }
 .requestFormContainer .submitContainer {
   grid-area: 3/1/4/4;
@@ -41,6 +99,11 @@
   display: flex;
   justify-content: center;
   gap: 16px;
+}
+@media only screen and (max-width : 640px) {
+  .requestFormContainer .submitContainer {
+    grid-area: 4/1/5/4;
+  }
 }
 
 /*# sourceMappingURL=request-form.component.css.map */
