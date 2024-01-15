@@ -54,9 +54,15 @@ export class RequestsComponent {
     }
   }
 
-
-  newRequests(requests: string) {
-    console.log("NEW REQUESTS")
-    console.log(requests)
+  editRequest(request: any){}
+  deleteRequest(request: any){
+    console.log(request)
+    this.api.deleteThesisRequest(request.thesisRequestId).then((response: any) => {
+      console.log(response)
+    }).catch((error) => {
+      console.log(error)
+    })
   }
+
+
 }

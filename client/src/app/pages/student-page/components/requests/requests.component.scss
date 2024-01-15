@@ -27,38 +27,22 @@
 
     .request {
       border-bottom: 1px solid $lightgrey;
-
       &:last-child {
         border-bottom: none;
-
-        td {
-          &.title {
-            padding: 8px 8px 0 0;
-          }
-
-          &.secretary {
-            padding: 8px 8px 0 8px;
-          }
-
-          &.professor {
-            padding: 8px 0 0 8px;
-          }
-        }
       }
 
       td {
-        &.title {
-          padding: 8px 8px 8px 0;
+        padding: 8px 8px 0 8px;
+
+        &:first-child {
+          padding: 8px 8px 0 0;
         }
 
-        &.secretary {
-          padding: 8px 8px 8px 8px;
-        }
-
-        &.professor {
-          padding: 8px 0 8px 8px;
+        &:last-child {
+          padding: 8px 0 0 8px;
         }
       }
+
 
       .statusContainer {
         &.mobile {
@@ -67,6 +51,7 @@
           justify-content: start;
           //margin-top: 8px;
           flex-wrap: wrap;
+
           .status {
             margin: 0;
           }
@@ -99,6 +84,11 @@
             color: #545454;
           }
         }
+      }
+
+      .actionsContainer {
+        display: flex;
+        gap: 8px
       }
     }
   }

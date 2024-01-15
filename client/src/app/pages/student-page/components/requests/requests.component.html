@@ -4,54 +4,65 @@
     <app-button class="orange" (click)="showPopup=true">New Request</app-button>
   </div>
   <p class="mb-2">In this section you can submit new thesis requests in order to be evaluated by the professors and,
-    eventually, accepted as your thesis project.</p>
+    eventually, accepted as your thesis project. <br>You can edit a request only under specific Supervisor request.</p>
   <div class="card requestsContainer" *ngIf="requests.length>0">
-    <table class="requestsTable" *ngIf="screenWidth>480">
+    <table class="requestsTable" *ngIf="screenWidth>1024">
       <thead>
       <tr>
         <th class="text-left">Thesis Title</th>
         <th class="statusHeader pl-4 pr-4">Secretary Status</th>
-        <th class="statusHeader pl-2">Professor Status</th>
+        <th class="statusHeader pl-4 pr-4">Professor Status</th>
+        <th class="statusHeader pl-2">Actions</th>
       </tr>
       </thead>
       <tbody>
-        <tr class="request" *ngFor="let request of requests">
-          <td class="title text-left">{{ request.title }}</td>
-          <td class="secretary statusContainer">
-            <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
-          </td>
-          <td class="professor statusContainer">
-            <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
-          </td>
-        </tr>
+      <tr class="request" *ngFor="let request of requests">
+        <td class="text-left">{{ request.title }}</td>
+        <td class="statusContainer">
+          <div class="status {{request.secretaryStatus.toLowerCase()}}"><p>{{ request.secretaryStatus }}</p></div>
+        </td>
+        <td class="statusContainer">
+          <div class="status {{request.professorStatus.toLowerCase()}}"><p>{{ request.professorStatus }}</p></div>
+        </td>
+        <td>
+          <div class="actionsContainer">
+            <app-button class="disabled" (click)="editRequest(request)">
+              <mat-icon class="icon-16">edit</mat-icon>
+            </app-button>
+            <app-button class="danger" (click)="deleteRequest(request)">
+              <mat-icon class="icon-16">delete</mat-icon>
+            </app-button>
+          </div>
+        </td>
+      </tr>
       </tbody>
     </table>
-    <table class="requestsTable" *ngIf="screenWidth<=480">
+    <table class="requestsTable" *ngIf="screenWidth<=1024">
       <thead>
       <tr>
         <th class="text-left">Thesis Title</th>
       </tr>
       </thead>
       <tbody>
-        <tr class="request" *ngFor="let request of requests">
-          <td class="title text-left">
-            {{ request.title }}
-            <div class="secretary statusContainer mobile">
-              <div class="flex items-center gap-2 mt-2 mr-4">
-                <p>Secretary:</p>
-                <div class="status {{request.secretaryStatus.toLowerCase()}}">
-                  <p>{{ request.secretaryStatus }}</p>
-                </div>
-              </div>
-              <div class="flex items-center gap-2 mt-2">
-                <p>Professor:</p>
-                <div class="status {{request.professorStatus.toLowerCase()}}">
-                  <p>{{ request.professorStatus }}</p>
-                </div>
+      <tr class="request" *ngFor="let request of requests">
+        <td class="title text-left">
+          {{ request.title }}
+          <div class="secretary statusContainer mobile">
+            <div class="flex items-center gap-2 mt-2 mr-4">
+              <p>Secretary:</p>
+              <div class="status {{request.secretaryStatus.toLowerCase()}}">
+                <p>{{ request.secretaryStatus }}</p>
               </div>
             </div>
-          </td>
-        </tr>
+            <div class="flex items-center gap-2 mt-2">
+              <p>Professor:</p>
+              <div class="status {{request.professorStatus.toLowerCase()}}">
+                <p>{{ request.professorStatus }}</p>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
       </tbody>
     </table>
     <div class="request" *ngFor="let request of requests">
