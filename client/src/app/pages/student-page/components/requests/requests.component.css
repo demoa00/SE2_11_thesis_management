@@ -76,17 +76,20 @@
 .requestsContainer .requestsTable .request {
   border-bottom: 1px solid #e5e7eb;
 }
+.requestsContainer .requestsTable .request td {
+  padding: 8px 8px 8px 8px;
+}
+.requestsContainer .requestsTable .request td:first-child {
+  padding: 8px 8px 8px 0;
+}
+.requestsContainer .requestsTable .request td:last-child {
+  padding: 8px 0 8px 8px;
+}
 .requestsContainer .requestsTable .request:last-child {
   border-bottom: none;
 }
-.requestsContainer .requestsTable .request td {
-  padding: 8px 8px 0 8px;
-}
-.requestsContainer .requestsTable .request td:first-child {
-  padding: 8px 8px 0 0;
-}
-.requestsContainer .requestsTable .request td:last-child {
-  padding: 8px 0 0 8px;
+.requestsContainer .requestsTable .request:last-child td {
+  padding-bottom: 0;
 }
 .requestsContainer .requestsTable .request .statusContainer.mobile {
   display: flex;

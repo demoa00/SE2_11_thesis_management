@@ -36,8 +36,12 @@
         },
         "title": {
             "type": "string",
+<<<<<<< HEAD
             "minLength": 1,
             "maxLength": 100
+=======
+            "minLength": 1
+>>>>>>> 833e447157bffa08944d8f81db454b5dd22e2d33
         },
         "supervisor": {
             "type": "object",

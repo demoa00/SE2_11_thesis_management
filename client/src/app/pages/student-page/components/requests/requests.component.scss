@@ -27,29 +27,37 @@
 
     .request {
       border-bottom: 1px solid $lightgrey;
-      &:last-child {
-        border-bottom: none;
-      }
 
       td {
-        padding: 8px 8px 0 8px;
+        padding: 8px 8px 8px 8px;
 
         &:first-child {
-          padding: 8px 8px 0 0;
+          padding: 8px 8px 8px 0;
         }
 
         &:last-child {
-          padding: 8px 0 0 8px;
+          padding: 8px 0 8px 8px;
+        }
+      }
+      &:last-child {
+        border-bottom: none;
+        td {
+          padding-bottom: 0;
         }
       }
 
+
+      //&.mobile {
+      //  td {
+      //    padding: 0;
+      //  }
+      //}
 
       .statusContainer {
         &.mobile {
           display: flex;
           align-items: center;
           justify-content: start;
-          //margin-top: 8px;
           flex-wrap: wrap;
 
           .status {

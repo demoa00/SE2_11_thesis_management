@@ -10,17 +10,22 @@ export class RequestsComponent {
 
   constructor(private api: APIService) {}
 
-  requests: any[] = []
-  showPopup = false
+  requests: any[] = Array(0)
   screenWidth = 0
-  showSuccessAlert = false
+  requestToDelete: any = null;
+  showInsertPopup = false
+  showDeletePopup: boolean = false;
+  showInsertSuccessAlert = false
+  showDeleteSuccessAlert: boolean = false;
   showDangerAlert = false
 
   ngOnInit() {
+    this.requests = Array(0)
     this.api.getThesisRequests().then((response: any) => {
       this.requests = response
     }).catch((error) => {
       console.log(error)
+      this.requests = []
     })
     this.screenWidth = window.innerWidth;
   }
@@ -38,9 +43,9 @@ export class RequestsComponent {
       this.api.getThesisRequests().then((response: any) => {
         console.log(this.requests)
         this.requests = response
-        this.showSuccessAlert = true
+        this.showInsertSuccessAlert = true
         setTimeout(() => {
-          this.showSuccessAlert = false
+          this.showInsertSuccessAlert = false
         }, 5000)
       }).catch((error) => {
         console.log(error)
@@ -55,13 +60,37 @@ export class RequestsComponent {
   }
 
   editRequest(request: any){}
-  deleteRequest(request: any){
-    console.log(request)
-    this.api.deleteThesisRequest(request.thesisRequestId).then((response: any) => {
+
+  selectRequestToDelete(request: any){
+    this.requestToDelete = request;
+    this.showDeletePopup = true;
+  }
+  deleteRequest(){
+    console.log(this.requestToDelete)
+    this.api.deleteThesisRequest(this.requestToDelete.thesisRequestId).then((response: any) => {
       console.log(response)
+      this.api.getThesisRequests().then((response: any) => {
+        this.requests = response
+        this.showDeleteSuccessAlert = true
+        setTimeout(()=>{
+          this.showDeleteSuccessAlert = false
+        }, 5000)
+      }).catch((error) => {
+        console.log(error)
+        this.showDangerAlert = true
+        setTimeout(()=>{
+          this.showDangerAlert = false
+        }, 5000)
+        this.requests = []
+      })
     }).catch((error) => {
       console.log(error)
+      this.showDangerAlert = true
+      setTimeout(()=>{
+        this.showDangerAlert = false
+      }, 5000)
     })
+    this.showDeletePopup = false
   }
 
 
