@@ -14,6 +14,7 @@ describe('RequestFormComponent', () => {
   beforeEach(async () => {
     apiService = jasmine.createSpyObj('APIService', {
       'getProfessors': Promise.resolve([]),
+      'postThesisRequest': Promise.resolve([]),
     });
 
     await TestBed.configureTestingModule({

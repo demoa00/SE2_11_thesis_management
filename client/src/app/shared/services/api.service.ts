@@ -227,7 +227,7 @@ export class APIService {
 
   async putApplication(studentId: any, thesisProposalId: any, status: 'Accepted' | 'Rejected') {
     return await this.httpService.put(`applications/${thesisProposalId}/${studentId}`, {
-      thesisProposalId: thesisProposalId,
+      thesisProposalId: thesisProposalId.toString(),
       applicant: {
         studentId: studentId
       },
@@ -304,6 +304,9 @@ export class APIService {
     return await this.httpService.getBlob(`cv/${userId}`, false, true)
   }
 
+  async getApplicationFile(thesisProposalId: any, studentId:any):Promise<Blob> {
+    return await this.httpService.getBlob(`applications/${thesisProposalId}/${studentId}/file`, false, true)
+  }
   async deleteCv(userId: any) {
     return await this.httpService.delete(`cv/${userId}`, true)
   }
