@@ -96,10 +96,16 @@ export class NotificationsContainerComponent {
       case 3:
         this.profThesisPage.emit(true);
         break;
+      case 4:
+        this.profThesisPage.emit(true);
+        break;
       case 7:
         this.profRequestPage.emit(true);
         break;
       case 8:
+        this.profRequestPage.emit(true);
+        break;
+      case 9:
         this.profRequestPage.emit(true);
         break;
       case 10:
