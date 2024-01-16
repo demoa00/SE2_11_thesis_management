@@ -78,4 +78,9 @@
   display: none;
 }
 
+.historyIcon {
+  min-width: 24px;
+  cursor: pointer;
+}
+
 /*# sourceMappingURL=notifications-container.component.css.map */
