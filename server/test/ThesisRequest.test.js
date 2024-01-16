@@ -10,6 +10,7 @@ const {
   updateThesisRequestForSecretary,
   updateThesisRequestForProfessor,
   updateThesisRequestForStudent,
+  deleteThesisRequest,
 } = require("../service/ThesisRequestService.js");
 const {
   isProfessor,
@@ -30,6 +31,7 @@ jest.mock("../service/ThesisRequestService.js", () => ({
   updateThesisRequestForSecretary: jest.fn(),
   updateThesisRequestForProfessor: jest.fn(),
   updateThesisRequestForStudent: jest.fn(),
+  deleteThesisRequest: jest.fn(),
 }));
 
 jest.mock("../utils/checkRole.js", () => ({
@@ -330,6 +332,55 @@ describe("updateThesisRequest", () => {
     };
 
     await ThesisRequestController.updateThesisRequest(
+      mockReq,
+      mockRes,
+      mockNext
+    );
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
+    );
+  });
+});
+
+describe("deleteThesisRequest", () => {
+  test("should respond with 204", async () => {
+    const mockReq = {
+      user: {
+        userId: "s123654",
+      },
+      body: {},
+      params: {
+        thesisRequestId: 3,
+      },
+    };
+
+    isStudent.mockResolvedValue();
+
+    deleteThesisRequest.mockResolvedValue();
+
+    await ThesisRequestController.deleteThesisRequest(
+      mockReq,
+      mockRes,
+      mockNext
+    );
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(204, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith("No Content");
+  });
+  test("should respond with 400 Bad Request", async () => {
+    const mockReq = {
+      user: {},
+      body: {},
+      params: {},
+    };
+
+    await ThesisRequestController.deleteThesisRequest(
       mockReq,
       mockRes,
       mockNext

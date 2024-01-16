@@ -18,7 +18,7 @@ jest.mock("../service/CurriculumVitaeService.js", () => ({
 }));
 
 describe("getCV ", () => {
-  test("should respond with 200", async () => {
+  test("should responde with file", async () => {
     const mockReq = {
       params: {
         studentId: "s123456",
@@ -38,10 +38,8 @@ describe("getCV ", () => {
 
     await CurriculumVitaeController.getCV(mockReq, mockRes, mockNext);
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(200, {
-      "Content-Type": "application/json",
-    });
-    expect(mockRes.end).toHaveBeenCalledWith(JSON.stringify(CV, null, 2));
+    expect(mockRes.set).toHaveBeenCalledWith("Content-Type", "application/pdf");
+    expect(mockRes.send).toHaveBeenCalledWith(CV);
   });
 });
 

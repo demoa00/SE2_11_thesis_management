@@ -5,6 +5,7 @@ const {
   getAllApplicationsForStudent,
   getApplicationsForProfessor,
   getApplicationById,
+  getApplicationFile,
   insertNewApplication,
   updateApplication,
 } = require("../service/ApplicationService.js");
@@ -18,6 +19,7 @@ jest.mock("../service/ApplicationService.js", () => ({
   getAllApplicationsForStudent: jest.fn(),
   getApplicationsForProfessor: jest.fn(),
   getApplicationById: jest.fn(),
+  getApplicationFile: jest.fn(),
   insertNewApplication: jest.fn(),
   updateApplication: jest.fn(),
 }));
@@ -199,6 +201,58 @@ describe("getApplicationById", () => {
     };
 
     await ApplicationController.getApplicationById(mockReq, mockRes, mockNext);
+
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
+      "Content-Type": "application/json",
+    });
+    expect(mockRes.end).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Bad Request" }, null, 2)
+    );
+  });
+});
+
+describe("getApplicationFile", () => {
+  test("should respond with file", async () => {
+    const mockReq = {
+      params: {
+        studentId: "s123456",
+        thesisProposalId: "34",
+      },
+    };
+    const mockRes = {
+      writeHead: jest.fn().mockReturnThis(),
+      end: jest.fn().mockReturnThis(),
+      set: jest.fn().mockReturnThis(),
+      send: jest.fn().mockReturnThis(),
+    };
+    const mockNext = {};
+
+    const ApplicationFile = ["ApplicationFile"];
+
+    getApplicationFile.mockResolvedValue(ApplicationFile);
+
+    await ApplicationController.getApplicationFile(mockReq, mockRes, mockNext);
+
+    expect(mockRes.set).toHaveBeenCalledWith("Content-Type", "application/pdf");
+    expect(mockRes.send).toHaveBeenCalledWith(ApplicationFile);
+  });
+  test("should respond with 400 Bad Request", async () => {
+    const mockReq = {
+      params: {},
+    };
+    const mockRes = {
+      writeHead: jest.fn().mockReturnThis(),
+      end: jest.fn().mockReturnThis(),
+      set: jest.fn().mockReturnThis(),
+      send: jest.fn().mockReturnThis(),
+    };
+    const mockNext = {};
+
+    const ApplicationFile = ["ApplicationFile"];
+
+    getApplicationFile.mockResolvedValue(ApplicationFile);
+
+    await ApplicationController.getApplicationFile(mockReq, mockRes, mockNext);
 
     expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
