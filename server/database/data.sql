@@ -128,7 +128,7 @@ INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (9, 'L-34
 INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (10, 'LM-9');
 INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (11, 'LM-9');
 INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (12, 'LM-9');
-INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (13, 'LM-13');
+INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (13, 'LM-9');
 INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (14, 'LM-10');
 INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (15, 'LM-9');
 INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (15, 'LM-10');
