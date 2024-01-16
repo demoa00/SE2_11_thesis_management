@@ -112,6 +112,10 @@ exports.thesisProposalExpirationNotification = function () {
                 promises.push(ThesisRequest.deleteThesisRequest(thesisRequest.studentId, thesisRequest.thesisRequestId));
                 emailPromises.push(smtp.sendMail(smtp.mailConstructor(thesisRequest.email, smtp.subjectThesisRequestExpired, `${smtp.textThesisRequestExpiring} ${thesisRequest.title}`)));
                 notificationPromises.push(Notification.insertNewNotification(thesisRequest.studentId, smtp.subjectThesisRequestExpired, 13));
+
+                if (thesisRequest.thesisProposalId != null) {
+                    await ThesisProposal.updateAcceptedApplication(thesisRequest.thesisProposalId);
+                }
             }
         }
     }).then(async () => {

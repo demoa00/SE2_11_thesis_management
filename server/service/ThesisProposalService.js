@@ -201,8 +201,8 @@ exports.getThesisProposalById = function (user, thesisProposalId) {
     sql = 'SELECT * FROM thesisProposals WHERE thesisProposalId = ? AND (supervisor = ? OR thesisProposalId IN (SELECT DISTINCT thesisProposalId FROM thesisProposal_internalCoSupervisor_bridge WHERE internalCoSupervisorId = ?))';
     params = [thesisProposalId, user.userId, user.userId];
   } else if (checkRole.isStudent(user)) {//student request -- only active thesis proposals
-    sql = 'SELECT * FROM thesisProposals WHERE thesisProposalId = ? AND thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_cds_bridge WHERE cdsId = ?) AND isArchieved = 0';
-    params = [thesisProposalId, user.codDegree];
+    sql = "SELECT * FROM thesisProposals WHERE thesisProposalId = ? AND (( thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_cds_bridge WHERE cdsId = ?) AND isArchieved = 0 ) OR thesisProposalId IN (SELECT DISTINCT thesisProposalId FROM applications WHERE studentId = ? AND status = 'Accepted') )";
+    params = [thesisProposalId, user.codDegree, user.userId];
   }
 
   return new Promise(function (resolve, reject) {
@@ -853,6 +853,34 @@ exports.getThesisProposalDetails = function (thesisProposalId) {
       } else {
         resolve({ title: row.title, supervisor: { professorId: row.supervisor, email: row.email } });
       }
+    });
+  });
+}
+
+exports.updateAcceptedApplication = function (thesisProposalId) {
+  return new Promise(function (resolve, reject) {
+    const sql = "SELECT * FROM applications WHERE thesisProposalId = ? AND status = 'Accepted'";
+    db.get(sql, [thesisProposalId], (err, row) => {
+      if (err) {
+        reject(new InternalError());
+      } else if (row == undefined) {
+        reject(new InternalError());
+      } else {
+        resolve(row.studentId);
+      }
+    });
+  }).then((studentId) => {
+    return new Promise(function (resolve, reject) {
+      const sql = "UPDATE applications SET status = 'Rejected' WHERE thesisProposalId = ? AND studentId = ?";
+      db.run(sql, [thesisProposalId, studentId], (err) => {
+        if (err) {
+          reject(new InternalError());
+        } else if (this.changes === 0) {
+          reject(new InternalError());
+        } else {
+          resolve();
+        }
+      });
     });
   });
 }

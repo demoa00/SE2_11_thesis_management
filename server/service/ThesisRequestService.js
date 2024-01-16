@@ -196,20 +196,37 @@ exports.getThesisRequestById = function (user, thesisRequestId) {
 
 exports.insertNewThesisRequest = function (studentId, thesisRequest) {
     return new Promise(function (resolve, reject) {
-        const sql = "SELECT professorId, email FROM professors WHERE professorId = ?";
-        db.get(sql, [thesisRequest.supervisor.professorId], (err, row) => {
+        const sql = "SELECT count(*) as count FROM thesisRequests WHERE studentId = ? AND (professorStatus = 'Pending' OR professorStatus = 'Change' OR professorStatus = 'Accepted')";
+        db.get(sql, [studentId], (err, row) => {
             if (err) {
                 reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
             } else if (row == undefined) {
-                reject(new PromiseError({ code: 404, message: "Not Found" }));
+                reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
             } else {
-                resolve({ professorId: row.professorId, email: row.email });
+                if (row.count > 0) {
+                    reject(new PromiseError({ code: 409, message: "Conflict" }));
+                } else {
+                    resolve();
+                }
             }
+        });
+    }).then(() => {
+        return new Promise(function (resolve, reject) {
+            const sql = "SELECT professorId, email FROM professors WHERE professorId = ?";
+            db.get(sql, [thesisRequest.supervisor.professorId], (err, row) => {
+                if (err) {
+                    reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+                } else if (row == undefined) {
+                    reject(new PromiseError({ code: 404, message: "Not Found" }));
+                } else {
+                    resolve({ professorId: row.professorId, email: row.email });
+                }
+            });
         });
     }).then((professor) => {
         return new Promise(function (resolve, reject) {
-            const sql = "INSERT INTO thesisRequests(studentId, title, supervisor, description, date) VALUES(?, ?, ?, ?, ?)";
-            db.run(sql, [studentId, thesisRequest.title, professor.professorId, thesisRequest.description, dayjs().format("YYYY-MM-DD")], function (err) {
+            const sql = "INSERT INTO thesisRequests(thesisProposalId, studentId, title, supervisor, description, date) VALUES(?, ?, ?, ?, ?, ?)";
+            db.run(sql, [thesisRequest.thesisProposalId != undefined ? thesisRequest.thesisProposalId : null, studentId, thesisRequest.title, professor.professorId, thesisRequest.description, dayjs().format("YYYY-MM-DD")], function (err) {
                 if (err) {
                     reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
                 } else {
@@ -294,13 +311,13 @@ exports.updateThesisRequestForProfessor = function (professorId, thesisRequest, 
             let student = await Student.getStudentById(thesisRequest.requester.studentId);
 
             if (thesisRequest.professorStatus == 'Change') {
-                emailPromises.push(smtp.sendMail(smtp.mailConstructor(studentEmail, smtp.subjectThesisRequestChanges, `The supervisor has requested some changes for your thesis request: ${thesisRequest.title}.\n\nProfessor message:\n${thesisRequest.professorRequestChangesMessage}`)));
+                emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectThesisRequestChanges, `The supervisor has requested some changes for your thesis request: ${thesisRequest.title}.\n\nProfessor message:\n${thesisRequest.professorRequestChangesMessage}`)));
                 notificationPromises.push(Notification.insertNewNotification(thesisRequest.requester.studentId, smtp.subjectDecisionThesisRequest, 6));
             } else if (thesisRequest.professorStatus == 'Accepted') {
-                emailPromises.push(smtp.sendMail(smtp.mailConstructor(studentEmail, smtp.subjectThesisRequestChanges, `${smtp.textAcceptThesisRequestByProfessor} ${thesisRequest.title}`)));
+                emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectThesisRequestChanges, `${smtp.textAcceptThesisRequestByProfessor} ${thesisRequest.title}`)));
                 notificationPromises.push(Notification.insertNewNotification(thesisRequest.requester.studentId, smtp.subjectDecisionThesisRequest, 6));
             } else if (thesisRequest.professorStatus == 'Rejected') {
-                emailPromises.push(smtp.sendMail(smtp.mailConstructor(studentEmail, smtp.subjectThesisRequestChanges, `${smtp.textRejectThesisRequestByProfessor} ${thesisRequest.title}`)));
+                emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectThesisRequestChanges, `${smtp.textRejectThesisRequestByProfessor} ${thesisRequest.title}`)));
                 notificationPromises.push(Notification.insertNewNotification(thesisRequest.requester.studentId, smtp.subjectDecisionThesisRequest, 6));
             }
 
@@ -316,8 +333,18 @@ exports.updateThesisRequestForProfessor = function (professorId, thesisRequest, 
 
 exports.updateThesisRequestForSecretary = function (thesisRequest, thesisRequestId) {
     return new Promise(function (resolve, reject) {
-        const sql = "UPDATE thesisRequests SET secretaryStatus = ? WHERE thesisRequestId = ? AND secretaryStatus = 'Pending' ";
-        db.run(sql, [thesisRequest.secretaryStatus, thesisRequestId], function (err) {
+        let sql = "";
+        let params = [];
+
+        if (thesisRequest.secretaryStatus === 'Accepted') {
+            sql = "UPDATE thesisRequests SET secretaryStatus = ? WHERE thesisRequestId = ? AND secretaryStatus = 'Pending' ";
+            params = [thesisRequest.secretaryStatus, thesisRequestId];
+        } else {
+            sql = "UPDATE thesisRequests SET secretaryStatus = ?, professorStatus = ? WHERE thesisRequestId = ? AND secretaryStatus = 'Pending' ";
+            params = [thesisRequest.secretaryStatus, 'Rejected', thesisRequestId];
+        }
+
+        db.run(sql, params, function (err) {
             if (err) {
                 reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
             } else if (this.changes == 0) {

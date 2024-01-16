@@ -115,7 +115,7 @@ exports.getApplicationById = function (user, studentId, thesisProposalId) {
           applicant: { studentId: row.studentId, name: row.name, surname: row.surname, student: `/api/students/${row.studentId}` },
           message: row.message,
           date: row.date,
-          status: row.status,
+          status: row.status
         }
         resolve(application);
       }
