@@ -9,7 +9,6 @@ import {Router} from "@angular/router";
 import {APIService} from "../../services/api.service";
 import {User} from "../../classes/user";
 import {StudentDetails} from "../../classes/student/student-details";
-import {DarkModeService} from "../../services/dark-mode.service";
 import {ProfessorDetails} from "../../classes/professor/professor-details";
 import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 
@@ -26,7 +25,7 @@ import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 
 
 export class PageSkeletonComponent {
-  constructor(private _router: Router, private api: APIService, private darkMode: DarkModeService) {
+  constructor(private _router: Router, private api: APIService) {
   }
 
   currentRoute = this._router.url;
@@ -42,6 +41,7 @@ export class PageSkeletonComponent {
   user: User | undefined;
   student: StudentDetails | undefined;
   professor: ProfessorDetails | undefined;
+  secretaryClerk: any;
 
   theme = false
   menuOpen = false
@@ -64,6 +64,12 @@ export class PageSkeletonComponent {
       this.api.getProfessorDetails(this.user?.userId).then((response: any) => {
         console.log(response)
         this.professor = response
+      })
+    }
+    else if(this.user?.role == 'secretary'){
+      this.api.getSecretaryClerkDetails(this.user?.userId).then((response: any) => {
+        console.log(response)
+        this.secretaryClerk = response
       })
     }
   }

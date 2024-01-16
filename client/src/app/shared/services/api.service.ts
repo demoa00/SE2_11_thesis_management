@@ -39,7 +39,10 @@ export class APIService {
         this.router.navigateByUrl('student')
       } else if (response.role == 'professor') {
         this.router.navigateByUrl('professor')
-      } else {
+      } else if(response.role == 'secretary') {
+        this.router.navigateByUrl('secretary')
+      }
+      else {
         window.location.href = `http://localhost:3000/api/authenticatedSession`;
       }
       return (response)
@@ -156,6 +159,9 @@ export class APIService {
 
   async getProfessorDetails(userId: any) {
     return await this.httpService.get(`professors/${userId}`, false, true);
+  }
+  async getSecretaryClerkDetails(userId: any) {
+    return await this.httpService.get(`/secretaryClercks/${userId}`, false, true);
   }
 
   async getAllProposals(params: ProposalsParams | null) {

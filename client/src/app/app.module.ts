@@ -45,11 +45,14 @@ import {ThesisRequestDetailsComponent} from "./pages/professor-page/thesis-manag
 import {RequestFormComponent} from "./pages/student-page/components/requests/components/request-form/request-form.component";
 import {ProposalsComponent} from "./pages/student-page/components/proposals/proposals.component";
 import {ProposalDetailsComponent} from "./pages/student-page/components/proposal-details/proposal-details.component";
+import {AuthGuardSecretaryService} from "./shared/services/auth-guard-secretary.service";
+import {SecretaryPageComponent} from "./pages/secretary-page/secretary-page.component";
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
   {path: 'student', canActivate : [AuthGuardStudentService],component: StudentPageComponent},
-  {path: 'professor', canActivate : [AuthGuardProfessorService],  component: ProfessorPageComponent}
+  {path: 'professor', canActivate : [AuthGuardProfessorService],  component: ProfessorPageComponent},
+  {path: 'secretary', canActivate : [AuthGuardSecretaryService],  component: SecretaryPageComponent},
 ]
 
 @NgModule({
@@ -85,7 +88,8 @@ const routes: Routes = [
     ThesisRequestDetailsComponent,
     RequestFormComponent,
     ProposalsComponent,
-    ProposalDetailsComponent
+    ProposalDetailsComponent,
+    SecretaryPageComponent
   ],
 	imports: [
 		BrowserModule,
