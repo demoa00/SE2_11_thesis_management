@@ -56,4 +56,43 @@ describe('ProfessorPageComponent', () => {
     expect(component.menuItems[1].selected).toBe(false);
     expect(component.menuItems[2].selected).toBe(true);
   });
+
+  it('should toggle appPage property on goToApplicationPage() method', () => {
+    expect(component.appPage).toBe(false);
+  
+    component.goToApplicationPage(true);
+    expect(component.appPage).toBe(true);
+    
+    component.goToApplicationPage(true);
+    expect(component.appPage).toBe(false);
+
+    component.goToApplicationPage(false);
+    expect(component.appPage).toBe(false);
+  });
+
+  it('should toggle requestPage property on goToRequestPage method call', () => {
+    expect(component.requestPage).toBe(false);
+  
+    component.goToRequestPage(true);
+    expect(component.requestPage).toBe(true);
+  
+    component.goToRequestPage(true);
+    expect(component.requestPage).toBe(false);
+
+    component.goToRequestPage(false);
+    expect(component.requestPage).toBe(false);
+  });
+
+  it('should toggle the thesisPage property', () => {
+    expect(component.thesisPage).toBe(false);
+
+    component.goToThesisPage(true);
+    expect(component.thesisPage).toBe(true);
+
+    component.goToThesisPage(true);
+    expect(component.thesisPage).toBe(false);
+  
+    component.goToThesisPage(false);  
+    expect(component.thesisPage).toBe(false);
+  });
 });
