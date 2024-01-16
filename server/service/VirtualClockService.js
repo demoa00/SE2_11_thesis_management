@@ -3,6 +3,7 @@
 const dayjs = require('dayjs');
 
 const ThesisProposal = require('./ThesisProposalService');
+const ThesisRequest = require('./ThesisRequestService');
 
 const db = require('../utils/dbConnection');
 
@@ -24,9 +25,21 @@ exports.updateVirtualClock = function (date) {
         let promises = [];
 
         thesisProposalIdList.forEach((t) => {
+            
             promises.push(ThesisProposal.archiveThesisProposal(t));
         });
 
-        return await Promise.all(promises);
+        await Promise.all(promises);
+        return thesisProposalIdList;
+    }).then(async (thesisProposalIdList) => {
+        for (let id in thesisProposalIdList) {
+            let thesisRequest = await ThesisRequest.getThesisRequestByThesisProposalId(id);
+            if (thesisRequest != undefined) {
+                promises.push(ThesisRequest.deleteThesisRequest(thesisRequest.studentId, thesisRequest.thesisRequestId));
+                emailPromises.push(smtp.sendMail(smtp.mailConstructor(thesisRequest.email, smtp.subjectThesisRequestExpired, `${smtp.textThesisRequestExpiring} ${thesisRequest.title}`)));
+                notificationPromises.push(Notification.insertNewNotification(thesisRequest.studentId, smtp.subjectThesisRequestExpired, 13));
+            }
+        }
     });
 }
+

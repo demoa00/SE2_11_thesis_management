@@ -45,6 +45,9 @@ exports.textDeleteThesisRequest = 'The thesis request has been cancelled, for th
 exports.subjectThesisProposalExpiring = 'Thesis Proposal expiring';
 exports.textThesisProposalExpiring = 'Your thesis proposal will expire in a week, for thesis proposal:';
 
+exports.subjectThesisRequestExpired = 'Thesis Request expired';
+exports.textThesisRequestExpired = 'Your thesis request has expired, for thesis request:';
+
 
 exports.mailConstructor = function (to, subject, text) {
     return {

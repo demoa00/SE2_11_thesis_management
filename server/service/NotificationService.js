@@ -3,6 +3,7 @@
 const dayjs = require('dayjs');
 
 const ThesisProposal = require('./ThesisProposalService');
+const ThesisRequest = require('./ThesisRequestService');
 const Notification = require('./NotificationService');
 const { PromiseError, InternalError } = require('../utils/error');
 const smtp = require('../utils/smtp');
@@ -83,6 +84,7 @@ exports.thesisProposalExpirationNotification = function () {
     let promises = [];
     let emailPromises = [];
     let notificationPromises = [];
+    let thesisProposalIds = [];
 
     return new Promise(function (resolve, reject) {
         const sql = "SELECT thesisProposals.thesisProposalId, thesisProposals.supervisor, thesisProposals.title, thesisProposals.expirationDate, professors.email FROM thesisProposals, professors WHERE professors.professorId = thesisProposals.supervisor";
@@ -95,12 +97,23 @@ exports.thesisProposalExpirationNotification = function () {
                     if (dayjs().diff(r.expirationDate, "day") === -7) {
                         emailPromises.push(smtp.sendMail(smtp.mailConstructor(r.email, smtp.subjectThesisProposalExpiring, `${smtp.textThesisProposalExpiring} ${r.title}`)));
                         notificationPromises.push(Notification.insertNewNotification(r.supervisor, smtp.subjectThesisProposalExpiring, 12));
-                    } else if (dayjs('2024-05-31').diff(r.expirationDate, "day") === 0) {
+                    } else if (dayjs().diff(r.expirationDate, "day") === 0) {
+                        thesisProposalIds.push(r.thesisProposalId);
                         promises.push(ThesisProposal.archiveThesisProposal(r.thesisProposalId, r.supervisor));
                     }
                 });
+                resolve(thesisProposalIds);
             }
         });
+    }).then(async (thesisProposalIds) => {
+        for (let id in thesisProposalIds) {
+            let thesisRequest = await ThesisRequest.getThesisRequestByThesisProposalId(id);
+            if (thesisRequest != undefined) {
+                promises.push(ThesisRequest.deleteThesisRequest(thesisRequest.studentId, thesisRequest.thesisRequestId));
+                emailPromises.push(smtp.sendMail(smtp.mailConstructor(thesisRequest.email, smtp.subjectThesisRequestExpired, `${smtp.textThesisRequestExpiring} ${thesisRequest.title}`)));
+                notificationPromises.push(Notification.insertNewNotification(thesisRequest.studentId, smtp.subjectThesisRequestExpired, 13));
+            }
+        }
     }).then(async () => {
         try {
             await Promise.all(promises);

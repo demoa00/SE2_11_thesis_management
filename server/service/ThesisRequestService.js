@@ -7,7 +7,7 @@ const Student = require('./StudentService');
 const Notification = require('./NotificationService');
 const checkRole = require('../utils/checkRole');
 const smtp = require('../utils/smtp');
-const { PromiseError } = require('../utils/error');
+const { PromiseError, InternalError } = require('../utils/error');
 
 const db = require('../utils/dbConnection');
 
@@ -148,7 +148,6 @@ exports.getThesisRequestById = function (user, thesisRequestId) {
                 if (err) {
                     reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
                 } else if (row == undefined) {
-                    console.log("ciao 2")
                     reject(new PromiseError({ code: 404, message: "Not Found" }));
                 } else {
                     thesisRequest.supervisor.name = row.name;
@@ -268,7 +267,7 @@ exports.updateThesisRequestForProfessor = function (professorId, thesisRequest, 
 
     params.push(thesisRequest.professorStatus);
 
-    if (thesisRequest.professorStatus == 'Accepeted') {
+    if (thesisRequest.professorStatus == 'Accepted') {
         sql += ", approvalDate = ? ";
         params.push(dayjs().format("YYYY-MM-DD"));
     }
@@ -505,5 +504,27 @@ exports.deleteThesisRequest = async function (studentId, thesisRequestId) {
         } catch (error) {
             return;
         }
+    });
+}
+
+exports.getThesisRequestByThesisProposalId = async function (thesisProposalId) {
+    return new Promise(function (resolve, reject) {
+        const sql = "SELECT thesisRequestId, thesisProposalId, title, email, students.studentId FROM thesisRequests, students WHERE thesisProposalId = ? AND thesisRequests.studentId = students.studentId";
+        db.get(sql, [thesisProposalId], (err, row) => {
+            if (err) {
+                reject(new InternalError());
+            } else if (row == undefined) {
+                resolve(undefined);
+            } else {
+                let res = {
+                    thesisRequestId: row.thesisRequestId,
+                    thesisProposalId: row.thesisProposalId,
+                    title: row.title,
+                    studentId: row.studentId,
+                    email: row.email
+                }
+                resolve(res);
+            }
+        });
     });
 }
