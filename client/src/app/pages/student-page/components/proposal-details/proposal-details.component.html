@@ -1,0 +1,75 @@
+ <div class="container">
+    <div class="proposalsCard card">
+      <div class="projectHeader">
+        <h2 class="projectTitle">{{selectedProposal.title}}</h2>
+        <p class="font-bold">Supervisor: <span
+          class="regularText">{{selectedProposal.supervisor.name}} {{selectedProposal.supervisor.surname}}</span></p>
+        <p class="font-bold" *ngIf="selectedProposal.coSupervisor.length > 0">Cosupervisors: <span class="regularText"
+                                                                                                 *ngFor="let cs of selectedProposal.coSupervisor; let last = last">{{cs.name}} {{cs.surname}}{{last ? '' : ', '}}</span>
+        </p>
+      </div>
+      <div class="projectBody">
+        <p class="font-bold">Description</p>
+        <div class="regularText">
+          <p>{{selectedProposal.description}}</p>
+        </div>
+      </div>
+      <div class="projectBody">
+        <p class="font-bold">Requirements</p>
+        <div class="regularText">
+          <p>{{selectedProposal.requirements}}</p>
+        </div>
+      </div>
+      <div class="projectFooter">
+        <p class="font-bold">Type: <span class="regularText">{{selectedProposal.thesisType}}</span></p>
+        <p class="font-bold">Abroad: <span class="regularText">{{selectedProposal.abroad ? 'Yes' : 'No'}}</span></p>
+        <p class="font-bold">Groups: <span class="regularText"
+                                            *ngFor="let g of selectedProposal.groups; let last = last">{{g}}{{last ? '' : ', '}}</span>
+        </p>
+        <p class="font-bold">Study Courses: <span class="regularText"
+                                                   *ngFor="let cs of selectedProposal.CdS; let last = last">{{cs.titleDegree}}
+          ({{cs.degreeId}}){{last ? '' : ', '}}</span></p>
+        <p class="font-bold">Expiration date: <span
+          class="regularText">{{date(selectedProposal.expirationDate)}}</span></p>
+      </div>
+      <div class="projectButtons">
+        <app-button class="grey" (click)="selectProposal(-1)">Back</app-button>
+        <app-button (click)="togglePopup()" [ngClass]="!canApply ? 'disabled' : ''">Apply</app-button>
+      </div>
+      <app-popup
+        *ngIf="popupVisible"
+        [showSlider]="false"
+        (close)="togglePopup()"
+        [closeClickOutside]="false"
+        [showCloseButton]="false"
+        [title]="'Apply'"
+        [showLogo]="false"
+      >
+        <div class="popupContent">
+          <p class="font-bold">Name: <span class="font-normal">{{userDetails?.name}} {{userDetails?.surname}}</span></p>
+          <p class="font-bold">Student ID: <span class="font-normal">{{userDetails?.studentId}}</span></p>
+          <p class="font-bold mb-2">Insert an application message (optional)</p>
+          <textarea class="textArea" rows="4" [(ngModel)]="applicationMessage" maxlength="1000"></textarea>
+          <div class="flex align-center justify-between mt-1">
+            <app-button type="file" (input)="selectFile($event)">
+              <div class="textOverflow">
+                <label for="upload-file" class="cursor-pointer">{{applicationFile ? applicationFile.name : 'Load File'}}</label>
+                <input class="hidden" type="file" id="upload-file" name="upload-file" accept=".pdf"
+                     (input)="selectFile($event)">
+              </div>
+            </app-button>
+            <div class="flex justify-end">
+              <app-button class="grey mr-2" (click)="togglePopup(); applicationMessage=''">Back</app-button>
+              <app-button class="orange" (click)="apply()">Apply</app-button>
+            </div>
+          </div>
+        </div>
+      </app-popup>
+      <app-alert class="success {{showSuccessAlert ? 'show' : ''}}">
+        <p>Application Submitted Succesfully!</p>
+      </app-alert>
+      <app-alert class="danger {{showErrorAlert ? 'show' : ''}}">
+        <p>Error: Something went wrong</p>
+      </app-alert>
+    </div>
+  </div>

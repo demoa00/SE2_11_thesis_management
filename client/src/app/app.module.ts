@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-
 import {AppComponent} from './app.component';
 import {RouterModule, Routes} from "@angular/router";
 import {StudentPageComponent} from './pages/student-page/student-page.component';
@@ -18,45 +17,34 @@ import {HomePageComponent} from './pages/home-page/home-page.component';
 import {PageSkeletonComponent} from './shared/components/page-skeleton/page-skeleton.component';
 import {AlertComponent} from './shared/alert/alert.component';
 import {LoadingComponent} from "./shared/components/loading/loading.component";
-import {
-  CreateThesisFormComponent
-} from './pages/professor-page/thesis-management/create-thesis-form/create-thesis-form.component';
+import {CreateThesisFormComponent} from './pages/professor-page/thesis-management/create-thesis-form/create-thesis-form.component';
 import {HttpClientModule} from '@angular/common/http';
-
 import {AuthModule} from "@auth0/auth0-angular";
-import { AuthGuardProfessorService } from "./shared/services/auth-guard-professor.service";
-import { ActiveThesisTableComponent } from './pages/professor-page/thesis-management/active-thesis-table/active-thesis-table.component';
+import {AuthGuardProfessorService} from "./shared/services/auth-guard-professor.service";
+import {ActiveThesisTableComponent} from './pages/professor-page/thesis-management/active-thesis-table/active-thesis-table.component';
 import {AuthGuardStudentService} from "./shared/services/auth-guard-student.service";
 import {MatIconModule} from "@angular/material/icon";
-import { FiltersContainerComponent } from './pages/student-page/components/filters-container/filters-container.component';
-import { DropdownCheckboxComponent } from './pages/student-page/components/dropdown-checkbox/dropdown-checkbox.component';
-import { CheckboxComponent } from './pages/student-page/components/dropdown-checkbox/checkbox/checkbox.component';
+import {FiltersContainerComponent} from './pages/student-page/components/filters-container/filters-container.component';
+import {DropdownCheckboxComponent} from './pages/student-page/components/dropdown-checkbox/dropdown-checkbox.component';
+import {CheckboxComponent} from './pages/student-page/components/dropdown-checkbox/checkbox/checkbox.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatInputModule} from "@angular/material/input";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatNativeDateModule} from "@angular/material/core";
-import { ThesisDetailsComponent } from './pages/professor-page/thesis-management/thesis-details/thesis-details.component';
-import { ApplicationViewComponent } from './pages/student-page/components/application-view/application-view.component';
-import { NotificationsContainerComponent } from './shared/components/notification/container/notifications-container/notifications-container.component';
+import {ThesisDetailsComponent} from './pages/professor-page/thesis-management/thesis-details/thesis-details.component';
+import {ApplicationViewComponent} from './pages/student-page/components/application-view/application-view.component';
+import {NotificationsContainerComponent} from './shared/components/notification/container/notifications-container/notifications-container.component';
 import {SocketIoModule} from "ngx-socket-io";
-import {
-  ArchivedThesisTableComponent
-} from "./pages/professor-page/thesis-management/archived-thesis-table/archived-thesis-table.component";
+import {ArchivedThesisTableComponent} from "./pages/professor-page/thesis-management/archived-thesis-table/archived-thesis-table.component";
 import {ProfilePageComponent} from "./shared/profile-page/profile-page.component";
-import {
-  UpdateThesisFormComponent
-} from "./pages/professor-page/thesis-management/update-thesis-form/update-thesis-form.component";
-import {
-  ApllicantDetailsComponent
-} from "./pages/professor-page/thesis-management/apllicant-details/apllicant-details.component";
+import {UpdateThesisFormComponent} from "./pages/professor-page/thesis-management/update-thesis-form/update-thesis-form.component";
+import {ApllicantDetailsComponent} from "./pages/professor-page/thesis-management/apllicant-details/apllicant-details.component";
 import {RequestsComponent} from "./pages/student-page/components/requests/requests.component";
-import {
-  ThesisRequestsTableComponent
-} from "./pages/professor-page/thesis-management/thesis-requests-table/thesis-requests-table.component";
-import {
-  ThesisRequestDetailsComponent
-} from "./pages/professor-page/thesis-management/thesis-request-details/thesis-request-details.component";
+import {ThesisRequestsTableComponent} from "./pages/professor-page/thesis-management/thesis-requests-table/thesis-requests-table.component";
+import {ThesisRequestDetailsComponent} from "./pages/professor-page/thesis-management/thesis-request-details/thesis-request-details.component";
 import {RequestFormComponent} from "./pages/student-page/components/requests/components/request-form/request-form.component";
+import {ProposalsComponent} from "./pages/student-page/components/proposals/proposals.component";
+import {ProposalDetailsComponent} from "./pages/student-page/components/proposal-details/proposal-details.component";
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
@@ -95,7 +83,9 @@ const routes: Routes = [
 		RequestsComponent,
     ThesisRequestsTableComponent,
     ThesisRequestDetailsComponent,
-    RequestFormComponent
+    RequestFormComponent,
+    ProposalsComponent,
+    ProposalDetailsComponent
   ],
 	imports: [
 		BrowserModule,

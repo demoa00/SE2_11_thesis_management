@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="proposalsContainer">
+      <div class="searchToolsContainer">
+        <div class="searchbar">
+          <input id="search-input" type="text" placeholder="Search among title, description, keywords..." [ngModel]="searchValue"
+                 (ngModelChange)="updateSearchValue($event)"/>
+        </div>
+        <app-button class="rounded" (click)="search()">
+          <mat-icon class="searchButton">search</mat-icon>
+        </app-button>
+        <div class="dropdownContainer" (mouseenter)="professorsHover = true" (mouseleave)="professorsHover=false">
+          <app-button>Professor</app-button>
+          <app-dropdown-checkbox
+            [hover]="professorsHover"
+            [searchValue]="professorsSearchValue"
+            (searchedValue)="professorsSearchValue = $event">
+            <div *ngFor="let prof of professors" (click)="toggleProf(prof)">
+              <div class="itemsContainer"
+                   *ngIf="prof.name.toLocaleLowerCase().includes(professorsSearchValue) || prof.surname.toLocaleLowerCase().includes(professorsSearchValue)">
+                <app-checkbox [checked]="isProfSelected(prof)"></app-checkbox>
+                <p>{{prof.name}} {{prof.surname}}</p>
+              </div>
+            </div>
+          </app-dropdown-checkbox>
+        </div>
+        <app-button class="grey" (click)="toggleMoreFilters()">More...</app-button>
+        <div class="deleteFilters" (click)="deleteFilters()"
+             *ngIf="checkFilters()">
+          <mat-icon class="closeIcon">close</mat-icon>
+          <p class="underline">Delete filters</p>
+        </div>
+      </div>
+      <app-filters-container [showFilters]="showFilters" (newProposals)="proposals = $event" [proposals]="proposals" [params]="proposalParams" [checkFilters]="checkFilters"></app-filters-container>
+    </div>
+    <div class="proposalsCard card">
+      <div *ngFor="let proposal of proposals" (click)="selectProposal(proposal.thesisProposalId)">
+        <div class="projectLine">
+          <p class="projectTitle">{{proposal.title}}</p>
+          <p class="profName">{{proposal.name}} {{proposal.surname}}</p>
+        </div>
+      </div>
+      <p class="text-center" *ngIf="proposals.length === 0">There is no thesis proposal with your selected filters</p>
+    </div>
+  </div>
