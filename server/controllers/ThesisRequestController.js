@@ -117,11 +117,8 @@ module.exports.updateThesisRequest = async function updateThesisRequest(
 module.exports.deleteThesisRequest = async function (req, res, next) {
   try {
     if (checkRole.isStudent(req.user)) {
-      let newThesisRequest = await ThesisRequest.deleteThesisRequest(
-        req.user.userId,
-        req.params.thesisRequestId
-      );
-      utils.writeJson(res, newThesisRequest, 200);
+      await ThesisRequest.deleteThesisRequest(req.user.userId, req.params.thesisRequestId);
+      utils.writeJson(res, "No Content", 204);
     } else {
       utils.writeJson(res, { error: "Bad Request" }, 400);
     }
