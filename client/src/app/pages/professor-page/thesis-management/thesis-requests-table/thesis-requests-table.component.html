@@ -46,7 +46,7 @@
 
 <app-popup
   *ngIf="rejectPopup"
-  (close)="openRejectPopup(); this.triggerUpdate.emit(); actionRequest = undefined; selectedRequest = undefined"
+  (close)="  requestAccepted?selectedRequest = undefined:''; openRejectPopup(); this.triggerUpdate.emit(); actionRequest = undefined"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"
@@ -65,7 +65,7 @@
 
 <app-popup
   *ngIf="acceptPopup"
-  (close)="openAcceptPopup() ; this.triggerUpdate.emit(); actionRequest = undefined;  selectedRequest = undefined"
+  (close)="  requestAccepted?selectedRequest = undefined:''; openAcceptPopup() ; this.triggerUpdate.emit(); actionRequest = undefined"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"
@@ -84,7 +84,7 @@
 
 <app-popup
   *ngIf="updatePopup"
-  (close)="openUpdatePopup() ; this.triggerUpdate.emit(); actionRequest = undefined; selectedRequest = undefined"
+  (close)=" requestAccepted?selectedRequest = undefined:'' ;openUpdatePopup() ; this.triggerUpdate.emit(); actionRequest = undefined"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"
