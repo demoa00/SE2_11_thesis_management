@@ -389,7 +389,6 @@ exports.updateThesisRequestForStudent = async function (studentId, thesisRequest
         }
     });
 
-    // old array.lenght > 0 => some cosupervisors has been removed in the new array
     if (oldCoSupervisors.length > 0) {
         oldCoSupervisors.forEach((c) => {
             promises.push(new Promise(function (resolve, reject) {
@@ -408,7 +407,6 @@ exports.updateThesisRequestForStudent = async function (studentId, thesisRequest
         });
     }
 
-    // new array.lenght > 0 => some cosupervisors has been added 
     if (newCoSupervisors.length > 0) {
         newCoSupervisors.forEach((c) => {
             promises.push(new Promise(function (resolve, reject) {
