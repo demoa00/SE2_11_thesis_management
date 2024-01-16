@@ -1,12 +1,12 @@
 <app-page-skeleton
-  [trigger] = "trigger"
-  (profilePage) = "goToProfilePage($event)"
+  [trigger]="trigger"
+  (profilePage)="goToProfilePage($event)"
   [unreadCounter]="unreadCounter"
   [notificationsOpen]="notificationsOpen"
   (notificationsOpenChange)="notificationsOpen = $event"
   (newProposals)="proposals = $event"
   (newApplications)="newApplications = $event"
-  >
+>
 
   <div class="leftMenuItem" left-col
        [class.selected]="n.selected"
@@ -15,10 +15,11 @@
        (mouseleave)="n.hovered=false"
        (click)="selectMenuItem(n.id); n.id == 1 ? selectedProposal=null : null; closeMenu(); profilePage = false;"
        *ngFor="let n of menuItems">
-    <p>{{n.text}}</p>
+    <p>{{ n.text }}</p>
   </div>
 
-  <app-proposals
+
+  <app-proposals-view
     [proposals]="proposals"
     (selectedProposal)="selectedProposal = $event"
     (canApply)="canApply = $event"
@@ -32,9 +33,16 @@
     *ngIf="selectedProposal!==null && menuItems[0].selected &&!profilePage"
     main-col/>
 
-  <app-application-view
+  <app-applications-view
     [applications]="newApplications"
-    *ngIf="menuItems[1].selected && !profilePage"
+    (selectedApplicationDetails)="selectedApplication = $event"
+    *ngIf="selectedApplication === null && menuItems[1].selected && !profilePage"
+    main-col/>
+
+  <app-application-details
+    [selectedApplication]="selectedApplication"
+    (selectedApplicationUpdate)="selectedApplication = $event"
+    *ngIf="selectedApplication !== null && menuItems[1].selected && !profilePage"
     main-col/>
 
   <app-requests
@@ -46,7 +54,7 @@
     main-col/>
 
   <app-notifications-container
-    (applicationsPage) = "goToApplicationPage($event)"
+    (applicationsPage)="goToApplicationPage($event)"
     (counterChange)="unreadCounter = $event" right-col
     (close)="closeNotifications($event)"/>
 

@@ -9,7 +9,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr class="application" *ngFor="let a of applications">
+      <tr class="application" *ngFor="let a of applications" (click)="selectApplication(a)">
         <td class="title pr-1" >{{ a.thesisProposalTitle }}</td>
         <td class="statusContainer ">
           <div class="status {{a.status.toLowerCase()}}">

@@ -1,4 +1,4 @@
-@import '../../../../../styles';
+@import '../../../../../../styles';
 
 .container {
   display: flex;
@@ -16,12 +16,19 @@
 
   .application {
     border-bottom: 1px solid $lightgrey;
+    cursor: pointer;
 
     &:last-child {
       border-bottom: none;
     }
+
+    &:hover {
+      .title {
+        text-decoration: underline;
+      }
+    }
+
     td {
-      //padding: 8px 0;
       vertical-align: middle;
 
 
@@ -32,6 +39,7 @@
 
       &.statusContainer {
         padding: 8px 0 8px 8px;
+
         .status {
           margin: auto;
           padding: 8px;
@@ -61,7 +69,7 @@
         }
       }
 
-      &.requestButton{
+      &.requestButton {
         padding: 8px 0 8px 16px;
       }
     }

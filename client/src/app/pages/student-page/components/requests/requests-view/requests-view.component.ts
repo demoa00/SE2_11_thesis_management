@@ -1,12 +1,12 @@
 import {Component, HostListener} from '@angular/core';
-import {APIService} from "../../../../shared/services/api.service";
+import {APIService} from "../../../../../shared/services/api.service";
 
 @Component({
   selector: 'app-requests',
-  templateUrl: './requests.component.html',
-  styleUrl: './requests.component.scss'
+  templateUrl: './requests-view.component.html',
+  styleUrl: './requests-view.component.scss'
 })
-export class RequestsComponent {
+export class RequestsViewComponent {
 
   constructor(private api: APIService) {}
 

@@ -1,12 +1,12 @@
 import {Component, EventEmitter, HostListener, Input, Output} from '@angular/core';
-import {APIService} from "../../../../shared/services/api.service";
+import {APIService} from "../../../../../shared/services/api.service";
 
 @Component({
-  selector: 'app-application-view',
-  templateUrl: './application-view.component.html',
-  styleUrls: ['./application-view.component.scss']
+  selector: 'app-applications-view',
+  templateUrl: './applications-view.component.html',
+  styleUrls: ['./applications-view.component.scss']
 })
-export class ApplicationViewComponent {
+export class ApplicationsViewComponent {
   constructor(private api: APIService) {
   }
 
@@ -21,7 +21,7 @@ export class ApplicationViewComponent {
   showPopup = false
   showInsertSuccessAlert = false
   showDangerAlert = false
-
+  @Output() selectedApplicationDetails = new EventEmitter<any>()
 
   ngOnInit(): void {
     this.api.getApplications().then((response: any) => {
@@ -50,7 +50,7 @@ export class ApplicationViewComponent {
   }
 
   showAlert($event: string) {
-    if($event === 'success') {
+    if ($event === 'success') {
       this.showInsertSuccessAlert = true
       setTimeout(() => {
         this.showInsertSuccessAlert = false
@@ -61,5 +61,20 @@ export class ApplicationViewComponent {
         this.showDangerAlert = false
       }, 5000)
     }
+  }
+
+  selectApplication(a: any) {
+    console.log(a)
+    let thesisProposalId = a.thesisProposalId
+    this.api.getProposal(thesisProposalId).then((res: any) => {
+      console.log(res)
+      this.selectedApplicationDetails.emit(res)
+    }).catch((err: any) => {
+      console.log(err)
+      this.showDangerAlert = true
+      setTimeout(() => {
+        this.showDangerAlert = false
+      }, 5000)
+    })
   }
 }

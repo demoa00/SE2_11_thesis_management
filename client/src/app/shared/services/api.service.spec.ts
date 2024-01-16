@@ -24,7 +24,7 @@ describe('APIService', () => {
         { provide: Location, useValue: spyLocation }
       ]
     });
-    
+
     apiService = TestBed.inject(APIService);
     httpServiceSpy = TestBed.inject(HttpService) as jasmine.SpyObj<HttpService>;
     routerSpy = TestBed.inject(Router) as jasmine.SpyObj<Router>;
@@ -136,11 +136,11 @@ describe('APIService', () => {
     const applicationId = 123;
     const userId = 456;
     const mockResponse = {};
-  
+
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
-  
+
     const result = await apiService.getApplicationById(applicationId, userId);
-  
+
     expect(httpServiceSpy.get).toHaveBeenCalledWith(`applications/${applicationId}/${userId}`);
     expect(result).toEqual(mockResponse);
   });
@@ -148,15 +148,15 @@ describe('APIService', () => {
   it('should set professor in localStorage on successful API call', async () => {
     const mockUser = { userId: 123 };
     const mockResponse = {};
-  
+
     spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(mockUser));
-  
+
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
-  
+
     spyOn(localStorage, 'setItem');
-  
+
     await apiService.setProfessor();
-  
+
     expect(httpServiceSpy.get).toHaveBeenCalledWith(`professors/${mockUser.userId}`, false, true);
     expect(localStorage.setItem).toHaveBeenCalled();
     expect((localStorage.setItem as jasmine.Spy).calls.mostRecent().args).toEqual(['professor', JSON.stringify(mockResponse)]);
@@ -165,15 +165,15 @@ describe('APIService', () => {
   it('should set student details in local storage', fakeAsync(() => {
     const mockUser = { userId: '123', role: 'student' };
     const mockStudentDetails = { studentId: '123', name: 'John Doe' };
-  
+
     spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(mockUser));
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockStudentDetails));
     spyOn(localStorage, 'setItem');
-  
+
     apiService.setStudent();
-  
+
     tick();
-  
+
     expect(localStorage.getItem).toHaveBeenCalledWith('user');
     expect(httpServiceSpy.get).toHaveBeenCalledWith(`students/${mockUser.userId}`, false, true);
     expect(localStorage.setItem).toHaveBeenCalledWith('student', JSON.stringify(mockStudentDetails));
@@ -181,13 +181,13 @@ describe('APIService', () => {
 
   it('should handle successful getDegrees', async () => {
     const mockResponse = [{ id: 1, name: 'Degree 1' }, { id: 2, name: 'Degree 2' }];
-  
+
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
-  
+
     spyOn(localStorage, 'setItem');
-  
+
     await apiService.getDegrees();
-  
+
     expect(httpServiceSpy.get).toHaveBeenCalledWith('degrees/', false, true);
     expect(localStorage.setItem).toHaveBeenCalled();
     expect((localStorage.setItem as jasmine.Spy).calls.mostRecent().args).toEqual(['degrees', JSON.stringify(mockResponse)]);
@@ -216,13 +216,13 @@ describe('APIService', () => {
 
   it('should handle successful getCoSupervisors', async () => {
     const mockResponse = [{}, {}]; // Mock response data
-  
+
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
 
     spyOn(localStorage, 'setItem');
-  
+
     const result = await apiService.getCoSupervisors();
-  
+
     expect(httpServiceSpy.get).toHaveBeenCalledWith('professors/?cosupervisor=true', false, true);
     expect(localStorage.setItem).toHaveBeenCalled();
     expect((localStorage.setItem as jasmine.Spy).calls.mostRecent().args).toEqual(['coSupervisors', JSON.stringify(mockResponse)]);
@@ -231,43 +231,43 @@ describe('APIService', () => {
 
   it('should handle error on getAllActiveTheses', async () => {
     const mockError = new Error('Test Error');
-  
+
     httpServiceSpy.get.and.returnValue(Promise.reject(mockError));
-  
+
     const result = await apiService.getAllActiveTheses();
-  
+
     expect(result).toBeUndefined();
   });
 
   it('should handle successful getAllArchivedTheses', async () => {
     const mockResponse = {};
-  
+
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
-  
+
     const result = await apiService.getAllArchivedTheses();
-  
+
     expect(httpServiceSpy.get).toHaveBeenCalledWith('thesisProposals/?cosupervisor=false&isArchieved=true');
     expect(result).toEqual(mockResponse);
   });
 
   it('should handle error on getAllArchivedTheses', async () => {
     const mockError = new Error('Test Error');
-  
+
     httpServiceSpy.get.and.returnValue(Promise.reject(mockError));
-  
+
     const result = await apiService.getAllArchivedTheses();
-  
+
     expect(result).toBeUndefined();
   });
 
   it('should get user details successfully', async () => {
     const userId = 'testUserId';
     const mockResponse = {};
-  
+
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
-  
+
     const result = await apiService.getUserDetails(userId);
-  
+
     expect(httpServiceSpy.get).toHaveBeenCalledWith(`students/${userId}`, false, true);
     expect(result).toEqual(mockResponse);
   });
@@ -284,7 +284,7 @@ describe('APIService', () => {
     expect(result).toEqual(mockResponse);
   });
 
-  it('should get all proposals successfully with parameters', async () => {
+  it('should get all proposals-view successfully with parameters', async () => {
     const mockParams = {
       text: 'testText',
       supervisors: [{ professorId: 1 }, { professorId: 2 }],
@@ -293,14 +293,14 @@ describe('APIService', () => {
       abroad: true,
     };
     const mockResponse = [{ proposalId: 1, title: 'Proposal 1' }, { proposalId: 2, title: 'Proposal 2' }];
-  
+
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
-  
+
     const result = await apiService.getAllProposals(mockParams);
-  
+
     const expectedUrl =
       'thesisProposals/?supervisor=1&supervisor=2&cosupervisor=3&cosupervisor=4&expirationdate=2024-01-09&abroad=true&text=testText&';
-  
+
     expect(httpServiceSpy.get).toHaveBeenCalledWith(expectedUrl, false, true);
     expect(result).toEqual(mockResponse);
   });
@@ -308,88 +308,88 @@ describe('APIService', () => {
   it('should get proposal successfully', async () => {
     const proposalId = 123;
     const mockResponse = {};
-  
+
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
-  
+
     const result = await apiService.getProposal(proposalId);
-  
+
     expect(httpServiceSpy.get).toHaveBeenCalledWith(`thesisProposals/${proposalId}`, false, true);
     expect(result).toEqual(mockResponse);
   });
 
   it('should handle successful getAllCoSupervisedActiveTheses', async () => {
     const mockResponse = [{ coSupervised: true }];
-  
+
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
-  
+
     spyOn(localStorage, 'setItem');
-  
+
     const result = await apiService.getAllCoSupervisedActiveTheses();
-  
+
     expect(httpServiceSpy.get).toHaveBeenCalledWith('thesisProposals/?cosupervisor=true&isArchieved=false');
     expect(result).toEqual(mockResponse);
   });
-  
+
   it('should handle error on getAllCoSupervisedActiveTheses', async () => {
     const mockError = new Error('Test Error');
-  
+
     httpServiceSpy.get.and.returnValue(Promise.reject(mockError));
-  
+
     const result = await apiService.getAllCoSupervisedActiveTheses();
-  
+
     expect(result).toBeUndefined();
   });
 
   it('should handle successful getThesisRequests', async () => {
     const mockResponse = [] as any;
-    
+
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
-  
+
     const result = await apiService.getThesisRequests();
-  
+
     expect(httpServiceSpy.get).toHaveBeenCalledWith('thesisRequests/');
     expect(result).toEqual(mockResponse);
   });
-  
+
   it('should handle error on getThesisRequests', async () => {
     const mockError = new Error('Test Error');
-  
+
     httpServiceSpy.get.and.returnValue(Promise.reject(mockError));
-  
+
     const result = await apiService.getThesisRequests();
-  
+
     expect(result).toBeUndefined();
   });
 
   it('should handle successful getCoSupervisedThesisRequests', async () => {
     const mockResponse = [{ coSupervised: true }];
-    
+
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
-  
+
     const result = await apiService.getCoSupervisedThesisRequests();
-  
+
     expect(httpServiceSpy.get).toHaveBeenCalledWith('thesisRequests/?cosupervisor=true');
     expect(result).toEqual(mockResponse);
   });
-  
+
   it('should handle error on getCoSupervisedThesisRequests', async () => {
     const mockError = new Error('Test Error');
-    
+
     httpServiceSpy.get.and.returnValue(Promise.reject(mockError));
-  
+
     const result = await apiService.getCoSupervisedThesisRequests();
-  
+
     expect(result).toBeUndefined();
   });
 
   it('should delete a thesis successfully', async () => {
     const proposalId = 123;
     const mockResponse = {};
-  
+
     httpServiceSpy.delete.and.returnValue(Promise.resolve(mockResponse));
-  
+
     const result = await apiService.deleteThesis(proposalId);
-  
+
     expect(httpServiceSpy.delete).toHaveBeenCalledWith(`thesisProposals/${proposalId}`, true);
     expect(result).toEqual(mockResponse);
   });
@@ -412,24 +412,24 @@ describe('APIService', () => {
   it('should get thesis request by ID successfully', async () => {
     const requestId = 123;
     const mockResponse = {};
-  
+
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
-  
+
     const result = await apiService.getRequest(requestId);
-  
+
     expect(httpServiceSpy.get).toHaveBeenCalledWith(`thesisRequests/${requestId}`, false, true);
     expect(result).toEqual(mockResponse);
   });
 
   it('should handle successful getProfessors', async () => {
     const mockResponse = [{}];
-  
+
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
 
     spyOn(localStorage, 'setItem');
-  
+
     const result = await apiService.getProfessors();
-  
+
     expect(httpServiceSpy.get).toHaveBeenCalledWith('professors', false, true);
     expect(localStorage.setItem).toHaveBeenCalled();
     expect((localStorage.setItem as jasmine.Spy).calls.mostRecent().args).toEqual(['professors', JSON.stringify(mockResponse)]);
@@ -438,13 +438,13 @@ describe('APIService', () => {
 
   it('should get supervisors successfully', async () => {
     const mockResponse = {};
-  
+
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
-  
+
     const result = await apiService.getSupervisors();
-  
+
     expect(httpServiceSpy.get).toHaveBeenCalledWith('professors/?cosupervisor=false');
-  
+
     expect(result).toEqual(mockResponse);
   });
 
@@ -452,11 +452,11 @@ describe('APIService', () => {
     const mockBody = new FormData();
     mockBody.append('thesisProposalId', '123');
     const mockResponse = {};
-  
+
     httpServiceSpy.post.and.returnValue(Promise.resolve(mockResponse));
-  
+
     const result = await apiService.insertNewApplication(mockBody);
-  
+
     expect(httpServiceSpy.post).toHaveBeenCalledWith(`thesisProposals/${mockBody.get("thesisProposalId")}`, mockBody);
     expect(result).toEqual(mockResponse);
   });
@@ -466,11 +466,11 @@ describe('APIService', () => {
     const thesisRequestId = 'testThesisRequestId';
     const status = 'Accepted';
     const mockResponse = {};
-  
+
     httpServiceSpy.put.and.returnValue(Promise.resolve(mockResponse));
-  
+
     const result = await apiService.putThesisRequest(professorId, thesisRequestId, status);
-  
+
     expect(httpServiceSpy.put).toHaveBeenCalledWith(`thesisRequests/${thesisRequestId}`, {
       supervisor: {
         professorId: professorId
@@ -488,11 +488,11 @@ describe('APIService', () => {
     const status = 'Change';
     const professorRequestChangesMessage = 'Requesting changes';
     const mockResponse = {};
-  
+
     httpServiceSpy.put.and.returnValue(Promise.resolve(mockResponse));
-  
+
     const result = await apiService.putThesisRequest(professorId, thesisRequestId, status, professorRequestChangesMessage);
-  
+
     expect(httpServiceSpy.put).toHaveBeenCalledWith(`thesisRequests/${thesisRequestId}`, {
       supervisor: {
         professorId: professorId
@@ -528,11 +528,11 @@ describe('APIService', () => {
   it('should handle successful getCareer', async () => {
     const studentId = 'testStudentId';
     const mockResponse = {};
-  
+
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
-  
+
     const result = await apiService.getCareer(studentId);
-  
+
     expect(httpServiceSpy.get).toHaveBeenCalledWith(`careers/${studentId}`, false, true);
     expect(result).toEqual(mockResponse);
   });
@@ -565,23 +565,23 @@ describe('APIService', () => {
       expirationDate: '2024-12-31',
     };
     const mockResponse = {};
-  
+
     httpServiceSpy.put.and.returnValue(Promise.resolve(mockResponse));
-  
+
     const result = await apiService.updateThesis(thesisProposalId, mockSubmitForm);
-  
+
     expect(httpServiceSpy.put).toHaveBeenCalledWith(`thesisProposals/${thesisProposalId}`, mockSubmitForm);
     expect(result).toEqual(mockResponse);
   });
-  
+
   it('should post a new CV successfully', async () => {
     const mockBody = {};
     const mockResponse = {};
-  
+
     httpServiceSpy.postBlob.and.returnValue(Promise.resolve(mockResponse));
-  
+
     const result = await apiService.postCv(mockBody);
-  
+
     expect(httpServiceSpy.postBlob).toHaveBeenCalledWith('cv', mockBody, {
       enctype: 'multipart/form-data',
       accept: 'application/pdf',
@@ -603,11 +603,11 @@ describe('APIService', () => {
 
   it('should delete CV successfully', async () => {
     const userId = 'testUserId';
-  
+
     httpServiceSpy.delete.and.returnValue(Promise.resolve({}));
-  
+
     const result = await apiService.deleteCv(userId);
-  
+
     expect(httpServiceSpy.delete).toHaveBeenCalledWith(`cv/${userId}`, true);
     expect(result).toEqual({});
   });
@@ -615,22 +615,22 @@ describe('APIService', () => {
   it('should update virtual clock successfully', async () => {
     const mockDate = '2024-01-09';
     const mockResponse = {};
-  
+
     httpServiceSpy.put.and.returnValue(Promise.resolve(mockResponse));
-  
+
     const result = await apiService.putVirtualClock(mockDate);
-  
+
     expect(httpServiceSpy.put).toHaveBeenCalledWith('virtualClock', { date: mockDate });
     expect(result).toEqual(mockResponse);
   });
 
   // it('should get all requests successfully', async () => {
   //   const mockResponse = [{}, {}];
-  
+
   //   httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
-  
+
   //   const result = await apiService.getAllRequests();
-  
+
   //   expect(httpServiceSpy.get).toHaveBeenCalledWith('thesisRequests');
   //   expect(result).toEqual(mockResponse);
   // });

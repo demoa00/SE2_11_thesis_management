@@ -32,21 +32,24 @@ import {MatInputModule} from "@angular/material/input";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatNativeDateModule} from "@angular/material/core";
 import {ThesisDetailsComponent} from './pages/professor-page/thesis-management/thesis-details/thesis-details.component';
-import {ApplicationViewComponent} from './pages/student-page/components/application-view/application-view.component';
+import {ApplicationsViewComponent} from './pages/student-page/components/applications/applications-view/applications-view.component';
 import {NotificationsContainerComponent} from './shared/components/notification/container/notifications-container/notifications-container.component';
 import {SocketIoModule} from "ngx-socket-io";
 import {ArchivedThesisTableComponent} from "./pages/professor-page/thesis-management/archived-thesis-table/archived-thesis-table.component";
 import {ProfilePageComponent} from "./shared/profile-page/profile-page.component";
 import {UpdateThesisFormComponent} from "./pages/professor-page/thesis-management/update-thesis-form/update-thesis-form.component";
 import {ApllicantDetailsComponent} from "./pages/professor-page/thesis-management/apllicant-details/apllicant-details.component";
-import {RequestsComponent} from "./pages/student-page/components/requests/requests.component";
+import {RequestsViewComponent} from "./pages/student-page/components/requests/requests-view/requests-view.component";
 import {ThesisRequestsTableComponent} from "./pages/professor-page/thesis-management/thesis-requests-table/thesis-requests-table.component";
 import {ThesisRequestDetailsComponent} from "./pages/professor-page/thesis-management/thesis-request-details/thesis-request-details.component";
 import {RequestFormComponent} from "./pages/student-page/components/requests/components/request-form/request-form.component";
-import {ProposalsComponent} from "./pages/student-page/components/proposals/proposals.component";
-import {ProposalDetailsComponent} from "./pages/student-page/components/proposal-details/proposal-details.component";
+import {ProposalsViewComponent} from "./pages/student-page/components/proposals/proposals-view/proposals-view.component";
+import {ProposalDetailsComponent} from "./pages/student-page/components/proposals/proposal-details/proposal-details.component";
 import {AuthGuardSecretaryService} from "./shared/services/auth-guard-secretary.service";
 import {SecretaryPageComponent} from "./pages/secretary-page/secretary-page.component";
+import {
+  ApplicationDetailsComponent
+} from "./pages/student-page/components/applications/application-details/application-details.component";
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
@@ -78,18 +81,19 @@ const routes: Routes = [
     DropdownCheckboxComponent,
     CheckboxComponent,
     ThesisDetailsComponent,
-    ApplicationViewComponent,
+    ApplicationsViewComponent,
     NotificationsContainerComponent,
     UpdateThesisFormComponent,
     ProfilePageComponent,
     ApllicantDetailsComponent,
-		RequestsComponent,
+		RequestsViewComponent,
     ThesisRequestsTableComponent,
     ThesisRequestDetailsComponent,
     RequestFormComponent,
-    ProposalsComponent,
+    ProposalsViewComponent,
     ProposalDetailsComponent,
-    SecretaryPageComponent
+    SecretaryPageComponent,
+    ApplicationDetailsComponent
   ],
 	imports: [
 		BrowserModule,
@@ -114,7 +118,8 @@ const routes: Routes = [
 	],
   providers: [AuthGuardProfessorService],
   exports: [
-    ButtonComponent
+    ButtonComponent,
+    ProposalDetailsComponent
   ],
   bootstrap: [AppComponent]
 })

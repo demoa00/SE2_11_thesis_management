@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {APIService} from "../../../../shared/services/api.service";
+import {APIService} from "../../../../../shared/services/api.service";
 
 type ProposalsParams = {
   text: string | null;
@@ -21,11 +21,11 @@ type Proposal = {
 }
 
 @Component({
-  selector: 'app-proposals',
-  templateUrl: './proposals.component.html',
-  styleUrl: './proposals.component.scss'
+  selector: 'app-proposals-view',
+  templateUrl: './proposals-view.component.html',
+  styleUrl: './proposals-view.component.scss'
 })
-export class ProposalsComponent {
+export class ProposalsViewComponent {
 
   constructor(private api: APIService) {}
 
@@ -51,7 +51,6 @@ export class ProposalsComponent {
   }
 
   ngOnInit() {
-    console.log("NG ON INIT")
     this.api.getAllProposals(null).then((response: any) => {
       this.proposals = response
     })

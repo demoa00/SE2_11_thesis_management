@@ -65,9 +65,13 @@
 }
 .applicationsContainer .application {
   border-bottom: 1px solid #e5e7eb;
+  cursor: pointer;
 }
 .applicationsContainer .application:last-child {
   border-bottom: none;
+}
+.applicationsContainer .application:hover .title {
+  text-decoration: underline;
 }
 .applicationsContainer .application td {
   vertical-align: middle;
@@ -106,4 +110,4 @@
   padding: 8px 0 8px 16px;
 }
 
-/*# sourceMappingURL=application-view.component.css.map */
+/*# sourceMappingURL=applications-view.component.css.map */

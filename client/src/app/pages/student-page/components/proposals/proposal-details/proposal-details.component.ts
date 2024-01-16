@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {User} from "../../../../shared/classes/user";
-import {StudentDetails} from "../../../../shared/classes/student/student-details";
-import {APIService} from "../../../../shared/services/api.service";
+import {User} from "../../../../../shared/classes/user";
+import {StudentDetails} from "../../../../../shared/classes/student/student-details";
+import {APIService} from "../../../../../shared/services/api.service";
 import * as dayjs from "dayjs"
 
 @Component({

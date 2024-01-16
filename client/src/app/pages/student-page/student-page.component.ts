@@ -33,6 +33,7 @@ export class StudentPageComponent {
   newApplications: File | null = null;
   notificationsOpen: boolean = false;
   selectedProposal: any | null = null;
+  selectedApplication: any | null = null;
   canApply: boolean = false;
   menuItems = [
     {

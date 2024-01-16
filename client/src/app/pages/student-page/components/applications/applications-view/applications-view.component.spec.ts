@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
-import { ApplicationViewComponent } from './application-view.component';
+import { ApplicationsViewComponent } from './applications-view.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APIService } from 'src/app/shared/services/api.service';
 import { AlertComponent } from 'src/app/shared/alert/alert.component';
 import { PopupComponent } from 'src/app/shared/components/popup-conferma/popup.component';
-import { RequestFormComponent } from '../requests/components/request-form/request-form.component';
+import { RequestFormComponent } from '../../requests/components/request-form/request-form.component';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { IconComponent } from 'src/app/shared/components/icon/icon.component';
 import { FormsModule } from '@angular/forms';
 
 describe('ApplicationViewComponent', () => {
-  let component: ApplicationViewComponent;
-  let fixture: ComponentFixture<ApplicationViewComponent>;
+  let component: ApplicationsViewComponent;
+  let fixture: ComponentFixture<ApplicationsViewComponent>;
   let apiService: jasmine.SpyObj<APIService>;
 
   beforeEach(async () => {
@@ -25,15 +25,15 @@ describe('ApplicationViewComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, FormsModule],
-      declarations: [ApplicationViewComponent, AlertComponent, PopupComponent, RequestFormComponent, ButtonComponent, IconComponent],
+      declarations: [ApplicationsViewComponent, AlertComponent, PopupComponent, RequestFormComponent, ButtonComponent, IconComponent],
       providers: [{ provide: APIService, useValue: apiService }]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ApplicationViewComponent);
+    fixture = TestBed.createComponent(ApplicationsViewComponent);
     component = fixture.componentInstance;
-    
+
     await fixture.whenStable();
-    
+
     fixture.detectChanges();
   });
 
@@ -56,22 +56,22 @@ describe('ApplicationViewComponent', () => {
 
   it('should set showPopup to true and fetch proposal details', fakeAsync(() => {
     const mockApplication = { thesisProposalId: 1 };
-  
+
     apiService.getProposal.and.returnValue(Promise.resolve({
       title: 'Mock Title',
       description: 'Mock Description',
       supervisor: { professorId: 'MockProfessorId' }
     }));
-  
+
     component.newRequest(mockApplication);
-  
+
     expect(component.showPopup).toBe(true);
-  
+
     tick();
     fixture.detectChanges();
-  
+
     expect(apiService.getProposal).toHaveBeenCalledWith(mockApplication.thesisProposalId);
-  
+
     expect(component.selectedApplication).toEqual({
       title: 'Mock Title',
       description: 'Mock Description',
@@ -81,19 +81,19 @@ describe('ApplicationViewComponent', () => {
 
   it('should show success alert and hide after 5 seconds', fakeAsync(() => {
     component.showAlert('success');
-  
+
     fixture.detectChanges();
     tick(5001);
-  
+
     expect(component.showInsertSuccessAlert).toBeFalse();
   }));
-  
+
   it('should show danger alert and hide after 5 seconds', fakeAsync(() => {
     component.showAlert('danger');
-  
+
     fixture.detectChanges();
     tick(5001);
-  
+
     expect(component.showDangerAlert).toBeFalse();
   }));
 

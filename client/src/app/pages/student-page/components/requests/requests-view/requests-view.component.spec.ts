@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RequestsComponent } from './requests.component';
+import { RequestsViewComponent } from './requests-view.component';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { PopupComponent } from 'src/app/shared/components/popup-conferma/popup.component';
-import { RequestFormComponent } from './components/request-form/request-form.component';
+import { RequestFormComponent } from '../components/request-form/request-form.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { IconComponent } from 'src/app/shared/components/icon/icon.component';
 import { FormsModule } from '@angular/forms';
@@ -11,8 +11,8 @@ import { APIService } from 'src/app/shared/services/api.service';
 import { AlertComponent } from 'src/app/shared/alert/alert.component';
 
 describe('RequestsComponent', () => {
-  let component: RequestsComponent;
-  let fixture: ComponentFixture<RequestsComponent>;
+  let component: RequestsViewComponent;
+  let fixture: ComponentFixture<RequestsViewComponent>;
   let apiService: jasmine.SpyObj<APIService>;
 
   beforeEach(async () => {
@@ -23,12 +23,12 @@ describe('RequestsComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, FormsModule],
-      declarations: [RequestsComponent, ButtonComponent, PopupComponent, RequestFormComponent, IconComponent, AlertComponent],
+      declarations: [RequestsViewComponent, ButtonComponent, PopupComponent, RequestFormComponent, IconComponent, AlertComponent],
       providers: [{ provide: APIService, useValue: apiService }]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(RequestsComponent);
+
+    fixture = TestBed.createComponent(RequestsViewComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
     fixture.detectChanges();
@@ -61,26 +61,26 @@ describe('RequestsComponent', () => {
   it('should show insert success alert on success', async () => {
     const responseData = [{ coSupervised: false }];
     apiService.getThesisRequests.and.returnValue(Promise.resolve(responseData));
-  
+
     spyOn(window, 'setTimeout');
-  
+
     await component.showAlert('success');
-  
+
     expect(apiService.getThesisRequests).toHaveBeenCalled();
     expect(component.requests).toEqual(responseData);
     expect(component.showInsertSuccessAlert).toBeTrue();
     expect(window.setTimeout).toHaveBeenCalled();
   });
-  
+
   it('should show danger alert on error', async () => {
     const mockError = 'Test Error';
-  
+
     apiService.getThesisRequests.and.returnValue(Promise.reject(mockError));
-  
+
     spyOn(window, 'setTimeout');
-  
+
     await component.showAlert('danger');
-  
+
     expect(component.showDangerAlert).toBeTrue();
     expect(window.setTimeout).toHaveBeenCalled();
   });
@@ -95,11 +95,11 @@ describe('RequestsComponent', () => {
 
   it('should set requestToDelete and show delete popup on selectRequestToDelete', () => {
     const mockRequest = { thesisRequestId: 1 };
-  
+
     component.selectRequestToDelete(mockRequest);
-  
+
     expect(component.requestToDelete).toEqual(mockRequest);
-  
+
     expect(component.showDeletePopup).toBe(true);
   });
 
