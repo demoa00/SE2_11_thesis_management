@@ -18,15 +18,36 @@
     <p>{{n.text}}</p>
   </div>
 
-  <app-proposals [proposals]="proposals" (selectedProposal)="selectedProposal = $event" (canApply)="canApply = $event" *ngIf="selectedProposal===null && menuItems[0].selected &&!profilePage" main-col class="container"/>
-  <app-proposal-details [selectedProposal]="selectedProposal" [canApply]="canApply" (selectedProposalUpdate)="selectedProposal = $event" *ngIf="selectedProposal!==null && menuItems[0].selected &&!profilePage" class="container" main-col/>
-  <app-application-view [applications]="newApplications" *ngIf="menuItems[1].selected && !profilePage" main-col></app-application-view>
-  <app-requests *ngIf="menuItems[2].selected && !profilePage" main-col></app-requests>
-  <app-profile-page *ngIf="profilePage" main-col></app-profile-page>
+  <app-proposals
+    [proposals]="proposals"
+    (selectedProposal)="selectedProposal = $event"
+    (canApply)="canApply = $event"
+    *ngIf="selectedProposal===null && menuItems[0].selected &&!profilePage"
+    main-col/>
+
+  <app-proposal-details
+    [selectedProposal]="selectedProposal"
+    [canApply]="canApply"
+    (selectedProposalUpdate)="selectedProposal = $event"
+    *ngIf="selectedProposal!==null && menuItems[0].selected &&!profilePage"
+    main-col/>
+
+  <app-application-view
+    [applications]="newApplications"
+    *ngIf="menuItems[1].selected && !profilePage"
+    main-col/>
+
+  <app-requests
+    *ngIf="menuItems[2].selected && !profilePage"
+    main-col/>
+
+  <app-profile-page
+    *ngIf="profilePage"
+    main-col/>
+
   <app-notifications-container
     (applicationsPage) = "goToApplicationPage($event)"
     (counterChange)="unreadCounter = $event" right-col
-    (close)="closeNotifications($event)"
-  />
+    (close)="closeNotifications($event)"/>
 
 </app-page-skeleton>
