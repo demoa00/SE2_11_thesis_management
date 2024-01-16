@@ -3,6 +3,7 @@
 const utils = require("../utils/writer.js");
 const Professor = require("../service/ProfessorService");
 
+
 module.exports.getProfessors = async function getProfessors(req, res, next) {
   try {
     if (req.user != undefined && req.query != undefined) {

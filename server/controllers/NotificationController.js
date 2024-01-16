@@ -3,6 +3,7 @@
 const utils = require("../utils/writer.js");
 const Notification = require("../service/NotificationService.js");
 
+
 module.exports.getNotifications = async function getNotifications(req, res, next) {
   try {
     if (req.user.userId != undefined) {

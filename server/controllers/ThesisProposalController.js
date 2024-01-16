@@ -4,6 +4,7 @@ const utils = require("../utils/writer.js");
 const ThesisProposal = require("../service/ThesisProposalService");
 const checkRole = require("../utils/checkRole.js");
 
+
 module.exports.getThesisProposals = async function getThesisProposals(req, res, next) {
   try {
     let thesisProposalsList;

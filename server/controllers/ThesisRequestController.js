@@ -4,11 +4,8 @@ const utils = require("../utils/writer.js");
 const ThesisRequest = require("../service/ThesisRequestService");
 const checkRole = require("../utils/checkRole.js");
 
-module.exports.getThesisRequests = async function getThesisRequests(
-  req,
-  res,
-  next
-) {
+
+module.exports.getThesisRequests = async function getThesisRequests(req, res, next) {
   try {
     let thesisRequestList;
 
@@ -37,11 +34,7 @@ module.exports.getThesisRequests = async function getThesisRequests(
   }
 };
 
-module.exports.getThesisRequestById = async function getThesisRequestById(
-  req,
-  res,
-  next
-) {
+module.exports.getThesisRequestById = async function getThesisRequestById(req, res, next) {
   try {
     if (req.user != undefined && req.params.thesisRequestId != undefined) {
       let thesisRequest = await ThesisRequest.getThesisRequestById(
@@ -57,11 +50,7 @@ module.exports.getThesisRequestById = async function getThesisRequestById(
   }
 };
 
-module.exports.insertNewThesisRequest = async function insertNewThesisRequest(
-  req,
-  res,
-  next
-) {
+module.exports.insertNewThesisRequest = async function insertNewThesisRequest(req, res, next) {
   try {
     if (req.user.userId != undefined && req.body != undefined) {
       let newThesisRequest = await ThesisRequest.insertNewThesisRequest(
@@ -77,11 +66,7 @@ module.exports.insertNewThesisRequest = async function insertNewThesisRequest(
   }
 };
 
-module.exports.updateThesisRequest = async function updateThesisRequest(
-  req,
-  res,
-  next
-) {
+module.exports.updateThesisRequest = async function updateThesisRequest(req, res, next) {
   try {
     let thesisRequestUpdated;
     if (checkRole.isProfessor(req.user)) {

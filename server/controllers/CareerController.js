@@ -3,6 +3,7 @@
 const utils = require("../utils/writer.js");
 const Career = require("../service/CareerService.js");
 
+
 module.exports.getCareer = async function (req, res, next) {
   try {
     if (req.params.studentId != undefined) {

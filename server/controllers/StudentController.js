@@ -3,6 +3,7 @@
 const utils = require("../utils/writer.js");
 const Student = require("../service/StudentService");
 
+
 module.exports.getStudentById = async function getStudentById(req, res, next) {
   try {
     if (req.params.studentId != undefined) {
