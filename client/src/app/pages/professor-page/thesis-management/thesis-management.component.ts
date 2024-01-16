@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {APIService} from "../../../shared/services/api.service";
 
 @Component({
@@ -6,7 +6,15 @@ import {APIService} from "../../../shared/services/api.service";
   templateUrl: './thesis-management.component.html',
   styleUrls: ['./thesis-management.component.scss']
 })
-export class ThesisManagementComponent {
+export class ThesisManagementComponent implements OnChanges{
+
+  @Input()
+  appPage: boolean = false;
+  @Input()
+  requestPage: boolean = false;
+  @Input()
+  thesisPage: boolean = false;
+
   createPopup: boolean = false;
   response :any;
   requestAccepted: boolean = false;
@@ -52,6 +60,18 @@ export class ThesisManagementComponent {
 
   ngOnInit() {
     this.showActiveThesesTable();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes["appPage"]){
+      this.showApplicantsTable()
+    }
+    if(changes["requestPage"]){
+      this.showThesisRequestsTable()
+    }
+    if(changes["thesisPage"]){
+      this.showActiveThesesTable()
+    }
   }
 
   async showApplicantsTable() {
@@ -164,4 +184,5 @@ export class ThesisManagementComponent {
       this.thesisRequestsRow = [];
     }
   }
+
 }

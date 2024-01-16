@@ -8,7 +8,15 @@
 <!--       *ngFor="let n of menuItems">-->
 <!--    <p>Lorem Ipsum</p>-->
 <!--  </div>-->
-  <app-thesis-management main-col></app-thesis-management>
-  <app-notifications-container right-col/>
+  <app-thesis-management
+    [appPage] = "appPage"
+    [thesisPage]="thesisPage"
+    [requestPage]="requestPage"
+    main-col></app-thesis-management>
+  <app-notifications-container
+    (profApplicationPage) = "goToApplicationPage($event)"
+    (profRequestPage) = "goToRequestPage($event)"
+    (profThesisPage) = "goToThesisPage($event)"
+    right-col/>
 
 </app-page-skeleton>
