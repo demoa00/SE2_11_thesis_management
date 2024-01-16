@@ -34,8 +34,6 @@ export class StudentPageComponent {
   notificationsOpen: boolean = false;
   selectedProposal: any | null = null;
   canApply: boolean = false;
-
-
   menuItems = [
     {
       'id': 0,
@@ -57,12 +55,9 @@ export class StudentPageComponent {
     }
   ]
 
-
-
   closeMenu() {
     this.trigger = !this.trigger
   }
-
 
   selectMenuItem(id: number) {
     this.menuItems.forEach((item) => {
@@ -92,7 +87,5 @@ export class StudentPageComponent {
     console.log($event)
     this.notificationsOpen = false
   }
-
-
 }
 

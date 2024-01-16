@@ -27,8 +27,7 @@ type Proposal = {
 })
 export class ProposalsComponent {
 
-  constructor(private api: APIService) {
-  }
+  constructor(private api: APIService) {}
 
   searchValue: string = "";
   professorsHover = false

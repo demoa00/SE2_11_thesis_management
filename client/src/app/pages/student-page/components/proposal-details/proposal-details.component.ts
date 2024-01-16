@@ -82,6 +82,4 @@ export class ProposalDetailsComponent {
   date(date: string) {
     return this.dayjs(date).format('DD/MM/YYYY')
   }
-
-
 }
