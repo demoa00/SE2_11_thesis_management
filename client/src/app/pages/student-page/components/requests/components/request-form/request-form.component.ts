@@ -15,14 +15,21 @@ export class RequestFormComponent {
   @Input() title = ""
   @Input() description = ""
   @Input() professorId = ""
+  @Input() cosupervisorId = ""
   @Output() showPopup = new EventEmitter<boolean>()
   @Output() showAlert = new EventEmitter<string>();
 
-  professors: ProfessorDetails[] = []
+  supervisors: ProfessorDetails[] = []
+  cosupervisors: ProfessorDetails[] = []
 
   ngOnInit(): void {
     this.api.getProfessors().then((res: any) => {
-      this.professors = res
+      this.supervisors = res
+    }).catch((err: any) => {
+      console.log(err)
+    })
+    this.api.getCoSupervisors().then((res: any) => {
+      this.cosupervisors = res
     }).catch((err: any) => {
       console.log(err)
     })

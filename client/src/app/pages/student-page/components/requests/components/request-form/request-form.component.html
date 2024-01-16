@@ -5,8 +5,14 @@
   </div>
   <div class="input professorContainer">
     <label for="formProfessor">Supervisor*</label>
-    <select class="input-field" [(ngModel)]="professorId" name="professor" id="formProfessor" required>
-      <option *ngFor="let professor of professors" [value]="professor.professorId">{{professor.name}} {{professor.surname}}</option>
+    <select class="input-field" [(ngModel)]="professorId" name="supervisor" id="formProfessor" required>
+      <option *ngFor="let supervisor of supervisors" [value]="supervisor.professorId">{{supervisor.name}} {{supervisor.surname}}</option>
+    </select>
+  </div>
+  <div class="input cosupervisorContainer">
+    <label for="formCoSupervisor">Cosupervisor</label>
+    <select class="input-field" [(ngModel)]="cosupervisorId" name="cosupervisor" id="formCoSupervisor">
+      <option *ngFor="let cosupervisor of cosupervisors" [value]="cosupervisor.professorId">{{cosupervisor.name}} {{cosupervisor.surname}}</option>
     </select>
   </div>
   <div class="input descriptionContainer">

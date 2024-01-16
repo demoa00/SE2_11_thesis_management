@@ -7,7 +7,7 @@
 .requestFormContainer {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-template-rows: auto 1fr;
   grid-gap: 16px;
   @media (min-width: 789px) and (max-width: 970px) {
@@ -30,32 +30,36 @@
     &.titleContainer {
       height: fit-content;
       grid-area: 1 / 1 / 2 / 3;
-      @media #{$media-mobile}{
-        grid-area: 1 / 1 / 2 / 4;
-      }
     }
 
     &.professorContainer {
       height: fit-content;
-      grid-area: 1 / 3 / 2 / 4;
+      grid-area: 2 / 1 / 3 / 2;
       @media #{$media-mobile}{
-        grid-area: 2 / 1 / 3 / 4;
+        grid-area: 2 / 1 / 3 / 3;
+      }
+    }
+    &.cosupervisorContainer {
+      height: fit-content;
+      grid-area: 2 / 2 / 3 / 3;
+      @media #{$media-mobile}{
+        grid-area: 3 / 1 / 4 / 3;
       }
     }
 
     &.descriptionContainer {
       height: fit-content;
-      grid-area: 2 / 1 / 3 / 4;
+      grid-area: 3 / 1 / 4 / 3;
       @media #{$media-mobile}{
-        grid-area: 3 / 1 / 4 / 4;
+        grid-area: 4 / 1 / 5 / 3;
       }
     }
   }
 
   .submitContainer{
-    grid-area: 3 / 1 / 4 / 4;
+    grid-area: 4 / 1 / 5 / 3;
     @media #{$media-mobile}{
-      grid-area: 4 / 1 / 5 / 4;
+      grid-area: 5 / 1 / 6 / 3;
     }
     width: 100%;
     display: flex;
