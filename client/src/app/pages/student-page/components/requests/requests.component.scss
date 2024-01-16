@@ -46,13 +46,6 @@
         }
       }
 
-
-      //&.mobile {
-      //  td {
-      //    padding: 0;
-      //  }
-      //}
-
       .statusContainer {
         &.mobile {
           display: flex;
@@ -85,6 +78,10 @@
 
           &.rejected {
             background: $danger;
+          }
+
+          &.change {
+            background: $change;
           }
 
           &.cancelled {

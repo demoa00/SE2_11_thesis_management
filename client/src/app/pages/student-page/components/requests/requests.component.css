@@ -119,6 +119,9 @@
 .requestsContainer .requestsTable .request .statusContainer .status.rejected {
   background: #f56565;
 }
+.requestsContainer .requestsTable .request .statusContainer .status.change {
+  background: #4bb2ff;
+}
 .requestsContainer .requestsTable .request .statusContainer .status.cancelled {
   background: #e5e7eb;
   color: #545454;

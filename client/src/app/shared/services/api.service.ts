@@ -192,6 +192,10 @@ export class APIService {
     return await this.httpService.get(`thesisProposals/${proposalId}`, false, true)
   }
 
+  async getArchivedProposal(proposalId: number | undefined) {
+    return await this.httpService.get(`thesisProposals/${proposalId}?archived=true`, false, true)
+  }
+
   async getRequest(requestId: number | undefined) {
     return await this.httpService.get(`thesisRequests/${requestId}`, false, true)
   }

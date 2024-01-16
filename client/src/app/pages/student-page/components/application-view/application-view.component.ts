@@ -39,7 +39,7 @@ export class ApplicationViewComponent {
 
   newRequest(a: any) {
     this.showPopup = true
-    this.api.getProposal(a.thesisProposalId).then((res: any) => {
+    this.api.getArchivedProposal(a.thesisProposalId).then((res: any) => {
       console.log(res)
       this.selectedApplication = {
         title: res.title,
