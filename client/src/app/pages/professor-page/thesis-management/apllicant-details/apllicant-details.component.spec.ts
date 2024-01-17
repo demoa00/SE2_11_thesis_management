@@ -92,4 +92,45 @@ describe('ApllicantDetailsComponent', () => {
 
     expect(result).toBeUndefined();
   });
+
+  it('should download application file when getApplicationFile() is called', fakeAsync(() => {
+    const mockBlob = new Blob();
+    apiService.getApplicationFile.and.returnValue(Promise.resolve(mockBlob));
+  
+    const spyCreateElement = spyOn(document, 'createElement').and.callThrough();
+    const spyBodyAppend = spyOn(document.body, 'appendChild').and.callThrough();
+    const spyBodyRemove = spyOn(document.body, 'removeChild').and.callThrough();
+  
+    component.loadApplicationFile();
+    tick();
+  
+    component.getApplicationFile();
+    tick();
+  
+    expect(apiService.getApplicationFile).toHaveBeenCalledWith(component.application.thesisProposalId, component.userId);
+    expect(spyCreateElement).toHaveBeenCalledOnceWith('a');
+    expect(spyBodyAppend).toHaveBeenCalledOnceWith(jasmine.any(HTMLAnchorElement));
+    expect(spyBodyRemove).toHaveBeenCalledOnceWith(jasmine.any(HTMLAnchorElement));
+  }));
+
+  it('should open a new window with application file when openApplicationFile() is called', fakeAsync(() => {
+    const spyWindowOpen = spyOn(window, 'open').and.callThrough();
+  
+    component.attachedFile = new Blob(); 
+  
+    component.openApplicationFile();
+    tick();
+  
+    expect(spyWindowOpen).toHaveBeenCalledOnceWith(jasmine.any(String), '_blank');
+  }));
+
+  it('should handle error on loadApplicationFile', () => {
+    const mockError = new Error('Test Error');
+
+    apiService.getApplicationFile.and.returnValue(Promise.reject(mockError));
+
+    const result = component.loadApplicationFile();
+
+    expect(result).toBeUndefined();
+  });
 });

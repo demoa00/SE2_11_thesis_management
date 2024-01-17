@@ -19,6 +19,7 @@ describe('RequestsComponent', () => {
     apiService = jasmine.createSpyObj('APIService', {
       'getThesisRequests': Promise.resolve([]),
       'deleteThesisRequest': Promise.resolve([]),
+      'getRequest': Promise.resolve([]),
     })
 
     await TestBed.configureTestingModule({
@@ -121,5 +122,76 @@ describe('RequestsComponent', () => {
     expect(component.requests).toEqual([]);
 
     expect(component.showDeletePopup).toBeFalsy();
+  });
+
+  it('should handle error on deleteRequest', async () => {
+    const mockError = 'Test Error';
+    const requestToDelete = { thesisRequestId: 1 };
+
+    apiService.deleteThesisRequest.and.returnValue(Promise.reject(mockError));
+    component.requestToDelete = requestToDelete;
+
+    let res = await component.deleteRequest();
+
+    expect(res).toBeUndefined();
+  });
+
+  it('should handle error on deleteRequest 2', async () => {
+    const mockError = 'Test Error';
+    const requestToDelete = { thesisRequestId: 1 };
+
+    apiService.deleteThesisRequest.and.returnValue(Promise.resolve({}));
+    apiService.getThesisRequests.and.returnValue(Promise.reject(mockError));
+    component.requestToDelete = requestToDelete;
+
+    let res = await component.deleteRequest();
+
+    expect(res).toBeUndefined();
+  });
+
+  it('should emit selectedRequest event on selectRequest', async () => {
+    const mockRequest = { thesisRequestId: 1 };
+    const mockResponse = {
+      title: 'Test Title',
+      description: 'Test Description',
+      supervisor: 'Test Supervisor',
+      coSupervisors: ['CoSupervisor1', 'CoSupervisor2'],
+      message: 'Test Message',
+      date: '2024-01-17',
+      approvalDate: '2024-01-18',
+      professorStatus: 'Approved'
+    };
+  
+    apiService.getRequest.and.returnValue(Promise.resolve(mockResponse));
+  
+    spyOn(component.selectedRequest, 'emit');
+  
+    await component.selectRequest(mockRequest);
+  
+    expect(apiService.getRequest).toHaveBeenCalledWith(mockRequest.thesisRequestId);
+  
+    expect(component.selectedRequest.emit).toHaveBeenCalledWith({
+      proposal: {
+        title: mockResponse.title,
+        description: mockResponse.description,
+        supervisor: mockResponse.supervisor,
+        coSupervisors: mockResponse.coSupervisors,
+      },
+      message: mockResponse.message,
+      date: mockResponse.date,
+      approvalDate: mockResponse.approvalDate,
+      professorStatus: mockResponse.professorStatus
+    });
+  });
+  
+  it('should handle error on selectRequest', async () => {
+    const mockError = 'Test Error';
+    const mockRequest = { thesisRequestId: 1 };
+
+    apiService.getRequest.and.returnValue(Promise.reject(mockError));
+
+    let res = await component.selectRequest(mockRequest);
+
+    expect(res).toBeUndefined();
   });
 });
