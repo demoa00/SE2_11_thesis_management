@@ -49,14 +49,21 @@ describe('ProposalDetailsComponent', () => {
     expect(getUserDetailsSpy).toHaveBeenCalledWith(mockUser.userId);
   });
 
-  it('should apply successfully with file and message', () => {
+  it('should apply successfully with file and message', async () => {
     component.applicationMessage = 'Test Message';
     component.applicationFile = new File([''], 'test.txt');
-
-    component.apply();
-
+  
+    apiService.insertNewApplication.and.returnValue(Promise.resolve());
+    let toggleSpy = spyOn(component, 'togglePopup');
+  
+    await component.apply();
+  
     expect(apiService.insertNewApplication).toHaveBeenCalledOnceWith(jasmine.any(FormData));
     expect(component.canApply).toBeFalsy();
+    expect(toggleSpy).toHaveBeenCalled();
+    expect(component.applicationMessage).toBe('');
+    expect(component.applicationFile).toBeNull();
+    expect(component.showSuccessAlert).toBe(true);
   });
 
   it('should handle error when application fails', async () => {

@@ -109,7 +109,7 @@ describe('ApplicationViewComponent', () => {
   });
 
   it('should select application and emit details', fakeAsync(() => {
-    const mockApplication = { thesisProposalId: 1 };
+    const mockApplication = { thesisProposalId: 1, status: 'accepted' };
     const mockProposalResponse = {
       title: 'Mock Title',
       description: 'Mock Description',
@@ -117,14 +117,20 @@ describe('ApplicationViewComponent', () => {
     };
   
     apiService.getProposal.and.returnValue(Promise.resolve(mockProposalResponse));
-    spyOn(component.selectedApplicationDetails, 'emit');
   
+    spyOn(component.selectedApplicationDetails, 'emit');
+
     component.selectApplication(mockApplication);
+  
     tick();
     fixture.detectChanges();
-
+  
     expect(apiService.getProposal).toHaveBeenCalledWith(mockApplication.thesisProposalId);
-    expect(component.selectedApplicationDetails.emit).toHaveBeenCalledWith(mockProposalResponse);
+  
+    expect(component.selectedApplicationDetails.emit).toHaveBeenCalledWith({
+      proposal: mockProposalResponse,
+      status: mockApplication.status
+    });
   }));
 
   it('should handle error on selectApplication', async () => {
