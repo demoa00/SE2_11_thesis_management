@@ -1,6 +1,5 @@
 import {Component, EventEmitter, HostListener, Output} from '@angular/core';
 import {APIService} from "../../../../../shared/services/api.service";
-import {matLegacySelectAnimations} from "@angular/material/legacy-select";
 
 @Component({
   selector: 'app-requests',
@@ -17,8 +16,10 @@ export class RequestsViewComponent {
   requestToEdit: any = null;
   showInsertPopup = false
   showDeletePopup: boolean = false;
+  showEditPopup: boolean = false;
   showInsertSuccessAlert = false
   showDeleteSuccessAlert: boolean = false;
+  showEditSuccessAlert: boolean = false;
   showDangerAlert = false
 
   @Output() selectedRequest = new EventEmitter<any>()
@@ -62,7 +63,19 @@ export class RequestsViewComponent {
     }
   }
 
-  editRequest(request: any){}
+  editRequest(request: any){
+    this.api.getRequest(request.thesisRequestId).then(response=>{
+      console.log(response)
+      this.requestToEdit = response
+      this.showEditPopup = true
+    }).catch(error=>{
+      console.log(error)
+      this.showDangerAlert = true
+      setTimeout(()=>{
+        this.showDangerAlert = false
+      }, 5000)
+    })
+  }
 
   selectRequestToDelete(request: any){
     this.requestToDelete = request;
@@ -104,12 +117,13 @@ export class RequestsViewComponent {
           title: response.title,
           description: response.description,
           supervisor: response.supervisor,
-          coSupervisors: response.coSupervisors,
+          coSupervisor: response.coSupervisors,
         },
         message: response.message,
         date: response.date,
         approvalDate: response.approvalDate,
-        professorStatus: response.professorStatus
+        professorStatus: response.professorStatus,
+        secretaryStatus: response.secretaryStatus,
       }
       this.selectedRequest.emit(selectedRequest)
     }).catch((error) => {

@@ -37,6 +37,8 @@
 
 .projectInfo {
   display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
   justify-content: space-between;
 }
 
@@ -62,6 +64,7 @@
 
 .projectStatus {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
 }

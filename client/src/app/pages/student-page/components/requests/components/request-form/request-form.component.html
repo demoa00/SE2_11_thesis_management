@@ -15,6 +15,10 @@
       <option *ngFor="let cosupervisor of cosupervisors" [value]="cosupervisor.professorId">{{cosupervisor.name}} {{cosupervisor.surname}}</option>
     </select>
   </div>
+  <div class="messageContainer" *ngIf="message">
+    <label>Message</label>
+    <p>{{message}}</p>
+  </div>
   <div class="input descriptionContainer">
     <label for="formDescription">Description*</label>
     <textarea class="input-field" [(ngModel)]="description" name="description" placeholder="Description" rows="4" id="formDescription" required></textarea>

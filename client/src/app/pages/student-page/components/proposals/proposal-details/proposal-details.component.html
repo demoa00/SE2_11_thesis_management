@@ -26,11 +26,12 @@
         class="regularText">{{ selectedProposal?.thesisType }}</span></p>
       <p class="font-bold" *ngIf="selectedProposal?.abroad">Abroad: <span
         class="regularText">{{ selectedProposal?.abroad ? 'Yes' : 'No' }}</span></p>
-      <p class="font-bold" *ngIf="selectedProposal?.groups.length > 0">Groups: <span class="regularText"
-                                                                                    *ngFor="let g of selectedProposal?.groups; let last = last">{{ g }}{{ last ? '' : ', ' }}</span>
+      <p class="font-bold" *ngIf="selectedProposal?.groups && selectedProposal?.groups.length > 0">Groups: <span
+        class="regularText"
+        *ngFor="let g of selectedProposal?.groups; let last = last">{{ g }}{{ last ? '' : ', ' }}</span>
       </p>
       <p class="font-bold" *ngIf="selectedProposal?.CdS">Study Courses: <span class="regularText"
-                                                *ngFor="let cs of selectedProposal?.CdS; let last = last">{{ cs.titleDegree }}
+                                                                              *ngFor="let cs of selectedProposal?.CdS; let last = last">{{ cs.titleDegree }}
         ({{ cs.degreeId }}){{ last ? '' : ', ' }}</span></p>
       <p class="font-bold" *ngIf="selectedProposal?.expirationDate">Expiration date: <span
         class="regularText">{{ date(selectedProposal?.expirationDate) }}</span></p>
@@ -45,6 +46,20 @@
         <p>Status: </p>
         <div class="statusContainer">
           <p class="status {{professorStatus?.toLowerCase()}}">{{ professorStatus }}</p>
+        </div>
+      </div>
+      <div class="projectStatus" *ngIf="type==='request'">
+        <div class="flex items-center gap-2">
+          <p>Supervisor status: </p>
+          <div class="statusContainer">
+            <p class="status {{professorStatus.toLowerCase()}}">{{ professorStatus }}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <p>Secretary status: </p>
+          <div class="statusContainer">
+            <p class="status {{secretaryStatus.toLowerCase()}}">{{ secretaryStatus }}</p>
+          </div>
         </div>
       </div>
     </div>

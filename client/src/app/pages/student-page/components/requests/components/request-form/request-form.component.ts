@@ -18,6 +18,7 @@ export class RequestFormComponent {
   @Input() cosupervisorId = ""
   @Output() showPopup = new EventEmitter<boolean>()
   @Output() showAlert = new EventEmitter<string>();
+  @Input() message: string = "";
 
   supervisors: ProfessorDetails[] = []
   cosupervisors: ProfessorDetails[] = []
