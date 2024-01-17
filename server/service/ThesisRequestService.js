@@ -114,7 +114,7 @@ exports.getThesisRequestById = function (user, thesisRequestId) {
         params = [thesisRequestId, user.userId, user.userId];
     }
     if (checkRole.isStudent(user)) {
-        sql += "SELECT * FROM thesisRequests WHERE thesisRequestId = ? AND studentId = ?";
+        sql = "SELECT * FROM thesisRequests WHERE thesisRequestId = ? AND studentId = ?";
         params = [thesisRequestId, user.userId];
     }
 
