@@ -68,7 +68,11 @@ export class ApplicationsViewComponent {
     let thesisProposalId = a.thesisProposalId
     this.api.getProposal(thesisProposalId).then((res: any) => {
       console.log(res)
-      this.selectedApplicationDetails.emit(res)
+      let selectedApplication = {
+        proposal: res,
+        status: a.status
+      }
+      this.selectedApplicationDetails.emit(selectedApplication)
     }).catch((err: any) => {
       console.log(err)
       this.showDangerAlert = true

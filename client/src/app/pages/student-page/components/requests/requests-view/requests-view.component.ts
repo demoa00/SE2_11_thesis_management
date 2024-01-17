@@ -1,5 +1,6 @@
-import {Component, HostListener} from '@angular/core';
+import {Component, EventEmitter, HostListener, Output} from '@angular/core';
 import {APIService} from "../../../../../shared/services/api.service";
+import {matLegacySelectAnimations} from "@angular/material/legacy-select";
 
 @Component({
   selector: 'app-requests',
@@ -13,12 +14,14 @@ export class RequestsViewComponent {
   requests: any[] = Array(0)
   screenWidth = 0
   requestToDelete: any = null;
+  requestToEdit: any = null;
   showInsertPopup = false
   showDeletePopup: boolean = false;
   showInsertSuccessAlert = false
   showDeleteSuccessAlert: boolean = false;
   showDangerAlert = false
 
+  @Output() selectedRequest = new EventEmitter<any>()
   ngOnInit() {
     this.requests = Array(0)
     this.api.getThesisRequests().then((response: any) => {
@@ -93,5 +96,25 @@ export class RequestsViewComponent {
     this.showDeletePopup = false
   }
 
+  selectRequest(request: any) {
+    this.api.getRequest(request.thesisRequestId).then((response: any) => {
+      console.log(response)
+      let selectedRequest = {
+        proposal:{
+          title: response.title,
+          description: response.description,
+          supervisor: response.supervisor,
+          coSupervisors: response.coSupervisors,
+        },
+        message: response.message,
+        date: response.date,
+        approvalDate: response.approvalDate,
+        professorStatus: response.professorStatus
+      }
+      this.selectedRequest.emit(selectedRequest)
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
 
 }

@@ -1,4 +1,6 @@
 <app-proposal-details
-  [selectedProposal]="selectedApplication"
+  [type]="'application'"
+  [professorStatus]="selectedApplication.status"
+  [selectedProposal]="selectedApplication.proposal"
   (selectedProposalUpdate)="selectedApplicationUpdate.emit($event)"
 />

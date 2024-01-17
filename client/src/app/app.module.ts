@@ -50,6 +50,9 @@ import {SecretaryPageComponent} from "./pages/secretary-page/secretary-page.comp
 import {
   ApplicationDetailsComponent
 } from "./pages/student-page/components/applications/application-details/application-details.component";
+import {
+  RequestDetailsComponent
+} from "./pages/student-page/components/requests/request-details/request-details.component";
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
@@ -93,7 +96,8 @@ const routes: Routes = [
     ProposalsViewComponent,
     ProposalDetailsComponent,
     SecretaryPageComponent,
-    ApplicationDetailsComponent
+    ApplicationDetailsComponent,
+    RequestDetailsComponent
   ],
 	imports: [
 		BrowserModule,

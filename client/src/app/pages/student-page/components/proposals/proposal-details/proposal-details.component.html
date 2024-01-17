@@ -3,38 +3,50 @@
     <div class="projectHeader">
       <h2 class="projectTitle">{{ selectedProposal?.title }}</h2>
       <p class="font-bold">Supervisor: <span
-        class="regularText">{{ selectedProposal?.supervisor.name }} {{ selectedProposal?.supervisor.surname }}</span></p>
+        class="regularText">{{ selectedProposal?.supervisor.name }} {{ selectedProposal?.supervisor.surname }}</span>
+      </p>
       <p class="font-bold" *ngIf="selectedProposal?.coSupervisor.length > 0">Cosupervisors: <span class="regularText"
-                                                                                                 *ngFor="let cs of selectedProposal?.coSupervisor; let last = last">{{ cs.name }} {{ cs.surname }}{{ last ? '' : ', ' }}</span>
+                                                                                                  *ngFor="let cs of selectedProposal?.coSupervisor; let last = last">{{ cs.name }} {{ cs.surname }}{{ last ? '' : ', ' }}</span>
       </p>
     </div>
-    <div class="projectBody">
+    <div class="projectBody" *ngIf="selectedProposal?.description">
       <p class="font-bold">Description</p>
       <div class="regularText">
         <p>{{ selectedProposal?.description }}</p>
       </div>
     </div>
-    <div class="projectBody">
+    <div class="projectBody" *ngIf="selectedProposal?.requirements">
       <p class="font-bold">Requirements</p>
       <div class="regularText">
         <p>{{ selectedProposal?.requirements }}</p>
       </div>
     </div>
     <div class="projectFooter">
-      <p class="font-bold">Type: <span class="regularText">{{ selectedProposal?.thesisType }}</span></p>
-      <p class="font-bold">Abroad: <span class="regularText">{{ selectedProposal?.abroad ? 'Yes' : 'No' }}</span></p>
-      <p class="font-bold">Groups: <span class="regularText"
-                                         *ngFor="let g of selectedProposal?.groups; let last = last">{{ g }}{{ last ? '' : ', ' }}</span>
+      <p class="font-bold" *ngIf="selectedProposal?.thesisType">Type: <span
+        class="regularText">{{ selectedProposal?.thesisType }}</span></p>
+      <p class="font-bold" *ngIf="selectedProposal?.abroad">Abroad: <span
+        class="regularText">{{ selectedProposal?.abroad ? 'Yes' : 'No' }}</span></p>
+      <p class="font-bold" *ngIf="selectedProposal?.groups.length > 0">Groups: <span class="regularText"
+                                                                                    *ngFor="let g of selectedProposal?.groups; let last = last">{{ g }}{{ last ? '' : ', ' }}</span>
       </p>
-      <p class="font-bold">Study Courses: <span class="regularText"
+      <p class="font-bold" *ngIf="selectedProposal?.CdS">Study Courses: <span class="regularText"
                                                 *ngFor="let cs of selectedProposal?.CdS; let last = last">{{ cs.titleDegree }}
         ({{ cs.degreeId }}){{ last ? '' : ', ' }}</span></p>
-      <p class="font-bold">Expiration date: <span
+      <p class="font-bold" *ngIf="selectedProposal?.expirationDate">Expiration date: <span
         class="regularText">{{ date(selectedProposal?.expirationDate) }}</span></p>
     </div>
-    <div class="projectButtons">
-      <app-button class="grey" (click)="selectProposal(-1)">Back</app-button>
-      <app-button (click)="togglePopup()" [ngClass]="!canApply ? 'disabled' : ''">Apply</app-button>
+    <div class="projectInfo">
+      <div class="projectButtons">
+        <app-button class="grey" (click)="selectProposal(-1)">Back</app-button>
+        <app-button *ngIf="type==='proposal'" (click)="togglePopup()" [ngClass]="!canApply ? 'disabled' : ''">Apply
+        </app-button>
+      </div>
+      <div class="projectStatus" *ngIf="type==='application'">
+        <p>Status: </p>
+        <div class="statusContainer">
+          <p class="status {{professorStatus.toLowerCase()}}">{{ professorStatus }}</p>
+        </div>
+      </div>
     </div>
     <app-popup
       *ngIf="popupVisible"

@@ -13,7 +13,7 @@
        [class.hovered]="n.hovered && !n.selected"
        (mouseenter)="n.hovered=true"
        (mouseleave)="n.hovered=false"
-       (click)="selectMenuItem(n.id); n.id == 1 ? selectedProposal=null : null; closeMenu(); profilePage = false;"
+       (click)="selectMenuItem(n.id)"
        *ngFor="let n of menuItems">
     <p>{{ n.text }}</p>
   </div>
@@ -27,6 +27,7 @@
     main-col/>
 
   <app-proposal-details
+    [type]="'proposal'"
     [selectedProposal]="selectedProposal"
     [canApply]="canApply"
     (selectedProposalUpdate)="selectedProposal = $event"
@@ -46,7 +47,14 @@
     main-col/>
 
   <app-requests
-    *ngIf="menuItems[2].selected && !profilePage"
+    (selectedRequest)="selectedRequest = $event"
+    *ngIf="selectedRequest === null && menuItems[2].selected && !profilePage"
+    main-col/>
+
+  <app-request-details
+    [selectedRequest]="selectedRequest"
+    (selectedRequestUpdate)="selectedRequest = $event"
+    *ngIf="selectedRequest !== null && menuItems[2].selected && !profilePage"
     main-col/>
 
   <app-profile-page

@@ -34,6 +34,7 @@ export class StudentPageComponent {
   notificationsOpen: boolean = false;
   selectedProposal: any | null = null;
   selectedApplication: any | null = null;
+  selectedRequest: any | null = null;
   canApply: boolean = false;
   menuItems = [
     {
@@ -61,6 +62,10 @@ export class StudentPageComponent {
   }
 
   selectMenuItem(id: number) {
+    this.selectedProposal=null
+    this.selectedApplication=null
+    this.closeMenu()
+    this.profilePage = false;
     this.menuItems.forEach((item) => {
       item.selected = false
     })

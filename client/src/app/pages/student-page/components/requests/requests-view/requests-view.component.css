@@ -76,6 +76,13 @@
 .requestsContainer .requestsTable .request {
   border-bottom: 1px solid #e5e7eb;
 }
+.requestsContainer .requestsTable .request:hover .title {
+  text-decoration: underline;
+}
+.requestsContainer .requestsTable .request .title {
+  text-align: left;
+  cursor: pointer;
+}
 .requestsContainer .requestsTable .request td {
   padding: 8px 8px 8px 8px;
 }

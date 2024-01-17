@@ -26,12 +26,20 @@ export class ProposalDetailsComponent {
 
   @Input() selectedProposal: any | null = null;
   @Input() canApply: boolean = false;
+  @Input() type=""
+  @Input() professorStatus: string = "";
+  @Input() secretaryStatus: string = "";
   @Output() selectedProposalUpdate = new EventEmitter<any>()
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('user') || '{}')
     this.api.getUserDetails(this.user?.userId).then((response: any) => {
       this.userDetails = response
+    })
+    this.api.getApplications().then((response: any) => {
+      this.canApply = !response.some((application: any) => {
+        return application.status === "Accepted"
+      })
     })
   }
 
