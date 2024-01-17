@@ -15,6 +15,7 @@ describe('ProposalDetailsComponent', () => {
     apiService = jasmine.createSpyObj('APIService', {
       'getUserDetails': Promise.resolve([]),
       'insertNewApplication': Promise.resolve([]),
+      'getApplications': Promise.resolve([]),
     });
     
     await TestBed.configureTestingModule({

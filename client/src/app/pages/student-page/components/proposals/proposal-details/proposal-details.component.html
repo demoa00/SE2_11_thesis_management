@@ -44,7 +44,7 @@
       <div class="projectStatus" *ngIf="type==='application'">
         <p>Status: </p>
         <div class="statusContainer">
-          <p class="status {{professorStatus.toLowerCase()}}">{{ professorStatus }}</p>
+          <p class="status {{professorStatus?.toLowerCase()}}">{{ professorStatus }}</p>
         </div>
       </div>
     </div>
