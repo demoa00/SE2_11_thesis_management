@@ -59,5 +59,8 @@
 .checkbox.checked {
   background-color: #04264c;
 }
+.checkbox.radio {
+  border-radius: 50%;
+}
 
 /*# sourceMappingURL=checkbox.component.css.map */

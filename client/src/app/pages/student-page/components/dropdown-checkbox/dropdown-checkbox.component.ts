@@ -17,6 +17,7 @@ export class DropdownCheckboxComponent {
 
   @Output()
   searchedValue: EventEmitter<string> = new EventEmitter<string>();
+  @Input() request = false;
 
   updateSearch(value: string) {
     this.updateSearchFunction(value);

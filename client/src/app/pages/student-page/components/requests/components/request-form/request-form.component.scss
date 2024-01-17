@@ -7,7 +7,7 @@
 .requestFormContainer {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-template-rows: auto 1fr;
   grid-gap: 16px;
   @media (min-width: 789px) and (max-width: 970px) {
@@ -32,19 +32,28 @@
       grid-area: 1 / 1 / 2 / 3;
     }
 
-    &.professorContainer {
+    &.supervisorContainer {
+      position: relative;
       height: fit-content;
       grid-area: 2 / 1 / 3 / 2;
       @media #{$media-mobile}{
         grid-area: 2 / 1 / 3 / 3;
       }
     }
-    &.cosupervisorContainer {
+
+    &.coSupervisorContainer {
+      position: relative;
       height: fit-content;
       grid-area: 2 / 2 / 3 / 3;
       @media #{$media-mobile}{
         grid-area: 3 / 1 / 4 / 3;
       }
+    }
+
+    .supervisorsText {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
 
     &.descriptionContainer {
@@ -56,7 +65,7 @@
     }
   }
 
-  .submitContainer{
+  .submitContainer {
     grid-area: 4 / 1 / 5 / 3;
     @media #{$media-mobile}{
       grid-area: 5 / 1 / 6 / 3;
@@ -65,5 +74,29 @@
     display: flex;
     justify-content: center;
     gap: 16px
+  }
+}
+
+.itemsContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 4px;
+  cursor: pointer;
+  height: 100%;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  .checkbox {
+    width: 12px;
+    height: 12px;
+    margin-right: 16px;
+    border: 1px solid $poliblue;
+
+    &.checked {
+      background-color: $poliblue;
+    }
   }
 }

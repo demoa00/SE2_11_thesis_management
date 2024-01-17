@@ -64,5 +64,9 @@
   z-index: 1;
   text-align: right;
 }
+.dropdownContent.request {
+  max-height: 180px;
+  overflow-y: auto;
+}
 
 /*# sourceMappingURL=dropdown-checkbox.component.css.map */

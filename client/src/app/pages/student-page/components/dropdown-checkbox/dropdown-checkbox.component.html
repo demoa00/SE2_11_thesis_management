@@ -1,4 +1,4 @@
-<div class="dropdownContent" *ngIf="hover">
+<div class="dropdownContent {{request ? 'request' : ''}}" *ngIf="hover">
   <div *ngIf="showSearch" class="border-b-2 mb-2 flex justify-between">
     <input id="professorsSearch-input" class="outline-0 w-24" type="text" placeholder="Search..."
            [(ngModel)]="searchValue" (ngModelChange)="updateSearch($event)"/>

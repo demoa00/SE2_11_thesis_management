@@ -7,4 +7,5 @@ import {Component, Input} from '@angular/core';
 })
 export class CheckboxComponent {
   @Input() checked: boolean = false;
+  @Input() radio = false;
 }

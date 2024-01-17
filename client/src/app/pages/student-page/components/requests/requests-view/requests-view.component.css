@@ -79,6 +79,9 @@
 .requestsContainer .requestsTable .request:hover .title {
   text-decoration: underline;
 }
+.requestsContainer .requestsTable .request.mobile td {
+  padding-left: 0 !important;
+}
 .requestsContainer .requestsTable .request .title {
   text-align: left;
   cursor: pointer;

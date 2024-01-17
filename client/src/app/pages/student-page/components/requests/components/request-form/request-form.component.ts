@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, signal, ViewChild} from '@angular/core';
 import {APIService} from "../../../../../../shared/services/api.service";
 import {ProfessorDetails} from "../../../../../../shared/classes/professor/professor-details";
 
@@ -20,8 +20,16 @@ export class RequestFormComponent {
   @Output() showAlert = new EventEmitter<string>();
   @Input() message: string = "";
 
-  supervisors: ProfessorDetails[] = []
-  cosupervisors: ProfessorDetails[] = []
+  professorsHover = false
+  coSupervisorHover = false
+  supervisors: any
+  coSupervisors: any
+  selectedSupervisor: any;
+  selectedCoSupervisors: any[] = [];
+  @Input() update: boolean = false;
+  @Input() thesisRequestId!: any;
+
+
 
   ngOnInit(): void {
     this.api.getProfessors().then((res: any) => {
@@ -30,7 +38,7 @@ export class RequestFormComponent {
       console.log(err)
     })
     this.api.getCoSupervisors().then((res: any) => {
-      this.cosupervisors = res
+      this.coSupervisors = res
     }).catch((err: any) => {
       console.log(err)
     })
@@ -48,23 +56,73 @@ export class RequestFormComponent {
     e.preventDefault()
     console.log("submit")
     const body = {
+      thesisRequestId: this.thesisRequestId,
       title: this.title,
       description: this.description,
       supervisor: {
         professorId: this.professorId
-      }
+      },
+      coSupervisors: this.selectedCoSupervisors
     }
-    this.api.postThesisRequest(body).then((_res: any) => {
-      this.showAlert.emit('success')
-      this.cancel()
-    }).catch((err: any) => {
-      this.showAlert.emit('danger')
-      console.log(err)
-    })
+    if (this.update){
+      this.api.putThesisRequestStudent(body).then((_res: any) => {
+        this.showAlert.emit('success')
+        this.cancel()
+      }).catch((err: any) => {
+        this.showAlert.emit('danger')
+        console.log(err)
+      })
+    }
+    else {
+      this.api.postThesisRequest(body).then((_res: any) => {
+        this.showAlert.emit('success')
+        this.cancel()
+      }).catch((err: any) => {
+        this.showAlert.emit('danger')
+        console.log(err)
+      })
+    }
   }
 
   checkFields(): boolean {
     return !!this.title && !!this.description && !!this.professorId
+  }
+
+  toggleProf(prof: any) {
+    console.log(prof)
+    this.selectedSupervisor = prof;
+    this.professorId = prof.professorId;
+  }
+
+  toggleCoSupervisor(prof: any) {
+    if (this.selectedCoSupervisors.some((item) => {
+      return item.professorId === prof.professorId;
+    })) {
+      this.selectedCoSupervisors = this.selectedCoSupervisors.filter((item) => {
+        return item.professorId !== prof.professorId;
+      })
+    } else {
+      this.selectedCoSupervisors.push(prof);
+    }
+  }
+
+  isProfSelected(prof: any) {
+    if (this.selectedSupervisor !== undefined) {
+      return this.selectedSupervisor.professorId === prof.professorId;
+    }
+    return false;
+  }
+
+  isCoSupervisorSelected(prof: any) {
+    return this.selectedCoSupervisors.some((item) => {
+      return item.professorId === prof.professorId;
+    })
+  }
+
+  selectedCoSupervisorsNames() {
+    return this.selectedCoSupervisors.map((item) => {
+      return item.name + " " + item.surname;
+    }).join(", ");
   }
 
 }

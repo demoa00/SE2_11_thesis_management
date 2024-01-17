@@ -13,5 +13,9 @@
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   z-index: 1;
   text-align: right;
+  &.request {
+    max-height: 180px;
+    overflow-y: auto;
+  }
 }
 

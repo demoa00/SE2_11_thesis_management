@@ -34,6 +34,12 @@
         }
       }
 
+      &.mobile {
+        td {
+          padding-left: 0 !important;
+        }
+      }
+
       .title {
         text-align: left;
         cursor: pointer;

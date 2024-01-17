@@ -253,6 +253,9 @@ export class APIService {
     return await this.httpService.delete(`thesisRequests/${thesisRequestId}`, true)
   }
 
+  async putThesisRequestStudent(body: any) {
+    return await this.httpService.put(`thesisRequests/${body.thesisRequestId}`, body)
+  }
   async putThesisRequest(professorId: any, thesisRequestId: any, status: 'Accepted' | 'Rejected' | 'Change', professorRequestChangesMessage?:any) {
     return await this.httpService.put(`thesisRequests/${thesisRequestId}`, professorRequestChangesMessage?{
       supervisor: {
