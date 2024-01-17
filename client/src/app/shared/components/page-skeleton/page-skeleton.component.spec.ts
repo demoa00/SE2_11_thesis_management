@@ -22,7 +22,8 @@ describe('PageSkeletonComponent', () => {
       'getProfessorDetails': Promise.resolve([]),
       'putVirtualClock': Promise.resolve([]),
       'getAllProposals': Promise.resolve([]),
-      'getApplications': Promise.resolve([])
+      'getApplications': Promise.resolve([]),
+      'getSecretaryClerkDetails': Promise.resolve([]),
     });
 
     await TestBed.configureTestingModule({

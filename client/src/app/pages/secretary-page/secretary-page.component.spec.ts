@@ -17,6 +17,7 @@ describe('SecretaryPageComponent', () => {
     apiService = jasmine.createSpyObj('APIService', {
       'getThesisRequests': Promise.resolve([]),
       'checkAutorization': Promise.resolve([]),
+      'getSecretaryClerkDetails': Promise.resolve([]),
     });
 
     await TestBed.configureTestingModule({

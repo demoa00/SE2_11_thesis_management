@@ -22,6 +22,7 @@ describe('ApplicationViewComponent', () => {
       'getProposal': Promise.resolve([]),
       'getProfessors': Promise.resolve([]),
       'getArchivedProposal': Promise.resolve([]),
+      'getCoSupervisors': Promise.resolve([]),
     });
 
     await TestBed.configureTestingModule({
@@ -55,30 +56,28 @@ describe('ApplicationViewComponent', () => {
     expect(component.applications).toBeDefined();
   }));
 
-  // it('should set showPopup to true and fetch proposal details', fakeAsync(() => {
-  //   const mockApplication = { thesisProposalId: 1 };
-
-  //   apiService.getProposal.and.returnValue(Promise.resolve({
-  //     title: 'Mock Title',
-  //     description: 'Mock Description',
-  //     supervisor: { professorId: 'MockProfessorId' }
-  //   }));
-
-  //   component.newRequest(mockApplication);
-
-  //   expect(component.showPopup).toBe(true);
-
-  //   tick();
-  //   fixture.detectChanges();
-
-  //   expect(apiService.getProposal).toHaveBeenCalledWith(mockApplication.thesisProposalId);
-
-  //   expect(component.selectedApplication).toEqual({
-  //     title: 'Mock Title',
-  //     description: 'Mock Description',
-  //     professorId: 'MockProfessorId'
-  //   });
-  // }));
+  it('should set showPopup to true and fetch proposal details', fakeAsync(() => {
+    const mockApplication = { thesisProposalId: 1 };  
+    const mockApiResponse = {
+      title: 'Mock Title',
+      description: 'Mock Description',
+      supervisor: { professorId: 'MockProfessorId' }
+    };
+  
+    apiService.getArchivedProposal.and.returnValue(Promise.resolve(mockApiResponse));
+    component.newRequest(mockApplication);
+  
+    expect(component.showPopup).toBe(true);
+    tick();
+    fixture.detectChanges();
+  
+    expect(apiService.getArchivedProposal).toHaveBeenCalledWith(mockApplication.thesisProposalId);
+    expect(component.selectedApplication).toEqual({
+      title: 'Mock Title',
+      description: 'Mock Description',
+      professorId: 'MockProfessorId'
+    });
+  }));  
 
   it('should show success alert and hide after 5 seconds', fakeAsync(() => {
     component.showAlert('success');
@@ -107,5 +106,35 @@ describe('ApplicationViewComponent', () => {
 
     expect(component.onWindowResize).toHaveBeenCalled();
     expect(component.screenWidth).toBe(window.innerWidth);
+  });
+
+  it('should select application and emit details', fakeAsync(() => {
+    const mockApplication = { thesisProposalId: 1 };
+    const mockProposalResponse = {
+      title: 'Mock Title',
+      description: 'Mock Description',
+      supervisor: { professorId: 'MockProfessorId' }
+    };
+  
+    apiService.getProposal.and.returnValue(Promise.resolve(mockProposalResponse));
+    spyOn(component.selectedApplicationDetails, 'emit');
+  
+    component.selectApplication(mockApplication);
+    tick();
+    fixture.detectChanges();
+
+    expect(apiService.getProposal).toHaveBeenCalledWith(mockApplication.thesisProposalId);
+    expect(component.selectedApplicationDetails.emit).toHaveBeenCalledWith(mockProposalResponse);
+  }));
+
+  it('should handle error on selectApplication', async () => {
+    const mockError = 'Test Error';
+    const mockApplication = { thesisProposalId: 1 };
+
+    apiService.getProposal.and.returnValue(Promise.reject(mockError));
+
+    let res = await component.selectApplication(mockApplication);
+
+    expect(res).toBeUndefined();
   });
 });
