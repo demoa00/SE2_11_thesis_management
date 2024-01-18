@@ -155,11 +155,12 @@ describe('RequestsComponent', () => {
       title: 'Test Title',
       description: 'Test Description',
       supervisor: 'Test Supervisor',
-      coSupervisors: ['CoSupervisor1', 'CoSupervisor2'],
+      coSupervisor: undefined,
       message: 'Test Message',
       date: '2024-01-17',
       approvalDate: '2024-01-18',
-      professorStatus: 'Approved'
+      professorStatus: 'Approved',
+      secretaryStatus: undefined
     };
   
     apiService.getRequest.and.returnValue(Promise.resolve(mockResponse));
@@ -175,12 +176,13 @@ describe('RequestsComponent', () => {
         title: mockResponse.title,
         description: mockResponse.description,
         supervisor: mockResponse.supervisor,
-        coSupervisors: mockResponse.coSupervisors,
+        coSupervisor: mockResponse.coSupervisor,
       },
       message: mockResponse.message,
       date: mockResponse.date,
       approvalDate: mockResponse.approvalDate,
-      professorStatus: mockResponse.professorStatus
+      professorStatus: mockResponse.professorStatus,
+      secretaryStatus: mockResponse.secretaryStatus
     });
   });
   
@@ -191,6 +193,53 @@ describe('RequestsComponent', () => {
     apiService.getRequest.and.returnValue(Promise.reject(mockError));
 
     let res = await component.selectRequest(mockRequest);
+
+    expect(res).toBeUndefined();
+  });
+
+  it('should set requestToEdit and show edit popup on editRequest', async () => {
+    const mockRequest = { thesisRequestId: 1 };
+  
+    const mockResponse = {
+      title: 'Test Title',
+      description: 'Test Description',
+      supervisor: 'Test Supervisor',
+      coSupervisors: ['CoSupervisor1', 'CoSupervisor2'],
+      message: 'Test Message',
+      date: '2024-01-17',
+      approvalDate: '2024-01-18',
+      professorStatus: 'Approved'
+    };
+  
+    apiService.getRequest.and.returnValue(Promise.resolve(mockResponse));
+  
+    await component.editRequest(mockRequest);
+  
+    expect(apiService.getRequest).toHaveBeenCalledWith(mockRequest.thesisRequestId);
+  
+    expect(component.requestToEdit).toEqual(mockResponse);
+  
+    expect(component.showEditPopup).toBe(true);
+  });
+
+  it('should handle error on editRequest', async () => {
+    const mockError = 'Test Error';
+    const mockRequest = { thesisRequestId: 1 };
+
+    apiService.getRequest.and.returnValue(Promise.reject(mockError));
+
+    let res = await component.editRequest(mockRequest);
+
+    expect(res).toBeUndefined();
+  });
+
+  it('should handle error on showAlert', async () => {
+    const mockError = 'Test Error';
+    const mockType = 'success';
+
+    apiService.getThesisRequests.and.returnValue(Promise.reject(mockError));
+
+    let res = await component.showAlert(mockType);
 
     expect(res).toBeUndefined();
   });
