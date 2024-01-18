@@ -88,22 +88,15 @@ describe('SecretaryRequestsViewComponent', () => {
 
     expect(apiService.getRequest).toHaveBeenCalledWith(1);
     expect(emitSpy).toHaveBeenCalledWith({
-      proposal: {
-        thesisRequestId: 1,
-        title: 'Mock Thesis Title',
-        coSupervisors: ['Mock Supervisor 1', 'Mock Supervisor 2'],
-        message: 'Mock message',
-        date: '2024-01-18T12:00:00Z',
-        approvalDate: '2024-01-19T08:30:00Z',
-        professorStatus: 'Approved',
-        secretaryStatus: 'Pending',
-        coSupervisor: ['Mock Supervisor 1', 'Mock Supervisor 2'],
-      },
+      thesisRequestId: 1,
+      title: 'Mock Thesis Title',
+      coSupervisors: ['Mock Supervisor 1', 'Mock Supervisor 2'],
       message: 'Mock message',
       date: '2024-01-18T12:00:00Z',
       approvalDate: '2024-01-19T08:30:00Z',
       professorStatus: 'Approved',
       secretaryStatus: 'Pending',
+      coSupervisor: ['Mock Supervisor 1', 'Mock Supervisor 2'],
     });
   }));
 
