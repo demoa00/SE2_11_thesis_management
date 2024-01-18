@@ -12,9 +12,9 @@ sections:
 
 ### Macro statistics
 
-- Number of stories committed vs done :  / 
-- Total points committed vs done :  / 
-- Nr of hours planned vs spent (as a team) :  / 
+- Number of stories committed vs done : 12 / 
+- Total points committed vs done : 47 / 
+- Nr of hours planned vs spent (as a team) : 98h /
 
 **Remember**  a story is done ONLY if it fits the Definition of Done:
  
@@ -30,23 +30,18 @@ sections:
 | Story  | # Tasks | Points | Hours est. | Hours actual |
 |--------|---------|--------|------------|--------------|
 | _#0_   |       |       |         |           |
-| 8      |        |       |          |            |
-| 9      |        |       |      |        |
-| 10     |        |       |      |        |
-| 11     |        |       |          |            | 
-| 12     |        |       |      |            | 
-| 13     |        |       |         |           | 
-| 14     |        |       |          |            |
-| 15     |        |       |          |        |
-| 16     |        |       |          |            | 
-| 19     |        |       |          |            |
-| 21     |        |       |          |            |
-| 22     |        |       |      |            |
-| 23     |        |       |          |            |
-| 24     |        |       |          |            | 
-| 25     |        |       |          |            | 
-| 26     |        |       |         |           |
-| 35     |        |       |          |            |
+| 18     |        | 2      |          |            |
+| 20     |        | 1      |          |            |
+| 26     |        | 8      |          |            |
+| 27     |        | 13     |          |            |
+| 28     |        | 8      |          |            |
+| 29     |        | 1      |          |            |
+| 30     |        | 2      |      |        |
+| 31     |        | 5      |          |            |
+| 32     |        | 1      |          |            |
+| 33     |        | 3      |          |            |
+| 34     |        | 1      |          |            |
+| 36     |        | 2      |      |        |
 
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
 
@@ -62,13 +57,13 @@ sections:
   - Nr of automated unit test cases : 
   - Coverage (if available) : 
 - E2E testing:
-  - Total hours estimated : 
+  - Total hours estimated : 3h
   - Total hours spent : 
 - Code review 
-  - Total hours estimated : 
+  - Total hours estimated : 6h
   - Total hours spent : 
 - Technical Debt management:
-  - Total hours estimated : 
+  - Total hours estimated : 3h
   - Total hours spent : 
   - Hours estimated for remediation by SonarQube : 
   - Hours estimated for remediation by SonarQube only for the selected and planned issues
