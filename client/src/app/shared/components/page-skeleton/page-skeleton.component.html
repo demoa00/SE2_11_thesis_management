@@ -11,8 +11,9 @@
           <p (click)="goToProfile()" class="text-sm"
              *ngIf="currentRoute==='/student'">{{ student?.name }} {{ student?.surname }}, {{ student?.studentId }}</p>
           <p (click)="goToProfile()" class="text-sm"
-             *ngIf="currentRoute==='/professor'">{{ professor?.name }} {{ professor?.surname }}
-            , {{ professor?.professorId }}</p>
+             *ngIf="currentRoute==='/professor'">{{ professor?.name }} {{ professor?.surname }}, {{ professor?.professorId }}</p>
+          <p (click)="goToProfile()" class="text-sm"
+             *ngIf="currentRoute==='/secretary'">{{ secretaryClerk?.name }} {{ secretaryClerk?.surname }}, {{ secretaryClerk?.professorId }}</p>
           <app-button class="small w-fit" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
         </div>
       </div>
@@ -36,6 +37,8 @@
         <p class="text-sm uppercase cursor-pointer hover:underline" (click)="goToProfile()"
            *ngIf="currentRoute==='/professor'">{{ professor?.name }} {{ professor?.surname }}
           , {{ professor?.professorId }}</p>
+        <p class="text-sm uppercase cursor-pointer hover:underline" (click)="goToProfile()"
+           *ngIf="currentRoute==='/secretary'">{{ secretaryClerk?.name }} {{ secretaryClerk?.surname }}, {{ secretaryClerk?.secretaryClerckEmployeeId }}</p>
         <app-button class="ml-4" (click)="logout()" *ngIf="currentRoute!=='/'">Logout</app-button>
       </div>
       <div class="notIconContainer">

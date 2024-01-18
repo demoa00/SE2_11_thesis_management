@@ -57,7 +57,7 @@ export class PageSkeletonComponent {
     this.api.checkAutorization()
     this.user = JSON.parse(localStorage.getItem('user') || '{}')
     if (this.user?.role == 'student') {
-      this.api.getUserDetails(this.user?.userId).then((response: any) => {
+      this.api.getStudentDetails(this.user?.userId).then((response: any) => {
         this.student = response
       })
     } else if (this.user?.role == 'professor') {
@@ -70,6 +70,8 @@ export class PageSkeletonComponent {
       this.api.getSecretaryClerkDetails(this.user?.userId).then((response: any) => {
         console.log(response)
         this.secretaryClerk = response
+      }).catch(e=>{
+        console.log(e)
       })
     }
   }

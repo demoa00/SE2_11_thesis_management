@@ -8,10 +8,10 @@ const transporter = nodemailer.createTransport({
 });
 
 
-exports.subjectInsertCoSupervisor = 'Added as co-supervisor';
+exports.subjectInsertCoSupervisor = 'Added as co-supervisor for thesis proposal';
 exports.textInsertCoSupervisor = 'You are added as a co-supervisor, for thesis proposal:';
 
-exports.subjectRemoveCoSupervisor = 'Removed as co-supervisor';
+exports.subjectRemoveCoSupervisor = 'Removed as co-supervisor for thesis proposal';
 exports.textRemoveCoSupervisor = 'You are removed as a co-supervisor, for thesis proposal:';
 
 exports.subjectDecisionApplication = 'Application decision';

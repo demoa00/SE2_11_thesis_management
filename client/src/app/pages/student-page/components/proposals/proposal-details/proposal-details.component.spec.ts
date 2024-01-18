@@ -17,14 +17,14 @@ describe('ProposalDetailsComponent', () => {
       'insertNewApplication': Promise.resolve([]),
       'getApplications': Promise.resolve([]),
     });
-    
+
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       declarations: [ProposalDetailsComponent, ButtonComponent, AlertComponent],
       providers: [{ provide: APIService, useValue: apiService }],
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(ProposalDetailsComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
@@ -39,7 +39,7 @@ describe('ProposalDetailsComponent', () => {
     const mockUser = { userId: 123 };
     spyOn(JSON, 'parse').and.returnValue(mockUser);
 
-    const getUserDetailsSpy = apiService.getUserDetails.and.returnValue(Promise.resolve({}));
+    const getUserDetailsSpy = apiService.getStudentDetails.and.returnValue(Promise.resolve({}));
 
     component.ngOnInit();
     await fixture.whenStable();
@@ -52,12 +52,12 @@ describe('ProposalDetailsComponent', () => {
   it('should apply successfully with file and message', async () => {
     component.applicationMessage = 'Test Message';
     component.applicationFile = new File([''], 'test.txt');
-  
+
     apiService.insertNewApplication.and.returnValue(Promise.resolve());
     let toggleSpy = spyOn(component, 'togglePopup');
-  
+
     await component.apply();
-  
+
     expect(apiService.insertNewApplication).toHaveBeenCalledOnceWith(jasmine.any(FormData));
     expect(component.canApply).toBeFalsy();
     expect(toggleSpy).toHaveBeenCalled();

@@ -383,7 +383,7 @@ describe('APIService', () => {
 
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
 
-    const result = await apiService.getUserDetails(userId);
+    const result = await apiService.getStudentDetails(userId);
 
     expect(httpServiceSpy.get).toHaveBeenCalledWith(`students/${userId}`, false, true);
     expect(result).toEqual(mockResponse);
