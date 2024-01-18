@@ -256,23 +256,31 @@ export class APIService {
   async putThesisRequestStudent(body: any) {
     return await this.httpService.put(`thesisRequests/${body.thesisRequestId}`, body)
   }
-  async putThesisRequest(professorId: any, thesisRequestId: any, status: 'Accepted' | 'Rejected' | 'Change', professorRequestChangesMessage?:any) {
+  async putThesisRequest(professorId: any, thesisRequestId: any, status: 'Accepted' | 'Rejected' | 'Change', studentId:any, thesisProposalId:any, professorRequestChangesMessage?:any) {
     return await this.httpService.put(`thesisRequests/${thesisRequestId}`, professorRequestChangesMessage?{
       supervisor: {
         professorId: professorId
       },
+      requester: {
+        studentId: studentId
+      },
       professorStatus: status,
       title:' ',
       description:' ',
+      thesisProposalId: thesisProposalId,
       professorRequestChangesMessage: professorRequestChangesMessage,
     }:
       {
         supervisor: {
           professorId: professorId
         },
+        requester: {
+          studentId: studentId
+        },
         professorStatus: status,
         title: ' ',
-        description:' '
+        description:' ',
+        thesisProposalId: thesisProposalId,
       }
     )
   }

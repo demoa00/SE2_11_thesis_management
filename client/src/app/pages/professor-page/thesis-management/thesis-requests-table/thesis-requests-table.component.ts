@@ -65,7 +65,7 @@ export class ThesisRequestsTableComponent {
   async rejectThesisRequest(){
     console.log(this.actionRequest)
     const professor = JSON.parse(localStorage.getItem('professor')!)
-    this.response = await this.api.putThesisRequest(this.actionRequest.supervisor? this.actionRequest.supervisor.professorId: professor.professorId, this.actionRequest.thesisRequestId, 'Rejected')
+    this.response = await this.api.putThesisRequest(this.actionRequest.supervisor? this.actionRequest.supervisor.professorId: professor.professorId, this.actionRequest.thesisRequestId, this.actionRequest.studentId? this.actionRequest.studentId:this.actionRequest.requester.studentId, this.actionRequest.thesisProposalId, 'Rejected')
     if (this.response){
       this.rows = await this.api.getThesisRequests()
       this.requestAccepted = true;
@@ -74,7 +74,7 @@ export class ThesisRequestsTableComponent {
   }
   async acceptThesisRequest(){
     const professor = JSON.parse(localStorage.getItem('professor')!)
-    this.response = await this.api.putThesisRequest(this.actionRequest.supervisor? this.actionRequest.supervisor.professorId: professor.professorId, this.actionRequest.thesisRequestId, 'Accepted')
+    this.response = await this.api.putThesisRequest(this.actionRequest.supervisor? this.actionRequest.supervisor.professorId: professor.professorId, this.actionRequest.thesisRequestId, 'Accepted', this.actionRequest.studentId? this.actionRequest.studentId:this.actionRequest.requester.studentId, this.actionRequest.thesisProposalId)
     if (this.response){
       this.rows = await this.api.getThesisRequests()
       this.requestAccepted = true;
@@ -84,7 +84,7 @@ export class ThesisRequestsTableComponent {
 
   async updateThesisRequest(text:any){
     const professor = JSON.parse(localStorage.getItem('professor')!)
-    this.response = await this.api.putThesisRequest(this.actionRequest.supervisor? this.actionRequest.supervisor.professorId: professor.professorId, this.actionRequest.thesisRequestId, 'Change', text)
+    this.response = await this.api.putThesisRequest(this.actionRequest.supervisor? this.actionRequest.supervisor.professorId: professor.professorId, this.actionRequest.thesisRequestId, 'Change', this.actionRequest.studentId? this.actionRequest.studentId:this.actionRequest.requester.studentId, this.actionRequest.thesisProposalId, text)
     if (this.response){
       this.rows = await this.api.getThesisRequests()
       this.requestAccepted = true;
