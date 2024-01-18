@@ -166,7 +166,6 @@ exports.getThesisRequestById = function (user, thesisRequestId) {
                 if (err) {
                     reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
                 } else if (row == undefined) {
-                    console.log("ciao 3")
                     reject(new PromiseError({ code: 404, message: "Not Found" }));
                 } else {
                     thesisRequest.requester.name = row.name;
@@ -542,7 +541,6 @@ exports.deleteThesisRequest = async function (studentId, thesisRequestId) {
             const sql = "DELETE FROM thesisRequests WHERE thesisRequestId = ? AND studentId = ?";
             db.run(sql, [thesisRequestId, studentId], function (err) {
                 if (err) {
-                    console.log(err)
                     reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
                 } else {
                     resolve(thesisRequest);
@@ -562,8 +560,8 @@ exports.deleteThesisRequest = async function (studentId, thesisRequestId) {
                 notificationPromises.push(Notification.insertNewNotification(c.coSupervisorId, smtp.subjectDeleteThesisRequest, 10));
             });
 
-            await Promise.all(notificationPromises).catch((err) => console.log(err));
-            await Promise.all(emailPromises).catch((err) => console.log(err));
+            await Promise.all(notificationPromises);
+            await Promise.all(emailPromises);
 
             return;
         } catch (error) {
