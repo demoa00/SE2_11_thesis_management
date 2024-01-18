@@ -17,6 +17,7 @@ describe('ApllicantDetailsComponent', () => {
       'getCareer': Promise.resolve([]),
       'getCv': Promise.resolve(new Blob()),
       'getApplicationFile': Promise.resolve([]),
+      'getStudentDetails': Promise.resolve([]),
     });
 
     await TestBed.configureTestingModule({
