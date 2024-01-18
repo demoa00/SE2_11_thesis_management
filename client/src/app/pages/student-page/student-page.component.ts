@@ -39,7 +39,7 @@ export class StudentPageComponent {
   menuItems = [
     {
       'id': 0,
-      'selected': !true,
+      'selected': true,
       'hovered': false,
       'text': 'Proposals'
     },
@@ -51,7 +51,7 @@ export class StudentPageComponent {
     },
     {
       'id': 2,
-      'selected': !false,
+      'selected': false,
       'hovered': false,
       'text': 'Requests'
     }

@@ -122,7 +122,7 @@ describe('APIService', () => {
   
     const result = await apiService.getSecretaryClerkDetails(userId);
   
-    expect(httpServiceSpy.get).toHaveBeenCalledWith(`/secretaryClercks/${userId}`, false, true);
+    expect(httpServiceSpy.get).toHaveBeenCalledWith(`secretaryClerckEmployees/${userId}`, false, true);
     expect(result).toEqual(mockResponse);
   });
 

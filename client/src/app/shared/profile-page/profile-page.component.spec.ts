@@ -16,7 +16,8 @@ describe('ProfilePageComponent', () => {
       'getCareer': Promise.resolve([]),
       'postCv': Promise.resolve([]),
       'getCv': Promise.resolve(new Blob()),
-      'deleteCv': Promise.resolve([])
+      'deleteCv': Promise.resolve([]),
+      'getStudentDetails': Promise.resolve([]),
     });
 
     await TestBed.configureTestingModule({

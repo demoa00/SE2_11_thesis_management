@@ -117,6 +117,13 @@
   gap: 16px;
 }
 
+.secretaryButtons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
 .statusContainer.mobile {
   display: flex;
   align-items: center;

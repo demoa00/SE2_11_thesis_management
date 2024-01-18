@@ -2,7 +2,6 @@
   <div class="proposalsCard card">
     <div class="projectHeader">
       <h2 class="projectTitle">{{ selectedProposal?.title }}</h2>
-      {{selectedProposal | json}}
       <p class="font-bold">Supervisor: <span
         class="regularText">{{ selectedProposal?.supervisor.name }} {{ selectedProposal?.supervisor.surname }}</span>
       </p>
@@ -68,8 +67,8 @@
         </div>
       </div>
       <div class="secretaryButtons" *ngIf="type==='secretary'">
-        <app-button>Approve Request</app-button>
         <app-button class="danger">Reject Request</app-button>
+        <app-button>Approve Request</app-button>
       </div>
     </div>
     <app-popup

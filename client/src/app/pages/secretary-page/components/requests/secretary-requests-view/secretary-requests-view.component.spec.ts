@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SecretaryRequestsViewComponent } from './secretary-requests-view.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SecretaryRequestsViewComponent', () => {
   let component: SecretaryRequestsViewComponent;
@@ -8,7 +9,8 @@ describe('SecretaryRequestsViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SecretaryRequestsViewComponent]
+      imports: [HttpClientTestingModule],
+      declarations: [SecretaryRequestsViewComponent]
     })
     .compileComponents();
     
