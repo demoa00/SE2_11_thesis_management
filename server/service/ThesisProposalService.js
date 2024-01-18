@@ -872,7 +872,7 @@ exports.updateAcceptedApplication = function (thesisProposalId) {
   }).then((studentId) => {
     return new Promise(function (resolve, reject) {
       const sql = "UPDATE applications SET status = 'Rejected' WHERE thesisProposalId = ? AND studentId = ?";
-      db.run(sql, [thesisProposalId, studentId], (err) => {
+      db.run(sql, [thesisProposalId, studentId], function (err) {
         if (err) {
           reject(new InternalError());
         } else if (this.changes === 0) {
