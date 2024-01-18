@@ -33,7 +33,7 @@ exports.textRejectThesisRequestBySecretary = 'Your thesis request has been rejec
 exports.textAcceptThesisRequestByProfessor = 'Your thesis request has been accepted by professor, for thesis request:';
 exports.textRejectThesisRequestByProfessor = 'Your thesis request has been rejected by professor, for thesis request:';
 
-exports.subjectInsertThesisRequest = 'Added as supervisor, for thesis request:';
+exports.subjectInsertThesisRequest = 'Added as supervisor for thesis request';
 exports.textInsertThesisRequest = 'You are added as a supervisor, for thesis request:';
 
 exports.textRemoveThesisRequestCoSupervisor = 'You have been removed as a co-supervisor, for thesis request:';

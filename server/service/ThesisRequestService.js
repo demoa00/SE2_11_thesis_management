@@ -13,7 +13,7 @@ const db = require('../utils/dbConnection');
 
 
 exports.getThesisRequestsForProfessor = function (professorId, filter) {
-    let sql = "SELECT * FROM thesisRequests WHERE supervisor = ? OR thesisRequestId IN (SELECT thesisRequestId FROM thesisRequest_internalCoSupervisor_bridge WHERE internalCoSupervisorId = ?) AND thesisRequests.secretaryStatus = 'Accepted' ";
+    let sql = "SELECT * FROM thesisRequests WHERE (supervisor = ? OR thesisRequestId IN (SELECT thesisRequestId FROM thesisRequest_internalCoSupervisor_bridge WHERE internalCoSupervisorId = ?)) AND thesisRequests.secretaryStatus = 'Accepted' ";
 
     let params = [];
     params.push(professorId);
@@ -39,6 +39,7 @@ exports.getThesisRequestsForProfessor = function (professorId, filter) {
             } else {
                 let list = rows.map((r) => ({
                     thesisRequestId: r.thesisRequestId,
+                    thesisProposalId: r.thesisProposalId,
                     title: r.title,
                     studentId: r.studentId,
                     secretaryStatus: r.secretaryStatus,
@@ -64,6 +65,7 @@ exports.getThesisRequestsForSecretary = function () {
             } else {
                 let list = rows.map((r) => ({
                     thesisRequestId: r.thesisRequestId,
+                    thesisProposalId: r.thesisProposalId,
                     title: r.title,
                     studentId: r.studentId,
                     secretaryStatus: r.secretaryStatus,
@@ -89,6 +91,7 @@ exports.getThesisRequestsForStudent = function (studentId) {
             } else {
                 let list = rows.map((r) => ({
                     thesisRequestId: r.thesisRequestId,
+                    thesisProposalId: r.thesisProposalId,
                     title: r.title,
                     studentId: r.studentId,
                     secretaryStatus: r.secretaryStatus,
@@ -317,6 +320,10 @@ exports.updateThesisRequestForProfessor = function (professorId, thesisRequest, 
                 emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectThesisRequestChanges, `${smtp.textAcceptThesisRequestByProfessor} ${thesisRequest.title}`)));
                 notificationPromises.push(Notification.insertNewNotification(thesisRequest.requester.studentId, smtp.subjectDecisionThesisRequest, 6));
             } else if (thesisRequest.professorStatus == 'Rejected') {
+                if (thesisRequest.thesisProposalId != undefined && thesisRequest.thesisProposalId != null) {
+                    await ThesisProposal.updateAcceptedApplication(thesisRequest.thesisProposalId);
+                }
+
                 emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectThesisRequestChanges, `${smtp.textRejectThesisRequestByProfessor} ${thesisRequest.title}`)));
                 notificationPromises.push(Notification.insertNewNotification(thesisRequest.requester.studentId, smtp.subjectDecisionThesisRequest, 6));
             }
