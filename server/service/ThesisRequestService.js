@@ -409,10 +409,10 @@ exports.updateThesisRequestForSecretary = function (thesisRequest, thesisRequest
 
             if (thesisRequest.secretaryStatus == 'Accepted') {
                 emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectDecisionThesisRequest, `${smtp.textAcceptThesisRequestBySecretary} ${title}`)));
-                notificationPromises.push(Notification.insertNewNotification(student.studentId, smtp.subjectThesisRequestChanges, 6));
+                notificationPromises.push(Notification.insertNewNotification(student.studentId, smtp.subjectDecisionThesisRequest, 6));
             } else if (thesisRequest.secretaryStatus == 'Rejected') {
                 emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectDecisionThesisRequest, `${smtp.textRejectThesisRequestByProfessor} ${title}`)));
-                notificationPromises.push(Notification.insertNewNotification(student.studentId, smtp.subjectThesisRequestChanges, 6));
+                notificationPromises.push(Notification.insertNewNotification(student.studentId, smtp.subjectDecisionThesisRequest, 6));
             }
 
             await Promise.all(emailPromises);

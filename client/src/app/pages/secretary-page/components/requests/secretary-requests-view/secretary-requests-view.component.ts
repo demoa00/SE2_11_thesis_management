@@ -39,15 +39,8 @@ export class SecretaryRequestsViewComponent {
     this.api.getRequest(request.thesisRequestId).then((response: any) => {
       console.log(response)
       let selectedRequest = {
-        proposal: {
-          ...response,
-          coSupervisor: response.coSupervisors,
-        },
-        message: response.message,
-        date: response.date,
-        approvalDate: response.approvalDate,
-        professorStatus: response.professorStatus,
-        secretaryStatus: response.secretaryStatus,
+        ...response,
+        coSupervisor: response.coSupervisors,
       }
       this.selectedRequestUpdate.emit(selectedRequest)
     }).catch((error) => {

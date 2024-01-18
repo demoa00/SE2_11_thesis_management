@@ -67,8 +67,8 @@
         </div>
       </div>
       <div class="secretaryButtons" *ngIf="type==='secretary'">
-        <app-button class="danger">Reject Request</app-button>
-        <app-button>Approve Request</app-button>
+        <app-button class="{{selectedProposal?.secretaryStatus === 'Pending' ? '' : 'disabled'}} danger" (click)="showPopup('reject')">Reject Request</app-button>
+        <app-button class="{{selectedProposal?.secretaryStatus === 'Pending' ? '' : 'disabled'}} " (click)="showPopup('approve')">Approve Request</app-button>
       </div>
     </div>
     <app-popup

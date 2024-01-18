@@ -22,6 +22,7 @@ export class ProposalDetailsComponent {
   showSuccessAlert = false;
   showErrorAlert = false;
 
+
   readonly dayjs = dayjs;
 
   @Input() selectedProposal: any | null = null;
@@ -30,6 +31,7 @@ export class ProposalDetailsComponent {
   @Input() professorStatus: string = "";
   @Input() secretaryStatus: string = "";
   @Output() selectedProposalUpdate = new EventEmitter<any>()
+  @Output() secretaryShowPopup = new EventEmitter<string>();
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('user') || '{}')
@@ -95,4 +97,9 @@ export class ProposalDetailsComponent {
   date(date: string) {
     return this.dayjs(date).format('DD/MM/YYYY')
   }
+
+  showPopup(p: string) {
+    this.secretaryShowPopup.emit(p)
+  }
+
 }
