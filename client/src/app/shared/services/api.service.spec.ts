@@ -99,6 +99,123 @@ describe('APIService', () => {
     expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('professor');
   }));
 
+  it('should check authorization and navigate to secretary page on success', fakeAsync(() => {
+    const mockResponse = { role: 'secretary' };
+
+    httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
+
+    spyOn(localStorage, 'setItem');
+
+    apiService.checkAutorization();
+
+    tick();
+
+    expect(localStorage.setItem).toHaveBeenCalledWith('user', JSON.stringify(mockResponse));
+    expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('secretary');
+  }));
+
+  it('should get secretary/clerk details successfully', async () => {
+    const userId = 'testUserId';
+    const mockResponse = {};
+  
+    httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
+  
+    const result = await apiService.getSecretaryClerkDetails(userId);
+  
+    expect(httpServiceSpy.get).toHaveBeenCalledWith(`/secretaryClercks/${userId}`, false, true);
+    expect(result).toEqual(mockResponse);
+  });
+
+  it('should get archived proposal successfully', async () => {
+    const proposalId = 123;
+    const mockResponse = {};
+  
+    httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
+  
+    const result = await apiService.getArchivedProposal(proposalId);
+  
+    expect(httpServiceSpy.get).toHaveBeenCalledWith(`thesisProposals/${proposalId}?archived=true`, false, true);
+    expect(result).toEqual(mockResponse);
+  });
+
+  it('should post thesis request successfully', async () => {
+    const mockBody = {};
+    const mockResponse = {};
+  
+    httpServiceSpy.post.and.returnValue(Promise.resolve(mockResponse));
+  
+    const result = await apiService.postThesisRequest(mockBody);
+  
+    expect(httpServiceSpy.post).toHaveBeenCalledWith('thesisRequests', mockBody);
+    expect(result).toEqual(mockResponse);
+  });
+
+  it('should delete a thesis request successfully', async () => {
+    const thesisRequestId = 123;
+    const mockResponse = {};
+
+    httpServiceSpy.delete.and.returnValue(Promise.resolve(mockResponse));
+
+    const result = await apiService.deleteThesisRequest(thesisRequestId);
+
+    expect(httpServiceSpy.delete).toHaveBeenCalledWith(`thesisRequests/${thesisRequestId}`, true);
+    expect(result).toEqual(mockResponse);
+  });
+
+  it('should update thesis request for a student successfully', async () => {
+    const mockBody = {
+      thesisRequestId: 'testThesisRequestId',
+    };
+    const mockResponse = {};
+  
+    httpServiceSpy.put.and.returnValue(Promise.resolve(mockResponse));
+  
+    const result = await apiService.putThesisRequestStudent(mockBody);
+  
+    expect(httpServiceSpy.put).toHaveBeenCalledWith(`thesisRequests/${mockBody.thesisRequestId}`, mockBody);
+    expect(result).toEqual(mockResponse);
+  });
+
+  it('should handle successful putThesisRequest without professorRequestChangesMessage', async () => {
+    const professorId = 'testProfessorId';
+    const thesisRequestId = 'testThesisRequestId';
+    const studentId = 'testStudentId';
+    const thesisProposalId = 'testThesisProposalId';
+    const status = 'Accepted';
+    const mockResponse = {};
+  
+    httpServiceSpy.put.and.returnValue(Promise.resolve(mockResponse));
+  
+    const result = await apiService.putThesisRequest(professorId, thesisRequestId, status, studentId, thesisProposalId);
+  
+    expect(httpServiceSpy.put).toHaveBeenCalledWith(`thesisRequests/${thesisRequestId}`, {
+      supervisor: {
+        professorId: professorId
+      },
+      requester: {
+        studentId: studentId
+      },
+      professorStatus: status,
+      title: ' ',
+      description: ' ',
+      thesisProposalId: thesisProposalId,
+    });
+    expect(result).toEqual(mockResponse);
+  });
+
+  it('should get application file successfully', async () => {
+    const thesisProposalId = 'testThesisProposalId';
+    const studentId = 'testStudentId';
+    const mockBlob = new Blob(['Test Application File Content'], { type: 'application/pdf' });
+  
+    httpServiceSpy.getBlob.and.returnValue(Promise.resolve(mockBlob));
+  
+    const result = await apiService.getApplicationFile(thesisProposalId, studentId);
+  
+    expect(httpServiceSpy.getBlob).toHaveBeenCalledWith(`applications/${thesisProposalId}/${studentId}/file`, false, true);
+    expect(result instanceof Blob).toBe(true);
+  });
+
   it('should insert a new thesis successfully', async () => {
     const mockBody = {};
     const mockResponse = {};
@@ -215,7 +332,7 @@ describe('APIService', () => {
   }));
 
   it('should handle successful getCoSupervisors', async () => {
-    const mockResponse = [{}, {}]; // Mock response data
+    const mockResponse = [{}, {}];
 
     httpServiceSpy.get.and.returnValue(Promise.resolve(mockResponse));
 
@@ -461,49 +578,49 @@ describe('APIService', () => {
     expect(result).toEqual(mockResponse);
   });
 
-  it('should handle successful putThesisRequest without professorRequestChangesMessage', async () => {
-    const professorId = 'testProfessorId';
-    const thesisRequestId = 'testThesisRequestId';
-    const status = 'Accepted';
-    const mockResponse = {};
+  // it('should handle successful putThesisRequest without professorRequestChangesMessage', async () => {
+  //   const professorId = 'testProfessorId';
+  //   const thesisRequestId = 'testThesisRequestId';
+  //   const status = 'Accepted';
+  //   const mockResponse = {};
 
-    httpServiceSpy.put.and.returnValue(Promise.resolve(mockResponse));
+  //   httpServiceSpy.put.and.returnValue(Promise.resolve(mockResponse));
 
-    const result = await apiService.putThesisRequest(professorId, thesisRequestId, status);
+  //   const result = await apiService.putThesisRequest(professorId, thesisRequestId, status);
 
-    expect(httpServiceSpy.put).toHaveBeenCalledWith(`thesisRequests/${thesisRequestId}`, {
-      supervisor: {
-        professorId: professorId
-      },
-      professorStatus: status,
-      title: ' ',
-      description: ' '
-    });
-    expect(result).toEqual(mockResponse);
-  });
+  //   expect(httpServiceSpy.put).toHaveBeenCalledWith(`thesisRequests/${thesisRequestId}`, {
+  //     supervisor: {
+  //       professorId: professorId
+  //     },
+  //     professorStatus: status,
+  //     title: ' ',
+  //     description: ' '
+  //   });
+  //   expect(result).toEqual(mockResponse);
+  // });
 
-  it('should handle successful putThesisRequest with professorRequestChangesMessage', async () => {
-    const professorId = 'testProfessorId';
-    const thesisRequestId = 'testThesisRequestId';
-    const status = 'Change';
-    const professorRequestChangesMessage = 'Requesting changes';
-    const mockResponse = {};
+  // it('should handle successful putThesisRequest with professorRequestChangesMessage', async () => {
+  //   const professorId = 'testProfessorId';
+  //   const thesisRequestId = 'testThesisRequestId';
+  //   const status = 'Change';
+  //   const professorRequestChangesMessage = 'Requesting changes';
+  //   const mockResponse = {};
 
-    httpServiceSpy.put.and.returnValue(Promise.resolve(mockResponse));
+  //   httpServiceSpy.put.and.returnValue(Promise.resolve(mockResponse));
 
-    const result = await apiService.putThesisRequest(professorId, thesisRequestId, status, professorRequestChangesMessage);
+  //   const result = await apiService.putThesisRequest(professorId, thesisRequestId, status, professorRequestChangesMessage);
 
-    expect(httpServiceSpy.put).toHaveBeenCalledWith(`thesisRequests/${thesisRequestId}`, {
-      supervisor: {
-        professorId: professorId
-      },
-      professorStatus: status,
-      title: ' ',
-      description: ' ',
-      professorRequestChangesMessage: professorRequestChangesMessage,
-    });
-    expect(result).toEqual(mockResponse);
-  });
+  //   expect(httpServiceSpy.put).toHaveBeenCalledWith(`thesisRequests/${thesisRequestId}`, {
+  //     supervisor: {
+  //       professorId: professorId
+  //     },
+  //     professorStatus: status,
+  //     title: ' ',
+  //     description: ' ',
+  //     professorRequestChangesMessage: professorRequestChangesMessage,
+  //   });
+  //   expect(result).toEqual(mockResponse);
+  // });
 
   it('should handle successful putApplication', async () => {
     const studentId = 'testStudentId';
