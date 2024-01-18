@@ -197,7 +197,22 @@ exports.getThesisRequestById = function (user, thesisRequestId) {
     });
 }
 
-exports.insertNewThesisRequest = function (studentId, thesisRequest) {
+exports.insertNewThesisRequest = async function (studentId, thesisRequest) {
+    let emailPromises = [];
+    let notificationPromises = [];
+    let newCoSupervisors = [];
+
+    if (thesisRequest?.coSupervisors) {
+        for (let c of thesisRequest.coSupervisors) {
+            try {
+                let internalCoSupervisor = await Professor.getProfessorById(c.coSupervisorId);
+                newCoSupervisors.push({ coSupervisorId: internalCoSupervisor.professorId, email: internalCoSupervisor.email });
+            } catch (error) {
+                throw error;
+            }
+        }
+    }
+
     return new Promise(function (resolve, reject) {
         const sql = "SELECT count(*) as count FROM thesisRequests WHERE studentId = ? AND (professorStatus = 'Pending' OR professorStatus = 'Change' OR professorStatus = 'Accepted')";
         db.get(sql, [studentId], (err, row) => {
@@ -233,20 +248,20 @@ exports.insertNewThesisRequest = function (studentId, thesisRequest) {
                 if (err) {
                     reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
                 } else {
-                    resolve(professor);
+                    resolve({ professor: professor, thesisRequestId: this.lastID });
                 }
             });
         });
-    }).then(async (professor) => {
+    }).then(async (newThesisRequest) => {
         let promises = [];
 
         try {
-            if (thesisRequest?.cosupervisors) {
-                thesisRequest.cosupervisor.forEach((c) => {
+            if (newCoSupervisors != []) {
+                newCoSupervisors.forEach((c) => {
                     promises.push(
                         new Promise(function (resolve, reject) {
-                            const sql = "INSERT INTO thesisRequest_internalCoSupervisor_bridge(?, ?)";
-                            db.run(sql, [thesisRequest.thesisRequestId, c.cosupervisorId], function (err) {
+                            const sql = "INSERT INTO thesisRequest_internalCoSupervisor_bridge(thesisRequestId, internalCoSupervisorId) VALUES (?, ?)";
+                            db.run(sql, [newThesisRequest.thesisRequestId, c.coSupervisorId], function (err) {
                                 if (err) {
                                     reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
                                 } else {
@@ -254,19 +269,19 @@ exports.insertNewThesisRequest = function (studentId, thesisRequest) {
                                 }
                             });
                         }));
+
+                    emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectInsertCoSupervisor, `${smtp.textInsertThesisRequestCoSupervisor} ${thesisRequest.title}`)));
+                    notificationPromises.push(Notification.insertNewNotification(c.coSupervisorId, smtp.subjectInsertCoSupervisor, 9));
                 });
             }
 
             await Promise.all(promises);
 
-            return professor;
+            return newThesisRequest.professor;
         } catch (error) {
             throw error;
         }
     }).then(async (professor) => {
-        let emailPromises = [];
-        let notificationPromises = [];
-
         try {
             emailPromises.push(smtp.sendMail(smtp.mailConstructor(professor.email, smtp.subjectInsertThesisRequest, `${smtp.textInsertThesisRequest} ${thesisRequest.title}`)));
             notificationPromises.push(Notification.insertNewNotification(professor.professorId, smtp.subjectInsertThesisRequest, 7));
@@ -281,13 +296,13 @@ exports.insertNewThesisRequest = function (studentId, thesisRequest) {
     });
 }
 
-exports.updateThesisRequestForProfessor = function (professorId, thesisRequest, thesisRequestId) {
+exports.updateThesisRequestForProfessor = function (professorId, newThesisRequest, thesisRequestId) {
     let params = [];
     let sql = "UPDATE thesisRequests SET professorStatus = ?";
 
-    params.push(thesisRequest.professorStatus);
+    params.push(newThesisRequest.professorStatus);
 
-    if (thesisRequest.professorStatus == 'Accepted') {
+    if (newThesisRequest.professorStatus == 'Accepted') {
         sql += ", approvalDate = ? ";
         params.push(dayjs().format("YYYY-MM-DD"));
     }
@@ -297,35 +312,48 @@ exports.updateThesisRequestForProfessor = function (professorId, thesisRequest, 
     params.push(professorId);
 
     return new Promise(function (resolve, reject) {
-        db.run(sql, params, function (err) {
+        const sql = "SELECT title FROM thesisRequests WHERE thesisRequestId = ?";
+        db.get(sql, [thesisRequestId], (err, row) => {
             if (err) {
                 reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
-            } else if (this.changes == 0) {
+            } else if (row === undefined) {
                 reject(new PromiseError({ code: 404, message: "Not Found" }));
             } else {
-                resolve({ newThesisRequest: `/api/thesisRequests/${thesisRequestId}` });
+                resolve(row.title);
             }
         });
-    }).then(async () => {
+    }).then((title) => {
+        return new Promise(function (resolve, reject) {
+            db.run(sql, params, function (err) {
+                if (err) {
+                    reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+                } else if (this.changes == 0) {
+                    reject(new PromiseError({ code: 404, message: "Not Found" }));
+                } else {
+                    resolve(title);
+                }
+            });
+        });
+    }).then(async (title) => {
         let emailPromises = [];
         let notificationPromises = [];
 
         try {
-            let student = await Student.getStudentById(thesisRequest.requester.studentId);
+            let student = await Student.getStudentById(newThesisRequest.requester.studentId);
 
-            if (thesisRequest.professorStatus == 'Change') {
-                emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectThesisRequestChanges, `The supervisor has requested some changes for your thesis request: ${thesisRequest.title}.\n\nProfessor message:\n${thesisRequest.professorRequestChangesMessage}`)));
-                notificationPromises.push(Notification.insertNewNotification(thesisRequest.requester.studentId, smtp.subjectDecisionThesisRequest, 6));
-            } else if (thesisRequest.professorStatus == 'Accepted') {
-                emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectThesisRequestChanges, `${smtp.textAcceptThesisRequestByProfessor} ${thesisRequest.title}`)));
-                notificationPromises.push(Notification.insertNewNotification(thesisRequest.requester.studentId, smtp.subjectDecisionThesisRequest, 6));
-            } else if (thesisRequest.professorStatus == 'Rejected') {
-                if (thesisRequest.thesisProposalId != undefined && thesisRequest.thesisProposalId != null) {
-                    await ThesisProposal.updateAcceptedApplication(thesisRequest.thesisProposalId);
+            if (newThesisRequest.professorStatus == 'Change') {
+                emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectThesisRequestChanges, `The supervisor has requested some changes for your thesis request: ${title}.\n\nProfessor message:\n${newThesisRequest.professorRequestChangesMessage}`)));
+                notificationPromises.push(Notification.insertNewNotification(student.studentId, smtp.subjectDecisionThesisRequest, 6));
+            } else if (newThesisRequest.professorStatus == 'Accepted') {
+                emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectThesisRequestChanges, `${smtp.textAcceptThesisRequestByProfessor} ${title}`)));
+                notificationPromises.push(Notification.insertNewNotification(student.studentId, smtp.subjectDecisionThesisRequest, 6));
+            } else if (newThesisRequest.professorStatus == 'Rejected') {
+                if (newThesisRequest.thesisProposalId != undefined && newThesisRequest.thesisProposalId != null) {
+                    await ThesisProposal.updateAcceptedApplication(newThesisRequest.thesisProposalId);
                 }
 
-                emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectThesisRequestChanges, `${smtp.textRejectThesisRequestByProfessor} ${thesisRequest.title}`)));
-                notificationPromises.push(Notification.insertNewNotification(thesisRequest.requester.studentId, smtp.subjectDecisionThesisRequest, 6));
+                emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectThesisRequestChanges, `${smtp.textRejectThesisRequestByProfessor} ${title}`)));
+                notificationPromises.push(Notification.insertNewNotification(student.studentId, smtp.subjectDecisionThesisRequest, 6));
             }
 
             await Promise.all(emailPromises);
@@ -340,50 +368,52 @@ exports.updateThesisRequestForProfessor = function (professorId, thesisRequest, 
 
 exports.updateThesisRequestForSecretary = function (thesisRequest, thesisRequestId) {
     return new Promise(function (resolve, reject) {
-        let sql = "";
-        let params = [];
-
-        if (thesisRequest.secretaryStatus === 'Accepted') {
-            sql = "UPDATE thesisRequests SET secretaryStatus = ? WHERE thesisRequestId = ? AND secretaryStatus = 'Pending' ";
-            params = [thesisRequest.secretaryStatus, thesisRequestId];
-        } else {
-            sql = "UPDATE thesisRequests SET secretaryStatus = ?, professorStatus = ? WHERE thesisRequestId = ? AND secretaryStatus = 'Pending' ";
-            params = [thesisRequest.secretaryStatus, 'Rejected', thesisRequestId];
-        }
-
-        db.run(sql, params, function (err) {
+        const sql = "SELECT title FROM thesisRequests WHERE thesisRequestId = ?";
+        db.get(sql, [thesisRequestId], (err, row) => {
             if (err) {
                 reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
-            } else if (this.changes == 0) {
+            } else if (row === undefined) {
                 reject(new PromiseError({ code: 404, message: "Not Found" }));
             } else {
-                resolve();
+                resolve(row.title);
             }
         });
-    }).then(function () {
+    }).then((title) => {
         return new Promise(function (resolve, reject) {
-            const sql = "SELECT email FROM students WHERE studentId = ?";
-            db.get(sql, [thesisRequest.requester.studentId], (err, row) => {
+            let sql = "";
+            let params = [];
+
+            if (thesisRequest.secretaryStatus === 'Accepted') {
+                sql = "UPDATE thesisRequests SET secretaryStatus = ? WHERE thesisRequestId = ? AND secretaryStatus = 'Pending' ";
+                params = [thesisRequest.secretaryStatus, thesisRequestId];
+            } else {
+                sql = "UPDATE thesisRequests SET secretaryStatus = ?, professorStatus = ? WHERE thesisRequestId = ? AND secretaryStatus = 'Pending' ";
+                params = [thesisRequest.secretaryStatus, 'Rejected', thesisRequestId];
+            }
+
+            db.run(sql, params, function (err) {
                 if (err) {
                     reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
-                } else if (row === undefined) {
+                } else if (this.changes == 0) {
                     reject(new PromiseError({ code: 404, message: "Not Found" }));
                 } else {
-                    resolve(row.email);
+                    resolve(title);
                 }
             });
         });
-    }).then(async (studentEmail) => {
+    }).then(async (title) => {
         let emailPromises = [];
         let notificationPromises = [];
 
         try {
+            let student = await Student.getStudentById(thesisRequest.requester.studentId);
+
             if (thesisRequest.secretaryStatus == 'Accepted') {
-                emailPromises.push(smtp.sendMail(smtp.mailConstructor(studentEmail, smtp.subjectDecisionThesisRequest, `${smtp.textAcceptThesisRequestBySecretary} ${thesisRequest.title}`)));
-                notificationPromises.push(Notification.insertNewNotification(thesisRequest.requester.studentId, smtp.subjectThesisRequestChanges, 6));
+                emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectDecisionThesisRequest, `${smtp.textAcceptThesisRequestBySecretary} ${title}`)));
+                notificationPromises.push(Notification.insertNewNotification(student.studentId, smtp.subjectThesisRequestChanges, 6));
             } else if (thesisRequest.secretaryStatus == 'Rejected') {
-                emailPromises.push(smtp.sendMail(smtp.mailConstructor(studentEmail, smtp.subjectDecisionThesisRequest, `${smtp.textRejectThesisRequestByProfessor} ${thesisRequest.title}`)));
-                notificationPromises.push(Notification.insertNewNotification(thesisRequest.requester.studentId, smtp.subjectThesisRequestChanges, 6));
+                emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectDecisionThesisRequest, `${smtp.textRejectThesisRequestByProfessor} ${title}`)));
+                notificationPromises.push(Notification.insertNewNotification(student.studentId, smtp.subjectThesisRequestChanges, 6));
             }
 
             await Promise.all(emailPromises);
@@ -491,7 +521,6 @@ exports.deleteThesisRequest = async function (studentId, thesisRequestId) {
         const sql = "SELECT supervisor, title FROM thesisRequests WHERE thesisRequestId = ?";
         db.get(sql, [thesisRequestId], (err, row) => {
             if (err) {
-                console.log(err)
                 reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
             } else if (row === undefined) {
                 reject(new PromiseError({ code: 404, message: "Not Found" }));
@@ -503,6 +532,8 @@ exports.deleteThesisRequest = async function (studentId, thesisRequestId) {
         try {
             supervisor = await Professor.getProfessorById(thesisRequest.supervisor);
             coSupervisors = await Professor.getInternalCoSupervisorByThesisRequestId(thesisRequestId);
+
+            return thesisRequest;
         } catch (error) {
             throw error;
         }
@@ -528,11 +559,11 @@ exports.deleteThesisRequest = async function (studentId, thesisRequestId) {
 
             coSupervisors.forEach((c) => {
                 emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectDeleteThesisRequest, `${smtp.textDeleteThesisRequest} ${thesisRequest.title}`)));
-                notificationPromises.push(Notification.insertNewNotification(c.professorId, smtp.subjectDeleteThesisRequest, 10));
+                notificationPromises.push(Notification.insertNewNotification(c.coSupervisorId, smtp.subjectDeleteThesisRequest, 10));
             });
 
-            await Promise.all(notificationPromises);
-            await Promise.all(emailPromises);
+            await Promise.all(notificationPromises).catch((err) => console.log(err));
+            await Promise.all(emailPromises).catch((err) => console.log(err));
 
             return;
         } catch (error) {

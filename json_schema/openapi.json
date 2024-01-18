@@ -2194,7 +2194,7 @@
                 ]
             }
         },
-        "/secretaryClercks/{secretaryClerckEmployeeId}": {
+        "/secretaryClerckEmployees/{secretaryClerckEmployeeId}": {
             "get": {
                 "tags": [
                     "secretaryClerck"
