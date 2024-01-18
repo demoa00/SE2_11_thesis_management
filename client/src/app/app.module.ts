@@ -53,6 +53,12 @@ import {
 import {
   RequestDetailsComponent
 } from "./pages/student-page/components/requests/request-details/request-details.component";
+import {
+  SecretaryRequestDetailsComponent
+} from "./pages/secretary-page/components/requests/secretary-request-details/secretary-request-details.component";
+import {
+  SecretaryRequestsViewComponent
+} from "./pages/secretary-page/components/requests/secretary-requests-view/secretary-requests-view.component";
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
@@ -97,7 +103,9 @@ const routes: Routes = [
     ProposalDetailsComponent,
     SecretaryPageComponent,
     ApplicationDetailsComponent,
-    RequestDetailsComponent
+    RequestDetailsComponent,
+    SecretaryRequestDetailsComponent,
+    SecretaryRequestsViewComponent
   ],
 	imports: [
 		BrowserModule,

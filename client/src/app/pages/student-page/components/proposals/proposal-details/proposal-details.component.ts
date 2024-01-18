@@ -33,14 +33,19 @@ export class ProposalDetailsComponent {
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('user') || '{}')
-    this.api.getUserDetails(this.user?.userId).then((response: any) => {
-      this.userDetails = response
-    })
-    this.api.getApplications().then((response: any) => {
-      this.canApply = !response.some((application: any) => {
-        return application.status === "Accepted"
+    if(this.user?.role==='student'){
+      this.api.getStudentDetails(this.user?.userId).then((response: any) => {
+        console.log(response)
+        this.userDetails = response
+      }).catch((error) => {
+        console.log(error)
       })
-    })
+      this.api.getApplications().then((response: any) => {
+        this.canApply = !response.some((application: any) => {
+          return application.status === "Accepted"
+        })
+      })
+    }
   }
 
   apply() {

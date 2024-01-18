@@ -36,6 +36,10 @@
         ({{ cs.degreeId }}){{ last ? '' : ', ' }}</span></p>
       <p class="font-bold" *ngIf="selectedProposal?.expirationDate">Expiration date: <span
         class="regularText">{{ date(selectedProposal?.expirationDate) }}</span></p>
+      <p class="font-bold" *ngIf="type==='request' || type==='secretary' && selectedProposal?.date">Submission date: <span
+        class="regularText">{{ date(selectedProposal?.date) }}</span></p>
+      <p class="font-bold" *ngIf="type==='request' || type==='secretary' && selectedProposal?.approvalDate">Approval date: <span
+        class="regularText">{{ date(selectedProposal?.approvalDate) }}</span></p>
     </div>
     <div class="projectInfo">
       <div class="projectButtons">
@@ -62,6 +66,10 @@
             <p class="status {{secretaryStatus?.toLowerCase()}}">{{ secretaryStatus }}</p>
           </div>
         </div>
+      </div>
+      <div class="secretaryButtons" *ngIf="type==='secretary'">
+        <app-button>Approve Request</app-button>
+        <app-button class="danger">Reject Request</app-button>
       </div>
     </div>
     <app-popup

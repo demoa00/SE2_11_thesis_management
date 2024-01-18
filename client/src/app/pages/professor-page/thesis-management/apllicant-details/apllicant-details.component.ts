@@ -33,7 +33,7 @@ export class ApllicantDetailsComponent {
     this.application = await this.api.getApplicationById(this.thesisId, this.userId)
     this.loadApplicationFile();
     console.log(this.application)
-    this.api.getUserDetails(this.userId).then((response: any) => {
+    this.api.getStudentDetails(this.userId).then((response: any) => {
       this.user = response
       this.cv = new File([], response.cv)
     })

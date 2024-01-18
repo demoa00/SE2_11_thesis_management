@@ -145,12 +145,11 @@ const strategy = new saml(
                 console.log(user)
                 done(null, user);
             } catch (error) {
-                try {console.log("ciao")
+                try {
                     user = await secretaryClerckEmployeeService.getSecretaryClerckEmployeeByEmail(userEmail);
                     console.log(user)
-                    console.log("ciao")
                     done(null, user);
-                } catch (error) {console.log(error)
+                } catch (error) {
                     done(null, false);
                 }
             }

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, HostListener, Output} from '@angular/core';
 import {APIService} from "../../shared/services/api.service";
 
 @Component({
@@ -8,9 +8,11 @@ import {APIService} from "../../shared/services/api.service";
 })
 export class SecretaryPageComponent {
 
-  constructor(private api: APIService) {}
+  constructor(private api: APIService) {
+  }
 
-  requests: any = null
+  selectedRequest: any = null
+
   menuItems = [
     {
       'id': 0,
@@ -20,20 +22,12 @@ export class SecretaryPageComponent {
     },
   ]
 
-  ngOnInit() {
-    this.api.getThesisRequests().then((response: any) => {
-      console.log(response)
-      this.requests = response
-    }).catch((error) => {
-      console.log(error)
-      this.requests = null
-    })
-  }
-
   selectMenuItem(id: number) {
+    this.selectedRequest = null
     this.menuItems.forEach((item) => {
       item.selected = false
     })
     this.menuItems[id].selected = true
   }
+
 }

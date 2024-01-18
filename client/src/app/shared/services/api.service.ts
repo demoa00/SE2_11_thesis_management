@@ -153,7 +153,7 @@ export class APIService {
 
   }
 
-  async getUserDetails(userId: any) {
+  async getStudentDetails(userId: any) {
     return await this.httpService.get(`students/${userId}`, false, true);
   }
 
@@ -161,7 +161,7 @@ export class APIService {
     return await this.httpService.get(`professors/${userId}`, false, true);
   }
   async getSecretaryClerkDetails(userId: any) {
-    return await this.httpService.get(`/secretaryClercks/${userId}`, false, true);
+    return await this.httpService.get(`secretaryClerckEmployees/${userId}`, false, true);
   }
 
   async getAllProposals(params: ProposalsParams | null) {

@@ -17,7 +17,7 @@ export class ProfilePageComponent {
   cv: File = new File([], '')
   showPopup = false
   ngOnInit() {
-    this.api.getUserDetails(this.userId).then((response: any) => {
+    this.api.getStudentDetails(this.userId).then((response: any) => {
       this.user = response
       this.cv = new File([], response.cv)
     })
