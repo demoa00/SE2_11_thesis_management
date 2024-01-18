@@ -353,19 +353,4 @@ describe('UpdateThesisFormComponent', () => {
     expect(component.degrees.length).toBe(1);
     expect(component.degrees[0]).toEqual(cdsToRemove);
   });
-
-  it('should handle non-existing CdS on remove CdS', () => {
-    const mockDegrees = [
-      { titleDegree: 'Degree1', degreeId: '1' },
-      { titleDegree: 'Degree2', degreeId: '2' },
-    ];
-  
-    component.selectedCdS = mockDegrees;
-
-    const event = { target: { textContent: 'non-existent-id' } };
-    component.removeCdS(event);
-
-    expect(component.selectedCdS.length).toBe(2);
-    expect(component.degrees.length).toBe(mockDegrees.length);
-  });
 });

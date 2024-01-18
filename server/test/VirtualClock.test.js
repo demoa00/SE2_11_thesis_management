@@ -36,14 +36,14 @@ describe("updateVirtualClock ", () => {
       JSON.stringify({ message: "OK" }, null, 2)
     );
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {
       body: {},
     };
 
     await VirtualClockController.updateVirtualClock(mockReq, mockRes, mockNext);
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(

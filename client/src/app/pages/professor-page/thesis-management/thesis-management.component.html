@@ -8,13 +8,14 @@
       <div class="separator"></div>
       <div class="w-full flex flex-col gap-6">
         <div class="h-full w-full flex flex-col gap-2">
-          <h2 class=""> Show Theses: </h2>
+          <h2 class=""> Theses: </h2>
           <button class="dropdownButton " (click)="showActiveThesesTable()"> Active </button>
           <button class="dropdownButton " (click)="showArchivedThesesTable()"> Archived </button>
         </div>
         <div class="show-applicants">
-          <h2 class=""> Show applicants: </h2>
-          <button class="dropdownButton  items-start" (click)="showApplicantsTable()">All theses</button>
+          <h2 class=""> Applicants: </h2>
+          <button class="dropdownButton  items-start" (click)="showApplicantsTable()">Applications</button>
+          <button class="dropdownButton  items-start" (click)="showThesisRequestsTable()">Theses Request</button>
         </div>
       </div>
     </div>
@@ -23,6 +24,8 @@
         <app-applicants-table [rows]="applicantsRow" (triggerUpdate)="updateAll()"  *ngIf="showApplicants" ></app-applicants-table>
         <app-active-thesis-table [rows]="activeThesesRow" (triggerUpdate)="updateAll()" *ngIf="showActiveTheses"></app-active-thesis-table>
         <app-archived-thesis-table [rows]="archivedThesesRow" (triggerUpdate)="updateAll()" *ngIf="showArchivedTheses"></app-archived-thesis-table>
+        <app-thesis-requests-table [rows]="thesisRequestsRow" (triggerUpdate)="updateAll()" *ngIf="showThesisRequests"></app-thesis-requests-table>
+
       </div>
       <div class="w-full flex justify-end">
         <div class="button-tesi-mobile orange" (click)="openCreatePopup()">

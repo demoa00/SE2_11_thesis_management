@@ -1,0 +1,119 @@
+@import '../../../../../../styles';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(87.5vh - 32px);
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.requestsContainer {
+  overflow: auto;
+
+  .requestsTable {
+    width: 100%;
+
+    .statusHeader {
+      width: 1%;
+      white-space: nowrap;
+      //padding-left: 16px;
+    }
+
+    .request {
+      border-bottom: 1px solid $lightgrey;
+
+      &:hover {
+        .title {
+          text-decoration: underline;
+        }
+      }
+
+      &.mobile {
+        td {
+          padding-left: 0 !important;
+        }
+      }
+
+      .title {
+        text-align: left;
+        cursor: pointer;
+      }
+
+      td {
+        padding: 8px 8px 8px 8px;
+
+        &:first-child {
+          padding: 8px 8px 8px 0;
+        }
+
+        &:last-child {
+          padding: 8px 0 8px 8px;
+        }
+      }
+
+      &:last-child {
+        border-bottom: none;
+
+        td {
+          padding-bottom: 0;
+        }
+      }
+
+      .statusContainer {
+        &.mobile {
+          display: flex;
+          align-items: center;
+          justify-content: start;
+          flex-wrap: wrap;
+
+          .status {
+            margin: 0;
+          }
+        }
+
+        .status {
+          margin: auto;
+          padding: 8px;
+          border-radius: 200px;
+          line-height: normal;
+          height: fit-content;
+          color: white;
+          width: fit-content;
+
+          &.pending {
+            background: $pending;
+            color: #545454;
+          }
+
+          &.accepted {
+            background: $success;
+          }
+
+          &.rejected {
+            background: $danger;
+          }
+
+          &.change {
+            background: $change;
+          }
+
+          &.cancelled {
+            background: $lightgrey;
+            color: #545454;
+          }
+        }
+      }
+
+      .actionsContainer {
+        display: flex;
+        gap: 8px
+      }
+    }
+  }
+}

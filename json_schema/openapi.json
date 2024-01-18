@@ -66,7 +66,8 @@
                     },
                     "thesisProposalId": {
                         "type": "integer",
-                        "minimum": 1
+                        "minimum": 1,
+                        "nullable": true
                     },
                     "requester": {
                         "type": "object",
@@ -93,7 +94,7 @@
                     "title": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 20
+                        "maxLength": 100
                     },
                     "supervisor": {
                         "type": "object",
@@ -168,9 +169,18 @@
                             "Rejected"
                         ]
                     },
+                    "date": {
+                        "type": "string",
+                        "format": "date"
+                    },
                     "approvalDate": {
                         "type": "string",
                         "format": "date"
+                    },
+                    "professorRequestChangesMessage": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000
                     },
                     "self": {
                         "type": "string",
@@ -193,6 +203,11 @@
                             "type": "integer",
                             "minimum": 1
                         },
+                        "thesisProposalId": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "nullable": true
+                        },
                         "title": {
                             "type": "string",
                             "minLength": 1
@@ -200,6 +215,25 @@
                         "studentId": {
                             "type": "string",
                             "pattern": "^(s|S)[0-9]{6}$"
+                        },
+                        "secretaryStatus": {
+                            "enum": [
+                                "Pending",
+                                "Accepted",
+                                "Rejected"
+                            ]
+                        },
+                        "professorStatus": {
+                            "enum": [
+                                "Pending",
+                                "Change",
+                                "Accepted",
+                                "Rejected"
+                            ]
+                        },
+                        "date": {
+                            "type": "string",
+                            "format": "date"
                         },
                         "self": {
                             "type": "string",
@@ -431,7 +465,8 @@
                     },
                     "title": {
                         "type": "string",
-                        "minLength": 1
+                        "minLength": 1,
+                        "maxLength": 100
                     },
                     "supervisor": {
                         "type": "object",
@@ -669,6 +704,43 @@
                     "additionalProperties": false
                 }
             },
+            "secretaryClerck": {
+                "type": "object",
+                "properties": {
+                    "$schema": {
+                        "type": "string"
+                    },
+                    "secretaryClerckEmployeeId": {
+                        "type": "string",
+                        "pattern": "^(c|C)[0-9]{6}$"
+                    },
+                    "name": {
+                        "type": "string",
+                        "pattern": "^[a-zA-Z ]+$",
+                        "minLength": 1
+                    },
+                    "surname": {
+                        "type": "string",
+                        "pattern": "^[a-zA-Z ]+$",
+                        "minLength": 1
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "self": {
+                        "type": "string",
+                        "format": "uri"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "secretaryClerckEmployeeId",
+                    "name",
+                    "surname",
+                    "email"
+                ]
+            },
             "degrees": {
                 "type": "array",
                 "items": {
@@ -774,6 +846,9 @@
             "name": "externalCoSupervisor"
         },
         {
+            "name": "secretaryClerck"
+        },
+        {
             "name": "degree"
         },
         {
@@ -858,6 +933,15 @@
                         "schema": {
                             "type": "string",
                             "pattern": "^((c|C)|(p|P))[0-9]{6}$"
+                        }
+                    },
+                    {
+                        "name": "cosupervisor",
+                        "description": "This parameter it is possible to specify in the case of professor request and allow to retrieve only thesis request where the professor is the supervisor or only where he is co-supervisor",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
                         }
                     }
                 ],
@@ -951,7 +1035,7 @@
                 ]
             }
         },
-        "/thesisRequest/{thesisRequestId}": {
+        "/thesisRequests/{thesisRequestId}": {
             "get": {
                 "tags": [
                     "thesisRequest"
@@ -1064,6 +1148,56 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {}
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "thesisRequest"
+                ],
+                "operationId": "deleteThesisRequest",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "cookie",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^(s|S)[0-9]{6}$"
+                        }
+                    },
+                    {
+                        "name": "thesisRequestId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
                     }
                 },
                 "security": [
@@ -1901,6 +2035,64 @@
                 ]
             }
         },
+        "/applications/{thesisProposalId}/{studentId}/file": {
+            "get": {
+                "tags": [
+                    "application"
+                ],
+                "operationId": "getApplicationFile",
+                "parameters": [
+                    {
+                        "name": "authenticatedUserId",
+                        "in": "cookie",
+                        "required": true,
+                        "description": "The authenticated user id corresponds to the student or professor that perform this request",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^((p|P)[0-9]{6})|((s|S)[0-9]{6})$"
+                        }
+                    },
+                    {
+                        "name": "thesisProposalId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "studentId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/pdf": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
+            }
+        },
         "/externalCoSupervisors": {
             "get": {
                 "tags": [
@@ -1978,6 +2170,54 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/externalCoSupervisor"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
+            }
+        },
+        "/secretaryClerckEmployees/{secretaryClerckEmployeeId}": {
+            "get": {
+                "tags": [
+                    "secretaryClerck"
+                ],
+                "operationId": "getSecretaryClerckEmplyeeById",
+                "parameters": [
+                    {
+                        "name": "secretaryClerckEmployeeId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^(c|C)[0-9]{6}$"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/secretaryClerck"
                                 }
                             }
                         }

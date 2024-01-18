@@ -1,5 +1,5 @@
 <div class="container">
-  <h1 class="title">Your Profile</h1>
+  <h1 class="title">Profile</h1>
   <div class="card profileDataContainer">
     <p class="name">{{ user.name }} {{ user.surname }}, {{ userId }}</p>
     <p class="name">Your exams</p>
@@ -7,7 +7,7 @@
       <caption></caption>
       <thead>
       <tr>
-        <th class="text-left">Course</th>
+        <td class="text-left">Course</td>
         <th>CFU</th>
         <th>Grade</th>
       </tr>
@@ -23,14 +23,14 @@
     <table class="cvTable">
       <caption></caption>
       <tr>
-        <th><p class="mr-4 font-medium">Upload your CV (PDF document)</p></th>
-        <th>
+        <td><p class="mr-4 font-medium">Upload your CV (PDF document)</p></td>
+        <td>
           <app-button>
             <label for="upload-file" class="cursor-pointer">Upload</label>
             <input class="hidden" type="file" id="upload-file" name="upload-file" accept=".pdf"
                    (input)="loadFile($event)">
           </app-button>
-        </th>
+        </td>
       </tr>
       <tr *ngIf="cv.name !== ''">
         <td><p class="mr-4 font-medium hover:underline cursor-pointer" (click)="getCv()">Your CV: <span class="font-normal">{{ cv.name }}</span></p></td>

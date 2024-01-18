@@ -5,9 +5,10 @@
     "type": "object",
     "properties": {
         "thesisProposalId": {
-            "type": "integer"
+            "type": "string",
+            "pattern": "^[1-9][0-9]*$"
         },
-        "thesisProposalTitle":{
+        "thesisProposalTitle": {
             "type": "string",
             "minLength": 1
         },
@@ -59,8 +60,8 @@
             "default": "Pending"
         },
         "self": {
-                "type": "string",
-                "format": "uri"
+            "type": "string",
+            "format": "uri"
         }
     },
     "additionalProperties": false,

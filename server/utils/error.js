@@ -6,3 +6,9 @@ exports.PromiseError = class PromiseError extends Error {
         this.code = error.code;
     }
 }
+
+exports.InternalError = class InternalError extends Error {
+    constructor(error) {
+        super(error);
+    }
+}

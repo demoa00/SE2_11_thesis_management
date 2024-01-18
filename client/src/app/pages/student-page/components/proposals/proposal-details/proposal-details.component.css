@@ -1,0 +1,163 @@
+/* You can add global styles to this file, and also import other style files */
+@import '../proposals-view/proposals-view.component.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.leftMenuItem {
+  border-radius: 8px;
+  padding: 8px 16px;
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 16px;
+  background-color: #e5e7eb;
+  cursor: pointer;
+}
+.leftMenuItem.selected {
+  background-color: #03577A;
+}
+.leftMenuItem.selected * {
+  color: white;
+}
+.leftMenuItem.hovered {
+  background-color: #d1d5db;
+}
+
+.card {
+  @apply shadow-sm rounded-md shadow-gray-400 p-4 bg-white;
+}
+
+.separator {
+  height: 1px;
+  width: 100%;
+  @apply bg-orange-500;
+}
+@media only screen and (max-width: 1000px) {
+  .separator {
+    display: none;
+  }
+}
+
+.icon-16 {
+  font-size: 16px;
+  line-height: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-20 {
+  font-size: 20px;
+  line-height: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.container {
+  max-width: none !important;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(87.5vh - 32px);
+  max-width: 100%;
+}
+
+.projectHeader, .projectBody {
+  margin-bottom: 16px;
+}
+.projectHeader .projectTitle, .projectBody .projectTitle {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+  margin-bottom: 8px;
+}
+.projectHeader .regularText, .projectBody .regularText {
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.projectFooter {
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+.projectFooter .regularText {
+  font-weight: normal;
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+
+.projectInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.projectButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.popupContent .textArea {
+  @apply w-full h-32 bg-gray-50 border-2 border-gray-300 rounded-md p-2;
+  font-size: 12px;
+  line-height: 14px;
+}
+.popupContent .textOverflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100px;
+}
+
+.projectStatus {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.secretaryButtons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.statusContainer.mobile {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-wrap: wrap;
+}
+.statusContainer.mobile .status {
+  margin: 0;
+}
+.statusContainer .status {
+  margin: auto;
+  padding: 8px;
+  border-radius: 200px;
+  line-height: normal;
+  height: fit-content;
+  color: white;
+  width: fit-content;
+}
+.statusContainer .status.pending {
+  background: #ffdd48;
+  color: #545454;
+}
+.statusContainer .status.accepted {
+  background: #75ce8f;
+}
+.statusContainer .status.rejected {
+  background: #f56565;
+}
+.statusContainer .status.change {
+  background: #4bb2ff;
+}
+.statusContainer .status.cancelled {
+  background: #e5e7eb;
+  color: #545454;
+}
+
+/*# sourceMappingURL=proposal-details.component.css.map */

@@ -42,6 +42,10 @@ export class NotificationsContainerComponent {
 
   counter = 0;
   @Output() applicationsPage = new EventEmitter<boolean>();
+  @Output() requestsPage = new EventEmitter<boolean>();
+  @Output() profApplicationPage = new EventEmitter<boolean>();
+  @Output() profThesisPage = new EventEmitter<boolean>();
+  @Output() profRequestPage = new EventEmitter<boolean>();
   @Output() counterChange = new EventEmitter<number>();
   @Output() close = new EventEmitter<boolean>();
 
@@ -54,7 +58,7 @@ export class NotificationsContainerComponent {
       this.counter = this.notificationsToShow.length;
       this.counterChange.emit(this.counter);
     })
-    this.socket.on('message', (data: any) => {
+    this.socket.on('message', () => {
       this.api.getNotifications().then((response: any) => {
         console.log(response);
         this.notifications = response;
@@ -66,7 +70,7 @@ export class NotificationsContainerComponent {
   }
 
   read(n: any) {
-    this.api.updateNotification(n.notificationId).then((response: any) => {
+    this.api.updateNotification(n.notificationId).then(() => {
     }).catch((error) => {
       console.log(error);
     })
@@ -87,6 +91,33 @@ export class NotificationsContainerComponent {
       case 5:
         this.applicationsPage.emit(true);
         break;
+      case 6:
+        this.requestsPage.emit(true);
+        break;
+      case 1:
+        this.profApplicationPage.emit(true);
+        break;
+      case 3:
+        this.profThesisPage.emit(true);
+        break;
+      case 4:
+        this.profThesisPage.emit(true);
+        break;
+      case 7:
+        this.profRequestPage.emit(true);
+        break;
+      case 8:
+        this.profRequestPage.emit(true);
+        break;
+      case 9:
+        this.profRequestPage.emit(true);
+        break;
+      case 10:
+        this.profRequestPage.emit(true);
+        break;
+      case 12:
+        this.profThesisPage.emit(true);
+        break;
       default:
         break;
       //other cases here
@@ -95,7 +126,7 @@ export class NotificationsContainerComponent {
   }
 
   delete(id: number) {
-    this.api.updateNotification(id).then((response: any) => {
+    this.api.updateNotification(id).then(() => {
     }).catch((error) => {
       console.log(error);
     })
@@ -113,7 +144,7 @@ export class NotificationsContainerComponent {
 
   deleteAll() {
     this.notifications.forEach((not: any) => {
-      this.api.updateNotification(not.notificationId).then((response: any) => {
+      this.api.updateNotification(not.notificationId).then(() => {
       }).catch((error) => {
         console.log(error);
       })

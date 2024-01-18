@@ -1,0 +1,148 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.leftMenuItem {
+  border-radius: 8px;
+  padding: 8px 16px;
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 16px;
+  background-color: #e5e7eb;
+  cursor: pointer;
+}
+.leftMenuItem.selected {
+  background-color: #03577A;
+}
+.leftMenuItem.selected * {
+  color: white;
+}
+.leftMenuItem.hovered {
+  background-color: #d1d5db;
+}
+
+.card {
+  @apply shadow-sm rounded-md shadow-gray-400 p-4 bg-white;
+}
+
+.separator {
+  height: 1px;
+  width: 100%;
+  @apply bg-orange-500;
+}
+@media only screen and (max-width: 1000px) {
+  .separator {
+    display: none;
+  }
+}
+
+.icon-16 {
+  font-size: 16px;
+  line-height: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-20 {
+  font-size: 20px;
+  line-height: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.container {
+  max-width: none !important;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(87.5vh - 32px);
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.requestsContainer {
+  overflow: auto;
+}
+.requestsContainer .requestsTable {
+  width: 100%;
+}
+.requestsContainer .requestsTable .statusHeader {
+  width: 1%;
+  white-space: nowrap;
+}
+.requestsContainer .requestsTable .request {
+  border-bottom: 1px solid #e5e7eb;
+}
+.requestsContainer .requestsTable .request:hover .title {
+  text-decoration: underline;
+}
+.requestsContainer .requestsTable .request.mobile td {
+  padding-left: 0 !important;
+}
+.requestsContainer .requestsTable .request .title {
+  text-align: left;
+  cursor: pointer;
+}
+.requestsContainer .requestsTable .request td {
+  padding: 8px 8px 8px 8px;
+}
+.requestsContainer .requestsTable .request td:first-child {
+  padding: 8px 8px 8px 0;
+}
+.requestsContainer .requestsTable .request td:last-child {
+  padding: 8px 0 8px 8px;
+}
+.requestsContainer .requestsTable .request:last-child {
+  border-bottom: none;
+}
+.requestsContainer .requestsTable .request:last-child td {
+  padding-bottom: 0;
+}
+.requestsContainer .requestsTable .request .statusContainer.mobile {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-wrap: wrap;
+}
+.requestsContainer .requestsTable .request .statusContainer.mobile .status {
+  margin: 0;
+}
+.requestsContainer .requestsTable .request .statusContainer .status {
+  margin: auto;
+  padding: 8px;
+  border-radius: 200px;
+  line-height: normal;
+  height: fit-content;
+  color: white;
+  width: fit-content;
+}
+.requestsContainer .requestsTable .request .statusContainer .status.pending {
+  background: #ffdd48;
+  color: #545454;
+}
+.requestsContainer .requestsTable .request .statusContainer .status.accepted {
+  background: #75ce8f;
+}
+.requestsContainer .requestsTable .request .statusContainer .status.rejected {
+  background: #f56565;
+}
+.requestsContainer .requestsTable .request .statusContainer .status.change {
+  background: #4bb2ff;
+}
+.requestsContainer .requestsTable .request .statusContainer .status.cancelled {
+  background: #e5e7eb;
+  color: #545454;
+}
+.requestsContainer .requestsTable .request .actionsContainer {
+  display: flex;
+  gap: 8px;
+}
+
+/*# sourceMappingURL=requests-view.component.css.map */

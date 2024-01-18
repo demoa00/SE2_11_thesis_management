@@ -1,11 +1,21 @@
 <div class="container">
-  <h1 class="title">Applicant's Profile</h1>
+  <h6 class="title">Applicant's Profile</h6>
   <div class="card profileDataContainer">
     <div class="projectButtons">
       <p class="name">{{user.name}} {{user.surname}}, {{userId}}</p>
-      <div class="flex items-center gap-2" *ngIf="cv.name">
-        <p class="font-medium" >Applicant CV:</p>
-        <app-icon name="pdf" class="text-blue-900 h-6 w-6 hover:cursor-pointer" (click)="getCv()">CV</app-icon>
+      <div class="flex flex-col gap-2">
+        <div class="flex items-center gap-2" *ngIf="!attachedFile && cv.name">
+          <p class="font-medium" >Applicant CV:</p>
+          <app-icon name="search" class="text-blue-900 h-4 w-4 hover:cursor-pointer" (click)="openCv()">CV</app-icon>
+          Or
+          <app-icon name="download" class="text-blue-900 h-4 w-4 hover:cursor-pointer" (click)="getCv()">CV</app-icon>
+        </div>
+        <div class="flex items-center gap-2" *ngIf="attachedFile">
+          <p class="font-medium" >CV attached to the application: </p>
+          <app-icon name="search" class="text-blue-900 h-4 w-4 hover:cursor-pointer" (click)="openApplicationFile()">FILE</app-icon>
+          Or
+          <app-icon name="download" class="text-blue-900 h-4 w-4 hover:cursor-pointer" (click)="getApplicationFile()">FILE</app-icon>
+        </div>
       </div>
     </div>
     <div *ngIf="application && application.message!=null" class="flex items-center gap-2">

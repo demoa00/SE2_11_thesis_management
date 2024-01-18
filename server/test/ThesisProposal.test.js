@@ -197,7 +197,7 @@ describe("getThesisProposalById", () => {
       JSON.stringify(thesisProposal, null, 2)
     );
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {
       user: {},
       params: {},
@@ -209,7 +209,7 @@ describe("getThesisProposalById", () => {
       mockNext
     );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
 
@@ -287,7 +287,7 @@ describe("insertNewThesisProposal", () => {
       JSON.stringify(newThesisProposal, null, 2)
     );
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {
       user: {},
       body: {},
@@ -299,7 +299,7 @@ describe("insertNewThesisProposal", () => {
       mockNext
     );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
@@ -339,7 +339,7 @@ describe("updateThesisProposal", () => {
       JSON.stringify(thesisProposalUpdated, null, 2)
     );
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {
       user: {},
       body: {},
@@ -352,7 +352,7 @@ describe("updateThesisProposal", () => {
       mockNext
     );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
@@ -386,7 +386,7 @@ describe("archiveThesisProposal", () => {
     });
     expect(mockRes.end).toHaveBeenCalledWith("No Content");
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {
       user: {},
       body: {},
@@ -399,7 +399,7 @@ describe("archiveThesisProposal", () => {
       mockNext
     );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(
@@ -433,7 +433,7 @@ describe("deleteThesisProposal", () => {
     });
     expect(mockRes.end).toHaveBeenCalledWith("No Content");
   });
-  test("should respond with 404 Bad Request", async () => {
+  test("should respond with 400 Bad Request", async () => {
     const mockReq = {
       user: {},
       body: {},
@@ -446,7 +446,7 @@ describe("deleteThesisProposal", () => {
       mockNext
     );
 
-    expect(mockRes.writeHead).toHaveBeenCalledWith(404, {
+    expect(mockRes.writeHead).toHaveBeenCalledWith(400, {
       "Content-Type": "application/json",
     });
     expect(mockRes.end).toHaveBeenCalledWith(

@@ -36,6 +36,24 @@
   }
 }
 
+.icon-16 {
+  font-size: 16px;
+  line-height: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-20 {
+  font-size: 20px;
+  line-height: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.container {
+  max-width: none !important;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -43,46 +61,57 @@
 }
 
 .applicationsContainer {
-  display: flex;
-  flex-direction: column;
   overflow: auto;
+  padding: 16px;
+}
+.applicationsContainer .applicationsTable {
+  width: 100%;
 }
 .applicationsContainer .application {
-  margin-bottom: 8px;
-  padding-bottom: 8px;
   border-bottom: 1px solid #e5e7eb;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 .applicationsContainer .application:last-child {
   border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
 }
-.applicationsContainer .application .title {
+.applicationsContainer .application:hover .title {
+  text-decoration: underline;
+}
+.applicationsContainer .application td {
+  vertical-align: middle;
+}
+.applicationsContainer .application td.title {
   margin-right: 32px;
+  padding: 8px 8px 8px 0;
+  cursor: pointer;
 }
-.applicationsContainer .application .status {
+.applicationsContainer .application td.statusContainer {
+  padding: 8px 0 8px 8px;
+}
+.applicationsContainer .application td.statusContainer .status {
+  margin: auto;
   padding: 8px;
   border-radius: 200px;
   line-height: normal;
   height: fit-content;
   color: white;
+  width: fit-content;
 }
-.applicationsContainer .application .status.pending {
+.applicationsContainer .application td.statusContainer .status.pending {
   background: #ffdd48;
   color: #545454;
 }
-.applicationsContainer .application .status.accepted {
+.applicationsContainer .application td.statusContainer .status.accepted {
   background: #75ce8f;
 }
-.applicationsContainer .application .status.rejected {
+.applicationsContainer .application td.statusContainer .status.rejected {
   background: #f56565;
 }
-.applicationsContainer .application .status.cancelled {
+.applicationsContainer .application td.statusContainer .status.cancelled {
   background: #e5e7eb;
   color: #545454;
 }
+.applicationsContainer .application td.requestButton {
+  padding: 8px 0 8px 16px;
+}
 
-/*# sourceMappingURL=application-view.component.css.map */
+/*# sourceMappingURL=applications-view.component.css.map */

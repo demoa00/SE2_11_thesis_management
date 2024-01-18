@@ -1,0 +1,19 @@
+<div class="h-full flex flex-col gap-2">
+  <div class="projectHeader">
+    <h2 class="projectTitle">{{selectedRequest?.title}}</h2>
+    <h3 class="font-bold">Requester: <span class="regularText">{{selectedRequest?.requester.name}} {{selectedRequest?.requester.surname}}</span></h3>
+    <h3 class="font-bold">Supervisor: <span class="regularText">{{selectedRequest?.supervisor.name}} {{selectedRequest?.supervisor.surname}}</span></h3>
+    <h3 *ngIf="selectedRequest?.coSupervisors" class="font-bold">Cosupervisors: <span class="regularText" *ngFor="let cs of selectedRequest?.coSupervisors; let last = last">{{cs.name}} {{cs.surname}}{{last ? '' : ', '}}</span></h3>
+  </div>
+  <div class="projectBody ">
+    <h3 class="font-bold">Description</h3>
+    <div class="regularText">
+      <p>{{selectedRequest?.description}}</p>
+    </div>
+  </div>
+  <div class="projectFooter">
+    <h3 class="font-bold">Status: <span class="regularText">{{selectedRequest?.professorStatus}}</span></h3>
+    <h3 class="font-bold">Request Date: <span class="regularText">{{selectedRequest?.date}}</span></h3>
+    <h3 *ngIf="selectedRequest?.approvalData" class="font-bold">Approval Date: <span class="regularText">{{selectedRequest?.approvaldate}}</span></h3>
+  </div>
+</div>

@@ -4,7 +4,7 @@
 // SERVER DEPENDENCES
 //-- -- -- -- -- -- --
 
-require('dotenv').config()
+require('dotenv').config();
 const corsConfig = require('./config.js').config();
 
 const http = require('http');
@@ -20,6 +20,10 @@ const { Validator, ValidationError } = require('express-json-validator-middlewar
 const addFormats = require('ajv-formats').default;
 const fs = require('fs');
 const path = require('path');
+const schedule = require('node-schedule');
+const { body } = require('express-validator');
+
+const uploadFile = require('./utils/storage').uploadFile2;
 
 
 //-- -- -- -- -- -- -- -- -- --
@@ -31,6 +35,7 @@ const applicationController = require(path.join(__dirname, 'controllers/Applicat
 const studentController = require(path.join(__dirname, 'controllers/StudentController'));
 const professorController = require(path.join(__dirname, 'controllers/ProfessorController'));
 const externalCoSupervisorController = require(path.join(__dirname, 'controllers/ExternalCoSupervisorController'));
+const secretaryClerckEmployeeController = require(path.join(__dirname, 'controllers/SecretaryClerckController'));
 const keywordController = require(path.join(__dirname, 'controllers/KeywordController'));
 const degreeController = require(path.join(__dirname, 'controllers/DegreeController'));
 const curriculumVitaeController = require(path.join(__dirname, 'controllers/CurriculumVitaeController'));
@@ -39,12 +44,15 @@ const thesisRequestController = require(path.join(__dirname, 'controllers/Thesis
 const notificationController = require(path.join(__dirname, 'controllers/NotificationController'));
 const virtualClockController = require(path.join(__dirname, 'controllers/VirtualClockController'));
 
+
 //-- -- -- -- -- -- -- -- -- --
 // IMPORT RESOURCE SERVICES
 //-- -- -- -- -- -- -- -- -- --
 
 const studentService = require(path.join(__dirname, 'service/StudentService'));
 const professorService = require(path.join(__dirname, 'service/ProfessorService'));
+const secretaryClerckEmployeeService = require(path.join(__dirname, 'service/SecretaryClerckService'));
+const notificationService = require(path.join(__dirname, 'service/NotificationService'));
 
 
 //-- -- -- -- -- -- -- -- -- -- --
@@ -124,19 +132,26 @@ const strategy = new saml(
         let regex = new RegExp('.*@studenti.*');
         let user;
 
-        if (regex.test(userEmail)) { //user is a student
+        if (regex.test(userEmail)) { // User is a student
             try {
                 user = await studentService.getStudentByEmail(userEmail);
                 done(null, user);
             } catch (error) {
                 done(null, false);
             }
-        } else { //user is a professor
+        } else { // User is a professor or a secretary clerck employee
             try {
                 user = await professorService.getProfessorByEmail(userEmail);
+                console.log(user)
                 done(null, user);
             } catch (error) {
-                done(null, false);
+                try {
+                    user = await secretaryClerckEmployeeService.getSecretaryClerckEmployeeByEmail(userEmail);
+                    console.log(user)
+                    done(null, user);
+                } catch (error) {
+                    done(null, false);
+                }
             }
         }
     }
@@ -212,6 +227,21 @@ const isProfessor = (req, res, next) => {
     return res.status(403).json({ error: 'Forbidden' });
 }
 
+/**
+ * Verify if the user that want to accede
+ * to a specific resorce has the role of 
+ * secretary
+ */
+const isSecretary = (req, res, next) => {
+    if (req.user.userId != undefined && req.user.role != undefined) {
+        if (req.user.role === 'secretary') {
+            return next();
+        }
+    }
+
+    return res.status(403).json({ error: 'Forbidden' });
+}
+
 
 //-- -- -- --
 // API ROUTES
@@ -273,7 +303,8 @@ app.delete('/api/thesisProposals/:thesisProposalId', isLoggedIn, isProfessor, th
 /* APPLICATIONS API */
 app.get('/api/applications', isLoggedIn, applicationController.getApplications);
 app.get('/api/applications/:thesisProposalId/:studentId', isLoggedIn, applicationController.getApplicationById);
-app.post('/api/thesisProposals/:thesisProposalId', isLoggedIn, isStudent, validate({ body: applicationSchema }), applicationController.insertNewApplication);
+app.get('/api/applications/:thesisProposalId/:studentId/file', isLoggedIn, applicationController.getApplicationFile);
+app.post('/api/thesisProposals/:thesisProposalId', isLoggedIn, isStudent, uploadFile, validate({ body: applicationSchema }), applicationController.insertNewApplication);
 app.put('/api/applications/:thesisProposalId/:studentId', isLoggedIn, isProfessor, validate({ body: applicationSchema }), applicationController.updateApplication);
 
 
@@ -291,6 +322,10 @@ app.get('/api/externalCoSupervisors', isLoggedIn, externalCoSupervisorController
 app.get('/api/externalCoSupervisors/:externalCoSupervisorId', isLoggedIn, externalCoSupervisorController.getExternalCoSupervisorById);
 
 
+/* SECRETARY CLERK EMPLOYEES API */
+app.get('/api/secretaryClerckEmployees/:secretaryClerckEmployeeId', isLoggedIn, isSecretary, secretaryClerckEmployeeController.getSecretaryClerckEmployeeById);
+
+
 /* KEYWORDS API */
 app.get('/api/keywords', isLoggedIn, keywordController.getKeywords);
 
@@ -300,7 +335,7 @@ app.get('/api/degrees', isLoggedIn, degreeController.getDegrees);
 
 
 /* CV API */
-app.post('/api/cv', isLoggedIn, isStudent, curriculumVitaeController.insertNewCV);
+app.post('/api/cv', /* isLoggedIn, isStudent, */ curriculumVitaeController.insertNewCV);
 app.get('/api/cv/:studentId', isLoggedIn, curriculumVitaeController.getCV);
 app.delete('/api/cv/:studentId', isLoggedIn, isStudent, curriculumVitaeController.deleteCV);
 
@@ -314,6 +349,7 @@ app.get('/api/thesisRequests', isLoggedIn, thesisRequestController.getThesisRequ
 app.get('/api/thesisRequests/:thesisRequestId', isLoggedIn, thesisRequestController.getThesisRequestById);
 app.post('/api/thesisRequests', isLoggedIn, isStudent, validate({ body: thesisRequestSchema }), thesisRequestController.insertNewThesisRequest);
 app.put('/api/thesisRequests/:thesisRequestId', isLoggedIn, validate({ body: thesisRequestSchema }), thesisRequestController.updateThesisRequest);
+app.delete('/api/thesisRequests/:thesisRequestId', isLoggedIn, thesisRequestController.deleteThesisRequest);
 
 
 /* NOTIFICATIONS API */
@@ -327,7 +363,7 @@ app.put('/api/virtualClock', isLoggedIn, virtualClockController.updateVirtualClo
 
 
 //-- -- -- -- -- -- -- -- -- -- --
-// WEBSOCKET SERVER INITIALIZATION
+// SCHEMA VALIDATOR ERROR MANAGER
 //-- -- -- -- -- -- -- -- -- -- --
 
 app.use(function (err, req, res, next) {
@@ -335,6 +371,11 @@ app.use(function (err, req, res, next) {
         res.status(400).send(err);
     } else next(err);
 });
+
+
+//-- -- -- -- -- -- -- -- -- -- --
+// WEBSOCKET SERVER INITIALIZATION
+//-- -- -- -- -- -- -- -- -- -- --
 
 const httpServer = http.createServer(app);
 
@@ -371,20 +412,24 @@ io.on('connection', (socket) => {
 });
 
 
+//-- -- -- -- -- --
+// SERVER ROUTINE
+//-- -- -- -- -- --
+
+/**
+ * This routine is executed every day at 00:00,
+ * in order to verify is a thesis proposal is expired
+ * */
+const job = schedule.scheduleJob('0 0 * * *', function () {
+    notificationService.thesisProposalExpirationNotification();
+});
+
+
 //-- -- -- -- -- -- --
 // HTTP SERVER START
 //-- -- -- -- -- -- --
 
 httpServer.listen(PORT, function () {
     console.log('Your server is listening on port %d (http://localhost:%d)', PORT, PORT);
-    console.log('Swagger-ui is available on http://localhost:%d/docs', PORT);
+    console.log('Swagger-ui is available on http://localhost:%d/docs', PORT);   // API documentation
 });
-
-//generate random messages for notifications
-/* const genRand = (len) => {
-    return Math.random().toString(36).substring(2, len + 2);
-}
-
-setInterval(() => {
-    io.emit('message', genRand(10));
-}, 2000); */

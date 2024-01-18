@@ -9,6 +9,13 @@
   height: fit-content;
   width: fit-content;
   display: flex;
+
+  &.singleLine{
+    button {
+      text-wrap: nowrap;
+    }
+  }
+
   &.disabled {
     opacity: 0.5;
     cursor: not-allowed;

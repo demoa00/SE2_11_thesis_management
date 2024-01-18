@@ -17,7 +17,7 @@ export class ProfilePageComponent {
   cv: File = new File([], '')
   showPopup = false
   ngOnInit() {
-    this.api.getUserDetails(this.userId).then((response: any) => {
+    this.api.getStudentDetails(this.userId).then((response: any) => {
       this.user = response
       this.cv = new File([], response.cv)
     })
@@ -27,11 +27,8 @@ export class ProfilePageComponent {
   }
 
   loadFile(file: any) {
-    console.log("LOAD FILE")
     const body = new FormData();
-    console.log(file.target.files[0])
     body.append('file', file.target.files[0]);
-    console.log(body.get('file'))
     this.api.postCv(body).then(r => {
       console.log(r)
       this.cv = new File([], `${this.userId}.pdf`)
@@ -47,11 +44,11 @@ export class ProfilePageComponent {
       let link = url.createObjectURL(r)
       let cv = document.createElement('a')
       cv.setAttribute("download", this.cv.name)
-      cv.setAttribute("href", link)
+     //  cv.setAttribute("href", link)
       document.body.appendChild(cv)
       cv.click()
       document.body.removeChild(cv)
-      // window.open(link)
+      window.open(link)
     }).catch(e => {
       console.log(e)
     })

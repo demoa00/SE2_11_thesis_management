@@ -36,6 +36,24 @@
   }
 }
 
+.icon-16 {
+  font-size: 16px;
+  line-height: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-20 {
+  font-size: 20px;
+  line-height: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.container {
+  max-width: none !important;
+}
+
 :host {
   background-color: #03577A;
   padding: 8px;
@@ -45,6 +63,9 @@
   height: fit-content;
   width: fit-content;
   display: flex;
+}
+:host.singleLine button {
+  text-wrap: nowrap;
 }
 :host.disabled {
   opacity: 0.5;

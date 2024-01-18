@@ -50,8 +50,8 @@
         <td class="py-0.5 w-24 h-6 text-sm text-gray-600 hover:cursor-pointer overflow-auto" (click)="selectedApplicant = row" >{{row?.thesisProposalTitle}}</td>
         <td class="py-0.5 w-24 h-6 text-sm text-gray-600 hover:cursor-pointer" (click)="selectedApplicant = row" >{{row?.date}}</td>
         <td *ngIf="row?.status =='Pending'" class="py-0.5 w-12 h-6">
-          <button  class="dropdownButton mr-2" (click)="openAcceptPopup(); applicant = row" >Accept</button>
-          <button class="dropdownButton red ml-2" (click)="openRejectPopup(); applicant = row">Reject</button>
+          <button  class="dropdownButton left" (click)="openAcceptPopup(); applicant = row" >Accept</button>
+          <button class="dropdownButton red right" (click)="openRejectPopup(); applicant = row">Reject</button>
         </td>
         <td *ngIf="row?.status !='Pending'" [class.text-gray-400] = "row?.status=='Cancelled'"  [class.text-green-400] = "row?.status=='Accepted'" [class.text-red-400] = "row?.status=='Rejected'" class="py-0.5 w-12 h-6 text-sm">
           {{row?.status=='Accepted'?'accepted':row?.status=='Rejected'?'rejected':row?.status=='Cancelled'?'cancelled':''}}
@@ -74,7 +74,7 @@
 
 <app-popup
   *ngIf="rejectPopup"
-  (close)="openRejectPopup(); this.triggerUpdate.emit(); selectedApplicant = undefined"
+  (close)=" requestAccepted?selectedApplicant = undefined:''; openRejectPopup(); this.triggerUpdate.emit()"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"
@@ -93,7 +93,7 @@
 
 <app-popup
   *ngIf="acceptPopup"
-  (close)="openAcceptPopup() ; this.triggerUpdate.emit(); selectedApplicant = undefined"
+  (close)=" requestAccepted?selectedApplicant = undefined:''; openAcceptPopup() ; this.triggerUpdate.emit()"
   [closeClickOutside]="false"
   [showSlider] = "false"
   [showButton] = "true"

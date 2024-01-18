@@ -13,7 +13,8 @@
         },
         "thesisProposalId": {
             "type": "integer",
-            "minimum": 1
+            "minimum": 1,
+            "nullable": true
         },
         "requester": {
             "type": "object",
@@ -40,7 +41,7 @@
         "title": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 20
+            "maxLength": 100
         },
         "supervisor": {
             "type": "object",
@@ -115,9 +116,18 @@
                 "Rejected"
             ]
         },
+        "date": {
+            "type": "string",
+            "format": "date"
+        },
         "approvalDate": {
             "type": "string",
             "format": "date"
+        },
+        "professorRequestChangesMessage": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
         },
         "self": {
             "type": "string",

@@ -9,7 +9,7 @@ const Degree = require('./DegreeService');
 const Notification = require('./NotificationService');
 const checkRole = require('../utils/checkRole');
 const smtp = require('../utils/smtp');
-const { PromiseError } = require('../utils/error');
+const { PromiseError, InternalError } = require('../utils/error');
 
 const db = require('../utils/dbConnection');
 
@@ -142,10 +142,9 @@ exports.getThesisProposalsForStudent = function (codDegree, filter) {
 }
 
 exports.getThesisProposalsForProfessor = function (professorId, filter) {
-  let sql = 'SELECT thesisProposals.thesisProposalId, thesisProposals.title, p.name, p.surname, thesisProposals.keywords, thesisProposals.expirationDate FROM thesisProposals, (SELECT professorId, name, surname FROM professors WHERE professorId = ?) p WHERE supervisor = ?' + ' OR ' + 'thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?) AND supervisor = p.professorId AND isArchieved = 0';
+  let sql = 'SELECT thesisProposals.thesisProposalId, thesisProposals.title, p.name, p.surname, thesisProposals.keywords, thesisProposals.expirationDate FROM thesisProposals, (SELECT professorId, name, surname FROM professors) p WHERE supervisor = ?' + ' OR ' + 'thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?) AND supervisor = p.professorId AND isArchieved = 0';
 
   let params = [];
-  params.push(professorId);
   params.push(professorId);
   params.push(professorId);
 
@@ -156,8 +155,8 @@ exports.getThesisProposalsForProfessor = function (professorId, filter) {
       sql = 'SELECT thesisProposals.thesisProposalId, thesisProposals.title, p.name, p.surname, thesisProposals.keywords, thesisProposals.expirationDate FROM thesisProposals, (SELECT professorId, name, surname FROM professors WHERE professorId = ?) p WHERE supervisor = ? AND supervisor = p.professorId ';
       params = [professorId, professorId];
     } else if (filter.cosupervisor === 'true') {
-      sql = 'SELECT thesisProposals.thesisProposalId, thesisProposals.title, p.name, p.surname, thesisProposals.keywords, thesisProposals.expirationDate FROM thesisProposals, (SELECT professorId, name, surname FROM professors WHERE professorId = ?) p WHERE thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?) AND supervisor = p.professorId ';
-      params = [professorId, professorId];
+      sql = 'SELECT thesisProposals.thesisProposalId, thesisProposals.title, p.name, p.surname, thesisProposals.keywords, thesisProposals.expirationDate FROM thesisProposals, (SELECT professorId, name, surname FROM professors) p WHERE thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_internalCosupervisor_bridge WHERE internalCoSupervisorId = ?) AND supervisor = p.professorId ';
+      params = [professorId];
     }
   }
 
@@ -199,11 +198,11 @@ exports.getThesisProposalById = function (user, thesisProposalId) {
   let params = [];
 
   if (checkRole.isProfessor(user)) {//professor request -- both active and archived thesis proposals
-    sql = 'SELECT * FROM thesisProposals WHERE thesisProposalId = ? AND supervisor = ?';
-    params = [thesisProposalId, user.userId];
+    sql = 'SELECT * FROM thesisProposals WHERE thesisProposalId = ? AND (supervisor = ? OR thesisProposalId IN (SELECT DISTINCT thesisProposalId FROM thesisProposal_internalCoSupervisor_bridge WHERE internalCoSupervisorId = ?))';
+    params = [thesisProposalId, user.userId, user.userId];
   } else if (checkRole.isStudent(user)) {//student request -- only active thesis proposals
-    sql = 'SELECT * FROM thesisProposals WHERE thesisProposalId = ? AND thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_cds_bridge WHERE cdsId = ?) AND isArchieved = 0';
-    params = [thesisProposalId, user.codDegree];
+    sql = "SELECT * FROM thesisProposals WHERE thesisProposalId = ? AND (( thesisProposalId IN (SELECT thesisProposalId FROM thesisProposal_cds_bridge WHERE cdsId = ?) AND isArchieved = 0 ) OR thesisProposalId IN (SELECT DISTINCT thesisProposalId FROM applications WHERE studentId = ? AND status = 'Accepted') )";
+    params = [thesisProposalId, user.codDegree, user.userId];
   }
 
   return new Promise(function (resolve, reject) {
@@ -336,6 +335,8 @@ exports.insertNewThesisProposal = async function (professorId, newThesisProposal
   let internalCosupervisors = [];
   let externalCosupervisors = [];
   let degree = [];
+
+  newThesisProposal.thesisProposalId = parseInt(newThesisProposal.thesisProposalId);
 
   let regex = new RegExp("(p|P)[0-9]{6}");
 
@@ -478,7 +479,7 @@ exports.insertNewThesisProposal = async function (professorId, newThesisProposal
 
     try {
       internalCosupervisors.forEach((i) => {
-        emailPromises.push(smtp.sendMail(smtp.mailConstructor(i.email, smtp.subjectInsertCoSupervisor, smtp.textInsertCoSupervisor)));
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(i.email, smtp.subjectInsertCoSupervisor, `${smtp.textInsertCoSupervisor} ${newThesisProposal.title}`)));
         notificationPromises.push(Notification.insertNewNotification(i.coSupervisorId, smtp.subjectInsertCoSupervisor, 3));
       });
 
@@ -487,7 +488,7 @@ exports.insertNewThesisProposal = async function (professorId, newThesisProposal
 
       return { newThesisProposal: `/api/thesisProposals/${lastID}` };
     } catch (error) {
-      throw error;
+      return { newThesisProposal: `/api/thesisProposals/${lastID}` };
     }
   });
 }
@@ -501,6 +502,8 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
   let oldCoSupervisors = [];
   let oldDegrees = [];
   let newDegrees = [];
+
+  thesisProposal.thesisProposalId = parseInt(thesisProposal.thesisProposalId);
 
   let regex = new RegExp("(p|P)[0-9]{6}");
 
@@ -575,7 +578,7 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
           });
         }));
 
-        emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectRemoveCoSupervisor, smtp.textRemoveCoSupervisor)));
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectRemoveCoSupervisor, `${smtp.textRemoveCoSupervisor} ${thesisProposal.title}`)));
         notificationPromises.push(Notification.insertNewNotification(c.coSupervisorId, smtp.subjectRemoveCoSupervisor, 4));
       } else { //Is an external cosupervisor
         promises.push(new Promise(function (resolve, reject) {
@@ -589,7 +592,7 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
           });
         }));
       }
-    })
+    });
   }
 
   if (newCoSupervisors.length > 0) {
@@ -603,10 +606,10 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
             } else {
               resolve(this.lastID);
             }
-          })
+          });
         }));
 
-        emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectInsertCoSupervisor, smtp.textInsertCoSupervisor)));
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(c.email, smtp.subjectInsertCoSupervisor, `${smtp.textInsertCoSupervisor} ${thesisProposal.title}`)));
         notificationPromises.push(Notification.insertNewNotification(c.coSupervisorId, smtp.subjectInsertCoSupervisor, 3));
       } else { //Is an external cosupervisor
         promises.push(new Promise(function (resolve, reject) {
@@ -617,11 +620,10 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
             } else {
               resolve(this.lastID);
             }
-          })
-        })
-        )
+          });
+        }));
       }
-    })
+    });
   }
 
   if (oldDegrees.length > 0) {
@@ -635,9 +637,8 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
             resolve();
           }
         });
-      })
-      )
-    })
+      }));
+    });
   }
 
   if (newDegrees.length > 0) {
@@ -650,10 +651,9 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
           } else {
             resolve(this.lastID);
           }
-        })
-      })
-      )
-    })
+        });
+      }));
+    });
   }
 
   return Promise.all(promises).then(() => {
@@ -687,28 +687,48 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
 
       return { newThesisProposal: `/api/thesisProposals/${thesisProposalId}` };
     } catch (error) {
-      throw error;
+      return { newThesisProposal: `/api/thesisProposals/${thesisProposalId}` };
     }
   });
 }
 
 exports.deleteThesisProposal = async function (professorId, thesisProposalId) {
-  let internalCosupervisors = await Professor.getInternalCoSupervisorByThesisProposalId(thesisProposalId);
-  let students = await Student.getStudentsByThesisProposalId(thesisProposalId);
-  //let externalCoSupervisors = await ExternalCoSupervisor.getExternalCoSupervisorsByThesisProposalId(thesisProposalId);
+  let students;
+  let internalCosupervisors;
+
+  try {
+    students = await Student.getStudentsByThesisProposalId(thesisProposalId);
+    internalCosupervisors = await Professor.getInternalCoSupervisorByThesisProposalId(thesisProposalId);
+  } catch (error) {
+    students = [];
+    internalCosupervisors = [];
+  }
 
   return new Promise(function (resolve, reject) {
-    const sql = "DELETE FROM thesisProposals WHERE thesisProposalId = ? AND supervisor = ? AND isArchieved = 0";
-    db.run(sql, [thesisProposalId, professorId], function (err) {
+    const sql = "SELECT title FROM thesisProposals WHERE thesisProposalId = ?";
+    db.get(sql, [thesisProposalId], (err, row) => {
       if (err) {
         reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
-      } else if (this.changes == 0) {
+      } else if (row === undefined) {
         reject(new PromiseError({ code: 404, message: "Not Found" }));
       } else {
-        resolve();
+        resolve(row.title);
       }
     });
-  }).then(() => {
+  }).then((title) => {
+    return new Promise(function (resolve, reject) {
+      const sql = "DELETE FROM thesisProposals WHERE thesisProposalId = ? AND supervisor = ? AND isArchieved = 0";
+      db.run(sql, [thesisProposalId, professorId], function (err) {
+        if (err) {
+          reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+        } else if (this.changes == 0) {
+          reject(new PromiseError({ code: 404, message: "Not Found" }));
+        } else {
+          resolve(title);
+        }
+      });
+    });
+  }).then((title) => {
     return new Promise(function (resolve, reject) {
       if (students.length != 0) {
         const sql = "UPDATE applications SET status = 'Cancelled' WHERE thesisProposalId = ? AND status = 'Pending'";
@@ -720,21 +740,21 @@ exports.deleteThesisProposal = async function (professorId, thesisProposalId) {
         });
       }
 
-      resolve();
+      resolve(title);
     });
-  }).then(async () => {
+  }).then(async (title) => {
     let emailPromises = [];
     let notificationPromises = [];
 
     try {
       internalCosupervisors.forEach((i) => {
-        emailPromises.push(smtp.sendMail(smtp.mailConstructor(i.email, smtp.subjectRemoveCoSupervisor, smtp.textRemoveCoSupervisor)));
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(i.email, smtp.subjectRemoveCoSupervisor, `${smtp.textRemoveCoSupervisor} ${title}`)));
 
         notificationPromises.push(Notification.insertNewNotification(i.coSupervisorId, smtp.subjectRemoveCoSupervisor, 4));
       });
 
       students.forEach((s) => {
-        emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, smtp.textCancelApplication)));
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, `${smtp.textCancelApplication} ${title}`)));
 
         notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectCancelApplication, 5));
       });
@@ -742,7 +762,7 @@ exports.deleteThesisProposal = async function (professorId, thesisProposalId) {
       await Promise.all(notificationPromises);
       await Promise.all(emailPromises);
     } catch (error) {
-      throw error;
+      return;
     }
   });
 }
@@ -751,7 +771,13 @@ exports.archiveThesisProposal = async function (thesisProposalId, professorId) {
   let sql = '';
   let params = [];
 
-  let students = await Student.getStudentsByThesisProposalId(thesisProposalId);
+  let students;
+
+  try {
+    students = await Student.getStudentsByThesisProposalId(thesisProposalId);
+  } catch (error) {
+    students = [];
+  }
 
   if (professorId != undefined) {
     sql = 'UPDATE thesisProposals SET isArchieved = 1 WHERE thesisProposalId = ? AND supervisor = ?';
@@ -785,20 +811,76 @@ exports.archiveThesisProposal = async function (thesisProposalId, professorId) {
 
       resolve();
     });
-  }).then(async () => {
+  }).then(() => {
+    return new Promise(function (resolve, reject) {
+      const sql = "SELECT title FROM thesisProposals WHERE thesisProposalId = ?";
+      db.get(sql, [thesisProposalId], (err, row) => {
+        if (err) {
+          reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+        } else if (row === undefined) {
+          reject(new PromiseError({ code: 404, message: "Not Found" }));
+        } else {
+          resolve(row.title);
+        }
+      });
+    });
+  }).then(async (title) => {
     let emailPromises = [];
     let notificationPromises = [];
 
     try {
       students.forEach((s) => {
-        emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, smtp.textCancelApplication)));
+        emailPromises.push(smtp.sendMail(smtp.mailConstructor(s.email, smtp.subjectCancelApplication, `${smtp.textCancelApplication} ${title}`)));
         notificationPromises.push(Notification.insertNewNotification(s.studentId, smtp.subjectCancelApplication, 5));
       });
 
       await Promise.all(notificationPromises);
       await Promise.all(emailPromises);
     } catch (error) {
-      throw error;
+      return;
     }
+  });
+}
+
+exports.getThesisProposalDetails = function (thesisProposalId) {
+  return new Promise(function (resolve, reject) {
+    const sql = "SELECT title, supervisor, email FROM thesisProposals, professors WHERE thesisProposalId = ? AND supervisor = professorId";
+    db.get(sql, [thesisProposalId], (err, row) => {
+      if (err) {
+        reject(new InternalError());
+      } else if (row === undefined) {
+        reject(new InternalError());
+      } else {
+        resolve({ title: row.title, supervisor: { professorId: row.supervisor, email: row.email } });
+      }
+    });
+  });
+}
+
+exports.updateAcceptedApplication = function (thesisProposalId) {
+  return new Promise(function (resolve, reject) {
+    const sql = "SELECT * FROM applications WHERE thesisProposalId = ? AND status = 'Accepted'";
+    db.get(sql, [thesisProposalId], (err, row) => {
+      if (err) {
+        reject(new InternalError());
+      } else if (row == undefined) {
+        reject(new InternalError());
+      } else {
+        resolve(row.studentId);
+      }
+    });
+  }).then((studentId) => {
+    return new Promise(function (resolve, reject) {
+      const sql = "UPDATE applications SET status = 'Rejected' WHERE thesisProposalId = ? AND studentId = ?";
+      db.run(sql, [thesisProposalId, studentId], function (err) {
+        if (err) {
+          reject(new InternalError());
+        } else if (this.changes === 0) {
+          reject(new InternalError());
+        } else {
+          resolve();
+        }
+      });
+    });
   });
 }

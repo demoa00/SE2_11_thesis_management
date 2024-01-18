@@ -39,7 +39,10 @@ export class APIService {
         this.router.navigateByUrl('student')
       } else if (response.role == 'professor') {
         this.router.navigateByUrl('professor')
-      } else {
+      } else if(response.role == 'secretary') {
+        this.router.navigateByUrl('secretary')
+      }
+      else {
         window.location.href = `http://localhost:3000/api/authenticatedSession`;
       }
       return (response)
@@ -101,12 +104,46 @@ export class APIService {
 
   async getAllActiveTheses() {
     try {
-      return await this.httpService.get('thesisProposals/?cosupervisor=false&isArchieved=false')
+      const  theses: [] = await this.httpService.get('thesisProposals/?cosupervisor=false&isArchieved=false')
+      return theses.map((thesis: {}) => {
+        return {...thesis, coSupervised: false}
+      })
+    } catch (errore) {
+      return undefined
+    }
+  }
+  async getAllCoSupervisedActiveTheses () {
+    try {
+      const coSupervisedTheses: [] = await this.httpService.get('thesisProposals/?cosupervisor=true&isArchieved=false')
+      return coSupervisedTheses.map((thesis: {}) => {
+        return {...thesis, coSupervised: true}
+      })
     } catch (errore) {
       return undefined
     }
   }
 
+  async getThesisRequests() {
+    try {
+      const  theses: [] = await this.httpService.get('thesisRequests/')
+      return theses.map((thesis: {}) => {
+        return {...thesis, coSupervised: false}
+      })
+    } catch (errore) {
+      return undefined
+    }
+  }
+
+  async getCoSupervisedThesisRequests() {
+    try {
+      const coSupervisedTheses: [] = await this.httpService.get('thesisRequests/?cosupervisor=true')
+      return coSupervisedTheses.map((thesis: {}) => {
+        return {...thesis, coSupervised: true}
+      })
+    } catch (errore) {
+      return undefined
+    }
+  }
   async getAllArchivedTheses() {
     try {
       return await this.httpService.get('thesisProposals/?cosupervisor=false&isArchieved=true')
@@ -116,12 +153,15 @@ export class APIService {
 
   }
 
-  async getUserDetails(userId: any) {
+  async getStudentDetails(userId: any) {
     return await this.httpService.get(`students/${userId}`, false, true);
   }
 
   async getProfessorDetails(userId: any) {
     return await this.httpService.get(`professors/${userId}`, false, true);
+  }
+  async getSecretaryClerkDetails(userId: any) {
+    return await this.httpService.get(`secretaryClerckEmployees/${userId}`, false, true);
   }
 
   async getAllProposals(params: ProposalsParams | null) {
@@ -158,6 +198,14 @@ export class APIService {
     return await this.httpService.get(`thesisProposals/${proposalId}`, false, true)
   }
 
+  async getArchivedProposal(proposalId: number | undefined) {
+    return await this.httpService.get(`thesisProposals/${proposalId}?archived=true`, false, true)
+  }
+
+  async getRequest(requestId: number | undefined) {
+    return await this.httpService.get(`thesisRequests/${requestId}`, false, true)
+  }
+
   async deleteThesis(proposalId: number | undefined) {
     return await this.httpService.delete(`thesisProposals/${proposalId}`, true)
   }
@@ -182,19 +230,62 @@ export class APIService {
     return await this.httpService.get('professors/?cosupervisor=false')
   }
 
-  async insertNewApplication(body: any) {
-    return await this.httpService.post(`thesisProposals/${body.thesisProposalId}`, body)
+  async insertNewApplication(body: FormData) {
+    return await this.httpService.post(`thesisProposals/${body.get("thesisProposalId")}`, body)
   }
 
 
   async putApplication(studentId: any, thesisProposalId: any, status: 'Accepted' | 'Rejected') {
     return await this.httpService.put(`applications/${thesisProposalId}/${studentId}`, {
-      thesisProposalId: thesisProposalId,
+      thesisProposalId: thesisProposalId.toString(),
       applicant: {
         studentId: studentId
       },
       status: status
     })
+  }
+
+  async postThesisRequest(body: any) {
+    return await this.httpService.post('thesisRequests', body)
+  }
+
+  async deleteThesisRequest(thesisRequestId: any) {
+    return await this.httpService.delete(`thesisRequests/${thesisRequestId}`, true)
+  }
+
+  async putThesisRequestStudent(body: any) {
+    return await this.httpService.put(`thesisRequests/${body.thesisRequestId}`, body)
+  }
+  async putThesisRequestSecretary(body: any) {
+    return await this.httpService.put(`thesisRequests/${body.thesisRequestId}`, body)
+  }
+  async putThesisRequest(professorId: any, thesisRequestId: any, status: 'Accepted' | 'Rejected' | 'Change', studentId:any, thesisProposalId:any, professorRequestChangesMessage?:any) {
+    return await this.httpService.put(`thesisRequests/${thesisRequestId}`, professorRequestChangesMessage?{
+      supervisor: {
+        professorId: professorId
+      },
+      requester: {
+        studentId: studentId
+      },
+      professorStatus: status,
+      title:' ',
+      description:' ',
+      thesisProposalId: thesisProposalId,
+      professorRequestChangesMessage: professorRequestChangesMessage,
+    }:
+      {
+        supervisor: {
+          professorId: professorId
+        },
+        requester: {
+          studentId: studentId
+        },
+        professorStatus: status,
+        title: ' ',
+        description:' ',
+        thesisProposalId: thesisProposalId,
+      }
+    )
   }
 
   async getCareer(studentId: any) {
@@ -237,6 +328,9 @@ export class APIService {
     return await this.httpService.getBlob(`cv/${userId}`, false, true)
   }
 
+  async getApplicationFile(thesisProposalId: any, studentId:any):Promise<Blob> {
+    return await this.httpService.getBlob(`applications/${thesisProposalId}/${studentId}/file`, false, true)
+  }
   async deleteCv(userId: any) {
     return await this.httpService.delete(`cv/${userId}`, true)
   }

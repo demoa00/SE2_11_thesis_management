@@ -1,0 +1,139 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.leftMenuItem {
+  border-radius: 8px;
+  padding: 8px 16px;
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 16px;
+  background-color: #e5e7eb;
+  cursor: pointer;
+}
+.leftMenuItem.selected {
+  background-color: #03577A;
+}
+.leftMenuItem.selected * {
+  color: white;
+}
+.leftMenuItem.hovered {
+  background-color: #d1d5db;
+}
+
+.card {
+  @apply shadow-sm rounded-md shadow-gray-400 p-4 bg-white;
+}
+
+.separator {
+  height: 1px;
+  width: 100%;
+  @apply bg-orange-500;
+}
+@media only screen and (max-width: 1000px) {
+  .separator {
+    display: none;
+  }
+}
+
+.icon-16 {
+  font-size: 16px;
+  line-height: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-20 {
+  font-size: 20px;
+  line-height: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.container {
+  max-width: none !important;
+}
+
+.bo-table, .bo-table-compact {
+  @apply divide-y divide-gray-200 p-4 bg-white;
+}
+.bo-table thead th, .bo-table-compact thead th {
+  @apply py-2 px-1 text-center text-sm font-medium tracking-wider;
+}
+.bo-table tbody, .bo-table-compact tbody {
+  @apply bg-white text-xs divide-y divide-gray-200;
+}
+.bo-table tbody tr, .bo-table-compact tbody tr {
+  @apply hover:bg-gray-100;
+}
+.bo-table td, .bo-table-compact td {
+  @apply py-2 px-1 mx-1 text-center;
+}
+.bo-table.bo-striped tbody tr:nth-child(even), .bo-striped.bo-table-compact tbody tr:nth-child(even) {
+  @apply bg-gray-50 hover:bg-gray-100;
+}
+
+.dropdownButton {
+  background-color: #03577A;
+  color: white;
+  line-height: 16px;
+  border-radius: 8px;
+  @apply hover:drop-shadow-lg;
+}
+@media only screen and (max-width: 1100px) {
+  .dropdownButton.left {
+    @apply mb-2;
+  }
+}
+@media only screen and (min-width: 1100px) {
+  .dropdownButton.left {
+    @apply mr-2;
+  }
+}
+@media only screen and (max-width: 1100px) {
+  .dropdownButton.right {
+    @apply mt-2;
+  }
+}
+@media only screen and (min-width: 1100px) {
+  .dropdownButton.right {
+    @apply ml-2;
+  }
+}
+.dropdownButton.red {
+  @apply bg-red-500;
+}
+.dropdownButton.yellow {
+  @apply bg-yellow-500;
+}
+@media only screen and (max-width: 1100px) {
+  .dropdownButton.small {
+    @apply p-1;
+  }
+}
+@media only screen and (min-width: 1100px) {
+  .dropdownButton.small {
+    padding: 8px;
+  }
+}
+
+.bo-table-compact thead th {
+  @apply py-1 px-0 text-xs;
+}
+.bo-table-compact tbody td {
+  @apply py-1 px-0 text-xs;
+}
+
+.projectButtons {
+  display: flex;
+  gap: 8px;
+  @apply justify-between;
+}
+
+.textArea {
+  @apply w-full h-32 bg-gray-50 border-2 border-gray-300 rounded-md p-2;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+/*# sourceMappingURL=thesis-requests-table.component.css.map */

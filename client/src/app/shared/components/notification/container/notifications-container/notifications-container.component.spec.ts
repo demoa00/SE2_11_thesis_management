@@ -81,6 +81,107 @@ describe('NotificationsContainerComponent', () => {
     expect(component.applicationsPage.emit).toHaveBeenCalledWith(true);
     expect(component.close.emit).toHaveBeenCalledWith(true);
   }));
+  
+  it('should handle read notification of type 5 and emit applicationsPage event', () => {
+    const notification = { notificationId: 1, type: 5, isRead: 0 };
+    spyOn(component.applicationsPage, 'emit');
+  
+    component.read(notification);
+  
+    expect(component.applicationsPage.emit).toHaveBeenCalledWith(true);
+  });
+
+  it('should handle read notification of type 1 and emit profApplicationPage event', () => {
+    const notification = { notificationId: 1, type: 1, isRead: 0 };
+    spyOn(component.profApplicationPage, 'emit');
+  
+    component.read(notification);
+  
+    expect(component.profApplicationPage.emit).toHaveBeenCalledWith(true);
+  });
+
+  it('should handle read notification of type 3 and emit profThesisPage event', () => {
+    const notification = { notificationId: 1, type: 3, isRead: 0 };
+    spyOn(component.profThesisPage, 'emit');
+  
+    component.read(notification);
+  
+    expect(component.profThesisPage.emit).toHaveBeenCalledWith(true);
+  });
+
+  it('should handle read notification of type 4 and emit profThesisPage event', () => {
+    const notification = { notificationId: 1, type: 4, isRead: 0 };
+    spyOn(component.profThesisPage, 'emit');
+  
+    component.read(notification);
+  
+    expect(component.profThesisPage.emit).toHaveBeenCalledWith(true);
+  });
+
+  it('should handle read notification of type 7 and emit profRequestPage event', () => {
+    const notification = { notificationId: 1, type: 7, isRead: 0 };
+    spyOn(component.profRequestPage, 'emit');
+  
+    component.read(notification);
+  
+    expect(component.profRequestPage.emit).toHaveBeenCalledWith(true);
+  });
+
+  it('should handle read notification of type 8 and emit profRequestPage event', () => {
+    const notification = { notificationId: 1, type: 8, isRead: 0 };
+    spyOn(component.profRequestPage, 'emit');
+  
+    component.read(notification);
+  
+    expect(component.profRequestPage.emit).toHaveBeenCalledWith(true);
+  });
+
+  it('should handle read notification of type 9 and emit profRequestPage event', () => {
+    const notification = { notificationId: 1, type: 9, isRead: 0 };
+    spyOn(component.profRequestPage, 'emit');
+  
+    component.read(notification);
+  
+    expect(component.profRequestPage.emit).toHaveBeenCalledWith(true);
+  });
+  
+  it('should handle read notification of type 10 and emit profRequestPage event', () => {
+    const notification = { notificationId: 1, type: 10, isRead: 0 };
+    spyOn(component.profRequestPage, 'emit');
+  
+    component.read(notification);
+  
+    expect(component.profRequestPage.emit).toHaveBeenCalledWith(true);
+  });
+
+  it('should handle read notification of type 12 and emit profThesisPage event', () => {
+    const notification = { notificationId: 1, type: 12, isRead: 0 };
+    spyOn(component.profThesisPage, 'emit');
+  
+    component.read(notification);
+  
+    expect(component.profThesisPage.emit).toHaveBeenCalledWith(true);
+  });
+
+  it('should handle default case if type is not recognized', () => {
+    const notification = { notificationId: 1, type: 999, isRead: 0 };
+    spyOn(component.close, 'emit');
+  
+    component.read(notification);
+  
+    expect(component.close.emit).toHaveBeenCalledWith(true);
+  });
+
+  it('should handle error on read', async () => {
+    const mockError = 'Test Error';
+    const notification = { notificationId: 1, type: 2, isRead: 0 };
+
+    apiService.updateNotification.and.returnValue(Promise.reject(mockError));
+
+    let res = await component.read(notification);
+
+    expect(res).toBeUndefined();
+  });
 
   it('should delete a notification', async() => {
     const notificationIdToDelete = 123;
@@ -102,6 +203,17 @@ describe('NotificationsContainerComponent', () => {
     expect(component.notifications).toEqual(initialNotifications);
     expect(component.notificationsToShow).toEqual([{ notificationId: 456, isRead: 0 }]);
     expect(component.counter).toBe(1);
+  });
+
+  it('should handle error on delete', async () => {
+    const mockError = 'Test Error';
+    const notificationIdToDelete = 123;
+
+    apiService.updateNotification.and.returnValue(Promise.reject(mockError));
+
+    let res = await component.delete(notificationIdToDelete);
+
+    expect(res).toBeUndefined();
   });
 
   it('should delete all notifications', async () => {

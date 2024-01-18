@@ -149,7 +149,7 @@ describe('FiltersContainerComponent', () => {
     expect(component.params.cosupervisors).toBeNull();
   });
 
-  it('should update proposals and emit newProposals event on successful API call', fakeAsync(() => {
+  it('should update proposals-view and emit newProposals event on successful API call', fakeAsync(() => {
     const apiResponse = [{}];
     apiService.getAllProposals.and.returnValue(Promise.resolve(apiResponse));
 
@@ -161,14 +161,14 @@ describe('FiltersContainerComponent', () => {
 
     expect(apiService.getAllProposals).toHaveBeenCalled();
 
-    // Expect proposals to be updated
+    // Expect proposals-view to be updated
     expect(component.proposals).toEqual(apiResponse);
 
-    // Expect newProposals event to be emitted with the updated proposals
+    // Expect newProposals event to be emitted with the updated proposals-view
     expect(component.newProposals.emit).toHaveBeenCalledWith(apiResponse);
   }));
 
-  it('should handle error and emit empty proposals on API call failure', fakeAsync(() => {
+  it('should handle error and emit empty proposals-view on API call failure', fakeAsync(() => {
     apiService.getAllProposals.and.returnValue(Promise.reject(new Error('API error')));
 
     spyOn(component.newProposals, 'emit');
@@ -177,14 +177,14 @@ describe('FiltersContainerComponent', () => {
 
     tick();
 
-    // Expect proposals to be empty
+    // Expect proposals-view to be empty
     expect(component.proposals).toEqual([]);
 
-    // Expect newProposals event to be emitted with empty proposals
+    // Expect newProposals event to be emitted with empty proposals-view
     expect(component.newProposals.emit).toHaveBeenCalledWith([]);
   }));
 
-  it('should reset selectedDate and params.expirationDate to null and update proposals', () => {
+  it('should reset selectedDate and params.expirationDate to null and update proposals-view', () => {
     component.selectedDate = new FormControl(new Date());
     component.params = { expirationDate: '2023-12-31' };
 

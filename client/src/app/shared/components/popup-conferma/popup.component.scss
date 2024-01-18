@@ -1,3 +1,5 @@
+@import "../../../../styles";
+
 .dropdownButton {
   background-color: #03577A;
   color: white;
@@ -10,6 +12,17 @@
 
 .bo-popup-close-1 {
   @apply absolute top-0 right-0 cursor-pointer h-10 w-10 text-gray-500;
+}
+
+.logoTitleContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  .title {
+    @apply font-medium text-3xl text-center;
+    margin-bottom: 0!important;
+  }
 }
 
 .bo-popup{
@@ -57,6 +70,12 @@
   min-height: 200px;
   max-width: calc(100vw - 140px);
   max-height: 80vh;
+
+  @media #{$media-mobile} {
+    max-width: calc(100vw - 16px);
+    max-height: calc(100vh - 16px);;
+  }
+
   &.small {
     max-width: 40vw;
     min-height: 0;

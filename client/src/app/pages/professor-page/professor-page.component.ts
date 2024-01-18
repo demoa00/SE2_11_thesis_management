@@ -7,6 +7,9 @@ import {APIService} from "../../shared/services/api.service";
   styleUrls: ['./professor-page.component.scss']
 })
 export class ProfessorPageComponent{
+  appPage: boolean = false;
+  requestPage: boolean = false;
+  thesisPage: boolean = false;
 
   constructor(public api: APIService ) {
     this.api.setProfessor()
@@ -27,4 +30,23 @@ export class ProfessorPageComponent{
     });
   }
 
+  goToApplicationPage(e: boolean) {
+    if (e) {
+      this.appPage =!this.appPage
+    }
+  }
+
+  goToRequestPage(e: boolean) {
+    if (e) {
+      this.requestPage =!this.requestPage
+
+    }
+  }
+
+  goToThesisPage(e: boolean) {
+    if (e) {
+      this.thesisPage =!this.thesisPage
+
+    }
+  }
 }

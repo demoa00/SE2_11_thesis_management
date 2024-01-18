@@ -1,0 +1,109 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.leftMenuItem {
+  border-radius: 8px;
+  padding: 8px 16px;
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 16px;
+  background-color: #e5e7eb;
+  cursor: pointer;
+}
+.leftMenuItem.selected {
+  background-color: #03577A;
+}
+.leftMenuItem.selected * {
+  color: white;
+}
+.leftMenuItem.hovered {
+  background-color: #d1d5db;
+}
+
+.card {
+  @apply shadow-sm rounded-md shadow-gray-400 p-4 bg-white;
+}
+
+.separator {
+  height: 1px;
+  width: 100%;
+  @apply bg-orange-500;
+}
+@media only screen and (max-width: 1000px) {
+  .separator {
+    display: none;
+  }
+}
+
+.icon-16 {
+  font-size: 16px;
+  line-height: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-20 {
+  font-size: 20px;
+  line-height: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.container {
+  max-width: none !important;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(87.5vh - 32px);
+}
+.container .title {
+  @apply text-3xl font-medium mb-2;
+}
+.container .profileDataContainer {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+.container .name {
+  @apply text-xl font-medium mb-2;
+}
+.container .tableBody tr:nth-child(odd) {
+  background: #e5e7eb;
+}
+.container .tableBody .tableRow {
+  border-radius: 4px;
+}
+.container .tableBody .tableRow td:nth-child(1) {
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+}
+.container .tableBody .tableRow td:nth-child(3) {
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.container .tableBody .tableRow td {
+  padding: 4px;
+}
+
+.projectButtons {
+  display: flex;
+  gap: 8px;
+  @apply h-full justify-between;
+}
+
+.dropdownButton {
+  background-color: #03577A;
+  color: white;
+  line-height: 16px;
+  padding: 8px;
+  border-radius: 8px;
+  @apply hover:drop-shadow-lg;
+}
+.dropdownButton.red {
+  @apply bg-red-500;
+}
+
+/*# sourceMappingURL=apllicant-details.component.css.map */

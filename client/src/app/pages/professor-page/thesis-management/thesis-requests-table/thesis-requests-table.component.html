@@ -1,0 +1,103 @@
+<div *ngIf="!selectedRequest" class=" card p-5 flex flex-col w-full gap-6 items-center ">
+  <h1 class="text-3xl flex justify-center"> List of Thesis Requests</h1>
+  <div class="separator"></div>
+  <table *ngIf="rows!=''" class="bo-table w-full h-fit overflow-auto">
+    <caption></caption>
+    <tbody >
+    <tr class="thead">
+      <th>Student ID</th>
+      <th>Title</th>
+      <th>Role</th>
+      <th> Status</th>
+    </tr>
+    <tr *ngFor="let row of rows" >
+      <td (click)="shohDetails(row)" class="cursor-pointer py-0.5 w-24 h-6 text-sm text-gray-600">{{row.studentId}}</td>
+      <td (click)="shohDetails(row)" class="cursor-pointer py-0.5 w-24 h-6 text-sm text-gray-600">{{row.title}}</td>
+      <td  class="py-0.5 w-6 h-6 hover:cursor-pointer text-gray-700">
+        {{row.coSupervised?'Co-Supervisor':'Supervisor'}}
+      </td>
+      <td *ngIf="row?.professorStatus =='Pending'" class="py-0.5 w-12 h-6">
+        <div *ngIf="row?.coSupervised ==true">{{'Pending'}}</div>
+        <button *ngIf="row?.coSupervised ==false"  class="dropdownButton left small" (click)="openAcceptPopup(row)" >Accept</button>
+        <button *ngIf="row?.coSupervised ==false" class="dropdownButton red right small" (click)="openRejectPopup(row)">Reject</button>
+      </td>
+      <td *ngIf="row?.professorStatus !='Pending'" [class.text-yellow-400] = "row?.professorStatus=='Change'"  [class.text-green-400] = "row?.professorStatus=='Accepted'" [class.text-red-400] = "row?.professorStatus=='Rejected'" class="py-0.5 w-12 h-6 text-sm">
+        {{row?.professorStatus=='Accepted'?'accepted':row?.professorStatus=='Rejected'?'rejected':row?.professorStatus=='Change'?'requested change':''}}
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <h3 *ngIf="rows==''"> No Thesis Requests</h3>
+</div>
+<div *ngIf="selectedRequest" class="card flex gap-4 flex-col h-full">
+  <app-thesis-request-details class=" overflow-auto" [selectedRequest]="selectedRequest"></app-thesis-request-details>
+  <div *ngIf="selectedRequest" class="projectButtons">
+    <div class="flex gap-1 items-center hover:cursor-pointer" (click)="selectedRequest=undefined">
+      <app-icon name="arrowLeft" class="text-gray-500 h-6 w-6" >Back</app-icon>
+      <div class="text-gray-500">Back</div>
+    </div>
+    <div *ngIf="selectedRequest.professorStatus === 'Pending'" class="flex gap-4">
+      <button *ngIf="selectedRequest.supervisor.professorId == JSON.parse(localStorage.getItem('professor')!).professorId" class="dropdownButton small" (click)="openAcceptPopup(selectedRequest)" >Accept</button>
+      <button *ngIf="selectedRequest.supervisor.professorId == JSON.parse(localStorage.getItem('professor')!).professorId" class="dropdownButton red small" (click)="openRejectPopup(selectedRequest)">Reject</button>
+      <button *ngIf="selectedRequest.supervisor.professorId == JSON.parse(localStorage.getItem('professor')!).professorId" class="dropdownButton yellow small" (click)="openUpdatePopup(selectedRequest)">Request Change</button>
+    </div>
+  </div>
+</div>
+
+<app-popup
+  *ngIf="rejectPopup"
+  (close)="  requestAccepted?selectedRequest = undefined:''; openRejectPopup(); this.triggerUpdate.emit(); actionRequest = undefined"
+  [closeClickOutside]="false"
+  [showSlider] = "false"
+  [showButton] = "true"
+  [response] = response
+  (send)="rejectThesisRequest()">
+  <div *ngIf="!requestAccepted" class="flex flex-col h-full w-full gap-4">
+    <div class="p-2 w-full flex flex-col gap-2 items-center ">
+      <div style="width: 90%; height: 1px" class="bg-orange-500"></div>
+      <div class=" font-bold">Are you sure to reject the Thesis Request?</div>
+    </div>
+  </div>
+
+  <div *ngIf="requestAccepted" class="text-red-500 text-xl"> The Thesis Request has been rejected </div>
+
+</app-popup>
+
+<app-popup
+  *ngIf="acceptPopup"
+  (close)="  requestAccepted?selectedRequest = undefined:''; openAcceptPopup() ; this.triggerUpdate.emit(); actionRequest = undefined"
+  [closeClickOutside]="false"
+  [showSlider] = "false"
+  [showButton] = "true"
+  [response] = response
+  (send)="acceptThesisRequest()">
+  <div *ngIf="!requestAccepted" class="flex flex-col h-full w-full gap-4">
+    <div class="p-2 w-full flex flex-col gap-2 items-center ">
+      <div style="width: 90%; height: 1px" class="bg-orange-500"></div>
+      <div class="font-bold">Are you sure to accept the Thesis Request?</div>
+    </div>
+  </div>
+
+  <div *ngIf="requestAccepted" class="text-green-500 text-xl"> The Thesis Request has been accepted </div>
+
+</app-popup>
+
+<app-popup
+  *ngIf="updatePopup"
+  (close)=" requestAccepted?selectedRequest = undefined:'' ;openUpdatePopup() ; this.triggerUpdate.emit(); actionRequest = undefined"
+  [closeClickOutside]="false"
+  [showSlider] = "false"
+  [showButton] = "true"
+  [response] = response
+  (send)="updateThesisRequest(textMessage)">
+  <div *ngIf="!requestAccepted" class="flex flex-col h-full w-full gap-4">
+    <div class="p-2 w-full flex flex-col gap-2 items-center ">
+      <div style="width: 90%; height: 1px" class="bg-orange-500"></div>
+      <div class="font-bold">Write a message to request for a change of the Thesis Request?</div>
+      <textarea class="textArea" [(ngModel)]="textMessage" maxlength="1000" placeholder="Write a message..." ></textarea>
+    </div>
+  </div>
+
+  <div *ngIf="requestAccepted" class="text-green-500 text-xl"> The request for a change on the Thesis Request has been sent </div>
+
+</app-popup>

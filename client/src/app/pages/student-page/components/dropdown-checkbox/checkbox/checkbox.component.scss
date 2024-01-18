@@ -9,4 +9,7 @@
   &.checked {
     background-color: $poliblue;
   }
+  &.radio {
+    border-radius: 50%;
+  }
 }

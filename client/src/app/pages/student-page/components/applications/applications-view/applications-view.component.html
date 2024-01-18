@@ -1,0 +1,47 @@
+<div class="container">
+  <h1 class="text-3xl font-medium mb-2">Your Applications</h1>
+  <div class="card applicationsContainer">
+    <table class="applicationsTable">
+      <thead>
+      <tr>
+        <th class="text-left">Thesis Title</th>
+        <th>Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="application" *ngFor="let a of applications">
+        <td class="title pr-1" (click)="selectApplication(a)">{{ a.thesisProposalTitle }}</td>
+        <td class="statusContainer ">
+          <div class="status {{a.status.toLowerCase()}}">
+            <p>{{ a.status }}</p>
+          </div>
+          <app-button class="singleLine orange mt-2" *ngIf="a.status ==='Accepted' && screenWidth <= 1024" (click)="newRequest(a)">
+            New Request
+          </app-button>
+        </td>
+        <td class="requestButton" *ngIf="a.status ==='Accepted' && screenWidth > 1024">
+          <app-button class="singleLine orange" (click)="newRequest(a)">New Request</app-button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <app-popup
+    *ngIf="showPopup"
+    [showSlider]="false"
+    [title]="'Create new thesis request'"
+    [closeClickOutside]="true"
+    [showCloseButton]="true"
+    (close)="showPopup=false">
+    <app-request-form
+      [title] = "selectedApplication.title"
+      [thesisProposalId]="selectedApplication.thesisProposalId"
+      [description] = "selectedApplication.description"
+      [professorId] = "selectedApplication.professorId"
+      [coSupervisor]="selectedApplication.coSupervisor"
+      (showPopup)="showPopup = $event"
+      (showAlert)="showAlert($event)"/>
+  </app-popup>
+  <app-alert class="success {{showInsertSuccessAlert ? 'show' : ''}}">You correctly submitted your request</app-alert>
+  <app-alert class="danger {{showDangerAlert ? 'show' : ''}}">Error: something went wrong, try again later</app-alert>
+</div>

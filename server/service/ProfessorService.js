@@ -1,7 +1,7 @@
 'use strict';
 
 const checkRole = require('../utils/checkRole');
-const { PromiseError } = require('../utils/error');
+const { PromiseError, InternalError } = require('../utils/error');
 
 const db = require('../utils/dbConnection');
 
@@ -101,9 +101,28 @@ exports.getProfessorById = function (professorId) {
 exports.getInternalCoSupervisorByThesisProposalId = function (thesisProposalId) {
   return new Promise(function (resolve, reject) {
     const sql = "SELECT internalCoSupervisorId, email FROM thesisProposal_internalCoSupervisor_bridge, professors WHERE thesisProposalId = ? AND thesisProposal_internalCoSupervisor_bridge.internalCoSupervisorId = professors.professorId";
-    db.all(sql, [thesisProposalId], function (err, rows) {
+    db.all(sql, [thesisProposalId], (err, rows) => {
       if (err) {
-        reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+        reject(new InternalError());
+      } else if (rows.length === 0) {
+        resolve([]);
+      } else {
+        let cosupervisors = rows.map((r) => ({ coSupervisorId: r.internalCoSupervisorId, email: r.email }));
+
+        resolve(cosupervisors);
+      }
+    });
+  });
+}
+
+exports.getInternalCoSupervisorByThesisRequestId = function (thesisRequestId) {
+  return new Promise(function (resolve, reject) {
+    const sql = "SELECT internalCoSupervisorId, email FROM thesisRequest_internalCoSupervisor_bridge, professors WHERE thesisRequestId = ? AND thesisRequest_internalCoSupervisor_bridge.internalCoSupervisorId = professors.professorId";
+    db.all(sql, [thesisRequestId], function (err, rows) {
+      if (err) {
+        reject(new InternalError());
+      } else if (rows.length === 0) {
+        resolve([]);
       } else {
         let cosupervisors = rows.map((r) => ({ coSupervisorId: r.internalCoSupervisorId, email: r.email }));
 

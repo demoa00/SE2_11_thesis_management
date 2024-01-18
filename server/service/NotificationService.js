@@ -2,7 +2,11 @@
 
 const dayjs = require('dayjs');
 
-const { PromiseError } = require('../utils/error');
+const ThesisProposal = require('./ThesisProposalService');
+const ThesisRequest = require('./ThesisRequestService');
+const Notification = require('./NotificationService');
+const { PromiseError, InternalError } = require('../utils/error');
+const smtp = require('../utils/smtp');
 
 const db = require('../utils/dbConnection');
 
@@ -38,7 +42,7 @@ exports.insertNewNotification = function (userId, message, type) {
 
         db.run(sql, [userId, message, dayjs().format('YYYY-MM-DD'), type], function (err) {
             if (err) {
-                reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
+                reject(new InternalError());
             } else {
                 resolve();
             }
@@ -73,5 +77,54 @@ exports.deleteAllNotifications = function (userId) {
                 resolve();
             }
         });
+    });
+}
+
+exports.thesisProposalExpirationNotification = function () {
+    let promises = [];
+    let emailPromises = [];
+    let notificationPromises = [];
+    let thesisProposalIds = [];
+
+    return new Promise(function (resolve, reject) {
+        const sql = "SELECT thesisProposals.thesisProposalId, thesisProposals.supervisor, thesisProposals.title, thesisProposals.expirationDate, professors.email FROM thesisProposals, professors WHERE professors.professorId = thesisProposals.supervisor";
+
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                resolve();
+            } else {
+                rows.forEach((r) => {
+                    if (dayjs().diff(r.expirationDate, "day") === -7) {
+                        emailPromises.push(smtp.sendMail(smtp.mailConstructor(r.email, smtp.subjectThesisProposalExpiring, `${smtp.textThesisProposalExpiring} ${r.title}`)));
+                        notificationPromises.push(Notification.insertNewNotification(r.supervisor, smtp.subjectThesisProposalExpiring, 12));
+                    } else if (dayjs().diff(r.expirationDate, "day") === 0) {
+                        thesisProposalIds.push(r.thesisProposalId);
+                        promises.push(ThesisProposal.archiveThesisProposal(r.thesisProposalId, r.supervisor));
+                    }
+                });
+                resolve(thesisProposalIds);
+            }
+        });
+    }).then(async (thesisProposalIds) => {
+        for (let id in thesisProposalIds) {
+            let thesisRequest = await ThesisRequest.getThesisRequestByThesisProposalId(id);
+            if (thesisRequest != undefined) {
+                promises.push(ThesisRequest.deleteThesisRequest(thesisRequest.studentId, thesisRequest.thesisRequestId));
+                emailPromises.push(smtp.sendMail(smtp.mailConstructor(thesisRequest.email, smtp.subjectThesisRequestExpired, `${smtp.textThesisRequestExpiring} ${thesisRequest.title}`)));
+                notificationPromises.push(Notification.insertNewNotification(thesisRequest.studentId, smtp.subjectThesisRequestExpired, 13));
+
+                if (thesisRequest.thesisProposalId != null) {
+                    await ThesisProposal.updateAcceptedApplication(thesisRequest.thesisProposalId);
+                }
+            }
+        }
+    }).then(async () => {
+        try {
+            await Promise.all(promises);
+            await Promise.all(emailPromises);
+            await Promise.all(notificationPromises);
+        } catch (error) {
+            console.log(error);
+        }
     });
 }

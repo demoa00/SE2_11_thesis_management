@@ -1,0 +1,55 @@
+<form class="requestFormContainer" (ngSubmit)="submit($event)">
+  <div class="input titleContainer">
+    <label for="formTitle">Title*</label>
+    <input class="input-field" [(ngModel)]="title" placeholder="Title" type="text" name="title" id="formTitle" required>
+  </div>
+  <div class="input supervisorContainer" (mouseenter)="professorsHover=true" (mouseleave)="professorsHover=false">
+    <label>Supervisor*</label>
+    <div
+      class="input-field supervisorsText">{{ selectedSupervisor === "" ? 'Supervisor' : selectedSupervisor.name + " " + selectedSupervisor.surname }}
+    </div>
+    <app-dropdown-checkbox
+      [showSearch]="false"
+      [request]="true"
+      [hover]="professorsHover">
+      <div *ngFor="let s of supervisors" (click)="toggleProf(s)">
+        <div class="itemsContainer">
+          <app-checkbox
+            [radio]="true"
+            [checked]="isProfSelected(s)"></app-checkbox>
+          <p>{{ s.name }} {{ s.surname }}</p>
+        </div>
+      </div>
+    </app-dropdown-checkbox>
+  </div>
+  <div class="input coSupervisorContainer" (mouseenter)="coSupervisorHover=true" (mouseleave)="coSupervisorHover=false">
+    <label>CoSupervisors</label>
+    <div
+      class="input-field supervisorsText">{{ selectedCoSupervisors.length === 0 ? 'CoSupervisors' : selectedCoSupervisorsNames() }}
+    </div>
+    <app-dropdown-checkbox
+      [showSearch]="false"
+      [request]="true"
+      [hover]="coSupervisorHover">
+      <div *ngFor="let cs of coSupervisors" (click)="toggleCoSupervisor(cs)">
+        <div class="itemsContainer">
+          <app-checkbox [checked]="isCoSupervisorSelected(cs)"></app-checkbox>
+          <p>{{ cs.name }} {{ cs.surname }}</p>
+        </div>
+      </div>
+    </app-dropdown-checkbox>
+  </div>
+  <div class="messageContainer" *ngIf="message">
+    <label>Message</label>
+    <p>{{ message }}</p>
+  </div>
+  <div class="input descriptionContainer">
+    <label for="formDescription">Description*</label>
+    <textarea class="input-field" [(ngModel)]="description" name="description" placeholder="Description" rows="4"
+              id="formDescription" required></textarea>
+  </div>
+  <div class="submitContainer">
+    <app-button (click)="cancel()">Cancel</app-button>
+    <app-button class="orange {{checkFields() ? '' : 'disabled'}}" [type]="'submit'">Submit</app-button>
+  </div>
+</form>

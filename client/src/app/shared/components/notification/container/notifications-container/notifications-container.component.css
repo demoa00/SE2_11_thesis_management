@@ -36,6 +36,24 @@
   }
 }
 
+.icon-16 {
+  font-size: 16px;
+  line-height: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-20 {
+  font-size: 20px;
+  line-height: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.container {
+  max-width: none !important;
+}
+
 .container {
   padding: 16px;
   height: 87.5vh;
@@ -62,6 +80,11 @@
 }
 .container .notifications::-webkit-scrollbar {
   display: none;
+}
+
+.historyIcon {
+  min-width: 24px;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=notifications-container.component.css.map */

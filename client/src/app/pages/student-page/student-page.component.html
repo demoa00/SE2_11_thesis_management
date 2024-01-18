@@ -1,142 +1,70 @@
 <app-page-skeleton
-  [trigger] = "trigger"
-  (profilePage) = "goToProfilePage($event)"
+  [trigger]="trigger"
+  (profilePage)="goToProfilePage($event)"
   [unreadCounter]="unreadCounter"
   [notificationsOpen]="notificationsOpen"
   (notificationsOpenChange)="notificationsOpen = $event"
   (newProposals)="proposals = $event"
   (newApplications)="newApplications = $event"
-  >
+>
 
   <div class="leftMenuItem" left-col
        [class.selected]="n.selected"
        [class.hovered]="n.hovered && !n.selected"
        (mouseenter)="n.hovered=true"
        (mouseleave)="n.hovered=false"
-       (click)="selectMenuItem(n.id); n.id == 1 ? selectedProposal=null : null; closeMenu(); profilePage = false;"
+       (click)="selectMenuItem(n.id)"
        *ngFor="let n of menuItems">
-    <p>{{n.text}}</p>
+    <p>{{ n.text }}</p>
   </div>
 
-  <div *ngIf="selectedProposal===null && menuItems[0].selected &&!profilePage" main-col class="container">
-    <div class="proposalsContainer">
-      <div class="searchToolsContainer">
-        <div class="searchbar">
-          <input id="search-input" type="text" placeholder="Search among title, description, keywords..." [ngModel]="searchValue"
-                 (ngModelChange)="updateSearchValue($event)"/>
-        </div>
-        <app-button class="rounded" (click)="search()">
-          <mat-icon class="searchButton">search</mat-icon>
-        </app-button>
-        <div class="dropdownContainer" (mouseenter)="professorsHover = true" (mouseleave)="professorsHover=false">
-          <app-button>Professor</app-button>
-          <app-dropdown-checkbox
-            [hover]="professorsHover"
-            [searchValue]="professorsSearchValue"
-            (searchedValue)="professorsSearchValue = $event">
-            <div *ngFor="let prof of professors" (click)="toggleProf(prof)">
-              <div class="itemsContainer"
-                   *ngIf="prof.name.toLocaleLowerCase().includes(professorsSearchValue) || prof.surname.toLocaleLowerCase().includes(professorsSearchValue)">
-                <app-checkbox [checked]="isProfSelected(prof)"></app-checkbox>
-                <p>{{prof.name}} {{prof.surname}}</p>
-              </div>
-            </div>
-          </app-dropdown-checkbox>
-        </div>
-        <app-button class="grey" (click)="toggleMoreFilters()">More...</app-button>
-        <div class="deleteFilters" (click)="deleteFilters()"
-             *ngIf="checkFilters()">
-          <mat-icon class="closeIcon">close</mat-icon>
-          <p class="underline">Delete filters</p>
-        </div>
-      </div>
-      <app-filters-container [showFilters]="showFilters" (newProposals)="proposals = $event" [proposals]="proposals" [params]="proposalParams" [checkFilters]="checkFilters"></app-filters-container>
-    </div>
-    <div class="proposalsCard card">
-      <div *ngFor="let proposal of proposals" (click)="selectProposal(proposal.thesisProposalId)">
-        <div class="projectLine">
-          <p class="projectTitle">{{proposal.title}}</p>
-          <p class="profName">{{proposal.name}} {{proposal.surname}}</p>
-        </div>
-      </div>
-      <p class="text-center" *ngIf="proposals.length === 0">There is no thesis proposal with your selected filters</p>
-    </div>
-  </div>
 
-  <div *ngIf="selectedProposal!==null && menuItems[0] &&!profilePage" class="container" main-col>
-    <div class="proposalsCard card">
-      <div class="projectHeader">
-        <h2 class="projectTitle">{{selectedProposal.title}}</h2>
-        <p class="font-bold">Supervisor: <span
-          class="regularText">{{selectedProposal.supervisor.name}} {{selectedProposal.supervisor.surname}}</span></p>
-        <p class="font-bold" *ngIf="selectedProposal.coSupervisor.length > 0">Cosupervisors: <span class="regularText"
-                                                                                                 *ngFor="let cs of selectedProposal.coSupervisor; let last = last">{{cs.name}} {{cs.surname}}{{last ? '' : ', '}}</span>
-        </p>
-      </div>
-      <div class="projectBody">
-        <p class="font-bold">Description</p>
-        <div class="regularText">
-          <p>{{selectedProposal.description}}</p>
-        </div>
-      </div>
-      <div class="projectBody">
-        <p class="font-bold">Requirements</p>
-        <div class="regularText">
-          <p>{{selectedProposal.requirements}}</p>
-        </div>
-      </div>
-      <div class="projectFooter">
-        <p class="font-bold">Type: <span class="regularText">{{selectedProposal.thesisType}}</span></p>
-        <p class="font-bold">Abroad: <span class="regularText">{{selectedProposal.abroad ? 'Yes' : 'No'}}</span></p>
-        <p class="font-bold">Groups: <span class="regularText"
-                                            *ngFor="let g of selectedProposal.groups; let last = last">{{g}}{{last ? '' : ', '}}</span>
-        </p>
-        <p class="font-bold">Study Courses: <span class="regularText"
-                                                   *ngFor="let cs of selectedProposal.CdS; let last = last">{{cs.titleDegree}}
-          ({{cs.degreeId}}){{last ? '' : ', '}}</span></p>
-        <p class="font-bold">Expiration date: <span
-          class="regularText">{{date(selectedProposal.expirationDate)}}</span></p>
-      </div>
-      <div class="projectButtons">
-        <app-button class="grey" (click)="selectProposal(-1)">Back</app-button>
-        <app-button (click)="togglePopup()" [ngClass]="!canApply ? 'disabled' : ''">Apply</app-button>
-      </div>
-      <app-popup
-        *ngIf="popupVisible"
-        [showSlider]="false"
-        (close)="togglePopup()"
-        [closeClickOutside]="false"
-        [showCloseButton]="false"
-        [title]="'Apply'"
-        [showLogo]="false"
-        [small]="true"
-      >
-        <div class="popupContent">
-          <p class="font-bold">Name: <span class="font-normal">{{userDetails?.name}} {{userDetails?.surname}}</span></p>
-          <p class="font-bold">Student ID: <span class="font-normal">{{userDetails?.studentId}}</span></p>
-          <p class="font-bold mb-2">Insert an application message (optional)</p>
-          <textarea class="textArea" rows="4" [(ngModel)]="applicationMessage" maxlength="1000"></textarea>
-          <div class="flex justify-end">
-            <app-button class="grey mr-2" (click)="togglePopup(); applicationMessage=''">Back</app-button>
-            <app-button class="orange" (click)="apply()">Apply</app-button>
-          </div>
-        </div>
-      </app-popup>
-      <app-alert class="success {{showSuccessAlert ? 'show' : ''}}">
-        <p>Application Submitted Succesfully!</p>
-      </app-alert>
-      <app-alert class="danger {{showErrorAlert ? 'show' : ''}}">
-        <p>Error: Something went wrong</p>
-      </app-alert>
-    </div>
-  </div>
+  <app-proposals-view
+    [proposals]="proposals"
+    (selectedProposal)="selectedProposal = $event"
+    (canApply)="canApply = $event"
+    *ngIf="selectedProposal===null && menuItems[0].selected &&!profilePage"
+    main-col/>
 
-  <app-application-view [applications]="newApplications" *ngIf="menuItems[1].selected && !profilePage" main-col></app-application-view>
-  <app-profile-page *ngIf="profilePage" main-col></app-profile-page>
+  <app-proposal-details
+    [type]="'proposal'"
+    [selectedProposal]="selectedProposal"
+    [canApply]="canApply"
+    (selectedProposalUpdate)="selectedProposal = $event"
+    *ngIf="selectedProposal!==null && menuItems[0].selected &&!profilePage"
+    main-col/>
+
+  <app-applications-view
+    [applications]="newApplications"
+    (selectedApplicationDetails)="selectedApplication = $event"
+    *ngIf="selectedApplication === null && menuItems[1].selected && !profilePage"
+    main-col/>
+
+  <app-application-details
+    [selectedApplication]="selectedApplication"
+    (selectedApplicationUpdate)="selectedApplication = $event"
+    *ngIf="selectedApplication !== null && menuItems[1].selected && !profilePage"
+    main-col/>
+
+  <app-requests
+    (selectedRequest)="selectedRequest = $event"
+    *ngIf="selectedRequest === null && menuItems[2].selected && !profilePage"
+    main-col/>
+
+  <app-request-details
+    [selectedRequest]="selectedRequest"
+    (selectedRequestUpdate)="selectedRequest = $event"
+    *ngIf="selectedRequest !== null && menuItems[2].selected && !profilePage"
+    main-col/>
+
+  <app-profile-page
+    *ngIf="profilePage"
+    main-col/>
+
   <app-notifications-container
-    (applicationsPage) = "goToApplicationPage($event)"
+    (applicationsPage)="goToApplicationPage($event)"
+    (requestsPage)="goToRequestPage($event)"
     (counterChange)="unreadCounter = $event" right-col
-    (close)="closeNotifications($event)"
-  />
+    (close)="closeNotifications($event)"/>
 
 </app-page-skeleton>

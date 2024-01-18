@@ -7,6 +7,8 @@
   <tr class="thead">
     <th>Title</th>
     <th>Expiration</th>
+    <th>Role</th>
+    <th>Action</th>
   </tr>
   <tr *ngFor="let row of rows" >
     <td (click)="shohDetails(row)" class="cursor-pointer py-0.5 w-24 h-6 text-sm text-gray-600">{{row.title}}</td>
@@ -16,11 +18,18 @@
       <app-icon name="pencil" class="text-blue-900 h-6 w-6" (click)="openCreatePopup()">Update</app-icon>
     </td>
     -->
-    <td class="py-0.5 w-6 h-6 hover:cursor-pointer">
-      <app-icon name="archive" class="text-yellow-700  h-6 w-6" (click)="archiveThesisPopup(); selectedThesisId = row.thesisProposalId">Archive</app-icon>
+    <td  class="py-0.5 w-6 h-6 hover:cursor-pointer text-gray-700">
+      {{row.coSupervised?'Co-Supervisor':'Supervisor'}}
     </td>
-    <td class="py-0.5 w-6 h-6 hover:cursor-pointer">
-      <app-icon name="delete" class="text-red-700  h-6 w-6" (click)="deleteThesisPopup(); selectedThesisId = row.thesisProposalId">Delete</app-icon>
+    <td *ngIf="!row.coSupervised" class="py-0.5 w-16 h-6 hover:cursor-pointer">
+      <div class="flex w-full justify-around">
+        <app-icon name="archive" class="text-yellow-700  h-6 w-6" (click)="archiveThesisPopup(); selectedThesisId = row.thesisProposalId">Archive</app-icon>
+        <app-icon name="delete" class="text-red-700  h-6 w-6" (click)="deleteThesisPopup(); selectedThesisId = row.thesisProposalId">Delete</app-icon>
+
+      </div>
+    </td>
+    <td *ngIf="row.coSupervised" class="py-0.5 w-6 h-6 hover:cursor-pointer text-red-700">
+      Not authorized
     </td>
   </tr>
   </tbody>
@@ -43,10 +52,10 @@
     </div>
 
     <div class="flex gap-6">
-      <app-icon name="pencil" class="text-blue-900 h-6 w-6 hover:cursor-pointer" (click)="openUpdatePopup()">Update</app-icon>
+      <app-icon *ngIf="selectedProposal.supervisor.professorId == JSON.parse(localStorage.getItem('professor')!).professorId" name="pencil" class="text-blue-900 h-6 w-6 hover:cursor-pointer" (click)="openUpdatePopup()">Update</app-icon>
       <app-icon name="newFile" class="text-green-900 h-6 w-6 hover:cursor-pointer" (click)="openCreatePopup()">New</app-icon>
-      <app-icon name="archive" class="text-yellow-700 h-6 w-6 hover:cursor-pointer" (click)="archiveThesisPopup(); selectedThesisId = selectedProposal.thesisProposalId">Archive</app-icon>
-      <app-icon name="delete" class="text-red-700 h-6 w-6 hover:cursor-pointer" (click)="deleteThesisPopup(); selectedThesisId = selectedProposal.thesisProposalId">Delete</app-icon>
+      <app-icon *ngIf="selectedProposal.supervisor.professorId == JSON.parse(localStorage.getItem('professor')!).professorId" name="archive" class="text-yellow-700 h-6 w-6 hover:cursor-pointer" (click)="archiveThesisPopup(); selectedThesisId = selectedProposal.thesisProposalId">Archive</app-icon>
+      <app-icon *ngIf="selectedProposal.supervisor.professorId == JSON.parse(localStorage.getItem('professor')!).professorId" name="delete" class="text-red-700 h-6 w-6 hover:cursor-pointer" (click)="deleteThesisPopup(); selectedThesisId = selectedProposal.thesisProposalId">Delete</app-icon>
     </div>
   </div>
 </div>
