@@ -6,7 +6,7 @@
   <div class="input supervisorContainer" (mouseenter)="professorsHover=true" (mouseleave)="professorsHover=false">
     <label>Supervisor*</label>
     <div
-      class="input-field supervisorsText">{{ selectedSupervisor === undefined ? 'Supervisor' : selectedSupervisor.name + " " + selectedSupervisor.surname }}
+      class="input-field supervisorsText">{{ selectedSupervisor === "" ? 'Supervisor' : selectedSupervisor.name + " " + selectedSupervisor.surname }}
     </div>
     <app-dropdown-checkbox
       [showSearch]="false"

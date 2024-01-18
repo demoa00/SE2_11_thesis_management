@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, signal, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, signal, ViewChild} from '@angular/core';
 import {APIService} from "../../../../../../shared/services/api.service";
 import {ProfessorDetails} from "../../../../../../shared/classes/professor/professor-details";
 
@@ -7,7 +7,7 @@ import {ProfessorDetails} from "../../../../../../shared/classes/professor/profe
   templateUrl: './request-form.component.html',
   styleUrl: './request-form.component.scss'
 })
-export class RequestFormComponent {
+export class RequestFormComponent implements OnChanges {
 
   constructor(private api: APIService) {
   }
@@ -15,23 +15,22 @@ export class RequestFormComponent {
   @Input() title = ""
   @Input() description = ""
   @Input() professorId = ""
-  @Input() cosupervisorId = ""
+  @Input() coSupervisor: any[] = []
   @Output() showPopup = new EventEmitter<boolean>()
   @Output() showAlert = new EventEmitter<string>();
   @Input() message: string = "";
 
   professorsHover = false
   coSupervisorHover = false
-  supervisors: any
+  supervisors: any[] = []
   coSupervisors: any
-  selectedSupervisor: any;
-  selectedCoSupervisors: any[] = [];
+  selectedSupervisor: any = this.professorId && this.professorId.length > 0 ? this.professorId : ""
+  selectedCoSupervisors: any[] = this.coSupervisor && this.coSupervisor.length > 0 ? this.coSupervisor : [];
   @Input() update: boolean = false;
   @Input() thesisRequestId!: any;
+  @Input() thesisProposalId: any = null;
 
-
-
-  ngOnInit(): void {
+  ngOnInit(){
     this.api.getProfessors().then((res: any) => {
       this.supervisors = res
     }).catch((err: any) => {
@@ -39,6 +38,31 @@ export class RequestFormComponent {
     })
     this.api.getCoSupervisors().then((res: any) => {
       this.coSupervisors = res
+    }).catch((err: any) => {
+      console.log(err)
+    })
+  }
+
+  ngOnChanges(): void {
+    this.api.getProfessors().then((res: any) => {
+      this.supervisors = res
+      if (this.professorId !== "") {
+        this.selectedSupervisor = this.supervisors.find((item) => {
+          return item.professorId === this.professorId;
+        })
+      }
+    }).catch((err: any) => {
+      console.log(err)
+    })
+    this.api.getCoSupervisors().then((res: any) => {
+      this.coSupervisors = res
+      if(this.coSupervisor.length > 0) {
+        this.selectedCoSupervisors = this.coSupervisors.filter((item: any) => {
+          return this.coSupervisor.some((cs: any) => {
+            return cs.coSupervisorId === item.professorId;
+          })
+        })
+      }
     }).catch((err: any) => {
       console.log(err)
     })
@@ -57,6 +81,7 @@ export class RequestFormComponent {
     console.log("submit")
     const body = {
       thesisRequestId: this.thesisRequestId,
+      thesisProposalId: this.thesisProposalId,
       title: this.title,
       description: this.description,
       supervisor: {professorId: this.selectedSupervisor.professorId},
@@ -66,7 +91,7 @@ export class RequestFormComponent {
         }
       })
     }
-    if (this.update){
+    if (this.update) {
       this.api.putThesisRequestStudent(body).then((_res: any) => {
         this.showAlert.emit('success')
         this.cancel()
@@ -74,8 +99,7 @@ export class RequestFormComponent {
         this.showAlert.emit('danger')
         console.log(err)
       })
-    }
-    else {
+    } else {
       this.api.postThesisRequest(body).then((_res: any) => {
         this.showAlert.emit('success')
         this.cancel()

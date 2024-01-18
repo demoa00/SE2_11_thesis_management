@@ -12,9 +12,11 @@ export class ApplicationsViewComponent {
 
   @Input() applications: any;
   selectedApplication = {
+    thesisProposalId: -1,
     title: "",
     description: "",
-    professorId: ""
+    professorId: "",
+    coSupervisor: []
   };
   user = JSON.parse(localStorage.getItem('user') || '{}')
   screenWidth = 0
@@ -42,9 +44,11 @@ export class ApplicationsViewComponent {
     this.api.getArchivedProposal(a.thesisProposalId).then((res: any) => {
       console.log(res)
       this.selectedApplication = {
+        thesisProposalId: res.thesisProposalId,
         title: res.title,
         description: res.description,
-        professorId: res.supervisor.professorId
+        professorId: res.supervisor.professorId,
+        coSupervisor: res.coSupervisor
       }
     })
   }

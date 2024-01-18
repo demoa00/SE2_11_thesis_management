@@ -35,8 +35,10 @@
     (close)="showPopup=false">
     <app-request-form
       [title] = "selectedApplication.title"
+      [thesisProposalId]="selectedApplication.thesisProposalId"
       [description] = "selectedApplication.description"
       [professorId] = "selectedApplication.professorId"
+      [coSupervisor]="selectedApplication.coSupervisor"
       (showPopup)="showPopup = $event"
       (showAlert)="showAlert($event)"/>
   </app-popup>

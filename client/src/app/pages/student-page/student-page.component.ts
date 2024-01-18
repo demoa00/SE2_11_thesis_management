@@ -64,6 +64,7 @@ export class StudentPageComponent {
   selectMenuItem(id: number) {
     this.selectedProposal=null
     this.selectedApplication=null
+    this.selectedRequest=null
     this.closeMenu()
     this.profilePage = false;
     this.menuItems.forEach((item) => {
