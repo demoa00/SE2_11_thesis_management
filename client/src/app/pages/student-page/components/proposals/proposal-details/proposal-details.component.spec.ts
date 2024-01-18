@@ -36,19 +36,28 @@ describe('ProposalDetailsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // it('should call ngOnInit and fetch user details', async () => {
-  //   const mockUser = { userId: 123 };
-  //   spyOn(JSON, 'parse').and.returnValue(mockUser);
-
-  //   const getUserDetailsSpy = apiService.getStudentDetails.and.returnValue(Promise.resolve({}));
-
-  //   component.ngOnInit();
-  //   await fixture.whenStable();
-  //   fixture.detectChanges();
-
-  //   expect(component.user).toEqual(mockUser as any);
-  //   expect(getUserDetailsSpy).toHaveBeenCalledWith(mockUser.userId);
-  // });
+  it('should initialize user details and set canApply for a student with applications', async () => {
+    const mockUser = { userId: 123, role: 'student' };
+    const mockStudentDetails = {};
+    const mockApplications = [
+      { id: 1, status: 'Pending' },
+      { id: 2, status: 'Accepted' },
+      { id: 3, status: 'Rejected' },
+    ];
+  
+    spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(mockUser));
+    apiService.getStudentDetails.and.returnValue(Promise.resolve(mockStudentDetails));
+    apiService.getApplications.and.returnValue(Promise.resolve(mockApplications));
+  
+    await component.ngOnInit();
+    fixture.detectChanges();
+  
+    expect(localStorage.getItem).toHaveBeenCalledWith('user');
+    expect(component.user).toEqual(mockUser as any);
+    expect(apiService.getStudentDetails).toHaveBeenCalledWith(mockUser.userId);
+    expect(apiService.getApplications).toHaveBeenCalled();
+    expect(component.canApply).toBeFalse();
+  });
 
   it('should apply successfully with file and message', async () => {
     component.applicationMessage = 'Test Message';
@@ -98,5 +107,15 @@ describe('ProposalDetailsComponent', () => {
     component.selectProposal(-1);
 
     expect(component.selectedProposalUpdate.emit).toHaveBeenCalledWith(null);
+  });
+
+  it('should toggle popupVisible', () => {
+    expect(component.popupVisible).toBeFalse();
+  
+    component.togglePopup();
+    expect(component.popupVisible).toBeTrue();
+  
+    component.togglePopup();
+    expect(component.popupVisible).toBeFalse();
   });
 });
