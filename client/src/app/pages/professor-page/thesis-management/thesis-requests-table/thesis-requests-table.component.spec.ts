@@ -87,54 +87,77 @@ describe('ThesisRequestsTableComponent', () => {
     expect(component.actionRequest).toEqual(mockActionRequest);
   });
 
-  // it('should accept thesis request successfully', fakeAsync(async () => {
-  //   const professor = { professorId: 1 };
-  //   const mockResponse = {};
-  //   const actionRequest = { supervisor: { professorId: 2 }, thesisRequestId: 123 };
-
-  //   component.actionRequest = actionRequest;
+  it('should accept thesis request successfully', fakeAsync(async () => {
+    const professor = { professorId: 1 };
+    const mockResponse = {};
+    const actionRequest = { supervisor: { professorId: 2 }, thesisRequestId: 123 };
   
-  //   apiService.putThesisRequest.and.returnValue(Promise.resolve(mockResponse));
-  //   spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(professor));
+    component.actionRequest = actionRequest;
   
-  //   await component.acceptThesisRequest();
+    apiService.putThesisRequest.and.returnValue(Promise.resolve(mockResponse));
   
-  //   expect(apiService.putThesisRequest).toHaveBeenCalledWith(2, 123, 'Accepted');
-  //   expect(apiService.getThesisRequests).toHaveBeenCalled();
-  //   expect(component.requestAccepted).toBe(true);
-  //   expect(component.actionRequest).toBeUndefined();
-  // }));
+    spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(professor));
+  
+    await component.acceptThesisRequest();
+  
+    expect(apiService.putThesisRequest).toHaveBeenCalledWith(
+      2,
+      123,
+      'Accepted',
+      undefined,
+      undefined
+    );
+    expect(apiService.getThesisRequests).toHaveBeenCalled();
+    expect(component.requestAccepted).toBe(true);
+    expect(component.actionRequest).toBeUndefined();
+  }));
+  
 
-  // it('should reject thesis request successfully', fakeAsync(() => {
-  //   component.actionRequest = { thesisRequestId: '123', supervisor: { professorId: '456' } };
+  it('should reject thesis request successfully', fakeAsync(async () => {
+    const mockResponse = {};
+    const actionRequest = {
+      thesisRequestId: 123,
+      supervisor: { professorId: 2 },
+      studentId: 456,
+      thesisProposalId: 789,
+    };
+  
+    component.actionRequest = actionRequest;
+  
+    apiService.putThesisRequest.and.returnValue(Promise.resolve(mockResponse));
+    spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify({ professorId: 1 }));
+  
+    await component.rejectThesisRequest();
+    tick();
+  
+    expect(apiService.putThesisRequest).toHaveBeenCalledWith(
+      actionRequest.supervisor.professorId,
+      actionRequest.thesisRequestId,
+      actionRequest.studentId as any,
+      actionRequest.thesisProposalId,
+      'Rejected',
+    );
+    expect(apiService.getThesisRequests).toHaveBeenCalled();
+    expect(component.requestAccepted).toBe(true);
+    expect(component.actionRequest).toBeUndefined();
+  }));
 
-  //   apiService.putThesisRequest.and.returnValue(Promise.resolve([]));
-
-  //   component.rejectThesisRequest();
-  //   tick();
-
-  //   expect(apiService.putThesisRequest).toHaveBeenCalledWith('456', '123', 'Rejected');
-  //   expect(component.rows).toBeTruthy();
-  //   expect(component.requestAccepted).toBeTruthy();
-  //   expect(component.actionRequest).toBeUndefined();
-  // }));
-
-  // it('should update thesis request successfully', fakeAsync(() => {
-  //   const mockResponse = [] as any;
-
-  //   apiService.putThesisRequest.and.returnValue(Promise.resolve(mockResponse));
-
-  //   const updateText = 'Updated text';
-  //   component.actionRequest = { thesisRequestId: '123', supervisor: { professorId: '456' } };
-
-  //   component.updateThesisRequest(updateText);
-
-  //   expect(apiService.putThesisRequest).toHaveBeenCalledWith('456', '123', 'Change', updateText);
-
-  //   tick();
-
-  //   expect(component.rows).toEqual(mockResponse);
-  //   expect(component.requestAccepted).toBeTrue();
-  //   expect(component.actionRequest).toBeUndefined();
-  // }));
+  it('should update thesis request successfully', fakeAsync(async () => {
+    const mockResponse = {};
+    const updateText = 'Updated text';
+    const professor = { professorId: 1 };
+  
+    component.actionRequest = { thesisRequestId: 123, supervisor: { professorId: 456 } };
+    apiService.putThesisRequest.and.returnValue(Promise.resolve(mockResponse));
+    spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(professor));
+  
+    await component.updateThesisRequest(updateText);
+  
+    expect(apiService.putThesisRequest).toHaveBeenCalledWith(
+      456, 123, 'Change', undefined, undefined, updateText
+    );
+    expect(apiService.getThesisRequests).toHaveBeenCalled();
+    expect(component.requestAccepted).toBe(true);
+    expect(component.actionRequest).toBeUndefined();
+  }));
 });

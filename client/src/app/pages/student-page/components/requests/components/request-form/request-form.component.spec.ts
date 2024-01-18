@@ -179,6 +179,7 @@ describe('RequestFormComponent', () => {
 
   it('should return false when selectedSupervisor is undefined', () => {
     const professor = { professorId: '123', name: 'John', surname: 'Doe' };
+    component.selectedSupervisor = undefined;
 
     const result = component.isProfSelected(professor);
 
@@ -203,5 +204,52 @@ describe('RequestFormComponent', () => {
     const result = component.selectedCoSupervisorsNames();
   
     expect(result).toEqual('John Doe, Jane Smith');
+  });
+
+  it('should update selectedSupervisor and selectedCoSupervisors on ngOnChanges', async () => {
+    const mockProfessors = [
+      { professorId: '1', name: 'John', surname: 'Doe' },
+      { professorId: '2', name: 'Jane', surname: 'Smith' }
+    ];
+  
+    const mockCoSupervisors = [
+      { professorId: '3', name: 'Alice', surname: 'Johnson' },
+      { professorId: '4', name: 'Bob', surname: 'Brown' }
+    ];
+  
+    component.professorId = '1';
+    component.coSupervisor = [{ coSupervisorId: '3' }];
+  
+    component.ngOnChanges();
+  
+    apiService.getProfessors.and.returnValue(Promise.resolve(mockProfessors));
+    apiService.getCoSupervisors.and.returnValue(Promise.resolve(mockCoSupervisors));
+  
+    await component.ngOnChanges();
+  
+    expect(apiService.getProfessors).toHaveBeenCalled();
+    expect(apiService.getCoSupervisors).toHaveBeenCalled();  
+    expect(component.selectedSupervisor).toEqual(mockProfessors[0]);
+    expect(component.selectedCoSupervisors).toEqual([mockCoSupervisors[0]]);
+  });
+  
+  it('should handle error on ngOnChanges', async () => {
+    const mockError = 'Test Error';
+
+    apiService.getProfessors.and.returnValue(Promise.reject(mockError));
+
+    let res = await component.ngOnChanges();
+
+    expect(res).toBeUndefined();
+  });
+
+  it('should handle error on ngOnChanges 2', async () => {
+    const mockError = 'Test Error';
+
+    apiService.getCoSupervisors.and.returnValue(Promise.reject(mockError));
+
+    let res = await component.ngOnChanges();
+
+    expect(res).toBeUndefined();
   });
 });
