@@ -51,6 +51,10 @@
   height: 20px;
 }
 
+.container {
+  max-width: none !important;
+}
+
 .dropdownButton {
   background-color: #03577A;
   color: white;

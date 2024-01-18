@@ -59,10 +59,12 @@ export class RequestFormComponent {
       thesisRequestId: this.thesisRequestId,
       title: this.title,
       description: this.description,
-      supervisor: {
-        professorId: this.professorId
-      },
-      coSupervisors: this.selectedCoSupervisors
+      supervisor: {professorId: this.selectedSupervisor.professorId},
+      coSupervisors: this.selectedCoSupervisors.map((cs) => {
+        return {
+          coSupervisorId: cs.professorId
+        }
+      })
     }
     if (this.update){
       this.api.putThesisRequestStudent(body).then((_res: any) => {

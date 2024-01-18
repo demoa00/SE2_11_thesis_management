@@ -50,6 +50,10 @@
   height: 20px;
 }
 
+.container {
+  max-width: none !important;
+}
+
 .h-1\/8 {
   height: 12.5%;
 }

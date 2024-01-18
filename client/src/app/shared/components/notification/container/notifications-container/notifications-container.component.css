@@ -51,6 +51,10 @@
 }
 
 .container {
+  max-width: none !important;
+}
+
+.container {
   padding: 16px;
   height: 87.5vh;
   display: flex;

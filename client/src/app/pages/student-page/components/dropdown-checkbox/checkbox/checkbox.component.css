@@ -50,6 +50,10 @@
   height: 20px;
 }
 
+.container {
+  max-width: none !important;
+}
+
 .checkbox {
   width: 12px;
   height: 12px;

@@ -10,7 +10,7 @@ export class RequestsViewComponent {
 
   constructor(private api: APIService) {}
 
-  requests: any[] = Array(0)
+  requests: any[] = []
   screenWidth = 0
   requestToDelete: any = null;
   requestToEdit: any = null;
@@ -24,9 +24,8 @@ export class RequestsViewComponent {
 
   @Output() selectedRequest = new EventEmitter<any>()
   ngOnInit() {
-    this.requests = Array(0)
     this.api.getThesisRequests().then((response: any) => {
-      this.requests = response
+      response !== undefined ? this.requests = response : this.requests = []
     }).catch((error) => {
       console.log(error)
       this.requests = []
@@ -86,7 +85,7 @@ export class RequestsViewComponent {
     this.api.deleteThesisRequest(this.requestToDelete.thesisRequestId).then((response: any) => {
       console.log(response)
       this.api.getThesisRequests().then((response: any) => {
-        this.requests = response
+        response !== undefined ? this.requests = response : this.requests = []
         this.showDeleteSuccessAlert = true
         setTimeout(()=>{
           this.showDeleteSuccessAlert = false

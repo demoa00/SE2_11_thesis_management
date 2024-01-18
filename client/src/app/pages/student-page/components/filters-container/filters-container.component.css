@@ -50,6 +50,10 @@
   height: 20px;
 }
 
+.container {
+  max-width: none !important;
+}
+
 .filtersContainer {
   width: 100%;
   margin-top: 8px;

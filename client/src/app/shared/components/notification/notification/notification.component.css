@@ -51,6 +51,10 @@
 }
 
 .container {
+  max-width: none !important;
+}
+
+.container {
   background-color: #e5e7eb;
   padding: 12px 8px;
   margin-bottom: 8px;

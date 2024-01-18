@@ -50,6 +50,10 @@
   height: 20px;
 }
 
+.container {
+  max-width: none !important;
+}
+
 * {
   color: #04264c;
 }

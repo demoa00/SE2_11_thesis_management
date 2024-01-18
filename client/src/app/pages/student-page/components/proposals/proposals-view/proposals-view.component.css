@@ -51,6 +51,10 @@
 }
 
 .container {
+  max-width: none !important;
+}
+
+.container {
   display: flex;
   flex-direction: column;
   max-height: calc(87.5vh - 32px);

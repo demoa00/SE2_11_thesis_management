@@ -50,6 +50,10 @@
   height: 20px;
 }
 
+.container {
+  max-width: none !important;
+}
+
 .bo-table, .bo-table-compact {
   @apply divide-y divide-gray-200 p-4 bg-white;
 }
