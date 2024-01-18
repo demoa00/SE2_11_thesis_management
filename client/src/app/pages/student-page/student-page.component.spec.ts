@@ -57,6 +57,7 @@ describe('StudentPageComponent', () => {
       'getExternalCoSupervisors': Promise.resolve([]),
       'getCoSupervisors': Promise.resolve([]),
       'getSecretaryClerkDetails': Promise.resolve([]),
+      'getThesisRequests': Promise.resolve([]),
     });
 
     await TestBed.configureTestingModule({

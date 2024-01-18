@@ -9,6 +9,7 @@ import { RequestFormComponent } from '../../requests/components/request-form/req
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { IconComponent } from 'src/app/shared/components/icon/icon.component';
 import { FormsModule } from '@angular/forms';
+import { DropdownCheckboxComponent } from '../../dropdown-checkbox/dropdown-checkbox.component';
 
 describe('ApplicationViewComponent', () => {
   let component: ApplicationsViewComponent;
@@ -27,7 +28,7 @@ describe('ApplicationViewComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, FormsModule],
-      declarations: [ApplicationsViewComponent, AlertComponent, PopupComponent, RequestFormComponent, ButtonComponent, IconComponent],
+      declarations: [ApplicationsViewComponent, AlertComponent, PopupComponent, RequestFormComponent, ButtonComponent, IconComponent, DropdownCheckboxComponent],
       providers: [{ provide: APIService, useValue: apiService }]
     }).compileComponents();
 
