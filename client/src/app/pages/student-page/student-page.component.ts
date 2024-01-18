@@ -77,7 +77,13 @@ export class StudentPageComponent {
     if (e) {
       this.selectMenuItem(1)
       this.profilePage = false
+    }
+  }
 
+  goToRequestPage(e: boolean) {
+    if (e) {
+      this.selectMenuItem(2)
+      this.profilePage = false
     }
   }
 

@@ -63,6 +63,7 @@
 
   <app-notifications-container
     (applicationsPage)="goToApplicationPage($event)"
+    (requestsPage)="goToRequestPage($event)"
     (counterChange)="unreadCounter = $event" right-col
     (close)="closeNotifications($event)"/>
 

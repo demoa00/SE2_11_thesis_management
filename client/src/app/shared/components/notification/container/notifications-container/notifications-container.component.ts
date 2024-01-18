@@ -42,6 +42,7 @@ export class NotificationsContainerComponent {
 
   counter = 0;
   @Output() applicationsPage = new EventEmitter<boolean>();
+  @Output() requestsPage = new EventEmitter<boolean>();
   @Output() profApplicationPage = new EventEmitter<boolean>();
   @Output() profThesisPage = new EventEmitter<boolean>();
   @Output() profRequestPage = new EventEmitter<boolean>();
@@ -89,6 +90,9 @@ export class NotificationsContainerComponent {
         break;
       case 5:
         this.applicationsPage.emit(true);
+        break;
+      case 6:
+        this.requestsPage.emit(true);
         break;
       case 1:
         this.profApplicationPage.emit(true);
