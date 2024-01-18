@@ -94,4 +94,4 @@ sections:
 Try to coordinate better the workflows of each member.
 
 - One thing you are proud of as a Team!!
-  We managed to finish a lot of stories and 
+  We managed to finish a lot of stories and create a solid application
