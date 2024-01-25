@@ -105,7 +105,11 @@ export class UpdateThesisFormComponent implements OnInit{
       this.myForm.get('requirements')?.setValue(this.thesisProposal.requirements)
       this.myForm.get('expirationDate')?.setValue(this.thesisProposal.expirationDate)
       this.myForm.get('abroad')?.setValue(this.thesisProposal.abroad)
-      this.selectedCdS = [...this.thesisProposal.CdS]
+      this.thesisProposal.CdS.forEach((el:{degreeId:any, titleDegree:any})=>{
+        const b = {target:{value:el.degreeId}}
+        console.log(b)
+        this.onSelectCdSChange(b)
+      })
       if(this.thesisProposal.coSupervisor){
          this.thesisProposal.coSupervisor?.forEach((element:any)=>{
             if(element.coSupervisorId.includes('e')) {
@@ -308,6 +312,7 @@ export class UpdateThesisFormComponent implements OnInit{
 
   removeCdS(event: any) {
     const valoreDiv = event.target.textContent;
+    console.log(valoreDiv)
     let cds = this.selectedCdS.find(elemento => elemento.degreeId==valoreDiv.split(' ')[0])
     this.selectedCdS = this.selectedCdS.filter(elemento => elemento.degreeId!=cds?.degreeId)
     this.degrees.push(cds || {
