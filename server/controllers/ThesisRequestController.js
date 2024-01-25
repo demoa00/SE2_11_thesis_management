@@ -53,10 +53,7 @@ module.exports.getThesisRequestById = async function getThesisRequestById(req, r
 module.exports.insertNewThesisRequest = async function insertNewThesisRequest(req, res, next) {
   try {
     if (req.user.userId != undefined && req.body != undefined) {
-      let newThesisRequest = await ThesisRequest.insertNewThesisRequest(
-        req.user.userId,
-        req.body
-      );
+      let newThesisRequest = await ThesisRequest.insertNewThesisRequest(req.user.userId, req.body);
       utils.writeJson(res, newThesisRequest, 200);
     } else {
       utils.writeJson(res, { error: "Bad Request" }, 400);

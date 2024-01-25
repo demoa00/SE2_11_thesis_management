@@ -209,7 +209,7 @@ exports.insertNewThesisRequest = async function (studentId, thesisRequest) {
             }
         }
     }
-
+    
     return new Promise(function (resolve, reject) {
         const sql = "SELECT count(*) as count FROM thesisRequests WHERE studentId = ? AND (professorStatus = 'Pending' OR professorStatus = 'Change' OR professorStatus = 'Accepted')";
         db.get(sql, [studentId], (err, row) => {
@@ -228,7 +228,7 @@ exports.insertNewThesisRequest = async function (studentId, thesisRequest) {
     }).then(() => {
         return new Promise(function (resolve, reject) {
             const sql = "INSERT INTO thesisRequests(thesisProposalId, studentId, title, supervisor, description, date) VALUES(?, ?, ?, ?, ?, ?)";
-            db.run(sql, [thesisRequest.thesisProposalId != undefined ? thesisRequest.thesisProposalId : null, studentId, thesisRequest.title, professor.professorId, thesisRequest.description, dayjs().format("YYYY-MM-DD")], function (err) {
+            db.run(sql, [thesisRequest.thesisProposalId != undefined ? thesisRequest.thesisProposalId : null, studentId, thesisRequest.title, thesisRequest.supervisor.professorId, thesisRequest.description, dayjs().format("YYYY-MM-DD")], function (err) {
                 if (err) {
                     reject(new PromiseError({ code: 500, message: "Internal Server Error" }));
                 } else {
@@ -314,14 +314,14 @@ exports.updateThesisRequestForProfessor = function (professorId, newThesisReques
                 emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectThesisRequestChanges, `The supervisor has requested some changes for your thesis request: ${title}.\n\nProfessor message:\n${newThesisRequest.professorRequestChangesMessage}`)));
                 notificationPromises.push(Notification.insertNewNotification(student.studentId, smtp.subjectDecisionThesisRequest, 6));
             } else if (newThesisRequest.professorStatus == 'Accepted') {
-                emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectThesisRequestChanges, `${smtp.textAcceptThesisRequestByProfessor} ${title}`)));
+                emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectDecisionThesisRequest, `${smtp.textAcceptThesisRequestByProfessor} ${title}`)));
                 notificationPromises.push(Notification.insertNewNotification(student.studentId, smtp.subjectDecisionThesisRequest, 6));
             } else if (newThesisRequest.professorStatus == 'Rejected') {
                 if (newThesisRequest.thesisProposalId != undefined && newThesisRequest.thesisProposalId != null) {
                     await ThesisProposal.updateAcceptedApplication(newThesisRequest.thesisProposalId);
                 }
 
-                emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectThesisRequestChanges, `${smtp.textRejectThesisRequestByProfessor} ${title}`)));
+                emailPromises.push(smtp.sendMail(smtp.mailConstructor(student.email, smtp.subjectDecisionThesisRequest, `${smtp.textRejectThesisRequestByProfessor} ${title}`)));
                 notificationPromises.push(Notification.insertNewNotification(student.studentId, smtp.subjectDecisionThesisRequest, 6));
             }
 
