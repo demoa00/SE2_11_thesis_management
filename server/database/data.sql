@@ -1,6 +1,6 @@
 /* DEGREES DATA */
 INSERT INTO degrees (degreeId, titleDegree) VALUES ('L-1', 'Bachelor in Mechanical Engineering');
-INSERT INTO degrees (degreeId, titleDegree) VALUES ('LM-9', 'Master in Software Engineering');
+INSERT INTO degrees (degreeId, titleDegree) VALUES ('LM-32', 'Master in Computer Engineering');
 INSERT INTO degrees (degreeId, titleDegree) VALUES ('L-4', 'Bachelor of Science in Civil Engineering');
 INSERT INTO degrees (degreeId, titleDegree) VALUES ('LM-78', 'Master in Mechatronics Engineering');
 INSERT INTO degrees (degreeId, titleDegree) VALUES ('L-25', 'Bachelor in Chemical Engineering');
@@ -22,13 +22,15 @@ INSERT INTO degrees (degreeId, titleDegree) VALUES ('LM-13', 'Master in Manageme
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s123456', 'John', 'Smith', 'male', 'Italian', 's123456@studenti.polito.it', 'L-1', 2023);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s789012', 'Jane', 'Brown', 'female', 'American', 's789012@studenti.polito.it', 'LM-13', 2022);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s987654', 'Peter', 'Williams', 'male', 'British', 's987654@studenti.polito.it', 'L-6', 2021);
-INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s345678', 'Mary', 'Johnson', 'female', 'Canadian', 's345678@studenti.polito.it', 'LM-9', 2020);
+INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s345678', 'Mary', 'Johnson', 'female', 'Canadian', 's345678@studenti.polito.it', 'LM-32', 2020);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s012345', 'David', 'Davis', 'male', 'Australian', 's012345@studenti.polito.it', 'L-25', 2019);
-INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s654321', 'Alice', 'Taylor', 'female', 'French', 's654321@studenti.polito.it', 'LM-9', 2018);
-INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s876543', 'Bob', 'Wilson', 'male', 'German', 's876543@studenti.polito.it', 'LM-9', 2017);
+INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s654321', 'Alice', 'Taylor', 'female', 'French', 's654321@studenti.polito.it', 'LM-32', 2018);
+INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s876543', 'Bob', 'Wilson', 'male', 'German', 's876543@studenti.polito.it', 'LM-32', 2017);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s456789', 'Emily', 'Davis', 'female', 'Spanish', 's456789@studenti.polito.it', 'LM-7', 2016);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s234567', 'Michael', 'Rodriguez', 'male', 'Chinese', 's234567@studenti.polito.it', 'L-4', 2015);
 INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s098765', 'Jessica', 'Lee', 'female', 'Indian', 's098765@studenti.polito.it', 'L-2', 2014);
+INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s998877', 'Elmo', 'Moss', 'male', 'Indian', 's998877@studenti.polito.it', 'LM-32', 2022);
+INSERT INTO students (studentId, name, surname, gender, nationality, email, codDegree, enrollmentYear) VALUES ('s778899', 'Bryan', 'Woods', 'male', 'Italian', 's778899@studenti.polito.it', 'LM-32', 2022);
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
@@ -47,6 +49,8 @@ INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartme
 INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartment) VALUES ('p271846', 'Sandra', 'Bullock', 'sandra.bullock@polito.it', 'CG_27', 'CD_28');
 INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartment) VALUES ('p540287', 'Anthony', 'Taylor', 'anthony.taylor@polito.it', 'CG_29', 'CD_30');
 INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartment) VALUES ('p106398', 'Barbara', 'Garcia', 'barbara.garcia@polito.it', 'CG_31', 'CD_32');
+INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartment) VALUES ('p998877', 'Juan Stefano', 'Pauli', 'juan.pauli@polito.it', 'CG_33', 'Electronics Department');
+INSERT INTO professors (professorId, name, surname, email, codGroup, codDepartment) VALUES ('p778899', 'Giulia', 'Saracco', 'giulia.saracco@polito.it', 'CG_25', 'Applied Science department');
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
@@ -61,6 +65,7 @@ INSERT INTO externalCoSupervisors (externalCoSupervisorId, name, surname, email,
 
 /* SECRETARY CLERCK EMPLOYEES DATA */
 INSERT INTO secretaryClerckEmployees (secretaryClerckEmployeeId, name, surname, email) VALUES ('c123456', 'Tony', 'Jordan', 'tony.jordan@polito.it');
+INSERT INTO secretaryClerckEmployees (secretaryClerckEmployeeId, name, surname, email) VALUES ('c998877', 'Pam', 'Beesly', 'pam.beesly@polito.it');
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
@@ -125,45 +130,47 @@ INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (6, 'L-25
 INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (7, 'L-34');
 INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (8, 'L-34');
 INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (9, 'L-34');
-INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (10, 'LM-9');
-INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (11, 'LM-9');
-INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (12, 'LM-9');
-INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (13, 'LM-9');
+INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (10, 'LM-32');
+INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (11, 'LM-32');
+INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (12, 'LM-32');
+INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (13, 'LM-32');
 INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (14, 'LM-10');
-INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (15, 'LM-9');
+INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (15, 'LM-32');
 INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (15, 'LM-10');
-INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (16, 'LM-9');
-INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (17, 'LM-9');
-INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (18, 'LM-9');
-INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (19, 'LM-9');
-INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (20, 'LM-9');
-INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (21, 'LM-9');
+INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (16, 'LM-32');
+INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (17, 'LM-32');
+INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (18, 'LM-32');
+INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (19, 'LM-32');
+INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (20, 'LM-32');
+INSERT INTO thesisProposal_cds_bridge (thesisProposalId, cdsId) VALUES (21, 'LM-32');
 
 /* ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
 /* THESIS PROPOSALS CDS BRIDGE */
-INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's654321', '2023-11-15', 'Pending');
-INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's876543', '2023-09-09', 'Pending');
-INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's345678', '2023-05-22', 'Pending');
-INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (12, 's654321', '2023-10-30', 'Pending');
-INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (13, 's654321', '2023-08-15', 'Pending');
+ 
+/* INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's654321', '2023-11-15', 'Pending'); */
+/* INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's876543', '2023-09-09', 'Pending'); */
+/* INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (11, 's345678', '2023-05-22', 'Pending'); */
+/* INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (12, 's654321', '2023-10-30', 'Pending'); */
+/* INSERT INTO applications (thesisProposalId, studentId, date, status) VALUES (13, 's654321', '2023-08-15', 'Pending'); */
 
 /* STUDENT CAREERS */
-INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '13PROGWEB', 'Programming for the Web', 9, 29, '2022-10-04');
-INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '14ALGORIT', 'Algorithms and Data Structures', 12, 30, '2022-11-24');
-INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '15SO', 'Operating Systems', 9, 28, '2022-12-01');
-INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '16BDATI', 'Databases', 9, 27, '2022-10-11');
-INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '17RETI', 'Computer Networks', 9, 29, '2022-11-07');
-INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '18SICUREZ', 'Computer Security', 9, 26, '2022-11-21');
-INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '19INTELART', 'Artificial Intelligence', 6, 30, '2022-10-18');
-INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '20COMPGRAF', 'Computer Graphics', 6, 28, '2022-11-14');
-INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s654321', '21HPC', 'High Performance Computing', 6, 29, '2022-12-15');
-INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s876543', '13PROGWEB', 'Programming for the Web', 9, 20, '2022-10-04');
-INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s876543', '14ALGORIT', 'Algorithms and Data Structures', 12, 18, '2022-11-24');
-INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s876543', '15SO', 'Operating Systems', 9, 24, '2022-12-01');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s998877', '13PROGWEB', 'Programming for the Web', 9, 29, '2022-10-04');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s998877', '14ALGORIT', 'Algorithms and Data Structures', 12, 30, '2022-11-24');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s998877', '15SO', 'Operating Systems', 9, 28, '2022-12-01');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s998877', '16BDATI', 'Databases', 9, 27, '2022-10-11');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s998877', '17RETI', 'Computer Networks', 9, 29, '2022-11-07');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s998877', '18SICUREZ', 'Computer Security', 9, 26, '2022-11-21');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s998877', '19INTELART', 'Artificial Intelligence', 6, 30, '2022-10-18');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s998877', '20COMPGRAF', 'Computer Graphics', 6, 28, '2022-11-14');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s998877', '21HPC', 'High Performance Computing', 6, 29, '2022-12-15');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s778899', '13PROGWEB', 'Programming for the Web', 9, 20, '2022-10-04');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s778899', '14ALGORIT', 'Algorithms and Data Structures', 12, 18, '2022-11-24');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s778899', '15SO', 'Operating Systems', 9, 24, '2022-12-01');
+INSERT INTO careers (studentId, codCourse, titleCourse, cfu, grade, date) VALUES ('s778899', '16BDATI', 'Databases', 9, 19, '2022-10-11');
 
 /* THESIS REQUEST */
 INSERT INTO thesisRequests (thesisProposalId, studentId, title, supervisor, description, secretaryStatus, professorStatus, date) VALUES (NULL, 's654321', 'Real-time Med. Image Proc.', 'p123654', 'Development of novel data compression techniques tailored for medical images to reduce bandwidth requirements and enable real-time access. Exploration of hardware-accelerated processing techniques to optimize computational efficiency for handling complex medical image processing tasks with reduced latency. Design and evaluation of comprehensive edge computing architectures for real-time medical image processing, showcasing significant performance improvements.', 'Accepted', 'Pending', '2024-11-01');
 
 /* THESIS PROPOSALS EXTERNAL CO-SUPERVISOR BRIDGE */
-INSERT INTO thesisRequest_internalCoSupervisor_bridge (thesisRequestId, internalCoSupervisorId) VALUES (1, 'p271846');
+/* INSERT INTO thesisRequest_internalCoSupervisor_bridge (thesisRequestId, internalCoSupervisorId) VALUES (1, 'p271846'); */

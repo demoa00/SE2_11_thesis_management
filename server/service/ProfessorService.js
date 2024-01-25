@@ -42,7 +42,7 @@ exports.getProfessors = function (user, filter) {
           surname: r.surname,
           self: `/api/professors/${r.professorId}`
         }));
-
+        
         resolve(professorsList);
       }
     });
