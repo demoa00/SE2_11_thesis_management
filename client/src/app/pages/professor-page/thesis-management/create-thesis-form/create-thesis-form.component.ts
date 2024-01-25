@@ -149,6 +149,7 @@ export class CreateThesisFormComponent implements OnInit{
     let stringDegree = localStorage.getItem('degrees');
     let stringCoSupervisors = localStorage.getItem('externalCoSupervisors');
     let stringInternalCoSupervisors = localStorage.getItem('internalCoSupervisors');
+    console.log(stringInternalCoSupervisors)
     this.degrees = (JSON.parse(stringDegree!=null?stringDegree:'[]'));
     this.professor = (JSON.parse(stringProfessor!=null?stringProfessor:'{}'));
     this.externalCoSupervisors = (JSON.parse(stringCoSupervisors!=null?stringCoSupervisors:'[]'));

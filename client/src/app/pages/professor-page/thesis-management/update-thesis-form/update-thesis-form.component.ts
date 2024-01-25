@@ -109,15 +109,17 @@ export class UpdateThesisFormComponent implements OnInit{
       if(this.thesisProposal.coSupervisor){
          this.thesisProposal.coSupervisor?.forEach((element:any)=>{
             if(element.coSupervisorId.includes('e')) {
-                const cS = this.externalCoSupervisors.find((el) => el.externalCoSupervisorId === element.coSupervisorId)
+                const cS = this.externalCoSupervisors.findIndex((el) => el.externalCoSupervisorId === element.coSupervisorId)
                 if (cS!=undefined){
-                  this.selectedCoSupervisors.push(cS)
+                  this.selectedCoSupervisors.push(this.externalCoSupervisors[cS])
+                  this.externalCoSupervisors.splice(cS,1)
                 }
             }
             else if (element.coSupervisorId.includes('p')){
-                const cS = this.professors.find((el) => el.professorId === element.coSupervisorId)
+                const cS = this.professors.findIndex((el) => el.professorId === element.coSupervisorId)
                 if (cS!=undefined){
-                    this.selectedProfessors.push(cS)
+                  this.selectedProfessors.push(this.professors[cS])
+                  this.professors.splice(cS,1)
                 }
             }
         })

@@ -221,7 +221,8 @@ export class APIService {
 
   async getProfessors() {
     await this.httpService.get('professors', false, true).then((response: any) => {
-      localStorage.setItem('professors', JSON.stringify(response))
+      localStorage.setItem('internalCoSupervisors', JSON.stringify(response))
+      console.log(response)
     })
     return await this.httpService.get('professors')
   }
