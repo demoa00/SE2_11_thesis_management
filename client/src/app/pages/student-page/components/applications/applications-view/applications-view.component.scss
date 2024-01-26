@@ -39,6 +39,9 @@
 
       &.statusContainer {
         padding: 8px 0 8px 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
         .status {
           margin: auto;
@@ -77,6 +80,4 @@
   }
 }
 
-.applicationDetailsContainer {
-
-}
+.applicationDetailsContainer {}
