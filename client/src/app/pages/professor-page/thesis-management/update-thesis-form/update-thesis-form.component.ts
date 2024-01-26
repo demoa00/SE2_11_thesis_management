@@ -210,7 +210,7 @@ export class UpdateThesisFormComponent implements OnInit{
           }
 
         })),
-        notes: this.myForm.get('notes')?.value!=undefined?'none':this.myForm.get('notes')?.value
+        notes: this.myForm.get('notes')?.value==undefined?'none':this.myForm.get('notes')?.value
       }
       console.log(submitform);
       const response = await this.api.updateThesis(this.thesisProposal.thesisProposalId ,submitform)
