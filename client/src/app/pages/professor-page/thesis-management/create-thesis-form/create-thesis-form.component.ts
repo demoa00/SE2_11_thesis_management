@@ -204,7 +204,7 @@ export class CreateThesisFormComponent implements OnInit{
             }
 
           })),
-          notes: this.myForm.get('notes')?.value!=undefined?'none':this.myForm.get('notes')?.value
+          notes: this.myForm.get('notes')?.value==undefined?'none':this.myForm.get('notes')?.value
         }
         console.log(submitform);
           const response = await this.api.insertNewThesis(submitform)
