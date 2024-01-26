@@ -10,6 +10,18 @@
       <p>{{selectedProposal.description}}</p>
     </div>
   </div>
+  <div class="projectBody ">
+    <h3 class="font-bold">Requirements</h3>
+    <div class="regularText">
+      <p>{{selectedProposal.requirements}}</p>
+    </div>
+  </div>
+  <div class="projectBody " *ngIf="selectedProposal.notes">
+    <h3 class="font-bold">Notes</h3>
+    <div class="regularText">
+      <p>{{selectedProposal.notes}}</p>
+    </div>
+  </div>
   <div class="projectFooter">
     <h3 class="font-bold">Type: <span class="regularText">{{selectedProposal.thesisType}}</span></h3>
     <h3 class="font-bold">Abroad: <span class="regularText">{{selectedProposal.abroad ? 'Yes' : 'No'}}</span></h3>

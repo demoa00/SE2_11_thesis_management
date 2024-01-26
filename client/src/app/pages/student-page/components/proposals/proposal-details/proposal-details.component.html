@@ -21,6 +21,12 @@
         <p>{{ selectedProposal?.requirements }}</p>
       </div>
     </div>
+    <div class="projectBody" *ngIf="selectedProposal?.notes">
+      <p class="font-bold">Notes</p>
+      <div class="regularText">
+        <p>{{ selectedProposal?.notes }}</p>
+      </div>
+    </div>
     <div class="projectFooter">
       <p class="font-bold" *ngIf="selectedProposal?.thesisType">Type: <span
         class="regularText">{{ selectedProposal?.thesisType }}</span></p>
