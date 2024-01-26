@@ -220,7 +220,7 @@ exports.getThesisProposalById = function (user, thesisProposalId) {
           keywords: JSON.parse(row.keywords),
           description: row.description,
           requirements: row.requirements,
-          notes: row.notes,
+          notes: row.notes === "" ? null : row.notes,
           thesisType: row.thesisType,
           abroad: row.abroad == 0 ? false : true,
           groups: [],
@@ -655,7 +655,7 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
       }));
     });
   }
-
+  
   return Promise.all(promises).then(() => {
     return new Promise(function (resolve, reject) {
       const sql = 'UPDATE thesisProposals SET title=?, keywords=?, description=?, requirements=?, thesisType=?, abroad=?, notes=?, expirationDate=?, level=? WHERE thesisProposalId = ? AND isArchieved = 0';
@@ -666,7 +666,7 @@ exports.updateThesisProposal = async function (professorId, thesisProposal, thes
         thesisProposal.requirements,
         thesisProposal.thesisType,
         thesisProposal.abroad,
-        thesisProposal.notes,
+        thesisProposal.notes === "" ? null : thesisProposal.notes,
         thesisProposal.expirationDate,
         thesisProposal.level,
         thesisProposalId
