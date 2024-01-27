@@ -41,6 +41,7 @@ export class RequestFormComponent implements OnChanges {
     }).catch((err: any) => {
       console.log(err)
     })
+
   }
 
   ngOnChanges(): void {
@@ -59,7 +60,7 @@ export class RequestFormComponent implements OnChanges {
       if(this.coSupervisor.length > 0) {
         this.selectedCoSupervisors = this.coSupervisors.filter((item: any) => {
           return this.coSupervisor.some((cs: any) => {
-            return cs.coSupervisorId === item.professorId;
+            return cs.cosupervisorId === item.professorId;
           })
         })
       }

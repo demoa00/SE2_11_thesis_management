@@ -121,6 +121,7 @@
       [description]="requestToEdit.description"
       [message]="requestToEdit.message"
       [professorId]="requestToEdit.supervisor.professorId"
+      [coSupervisor]="requestToEdit.coSupervisors"
       (showPopup)="showEditPopup = $event"
       (showAlert)="showAlert($event)"/>
   </app-popup>
